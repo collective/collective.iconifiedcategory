@@ -44,6 +44,11 @@ setup(
     zip_safe=False,
     install_requires=[
         'plone.api',
+        'plone.app.contenttypes',
+        'plone.app.dexterity',
+        'plone.autoform',
+        'plone.formwidget.namedfile',
+        'plone.namedfile',
         'setuptools',
         'z3c.jbot',
     ],
