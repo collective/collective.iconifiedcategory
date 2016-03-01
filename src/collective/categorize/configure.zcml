@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="collective.categorize">
+
+  <i18n:registerTranslations directory="locales" />
+
+  <include package=".browser" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.categorize"
+      directory="profiles/default"
+      description="Installs the collective.categorize add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+      name="collective.categorize-postInstall"
+      title="collective.categorize post_install import step"
+      description="Post install import step from collective.categorize"
+      handler=".setuphandlers.post_install">
+  </genericsetup:importStep>
+
+</configure>

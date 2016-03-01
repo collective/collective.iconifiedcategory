@@ -1,0 +1,5 @@
+====================
+collective.categorize
+====================
+
+User documentation
