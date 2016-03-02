@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-collective.categorize
----------------------
+collective.iconifiedcategory
+----------------------------
 
 Created by mpeeters
-:copyright: (c) 2015 by Affinitic SPRL
 :license: GPL, see LICENCE.txt for more details.
 """
 
@@ -13,7 +12,7 @@ from plone.dexterity.content import Container
 from plone.dexterity.schema import DexteritySchemaPolicy
 from zope.interface import implements
 
-from collective.categorize.content.base import ICategorize
+from collective.iconifiedcategory.content.base import ICategorize
 
 
 class ISubcategory(IFolder, ICategorize):

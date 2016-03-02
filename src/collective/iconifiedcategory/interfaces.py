@@ -4,5 +4,5 @@
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
-class ICollectiveCategorizeLayer(IDefaultBrowserLayer):
+class ICollectiveIconifiedCategoryLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""

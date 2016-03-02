@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from collective.categorize.testing import COLLECTIVE_CATEGORIZE_ACCEPTANCE_TESTING  # noqa
+from collective.iconifiedcategory.testing import COLLECTIVE_ICONIFIED_CATEGORY_ACCEPTANCE_TESTING  # noqa
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 
@@ -22,7 +22,7 @@ def test_suite():
         suite.addTests([
             layered(
                 robottestsuite,
-                layer=COLLECTIVE_CATEGORIZE_ACCEPTANCE_TESTING
+                layer=COLLECTIVE_ICONIFIED_CATEGORY_ACCEPTANCE_TESTING
             ),
         ])
     return suite

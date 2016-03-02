@@ -4,17 +4,17 @@
 #
 # Run this robot test stand-alone:
 #
-#  $ bin/test -s collective.categorize -t test_example.robot --all
+#  $ bin/test -s collective.iconifiedcategory -t test_example.robot --all
 #
 # Run this robot test with robot server (which is faster):
 #
 # 1) Start robot server:
 #
-# $ bin/robot-server --reload-path src collective.categorize.testing.COLLECTIVE_CATEGORIZE_ACCEPTANCE_TESTING
+# $ bin/robot-server --reload-path src collective.iconifiedcategory.testing.COLLECTIVE_ICONIFIED_CATEGORY_ACCEPTANCE_TESTING
 #
 # 2) Run robot tests:
 #
-# $ bin/robot src/collective/categorize/tests/robot/test_example.robot
+# $ bin/robot src/collective.iconifiedcategory/tests/robot/test_example.robot
 #
 # See the http://docs.plone.org for further details (search for robot
 # framework).

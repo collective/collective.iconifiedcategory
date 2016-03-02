@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-collective.categorize
----------------------
+collective.iconifiedcategory
+----------------------------
 
 Created by mpeeters
-:copyright: (c) 2015 by Affinitic SPRL
 :license: GPL, see LICENCE.txt for more details.
 """
 
@@ -15,8 +14,8 @@ from plone.autoform import directives as form
 from plone.namedfile.field import NamedBlobImage
 from zope.interface import implements
 
-from collective.categorize import _
-from collective.categorize.content.base import ICategorize
+from collective.iconifiedcategory import _
+from collective.iconifiedcategory.content.base import ICategorize
 
 
 class ICategory(IFolder, ICategorize):

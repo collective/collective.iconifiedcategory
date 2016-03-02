@@ -1,17 +1,16 @@
 <?xml version="1.0"?>
-<object name="Category" meta_type="Dexterity FTI" i18n:domain="fbk.policy"
+<object name="Subcategory" meta_type="Dexterity FTI" i18n:domain="fbk.policy"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Category</property>
+  <property name="title" i18n:translate="">Subcategory</property>
   <property name="description" i18n:translate=""></property>
   <property name="content_icon"></property>
-  <property name="factory">Category</property>
-  <property name="add_view_expr">string:${folder_url}/++add++ContentCategory</property>
+  <property name="factory">Subcategory</property>
+  <property name="add_view_expr">string:${folder_url}/++add++ContentSubcategory</property>
   <property name="link_target"></property>
   <property name="immediate_view">view</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
-    <element value="ContentSubcategory"/>
   </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">view</property>
@@ -20,8 +19,8 @@
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>
-  <property name="klass">collective.categorize.content.category.Category</property>
-  <property name="schema_policy">category_schema_policy</property>
+  <property name="klass">collective.iconifiedcategory.content.subcategory.Subcategory</property>
+  <property name="schema_policy">subcategory_schema_policy</property>
   <property name="behaviors" purge="false">
     <element value="plone.app.content.interfaces.INameFromTitle"/>
     <element value="plone.app.dexterity.behaviors.discussion.IAllowDiscussion"/>

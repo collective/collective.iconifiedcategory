@@ -3,7 +3,7 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
-    i18n_domain="collective.categorize">
+    i18n_domain="collective.iconifiedcategory">
 
   <i18n:registerTranslations directory="locales" />
 
@@ -12,16 +12,16 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="collective.categorize"
+      title="collective.iconifiedcategory"
       directory="profiles/default"
-      description="Installs the collective.categorize add-on."
+      description="Installs the collective.iconifiedcategory add-on."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
   <genericsetup:importStep
-      name="collective.categorize-postInstall"
-      title="collective.categorize post_install import step"
-      description="Post install import step from collective.categorize"
+      name="collective.iconifiedcategory-postInstall"
+      title="collective.iconifiedcategory post_install import step"
+      description="Post install import step from collective.iconifiedcategory"
       handler=".setuphandlers.post_install">
   </genericsetup:importStep>
 

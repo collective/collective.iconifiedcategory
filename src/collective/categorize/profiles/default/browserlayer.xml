@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<layers>
-  <layer
-      name="collective.categorize"
-      interface="collective.categorize.interfaces.ICollectiveCategorizeLayer"
-      />
-</layers>

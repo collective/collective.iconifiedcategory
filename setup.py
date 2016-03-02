@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Installer for the collective.categorize package."""
+"""Installer for the collective.iconifiedcategory package."""
 
 from setuptools import find_packages
 from setuptools import setup
@@ -18,7 +18,7 @@ long_description = (
 
 
 setup(
-    name='collective.categorize',
+    name='collective.iconifiedcategory',
     version='0.1',
     description="An add-on for Plone",
     long_description=long_description,
@@ -35,7 +35,7 @@ setup(
     keywords='Python Plone',
     author='IMIO',
     author_email='support@imio.be',
-    url='https://pypi.python.org/pypi/collective.categorize',
+    url='https://pypi.python.org/pypi/collective.iconifiedcategory',
     license='GPL version 2',
     packages=find_packages('src', exclude=['ez_setup']),
     namespace_packages=['collective'],

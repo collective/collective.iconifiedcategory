@@ -3,21 +3,21 @@
    This text does not appear on pypi or github. It is a comment.
 
 ==============================================================================
-collective.categorize
+collective.iconifiedcategory
 ==============================================================================
 
 
 Installation
 ------------
 
-Install collective.categorize by adding it to your buildout::
+Install collective.iconifiedcategory by adding it to your buildout::
 
     [buildout]
 
     ...
 
     eggs =
-        collective.categorize
+        collective.iconifiedcategory
 
 
 and then running ``bin/buildout``
@@ -26,8 +26,8 @@ and then running ``bin/buildout``
 Contribute
 ----------
 
-- Issue Tracker: https://github.com/collective/collective.categorize/issues
-- Source Code: https://github.com/collective/collective.categorize
+- Issue Tracker: https://github.com/collective/collective.iconifiedcategory/issues
+- Source Code: https://github.com/collective/collective.iconifiedcategory
 
 
 License
