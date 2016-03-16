@@ -48,3 +48,11 @@ class IconifiedCategorization(object):
 
     def __init__(self, context):
         self.context = context
+
+    @property
+    def content_category(self):
+        return getattr(self.context, 'content_category', None)
+
+    @content_category.setter
+    def content_category(self, value):
+        self.context.content_category = value

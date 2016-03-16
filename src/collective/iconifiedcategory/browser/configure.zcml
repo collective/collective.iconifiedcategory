@@ -7,9 +7,9 @@
   <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
   <include package="z3c.jbot" file="meta.zcml" />
   <browser:jbot
-      directory="overrides"
-      layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
-      />
+    directory="overrides"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    />
 
   <!-- Publish static files -->
   <browser:resourceDirectory
@@ -17,10 +17,22 @@
     directory="static"
     />
 
+  <!-- views -->
   <browser:view
     name="collective-iconifiedcategory.css"
     permission="zope2.View"
     class=".css.IconifiedCategory"
+    />
+
+  <!-- viewlets -->
+  <browser:viewlet
+    name="iconifiedcategory.childs"
+    for="*"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".viewlets.CategorizedChildViewlet"
+    template="templates/categorized-child-viewlet.pt"
+    permission="zope2.View"
     />
 
 </configure>

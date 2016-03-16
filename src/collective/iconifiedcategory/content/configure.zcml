@@ -22,4 +22,20 @@
     factory=".subcategory.SubcategorySchemaPolicy"
     />
 
+  <subscriber
+    for="zope.lifecycleevent.interfaces.IObjectAddedEvent"
+    handler=".events.categorized_content_updated"
+    />
+
+  <subscriber
+    for="zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".events.categorized_content_updated"
+    />
+
+  <subscriber
+    for="zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+    handler=".events.categorized_content_removed"
+    />
+
+
 </configure>

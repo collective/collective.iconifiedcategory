@@ -23,11 +23,23 @@ def format_id_css(id):
     return id.replace(CAT_SEPARATOR, CSS_SEPARATOR)
 
 
-def get_categories(context):
-    """Return the categories brains for a specific context"""
+def get_categories_config(context):
+    """Return the categories config root for the given context"""
     config_root = queryAdapter(IIconifiedCategoryConfig, context)
     if not config_root and context is not None:
-        config_root = api.portal.get_navigation_root(context)
+        result = api.content.find(
+            context=api.portal.get_navigation_root(context),
+            portal_type='ContentCategoryConfiguration',
+        )
+        if not result:
+            raise ValueError('Categories config is missing')
+        config_root = result[0].getObject()
+    return config_root
+
+
+def get_categories(context):
+    """Return the categories brains for a specific context"""
+    config_root = get_categories_config(context)
     return api.content.find(
         context=config_root,
         portal_type='ContentCategory',
@@ -42,3 +54,39 @@ def calculate_category_id(category):
         category.aq_parent.id,
         category.id,
     )
+
+
+def get_category_object(context, category_id):
+    obj = get_categories_config(context)
+    for path in category_id.split(CAT_SEPARATOR)[1:]:
+        obj = obj[path]
+    return obj
+
+
+def update_categorized_elements(parent, obj, category):
+    if 'categorized_elements' not in parent.__dict__:
+        parent.categorized_elements = {}
+    uid, infos = get_categorized_infos(obj, category)
+    parent.categorized_elements[uid] = infos
+
+
+def remove_categorized_element(parent, obj):
+    if obj.UID() in parent.categorized_elements:
+        del parent.categorized_elements[obj.UID()]
+
+
+def get_categorized_infos(obj, category):
+    infos = {
+        'title': obj.Title(),
+        'id': obj.getId(),
+        'category': obj.content_category,
+        'category_uid': category.UID(),
+        'category_id': category.getId(),
+        'category_title': category.Title(),
+        'absolute_url': obj.absolute_url(),
+        'icon_url': '{0}/@@download/icon/{1}'.format(
+            category.absolute_url(),
+            category.icon.filename,
+        ),
+    }
+    return obj.UID(), infos
