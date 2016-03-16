@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<object name="portal_css">
+
+  <stylesheet
+    title=""
+    cacheable="False"
+    applyPrefix="True"
+    compression="safe"
+    cookable="False"
+    enabled="on"
+    expression=""
+    id="++resource++collective-iconifiedcategory.css"
+    media="screen"
+    rel="stylesheet"
+    rendering="link"
+    />
+
+</object>

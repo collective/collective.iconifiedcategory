@@ -7,8 +7,12 @@
 
   <i18n:registerTranslations directory="locales" />
 
+  <include package="collective.z3cform.select2" />
+
   <include package=".browser" />
   <include package=".content" />
+  <include package=".behaviors" />
+  <include package=".widget" />
 
   <genericsetup:registerProfile
       name="default"
@@ -24,5 +28,17 @@
       description="Post install import step from collective.iconifiedcategory"
       handler=".setuphandlers.post_install">
   </genericsetup:importStep>
+
+  <utility
+    provides="zope.schema.interfaces.IVocabularyFactory"
+    name="collective.iconifiedcategory.categories"
+    factory=".vocabularies.CategoryVocabulary"
+    />
+
+  <utility
+    provides="zope.schema.interfaces.IVocabularyFactory"
+    name="collective.iconifiedcategory.category_titles"
+    factory=".vocabularies.CategoryTitleVocabulary"
+    />
 
 </configure>

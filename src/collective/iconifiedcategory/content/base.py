@@ -21,7 +21,7 @@ class ICategorize(Interface):
     )
 
     predefined_title = schema.TextLine(
-        title=_(u'Predefined description'),
+        title=_(u'Predefined title'),
         required=False,
     )
 

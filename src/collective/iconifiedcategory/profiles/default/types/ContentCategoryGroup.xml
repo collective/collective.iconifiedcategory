@@ -20,8 +20,8 @@
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>
-  <property name="klass">plone.app.contenttypes.content.Folder</property>
-  <property name="model_file">plone.app.contenttypes.schema:folder.xml</property>
+  <property name="klass">collective.iconifiedcategory.content.categorygroup.CategoryGroup</property>
+  <property name="schema_policy">category_group_schema_policy</property>
   <property name="behaviors" purge="false">
     <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
     <element value="plone.app.content.interfaces.INameFromTitle"/>

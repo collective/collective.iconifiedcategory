@@ -6,6 +6,12 @@
 
   <utility
     provides="plone.supermodel.parser.ISchemaPolicy"
+    name="category_group_schema_policy"
+    factory=".categorygroup.CategoryGroupSchemaPolicy"
+    />
+
+  <utility
+    provides="plone.supermodel.parser.ISchemaPolicy"
     name="category_schema_policy"
     factory=".category.CategorySchemaPolicy"
     />

@@ -13,8 +13,14 @@
 
   <!-- Publish static files -->
   <browser:resourceDirectory
-      name="collective.iconifiedcategory"
-      directory="static"
-      />
+    name="collective.iconifiedcategory"
+    directory="static"
+    />
+
+  <browser:view
+    name="collective-iconifiedcategory.css"
+    permission="zope2.View"
+    class=".css.IconifiedCategory"
+    />
 
 </configure>
