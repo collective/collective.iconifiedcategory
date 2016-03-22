@@ -9,7 +9,7 @@
     cookable="False"
     enabled="on"
     expression=""
-    id="++resource++collective-iconifiedcategory.css"
+    id="collective-iconifiedcategory.css"
     media="screen"
     rel="stylesheet"
     rendering="link"
