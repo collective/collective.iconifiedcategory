@@ -1,0 +1,23 @@
+#content div#categorized-elements h2 {
+    margin-bottom: 0.3em;
+}
+
+#content div#categorized-elements a:link,
+#content div#categorized-elements a:hover,
+#content div#categorized-elements a:visited {
+    color: #666;
+    border: 1px solid #ccc;
+    background: #EDEDED;
+    padding: 0.3em 0.5em;
+    margin-right: 0.3em;
+    min-width: 3em;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div.tooltipster-content li {
+    font-size: 0.9em;
+    display: block;
+    margin: 0.2em 0;
+}

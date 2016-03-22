@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	    xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+	    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="collective.iconifiedcategory" lang="en">
+
+  <tal:if condition="view/can_view">
+  <tal:block repeat="category view/categories_ids"
+             define="infos view/infos">
+  <div id="" style="display: none;" tal:attributes="id category">
+    <ul>
+      <li tal:repeat="element python: infos[category]">
+        <a href="" tal:attributes="href element/absolute_url">
+          <img src="" alt="" tal:attributes="src element/icon_url;
+                                             alt element/category_title;
+                                             title element/category_title" />
+          <span tal:content="element/title"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  </tal:block>
+  </tal:if>
+</html>

@@ -10,4 +10,13 @@
     id="++resource++collective.iconifiedcategory/iconifiedcategory.js"
     />
 
+  <javascript
+    cacheable="True"
+    compression="safe"
+    cookable="True"
+    enabled="1"
+    expression=""
+    id="++resource++collective.iconifiedcategory/jquery.tooltipster.min.js"
+    />
+
 </object>
