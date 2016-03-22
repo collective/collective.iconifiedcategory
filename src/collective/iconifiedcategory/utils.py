@@ -12,6 +12,7 @@ from zope.component import queryAdapter
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
+from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 
 
@@ -63,6 +64,19 @@ def get_category_object(context, category_id):
     return obj
 
 
+def get_category_icon_url(category):
+    if ICategory.providedBy(category):
+        icon = category.icon
+        obj = category
+    else:
+        icon = category.aq_parent.icon
+        obj = category.aq_parent
+    return '{0}/@@download/icon/{1}'.format(
+        obj.absolute_url(),
+        icon.filename,
+    )
+
+
 def update_categorized_elements(parent, obj, category):
     if 'categorized_elements' not in parent.__dict__:
         parent.categorized_elements = {}
@@ -84,9 +98,6 @@ def get_categorized_infos(obj, category):
         'category_id': category.getId(),
         'category_title': category.Title(),
         'absolute_url': obj.absolute_url(),
-        'icon_url': '{0}/@@download/icon/{1}'.format(
-            category.absolute_url(),
-            category.icon.filename,
-        ),
+        'icon_url': get_category_icon_url(category),
     }
     return obj.UID(), infos
