@@ -7,8 +7,12 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from Acquisition import aq_inner
 from plone import api
+from zc.relation.interfaces import ICatalog
+from zope.component import getUtility
 from zope.component import queryAdapter
+from zope.intid.interfaces import IIntIds
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
@@ -101,3 +105,15 @@ def get_categorized_infos(obj, category):
         'icon_url': get_category_icon_url(category),
     }
     return obj.UID(), infos
+
+
+def has_relations(obj):
+    catalog = getUtility(ICatalog)
+    intids = getUtility(IIntIds)
+    relations = catalog.findRelations(
+        dict(to_id=intids.getId(aq_inner(obj)),
+             from_attribute='related_category'),
+    )
+    for relation in relations:
+        return True
+    return False
