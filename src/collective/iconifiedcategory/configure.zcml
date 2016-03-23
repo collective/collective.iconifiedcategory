@@ -7,6 +7,9 @@
 
   <i18n:registerTranslations directory="locales" />
 
+  <include package="Products.CMFCore" />
+  <include package="plone.app.dexterity" />
+  <include package="plone.app.contenttypes" />
   <include package="collective.z3cform.select2" />
 
   <include package=".browser" />
@@ -23,10 +26,26 @@
       />
 
   <genericsetup:importStep
-      name="collective.iconifiedcategory-postInstall"
+      name="collective.iconifiedcategory:default-postInstall"
       title="collective.iconifiedcategory post_install import step"
       description="Post install import step from collective.iconifiedcategory"
       handler=".setuphandlers.post_install">
+      <depends name="types"/>
+  </genericsetup:importStep>
+
+  <genericsetup:registerProfile
+      name="testing"
+      title="collective.iconifiedcategory"
+      directory="profiles/testing"
+      description="Installs the collective.iconifiedcategory testing profile."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+      name="collective.iconifiedcategory:testing-postInstall"
+      title="collective.iconifiedcategory testing post_install import step"
+      description="Post install import step from collective.iconifiedcategory"
+      handler=".setuphandlers.post_test_install">
   </genericsetup:importStep>
 
   <utility
@@ -39,6 +58,13 @@
     provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.category_titles"
     factory=".vocabularies.CategoryTitleVocabulary"
+    />
+
+  <!-- indexes -->
+
+  <adapter
+    factory=".indexer.categories_elements"
+    name="categories_elements"
     />
 
 </configure>

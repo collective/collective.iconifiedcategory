@@ -15,10 +15,11 @@ class CollectiveIconifedCategoryLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        z2.installProduct(app, 'Products.DateRecurringIndex')
         self.loadZCML(package=collective.iconifiedcategory)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'collective.iconifiedcategory:default')
+        applyProfile(portal, 'collective.iconifiedcategory:testing')
 
 
 COLLECTIVE_ICONIFIED_CATEGORY_FIXTURE = CollectiveIconifedCategoryLayer()
