@@ -107,13 +107,20 @@ def get_categorized_infos(obj, category):
     return obj.UID(), infos
 
 
-def has_relations(obj):
+def get_back_references(obj):
     catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
-    relations = catalog.findRelations(
+    return catalog.findRelations(
         dict(to_id=intids.getId(aq_inner(obj)),
              from_attribute='related_category'),
     )
-    for relation in relations:
+
+
+def has_relations(obj):
+    for relation in get_back_references(obj):
         return True
+    if ICategory.providedBy(obj):
+        for subcategory in obj.listFolderContents():
+            for relation in get_back_references(subcategory):
+                return True
     return False
