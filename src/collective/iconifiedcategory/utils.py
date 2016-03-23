@@ -10,7 +10,7 @@ Created by mpeeters
 from Acquisition import aq_inner
 from plone import api
 from zc.relation.interfaces import ICatalog
-from zope.component import getUtility
+from zope.component import queryUtility
 from zope.component import queryAdapter
 from zope.intid.interfaces import IIntIds
 
@@ -108,8 +108,10 @@ def get_categorized_infos(obj, category):
 
 
 def get_back_references(obj):
-    catalog = getUtility(ICatalog)
-    intids = getUtility(IIntIds)
+    catalog = queryUtility(ICatalog)
+    intids = queryUtility(IIntIds)
+    if not catalog or not intids:
+        return []
     return catalog.findRelations(
         dict(to_id=intids.getId(aq_inner(obj)),
              from_attribute='related_category'),
