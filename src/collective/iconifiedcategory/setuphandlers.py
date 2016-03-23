@@ -34,16 +34,24 @@ def create_config(context):
             container=config,
         )
         groups.append(obj)
-    categories = []
-    for group in groups:
-        for idx in range(1, 4):
-            filename = u'icon{0}.png'.format(idx)
+    for group_idx, group in enumerate(groups):
+        for cat_idx in range(1, 4):
+            filename = u'icon{0}.png'.format(cat_idx)
             f = open(os.path.join(current_path, 'tests', filename), 'r')
             icon = namedfile.NamedBlobFile(f.read(), filename=filename)
-            obj = api.content.create(
+            category = api.content.create(
                 type='ContentCategory',
-                title='Category {0}'.format(idx),
+                title='Category {0}-{1}'.format(group_idx + 1, cat_idx),
                 container=group,
                 icon=icon,
             )
-            categories.append(obj)
+            for idx in range(1, 3):
+                api.content.create(
+                    type='ContentSubcategory',
+                    title='Subcategory {0}-{1}-{2}'.format(
+                        group_idx + 1,
+                        cat_idx,
+                        idx,
+                    ),
+                    container=category,
+                )

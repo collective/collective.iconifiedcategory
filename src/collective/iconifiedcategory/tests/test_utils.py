@@ -195,7 +195,7 @@ class TestUtils(unittest.TestCase):
             container=self.portal,
             content_category='config_-_group-1_-_category-x_-_subcategory-x',
         )
-        new_folder = self.config['group-1']['category-1']
+        new_folder = self.config['group-1']['category-1-1']
         self.assertRaises(Redirect, api.content.move, subcategory, new_folder)
         api.content.delete(document)
         subcategory = api.content.move(subcategory, new_folder)
