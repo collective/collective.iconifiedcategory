@@ -17,7 +17,6 @@ from zExceptions import Redirect
 
 import os
 import unittest
-import transaction
 
 
 class TestUtils(unittest.TestCase):
@@ -67,7 +66,6 @@ class TestUtils(unittest.TestCase):
         )
         self.assertRaises(Redirect, api.content.delete, category)
         api.content.delete(document)
-        transaction.commit()
         api.content.delete(category)
 
     def test_category_with_subcategory_before_remove(self):
@@ -95,7 +93,6 @@ class TestUtils(unittest.TestCase):
         )
         self.assertRaises(Redirect, api.content.delete, category)
         api.content.delete(document)
-        transaction.commit()
         api.content.delete(category)
 
     def test_subcategory_before_removed(self):
@@ -122,6 +119,85 @@ class TestUtils(unittest.TestCase):
         )
         self.assertRaises(Redirect, api.content.delete, subcategory)
         api.content.delete(document)
-        transaction.commit()
+        api.content.delete(subcategory)
+        api.content.delete(category)
+
+    def test_category_moved(self):
+        """
+        Ensure that an error is raised if we try to move an used category
+        """
+        category = api.content.create(
+            type='ContentCategory',
+            title='Category X',
+            icon=self.icon,
+            container=self.config['group-1'],
+        )
+        document = api.content.create(
+            type='Document',
+            title='doc-category-move-1',
+            container=self.portal,
+            content_category='config_-_group-1_-_category-x',
+        )
+        self.assertRaises(Redirect, api.content.move, category,
+                          self.config['group-2'])
+        api.content.delete(document)
+        category = api.content.move(category, self.config['group-2'])
+        api.content.delete(category)
+
+    def test_category_subcategory_moved(self):
+        """
+        Ensure that an error is raised if we try to move a category that
+        contains an used subcategory
+        """
+        category = api.content.create(
+            type='ContentCategory',
+            title='Category X',
+            icon=self.icon,
+            container=self.config['group-1'],
+        )
+        api.content.create(
+            type='ContentSubcategory',
+            title='Subcategory X',
+            icon=self.icon,
+            container=category,
+        )
+        document = api.content.create(
+            type='Document',
+            title='doc-category-move-2',
+            container=self.portal,
+            content_category='config_-_group-1_-_category-x_-_subcategory-x',
+        )
+        new_folder = self.config['group-1']
+        self.assertRaises(Redirect, api.content.move, category, new_folder)
+        api.content.delete(document)
+        category = api.content.move(category, new_folder)
+        api.content.delete(category)
+
+    def test_subcategory_moved(self):
+        """
+        Ensure that an error is raised if we try to move an used subcategory
+        """
+        category = api.content.create(
+            type='ContentCategory',
+            title='Category X',
+            icon=self.icon,
+            container=self.config['group-1'],
+        )
+        subcategory = api.content.create(
+            type='ContentSubcategory',
+            title='Subcategory X',
+            icon=self.icon,
+            container=category,
+        )
+        document = api.content.create(
+            type='Document',
+            title='doc-subcategory-move',
+            container=self.portal,
+            content_category='config_-_group-1_-_category-x_-_subcategory-x',
+        )
+        new_folder = self.config['group-1']['category-1']
+        self.assertRaises(Redirect, api.content.move, subcategory, new_folder)
+        api.content.delete(document)
+        subcategory = api.content.move(subcategory, new_folder)
         api.content.delete(subcategory)
         api.content.delete(category)

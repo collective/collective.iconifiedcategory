@@ -62,3 +62,27 @@ def subcategory_before_remove(obj, event):
                 type='error',
             )
             raise Redirect(obj.absolute_url())
+
+
+def category_moved(obj, event):
+    if event.oldParent is None or event.newParent is None:
+        return
+    if utils.has_relations(obj) is True:
+        IStatusMessage(obj.REQUEST).addStatusMessage(
+            _('This category or one of is subcategory are used by '
+              'another object and cannot be deleted'),
+            type='error',
+        )
+        raise Redirect(event.oldParent.absolute_url())
+
+
+def subcategory_moved(obj, event):
+    if event.oldParent is None or event.newParent is None:
+        return
+    if utils.has_relations(obj) is True:
+        IStatusMessage(obj.REQUEST).addStatusMessage(
+            _('This subcategory is used by another object and cannot be '
+              'deleted'),
+            type='error',
+        )
+        raise Redirect(event.oldParent.absolute_url())

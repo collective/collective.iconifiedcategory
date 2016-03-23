@@ -49,4 +49,16 @@
     handler=".events.subcategory_before_remove"
     />
 
+  <subscriber
+    for=".category.ICategory
+         OFS.interfaces.IObjectWillBeMovedEvent"
+    handler=".events.category_moved"
+    />
+
+  <subscriber
+    for=".subcategory.ISubcategory
+         OFS.interfaces.IObjectWillBeMovedEvent"
+    handler=".events.subcategory_moved"
+    />
+
 </configure>
