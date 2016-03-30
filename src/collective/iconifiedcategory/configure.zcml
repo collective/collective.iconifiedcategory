@@ -17,6 +17,8 @@
   <include package=".behaviors" />
   <include package=".widget" />
 
+  <include file="adapter.zcml" />
+
   <genericsetup:registerProfile
       name="default"
       title="collective.iconifiedcategory"

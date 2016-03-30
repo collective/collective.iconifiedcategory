@@ -30,6 +30,18 @@ class ICategory(IFolder, ICategorize):
 class Category(Container):
     implements(ICategory)
 
+    @property
+    def category_uid(self):
+        return self.UID()
+
+    @property
+    def category_id(self):
+        return self.getId()
+
+    @property
+    def category_title(self):
+        return self.Title()
+
 
 class CategorySchemaPolicy(DexteritySchemaPolicy):
 

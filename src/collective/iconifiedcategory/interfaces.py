@@ -11,3 +11,7 @@ class ICollectiveIconifiedCategoryLayer(IDefaultBrowserLayer):
 
 class IIconifiedCategoryConfig(Interface):
     pass
+
+
+class IIconifiedInfos(Interface):
+    pass

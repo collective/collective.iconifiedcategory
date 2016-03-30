@@ -22,6 +22,18 @@ class ISubcategory(IFolder, ICategorize):
 class Subcategory(Container):
     implements(ISubcategory)
 
+    @property
+    def category_uid(self):
+        return self.aq_parent.UID()
+
+    @property
+    def category_id(self):
+        return self.aq_parent.getId()
+
+    @property
+    def category_title(self):
+        return self.aq_parent.Title()
+
 
 class SubcategorySchemaPolicy(DexteritySchemaPolicy):
 

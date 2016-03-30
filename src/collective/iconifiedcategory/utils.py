@@ -12,12 +12,14 @@ from plone import api
 from zc.relation.interfaces import ICatalog
 from zope.component import queryUtility
 from zope.component import queryAdapter
+from zope.component import getAdapter
 from zope.intid.interfaces import IIntIds
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
+from collective.iconifiedcategory.interfaces import IIconifiedInfos
 
 
 def format_id(*args):
@@ -94,17 +96,8 @@ def remove_categorized_element(parent, obj):
 
 
 def get_categorized_infos(obj, category):
-    infos = {
-        'title': obj.Title(),
-        'id': obj.getId(),
-        'category': obj.content_category,
-        'category_uid': category.UID(),
-        'category_id': category.getId(),
-        'category_title': category.Title(),
-        'absolute_url': obj.absolute_url(),
-        'icon_url': get_category_icon_url(category),
-    }
-    return obj.UID(), infos
+    adapter = getAdapter(obj, IIconifiedInfos)
+    return obj.UID(), adapter.get_infos(category)
 
 
 def get_back_references(obj):
