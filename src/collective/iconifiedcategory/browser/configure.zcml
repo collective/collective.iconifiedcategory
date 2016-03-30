@@ -35,7 +35,6 @@
     permission="zope2.View"
     />
 
-
   <browser:viewlet
     name="iconifiedcategory.childs.infos"
     for="*"
@@ -43,6 +42,23 @@
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     class=".viewlets.CategorizedChildViewlet"
     template="templates/categorized-child-infos-viewlet.pt"
+    permission="zope2.View"
+    />
+
+  <!-- Edit form views -->
+  <browser:page
+    name="edit"
+    for="collective.iconifiedcategory.content.category.ICategory"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".editview.BaseEditView"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    name="edit"
+    for="collective.iconifiedcategory.content.subcategory.ISubcategory"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".editview.BaseEditView"
     permission="zope2.View"
     />
 
