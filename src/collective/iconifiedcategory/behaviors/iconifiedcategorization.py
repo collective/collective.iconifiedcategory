@@ -18,6 +18,7 @@ from zope.interface import provider
 from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 
 from collective.iconifiedcategory import _
+from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
 
 
@@ -57,4 +58,16 @@ class IconifiedCategorization(object):
 
     @content_category.setter
     def content_category(self, value):
+        if self.content_category is None:
+            category = utils.get_category_object(self.context, value)
+            self.context.to_print = category.to_print
+            self.context.confidential = category.confidential
         self.context.content_category = value
+
+    @property
+    def to_print(self):
+        return getattr(self.context, 'to_print', False)
+
+    @property
+    def confidential(self):
+        return getattr(self.context, 'confidential', False)
