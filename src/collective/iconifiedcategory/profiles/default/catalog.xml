@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_catalog">
+
+    <column value="content_category"/>
+    <index name="content_category" meta_type="FieldIndex">
+      <indexed_attr value="content_category"/>
+    </index>
+
+</object>

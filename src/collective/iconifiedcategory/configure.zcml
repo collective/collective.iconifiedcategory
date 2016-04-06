@@ -10,6 +10,7 @@
   <include package="Products.CMFCore" />
   <include package="plone.app.dexterity" />
   <include package="plone.app.contenttypes" />
+  <include package="collective.fontawesome" />
   <include package="collective.z3cform.select2" />
 
   <include package=".browser" />

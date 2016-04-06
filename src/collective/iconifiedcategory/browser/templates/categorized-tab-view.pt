@@ -1,0 +1,9 @@
+<html metal:use-macro="here/main_template/macros/master"
+      i18n:domain="collective.iconifiedcategory">
+  <body>
+    <div metal:fill-slot="main">
+      <h1 i18n:translate="" class="documentFirstHeading">Categorized elements</h1>
+      <div class="content" tal:content="structure view/table_render"></div>
+    </div>
+  </body>
+</html>

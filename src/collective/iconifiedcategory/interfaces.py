@@ -15,3 +15,15 @@ class IIconifiedCategoryConfig(Interface):
 
 class IIconifiedInfos(Interface):
     pass
+
+
+class ICategorizedTable(Interface):
+    pass
+
+
+class ICategorizedPrint(ICategorizedTable):
+    pass
+
+
+class ICategorizedConfidential(ICategorizedTable):
+    pass

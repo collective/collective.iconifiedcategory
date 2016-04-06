@@ -44,6 +44,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'collective.z3cform.select2',
+        'collective.fontawesome',
         'plone.api',
         'plone.app.contenttypes',
         'plone.app.dexterity',
@@ -52,6 +53,7 @@ setup(
         'plone.namedfile',
         'setuptools',
         'z3c.jbot',
+        'z3c.table',
     ],
     extras_require={
         'test': [

@@ -21,3 +21,54 @@ div.tooltipster-content li {
     display: block;
     margin: 0.2em 0;
 }
+
+#content table.iconified-listing {
+    width: 100%;
+}
+
+#content table.iconified-listing td.iconified-icon {
+    text-align: center;
+    width: 2em;
+}
+
+#content table.iconified-listing td.iconified-print,
+#content table.iconified-listing td.iconified-confidential {
+    width: 10em;
+}
+
+#content .iconified-listing td.iconified-print a,
+#content .iconified-listing td.iconified-confidential a {
+    font-family: 'FontAwesome';
+}
+
+#content .iconified-listing td.iconified-print a,
+#content .iconified-listing td.iconified-confidential a.active {
+    color: #EA0000;
+}
+
+#content .iconified-listing td.iconified-print a.active,
+#content .iconified-listing td.iconified-confidential a {
+    color: #75ad0a;
+}
+
+#content .iconified-listing td.iconified-print a.active:hover,
+#content .iconified-listing td.iconified-confidential a:hover {
+    color: #0B8400!important;
+}
+
+#content .iconified-listing td.iconified-print a:hover,
+#content .iconified-listing td.iconified-confidential a.active:hover {
+    color: #B50000!important;
+}
+
+#content .iconified-listing td.iconified-print a:before {
+    content: "\f02f";
+}
+
+#content .iconified-listing td.iconified-confidential a:before {
+    content: "\f09c";
+}
+
+#content .iconified-listing td.iconified-confidential a.active:before {
+    content: "\f023";
+}

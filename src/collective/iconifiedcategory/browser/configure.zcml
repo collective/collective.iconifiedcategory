@@ -62,4 +62,50 @@
     permission="zope2.View"
     />
 
+  <!-- Tab view -->
+  <browser:page
+    for="*"
+    name="iconifiedcategory"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".tabview.CategorizedTabView"
+    permission="zope2.View"
+    template="templates/categorized-tab-view.pt"
+    />
+
+  <adapter
+    name="title-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedTable"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.TitleColumn"
+    />
+
+  <adapter
+    name="icon-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedTable"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.IconColumn"
+    />
+
+  <adapter
+    name="print-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedPrint"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.PrintColumn"
+    />
+
+  <adapter
+    name="confidential-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedConfidential"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.ConfidentialColumn"
+    />
+
 </configure>
