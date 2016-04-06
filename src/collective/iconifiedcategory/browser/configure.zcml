@@ -62,6 +62,22 @@
     permission="zope2.View"
     />
 
+  <browser:page
+    name="iconified-print"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".actionview.ToPrintChangeView"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    name="iconified-confidential"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".actionview.ConfidentialChangeView"
+    permission="zope2.View"
+    />
+
   <!-- Tab view -->
   <browser:page
     for="*"

@@ -12,6 +12,7 @@
   <include package="plone.app.contenttypes" />
   <include package="collective.fontawesome" />
   <include package="collective.z3cform.select2" />
+  <include package="z3c.json" />
 
   <include package=".browser" />
   <include package=".content" />

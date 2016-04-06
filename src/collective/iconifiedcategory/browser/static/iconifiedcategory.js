@@ -20,4 +20,17 @@ jQuery(document).ready(function($) {
     theme: 'tooltipster-light',
   });
 
+  $('a.iconified-action').click(function() {
+    var obj = $(this);
+    var values = {'iconified-value': !obj.hasClass('active')};
+    $.getJSON(
+      obj.attr('href'),
+      values,
+      function(data) {
+        obj.toggleClass('active');
+      }
+    );
+    return false;
+  });
+
 });
