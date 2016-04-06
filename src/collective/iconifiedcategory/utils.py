@@ -119,3 +119,23 @@ def has_relations(obj):
             for relation in get_back_references(subcategory):
                 return True
     return False
+
+
+def calculate_filesize(size):
+    unit = 'B'
+    factor = 1
+    sizes = {
+        1024. * 1024 * 1024 * 1024: 'TB',
+        1024. * 1024 * 1024: 'GB',
+        1024. * 1024: 'MB',
+        1024.: 'KB',
+    }
+    for s, u in sizes.items():
+        if size > s:
+            unit = u
+            factor = s
+            break
+    size = round(size / factor, 1)
+    if unit in ('B', 'KB'):
+        size = int(size)
+    return '{0} {1}'.format(size, unit)

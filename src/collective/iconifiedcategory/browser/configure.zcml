@@ -98,12 +98,48 @@
     />
 
   <adapter
-    name="icon-column"
+    name="category-column"
     for="zope.interface.Interface
          zope.interface.Interface
          collective.iconifiedcategory.interfaces.ICategorizedTable"
     provides="z3c.table.interfaces.IColumn"
-    factory=".tabview.IconColumn"
+    factory=".tabview.CategoryColumn"
+    />
+
+  <adapter
+    name="author-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedTable"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.AuthorColumn"
+    />
+
+  <adapter
+    name="creation-date-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedTable"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.CreationDateColumn"
+    />
+
+  <adapter
+    name="last-modification-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedTable"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.LastModificationColumn"
+    />
+
+  <adapter
+    name="filesize-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedTable"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.FilesizeColumn"
     />
 
   <adapter

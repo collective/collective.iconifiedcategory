@@ -15,6 +15,7 @@ from zope.interface import implements
 from zope.interface import alsoProvides
 
 from collective.iconifiedcategory import _
+from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedTable
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
@@ -69,29 +70,69 @@ class CategorizedTable(Table):
         return super(CategorizedTable, self).render()
 
 
-class IconColumn(column.GetAttrColumn):
-    header = u''
-    cssClasses = {'td': 'iconified-icon'}
-    weight = 10
-
-    def renderCell(self, obj):
-        return u'<img src="{0}" alt="{1}" title="{1}" />'.format(
-            obj.icon_url,
-            obj.category_title,
-        )
-
-
 class TitleColumn(column.GetAttrColumn):
     header = _(u'Title')
-    cssClasses = {'td': ''}
     weight = 20
     attrName = 'title'
 
     def renderCell(self, obj):
-        return u'<a href="{0}" alt="{1}" title="{1}">{1}</a>'.format(
-            obj.absolute_url,
-            getattr(obj, self.attrName),
+        content = (u'<a href="{link}" alt="{title}" title="{title}">'
+                   u'<img src="{icon}" alt="{category}" title="{category}" />'
+                   u' {title}</a>')
+        return content.format(
+            link=obj.absolute_url,
+            title=getattr(obj, self.attrName),
+            icon=obj.icon_url,
+            category=obj.category_title,
         )
+
+
+class CategoryColumn(column.GetAttrColumn):
+    header = _(u'Category')
+    weight = 30
+    attrName = 'category_title'
+
+
+class AuthorColumn(column.GetAttrColumn):
+    header = _(u'Author')
+    weight = 40
+
+    def renderCell(self, obj):
+        return obj.creators[0]
+
+
+class CreationDateColumn(column.GetAttrColumn):
+    header = _(u'Creation date')
+    weight = 50
+
+    def renderCell(self, obj):
+        return api.portal.get_localized_time(
+            datetime=obj.creation_date,
+            long_format=True,
+        )
+
+
+class LastModificationColumn(column.GetAttrColumn):
+    header = _(u'Last modification')
+    weight = 60
+
+    def renderCell(self, obj):
+        if obj.creation_date == obj.modification_date:
+            return ''
+        return api.portal.get_localized_time(
+            datetime=obj.modification_date,
+            long_format=True,
+        )
+
+
+class FilesizeColumn(column.GetAttrColumn):
+    header = _(u'Filesize')
+    weight = 70
+
+    def renderCell(self, obj):
+        if getattr(obj, 'filesize', None) is None:
+            return ''
+        return utils.calculate_filesize(obj.filesize)
 
 
 class IconClickableColumn(column.GetAttrColumn):
@@ -114,7 +155,7 @@ class IconClickableColumn(column.GetAttrColumn):
 class PrintColumn(IconClickableColumn):
     header = _(u'To be printed')
     cssClasses = {'td': 'iconified-print'}
-    weight = 30
+    weight = 80
     attrName = 'to_print'
     action_view = 'iconified-print'
 
@@ -122,6 +163,6 @@ class PrintColumn(IconClickableColumn):
 class ConfidentialColumn(IconClickableColumn):
     header = _(u'Confidential')
     cssClasses = {'td': 'iconified-confidential'}
-    weight = 40
+    weight = 90
     attrName = 'confidential'
     action_view = 'iconified-confidential'

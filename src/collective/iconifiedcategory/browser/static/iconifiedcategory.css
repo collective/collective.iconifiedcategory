@@ -26,16 +26,6 @@ div.tooltipster-content li {
     width: 100%;
 }
 
-#content table.iconified-listing td.iconified-icon {
-    text-align: center;
-    width: 2em;
-}
-
-#content table.iconified-listing td.iconified-print,
-#content table.iconified-listing td.iconified-confidential {
-    width: 10em;
-}
-
 #content .iconified-listing td.iconified-print a,
 #content .iconified-listing td.iconified-confidential a {
     font-family: 'FontAwesome';
