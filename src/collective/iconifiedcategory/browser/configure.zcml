@@ -124,4 +124,22 @@
     factory=".tabview.ConfidentialColumn"
     />
 
+  <!-- subtype views -->
+  <browser:page
+    name="iconified_subtyper"
+    for="*"
+    class=".subtyper.IconifiedCategoryPublicSubtyper"
+    permission="zope.Public"
+    allowed_interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySubtyper"
+    />
+
+  <browser:page
+    name="iconified_subtyper"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".subtyper.IconifiedCategorySubtyper"
+    permission="zope.Public"
+    allowed_interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySubtyper"
+    />
+
 </configure>

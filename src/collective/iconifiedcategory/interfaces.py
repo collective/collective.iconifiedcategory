@@ -3,6 +3,7 @@
 
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from zope import schema
 
 
 class ICollectiveIconifiedCategoryLayer(IDefaultBrowserLayer):
@@ -27,3 +28,11 @@ class ICategorizedPrint(ICategorizedTable):
 
 class ICategorizedConfidential(ICategorizedTable):
     pass
+
+
+class IIconifiedCategorySubtyper(Interface):
+
+    have_categorized_elements = schema.Bool(
+        u'Is current object contains categorized elements',
+        readonly=True,
+    )
