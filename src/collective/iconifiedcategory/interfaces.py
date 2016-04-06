@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """Module where all interfaces, events and exceptions live."""
 
+from zope import schema
+from zope.component.interfaces import IObjectEvent
+from zope.interface import Attribute
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope import schema
 
 
 class ICollectiveIconifiedCategoryLayer(IDefaultBrowserLayer):
@@ -15,6 +17,10 @@ class IIconifiedCategoryConfig(Interface):
 
 
 class IIconifiedInfos(Interface):
+    pass
+
+
+class IIconifiedPrintable(Interface):
     pass
 
 
@@ -36,3 +42,19 @@ class IIconifiedCategorySubtyper(Interface):
         u'Is current object contains categorized elements',
         readonly=True,
     )
+
+
+# Events
+
+class IIconifiedChangedEvent(IObjectEvent):
+
+    old_value = Attribute("The old value")
+    new_value = Attribute("The new value")
+
+
+class IIconifiedPrintChangedEvent(IIconifiedChangedEvent):
+    pass
+
+
+class IIconifiedConfidentialChangedEvent(IIconifiedChangedEvent):
+    pass

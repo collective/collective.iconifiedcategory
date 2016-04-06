@@ -9,4 +9,10 @@
     factory=".adapter.CategorizedObjectInfoAdapter"
     />
 
+  <adapter
+    for="*"
+    provides=".interfaces.IIconifiedPrintable"
+    factory=".adapter.CategorizedObjectPrintableAdapter"
+    />
+
 </configure>

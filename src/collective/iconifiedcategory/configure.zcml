@@ -20,6 +20,7 @@
   <include package=".widget" />
 
   <include file="adapter.zcml" />
+  <include file="subscriber.zcml" />
 
   <genericsetup:registerProfile
       name="default"
@@ -62,13 +63,6 @@
     provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.category_titles"
     factory=".vocabularies.CategoryTitleVocabulary"
-    />
-
-  <!-- indexes -->
-
-  <adapter
-    factory=".indexer.categories_elements"
-    name="categories_elements"
     />
 
 </configure>

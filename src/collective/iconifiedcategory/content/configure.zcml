@@ -24,7 +24,7 @@
 
   <subscriber
     for="zope.lifecycleevent.interfaces.IObjectAddedEvent"
-    handler=".events.categorized_content_updated"
+    handler=".events.categorized_content_created"
     />
 
   <subscriber

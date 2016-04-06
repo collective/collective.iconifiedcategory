@@ -22,12 +22,22 @@ jQuery(document).ready(function($) {
 
   $('a.iconified-action').click(function() {
     var obj = $(this);
+    if (obj.hasClass('deactivated')) {
+      return false;
+    }
     var values = {'iconified-value': !obj.hasClass('active')};
     $.getJSON(
       obj.attr('href'),
       values,
       function(data) {
-        obj.toggleClass('active');
+        if (data['status'] == 0) {
+          obj.toggleClass('active');
+          obj.removeClass('error');
+        } else {
+          obj.addClass('error');
+        }
+        obj.attr('alt', data['msg']);
+        obj.attr('title', data['msg']);
       }
     );
     return false;

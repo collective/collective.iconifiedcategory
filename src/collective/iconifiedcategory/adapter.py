@@ -7,9 +7,11 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from collective.iconifiedcategory import utils
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
+from plone.app.contenttypes.interfaces import ILink
+
+from collective.iconifiedcategory import utils
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -42,3 +44,43 @@ class CategorizedObjectInfoAdapter(object):
             return self.context.file.size
         if IImage.providedBy(self.context):
             return self.context.image.size
+
+
+class CategorizedObjectPrintableAdapter(object):
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def is_printable(self):
+        if ILink.providedBy(self.context):
+            return False
+        if IFile.providedBy(self.context):
+            return self.verify_mimetype(self.context.file)
+        if IImage.providedBy(self.context):
+            return True
+        return True
+
+    def verify_mimetype(self, file):
+        extra_mimetypes = (
+            'application/pdf',
+            'application/plain',
+            'application/msword',
+            'application/excel',
+        )
+        mimetype = file.contentType
+        if mimetype.split('/')[0] in ('image', 'text'):
+            return True
+        if file.contentType in extra_mimetypes:
+            return True
+        return False
+
+    @property
+    def error_message(self):
+        return u'Can not be printed'
+
+    def update_object(self):
+        self.context.to_print_message = None
+        if self.is_printable is False:
+            self.context.to_print = None
+            self.context.to_print_message = self.error_message

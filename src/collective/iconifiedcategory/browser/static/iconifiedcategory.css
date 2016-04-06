@@ -51,6 +51,26 @@ div.tooltipster-content li {
     color: #B50000!important;
 }
 
+#content .iconified-listing td.iconified-print a.deactivated,
+#content .iconified-listing td.iconified-confidential a.deactivated {
+    color: #999;
+}
+
+#content .iconified-listing td.iconified-print a.deactivated:hover,
+#content .iconified-listing td.iconified-confidential a.deactivated:hover {
+    color: #666!important;
+}
+
+#content .iconified-listing td.iconified-print a.error,
+#content .iconified-listing td.iconified-confidential a.error {
+    color: #E58200;
+}
+
+#content .iconified-listing td.iconified-print a.error:hover,
+#content .iconified-listing td.iconified-confidential a.error:hover {
+    color: #C97200!important;
+}
+
 #content .iconified-listing td.iconified-print a:before {
     content: "\f02f";
 }

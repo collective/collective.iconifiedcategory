@@ -39,7 +39,7 @@ def get_categories_config(context):
             portal_type='ContentCategoryConfiguration',
         )
         if not result:
-            raise ValueError('Categories config is missing')
+            raise ValueError('Categories config cannot be found')
         config_root = result[0].getObject()
     return config_root
 
@@ -139,3 +139,21 @@ def calculate_filesize(size):
     if unit in ('B', 'KB'):
         size = int(size)
     return '{0} {1}'.format(size, unit)
+
+
+def print_message(obj):
+    """Return the print status message for the given object"""
+    messages = {
+        True: u'Must be printed',
+        False: u'Should not be printed',
+    }
+    return messages.get(obj.to_print, getattr(obj, 'to_print_message', ''))
+
+
+def confidential_message(obj):
+    """Return the confidential status message for the given object"""
+    messages = {
+        True: u'Confidential',
+        False: u'Not confidential',
+    }
+    return messages.get(obj.confidential, '')

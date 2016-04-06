@@ -12,6 +12,7 @@ from z3c.relationfield import RelationValue
 from z3c.relationfield.event import _setRelation
 from zExceptions import Redirect
 from zope.component import getUtility
+from zope.event import notify
 from zope.intid.interfaces import IIntIds
 from zc.relation.interfaces import ICatalog
 
@@ -19,6 +20,23 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
+from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
+
+
+def categorized_content_created(event):
+    if hasattr(event.object, 'content_category'):
+        notify(IconifiedPrintChangedEvent(
+            event.object,
+            None,
+            event.object.to_print,
+        ))
+        notify(IconifiedConfidentialChangedEvent(
+            event.object,
+            None,
+            event.object.confidential,
+        ))
+        categorized_content_updated(event)
 
 
 def categorized_content_updated(event):
@@ -31,6 +49,12 @@ def categorized_content_updated(event):
         utils.update_categorized_elements(obj.aq_parent, obj, target)
         obj.related_category = relation
         _setRelation(obj, 'related_category', relation)
+        if hasattr(obj, 'to_print'):
+            notify(IconifiedPrintChangedEvent(
+                obj,
+                obj.to_print,
+                obj.to_print,
+            ))
 
 
 def categorized_content_removed(event):
