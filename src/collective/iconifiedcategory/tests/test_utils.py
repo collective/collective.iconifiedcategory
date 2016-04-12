@@ -4,11 +4,9 @@ collective.iconifiedcategory
 ----------------------------
 
 Created by mpeeters
-:copyright: (c) 2015 by Affinitic SPRL
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from collective.iconifiedcategory import testing
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
@@ -17,6 +15,9 @@ from zExceptions import Redirect
 
 import os
 import unittest
+
+from collective.iconifiedcategory import testing
+from collective.iconifiedcategory import utils
 
 
 class TestUtils(unittest.TestCase):
@@ -63,6 +64,8 @@ class TestUtils(unittest.TestCase):
             title='doc-category-remove',
             container=self.portal,
             content_category='config_-_group-1_-_category-x',
+            to_print=False,
+            confidential=False,
         )
         self.assertRaises(Redirect, api.content.delete, category)
         api.content.delete(document)
@@ -90,6 +93,8 @@ class TestUtils(unittest.TestCase):
             title='doc-category-remove-2',
             container=self.portal,
             content_category='config_-_group-1_-_category-x_-_subcategory-x',
+            to_print=False,
+            confidential=False,
         )
         self.assertRaises(Redirect, api.content.delete, category)
         api.content.delete(document)
@@ -116,6 +121,8 @@ class TestUtils(unittest.TestCase):
             title='doc-subcategory-remove',
             container=self.portal,
             content_category='config_-_group-1_-_category-x_-_subcategory-x',
+            to_print=False,
+            confidential=False,
         )
         self.assertRaises(Redirect, api.content.delete, subcategory)
         api.content.delete(document)
@@ -137,6 +144,8 @@ class TestUtils(unittest.TestCase):
             title='doc-category-move-1',
             container=self.portal,
             content_category='config_-_group-1_-_category-x',
+            to_print=False,
+            confidential=False,
         )
         self.assertRaises(Redirect, api.content.move, category,
                           self.config['group-2'])
@@ -166,6 +175,8 @@ class TestUtils(unittest.TestCase):
             title='doc-category-move-2',
             container=self.portal,
             content_category='config_-_group-1_-_category-x_-_subcategory-x',
+            to_print=False,
+            confidential=False,
         )
         new_folder = self.config['group-1']
         self.assertRaises(Redirect, api.content.move, category, new_folder)
@@ -194,6 +205,8 @@ class TestUtils(unittest.TestCase):
             title='doc-subcategory-move',
             container=self.portal,
             content_category='config_-_group-1_-_category-x_-_subcategory-x',
+            to_print=False,
+            confidential=False,
         )
         new_folder = self.config['group-1']['category-1-1']
         self.assertRaises(Redirect, api.content.move, subcategory, new_folder)
@@ -201,3 +214,34 @@ class TestUtils(unittest.TestCase):
         subcategory = api.content.move(subcategory, new_folder)
         api.content.delete(subcategory)
         api.content.delete(category)
+
+    def test_calculate_filesize(self):
+        self.assertEqual('100 B', utils.calculate_filesize(100))
+        self.assertEqual('1 KB', utils.calculate_filesize(1024))
+        self.assertEqual('1.1 MB', utils.calculate_filesize(1150976))
+        self.assertEqual('15.5 MB', utils.calculate_filesize(16252928))
+
+    def test_print_message(self):
+        obj = type('obj', (object, ), {
+            'to_print': False,
+        })()
+        self.assertEqual(u'Should not be printed', utils.print_message(obj))
+
+        obj.to_print = True
+        self.assertEqual(u'Must be printed', utils.print_message(obj))
+
+        obj.to_print = None
+        self.assertEqual(u'', utils.print_message(obj))
+
+        obj.to_print_message = u'foo'
+        self.assertEqual(u'foo', utils.print_message(obj))
+
+    def test_confidential_message(self):
+        obj = type('obj', (object, ), {})()
+        self.assertEqual(u'', utils.confidential_message(obj))
+
+        obj.confidential = True
+        self.assertEqual(u'Confidential', utils.confidential_message(obj))
+
+        obj.confidential = False
+        self.assertEqual(u'Not confidential', utils.confidential_message(obj))

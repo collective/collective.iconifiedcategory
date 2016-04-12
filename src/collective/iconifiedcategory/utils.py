@@ -142,7 +142,7 @@ def calculate_filesize(size):
         1024.: 'KB',
     }
     for s, u in sizes.items():
-        if size > s:
+        if size >= s:
             unit = u
             factor = s
             break
@@ -167,4 +167,4 @@ def confidential_message(obj):
         True: u'Confidential',
         False: u'Not confidential',
     }
-    return messages.get(obj.confidential, '')
+    return messages.get(getattr(obj, 'confidential', None), '')
