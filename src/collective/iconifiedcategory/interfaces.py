@@ -16,6 +16,10 @@ class IIconifiedCategoryConfig(Interface):
     pass
 
 
+class IIconifiedCategoryGroup(Interface):
+    pass
+
+
 class IIconifiedInfos(Interface):
     pass
 

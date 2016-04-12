@@ -10,15 +10,17 @@ Created by mpeeters
 from Acquisition import aq_inner
 from plone import api
 from zc.relation.interfaces import ICatalog
-from zope.component import queryUtility
-from zope.component import queryAdapter
 from zope.component import getAdapter
+from zope.component import queryAdapter
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
 from zope.intid.interfaces import IIntIds
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
+from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 
 
@@ -30,9 +32,10 @@ def format_id_css(id):
     return id.replace(CAT_SEPARATOR, CSS_SEPARATOR)
 
 
-def get_categories_config(context):
+def get_config_root(context):
     """Return the categories config root for the given context"""
-    config_root = queryAdapter(IIconifiedCategoryConfig, context)
+    adapter = queryAdapter(IIconifiedCategoryConfig, context)
+    config_root = adapter and adapter.get_config() or None
     if not config_root and context is not None:
         result = api.content.find(
             context=api.portal.get_navigation_root(context),
@@ -41,12 +44,20 @@ def get_categories_config(context):
         if not result:
             raise ValueError('Categories config cannot be found')
         config_root = result[0].getObject()
-    return config_root
+    return get_group(config_root, context)
+
+
+def get_group(config, context):
+    """Return the associated groups for the given context"""
+    adapter = queryMultiAdapter((config, context), IIconifiedCategoryGroup)
+    if adapter:
+        return adapter.get_group()
+    return config
 
 
 def get_categories(context):
     """Return the categories brains for a specific context"""
-    config_root = get_categories_config(context)
+    config_root = get_config_root(context)
     return api.content.find(
         context=config_root,
         portal_type='ContentCategory',
@@ -64,7 +75,7 @@ def calculate_category_id(category):
 
 
 def get_category_object(context, category_id):
-    obj = get_categories_config(context)
+    obj = get_config_root(context)
     for path in category_id.split(CAT_SEPARATOR)[1:]:
         obj = obj[path]
     return obj
