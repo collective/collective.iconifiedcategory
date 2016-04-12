@@ -1,0 +1,114 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2016-04-12 11:26+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.iconifiedcategory\n"
+
+#: ../content/categorygroup.py:22
+msgid "Activate the \"confidential\" option"
+msgstr ""
+
+#: ../content/categorygroup.py:28
+msgid "Activate the \"to be printed\" option"
+msgstr ""
+
+#: ../browser/tabview.py:98
+msgid "Author"
+msgstr ""
+
+msgid "Can not be printed"
+msgstr ""
+
+#: ../browser/templates/categorized-child-viewlet.pt:9
+#: ../browser/templates/categorized-tab-view.pt:5
+#: ../profiles/default/actions.xml
+msgid "Categorized elements"
+msgstr ""
+
+#: ../behaviors/iconifiedcategorization.py:32
+#: ../browser/tabview.py:92
+#: ../profiles/default/types/ContentCategory.xml
+msgid "Category"
+msgstr ""
+
+#: ../profiles/default/types/ContentCategoryConfiguration.xml
+msgid "CategoryConfiguration"
+msgstr ""
+
+#: ../profiles/default/types/ContentCategoryGroup.xml
+msgid "CategoryGroup"
+msgstr ""
+
+#: ../browser/tabview.py:184
+#: ../content/base.py:29
+msgid "Confidential"
+msgstr ""
+
+#: ../browser/tabview.py:106
+msgid "Creation date"
+msgstr ""
+
+#: ../behaviors/iconifiedcategorization.py:42
+msgid "Default title"
+msgstr ""
+
+#: ../browser/tabview.py:130
+msgid "Filesize"
+msgstr ""
+
+#: ../content/category.py:25
+msgid "Icon"
+msgstr ""
+
+#: ../browser/tabview.py:117
+msgid "Last modification"
+msgstr ""
+
+msgid "Must be printed"
+msgstr ""
+
+msgid "Not confidential"
+msgstr ""
+
+#: ../content/base.py:24
+msgid "Predefined title"
+msgstr ""
+
+msgid "Should not be printed"
+msgstr ""
+
+#: ../profiles/default/types/ContentSubcategory.xml
+msgid "Subcategory"
+msgstr ""
+
+#: ../content/events.py:73
+msgid "This category or one of is subcategory are used by another object and cannot be deleted"
+msgstr ""
+
+#: ../content/events.py:84
+msgid "This subcategory is used by another object and cannot be deleted"
+msgstr ""
+
+#: ../browser/tabview.py:75
+#: ../content/base.py:19
+msgid "Title"
+msgstr ""
+
+#: ../browser/tabview.py:169
+#: ../content/base.py:35
+msgid "To be printed"
+msgstr ""
+
