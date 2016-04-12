@@ -41,7 +41,7 @@ class BaseView(BrowserView):
             if msg:
                 values['msg'] = self._translate(msg)
             notify(ObjectModifiedEvent(self.context))
-        except:
+        except Exception:
             values['status'] = 1
             values['msg'] = self._translate('Error during process')
         return writer.write(values)
