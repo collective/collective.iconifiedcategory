@@ -39,11 +39,13 @@ def create_config(context):
             filename = u'icon{0}.png'.format(cat_idx)
             f = open(os.path.join(current_path, 'tests', filename), 'r')
             icon = namedfile.NamedBlobFile(f.read(), filename=filename)
+            title = 'Category {0}-{1}'.format(group_idx + 1, cat_idx)
             category = api.content.create(
                 type='ContentCategory',
-                title='Category {0}-{1}'.format(group_idx + 1, cat_idx),
+                title=title,
                 container=group,
                 icon=icon,
+                predefined_title=title,
             )
             for idx in range(1, 3):
                 api.content.create(
