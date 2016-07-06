@@ -8,7 +8,7 @@ Created by mpeeters
 """
 
 from Acquisition import aq_inner
-from plone import api
+from Products.CMFCore.utils import getToolByName
 from zc.relation.interfaces import ICatalog
 from zope.component import getAdapter
 from zope.component import queryAdapter
@@ -37,13 +37,14 @@ def get_config_root(context):
     adapter = queryAdapter(IIconifiedCategoryConfig, context)
     config_root = adapter and adapter.get_config() or None
     if not config_root and context is not None:
-        result = api.content.find(
-            context=api.portal.get_navigation_root(context),
-            portal_type='ContentCategoryConfiguration',
-        )
+        catalog = getToolByName(context, 'portal_catalog')
+        query = {
+            'portal_type': 'ContentCategoryConfiguration',
+        }
+        result = catalog.unrestrictedSearchResults(query)
         if not result:
             raise ValueError('Categories config cannot be found')
-        config_root = result[0].getObject()
+        config_root = result[0]._unrestrictedGetObject()
     return get_group(config_root, context)
 
 
@@ -58,11 +59,13 @@ def get_group(config, context):
 def get_categories(context):
     """Return the categories brains for a specific context"""
     config_root = get_config_root(context)
-    return api.content.find(
-        context=config_root,
-        portal_type='ContentCategory',
-        sort_on='sortable_title',
-    )
+    catalog = getToolByName(config_root, 'portal_catalog')
+    query = {
+        'portal_type': 'ContentCategory',
+        'sort_on': 'sortable_title',
+        'path': '/'.join(config_root.getPhysicalPath()),
+    }
+    return catalog.unrestrictedSearchResults(query)
 
 
 def calculate_category_id(category):

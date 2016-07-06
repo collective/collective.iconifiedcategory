@@ -23,7 +23,7 @@ class IconifiedCategory(BrowserView):
                "transparent url('{1}') no-repeat top left; }}")
         categories = utils.get_categories(self.context)
         for category in categories:
-            obj = category.getObject()
+            obj = category._unrestrictedGetObject()
             category_id = utils.calculate_category_id(obj)
             url = '{0}/@@download/icon/{1}'.format(
                 obj.absolute_url(),
