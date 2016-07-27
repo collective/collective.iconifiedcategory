@@ -40,7 +40,7 @@
 
   <genericsetup:registerProfile
       name="testing"
-      title="collective.iconifiedcategory"
+      title="collective.iconifiedcategory (testing)"
       directory="profiles/testing"
       description="Installs the collective.iconifiedcategory testing profile."
       provides="Products.GenericSetup.interfaces.EXTENSION"
