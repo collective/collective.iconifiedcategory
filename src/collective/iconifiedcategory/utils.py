@@ -32,8 +32,8 @@ def format_id_css(id):
     return id.replace(CAT_SEPARATOR, CSS_SEPARATOR)
 
 
-def get_config_root(context):
-    """Return the categories config root for the given context"""
+def query_config_root(context):
+    """Try to get the categories config root for the given context"""
     adapter = queryAdapter(IIconifiedCategoryConfig, context)
     config_root = adapter and adapter.get_config() or None
     if not config_root and context is not None:
@@ -43,8 +43,21 @@ def get_config_root(context):
         }
         result = catalog.unrestrictedSearchResults(query)
         if not result:
-            raise ValueError('Categories config cannot be found')
+            return
         config_root = result[0]._unrestrictedGetObject()
+    return config_root
+
+
+def has_config_root(context):
+    """Verify if there is a config root for the given context"""
+    return query_config_root(context) is not None
+
+
+def get_config_root(context):
+    """Return the categories config root for the given context"""
+    config_root = query_config_root(context)
+    if not config_root:
+        raise ValueError('Categories config cannot be found')
     return get_group(config_root, context)
 
 

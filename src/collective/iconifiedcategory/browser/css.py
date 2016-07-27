@@ -21,6 +21,8 @@ class IconifiedCategory(BrowserView):
         content = []
         css = (".{0} {{ padding-left: 1.4em; background: "
                "transparent url('{1}') no-repeat top left; }}")
+        if utils.has_config_root(self.context) is False:
+            return ''
         categories = utils.get_categories(self.context)
         for category in categories:
             obj = category._unrestrictedGetObject()

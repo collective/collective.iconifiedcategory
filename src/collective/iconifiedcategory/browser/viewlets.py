@@ -24,9 +24,13 @@ class CategorizedChildViewlet(base.ViewletBase):
         return ('categorized_elements' in self.context.__dict__ and
                 len(self.categorized_elements) > 0)
 
+    @property
+    def _categorized_elements(self):
+        return getattr(self.context, 'categorized_elements', {})
+
     def get_categorized_elements(self):
         elements = []
-        for uid, element in self.context.categorized_elements.items():
+        for uid, element in self._categorized_elements.items():
             brain = api.content.find(context=self.context, UID=uid)
             if not brain:
                 continue
