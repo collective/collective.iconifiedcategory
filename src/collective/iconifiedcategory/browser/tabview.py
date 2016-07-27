@@ -35,8 +35,8 @@ class CategorizedTabView(BrowserView):
 class CategorizedContent(object):
 
     def __init__(self, brain, context):
-        self._obj = brain.getObject()
-        self._metadata = context.categorized_elements.get(self._obj.UID())
+        self._obj = brain
+        self._metadata = context.categorized_elements.get(brain.UID)
 
     def __getattr__(self, key):
         if key in self._metadata:
@@ -99,7 +99,7 @@ class AuthorColumn(column.GetAttrColumn):
     weight = 40
 
     def renderCell(self, obj):
-        return obj.creators[0]
+        return obj.Creator
 
 
 class CreationDateColumn(column.GetAttrColumn):
