@@ -20,6 +20,10 @@ class IIconifiedCategoryGroup(Interface):
     pass
 
 
+class IIconifiedContent(Interface):
+    pass
+
+
 class IIconifiedInfos(Interface):
     pass
 

@@ -7,20 +7,34 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from plone import api
 from plone.app.layout.viewlets import common as base
+from zope.component import getMultiAdapter
+
+from collective.iconifiedcategory.interfaces import IIconifiedContent
 
 
 class CategorizedChildViewlet(base.ViewletBase):
 
-    def can_view(self):
-        return 'categorized_elements' in self.context.__dict__
+    def update(self):
+        super(CategorizedChildViewlet, self).update()
+        self.categorized_elements = self.get_categorized_elements()
 
-    @property
-    def categorized_elements(self):
-        return sorted(
-            self.context.categorized_elements.values(),
-            key=lambda x: x['category_title'],
-        )
+    def can_view(self):
+        return ('categorized_elements' in self.context.__dict__ and
+                len(self.categorized_elements) > 0)
+
+    def get_categorized_elements(self):
+        elements = []
+        for uid, element in self.context.categorized_elements.items():
+            brain = api.content.find(context=self.context, UID=uid)
+            if not brain:
+                continue
+            adapter = getMultiAdapter((brain[0], self.request),
+                                      IIconifiedContent)
+            if adapter.can_view() is True:
+                elements.append(element)
+        return sorted(elements, key=lambda x: x['category_title'])
 
     def categories_infos(self):
         infos = {e['category_uid']: {'id': e['category_id'],

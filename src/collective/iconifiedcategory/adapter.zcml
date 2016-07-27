@@ -15,4 +15,11 @@
     factory=".adapter.CategorizedObjectPrintableAdapter"
     />
 
+  <adapter
+    for="zope.interface.Interface
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    provides=".interfaces.IIconifiedContent"
+    factory=".adapter.CategorizedObjectAdapter"
+    />
+
 </configure>

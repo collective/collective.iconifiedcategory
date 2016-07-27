@@ -8,6 +8,7 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
+from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
@@ -95,3 +96,13 @@ class CategorizedObjectPrintableAdapter(object):
         if self.is_printable is False:
             self.context.to_print = None
             self.context.to_print_message = self.error_message
+
+
+class CategorizedObjectAdapter(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def can_view(self):
+        return api.user.has_permission('View', obj=self.context)
