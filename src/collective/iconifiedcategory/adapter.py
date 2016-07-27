@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from Acquisition import aq_base
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
@@ -17,7 +18,7 @@ from collective.iconifiedcategory import utils
 class CategorizedObjectInfoAdapter(object):
 
     def __init__(self, context):
-        self.context = context
+        self.context = aq_base(context)
 
     def get_infos(self, category):
         return {
@@ -30,6 +31,8 @@ class CategorizedObjectInfoAdapter(object):
             'icon_url': utils.get_category_icon_url(category),
             'portal_type': self.context.portal_type,
             'filesize': self._filesize,
+            'to_print': self._to_print,
+            'confidential': self._confidential,
         }
 
     @property
@@ -44,6 +47,14 @@ class CategorizedObjectInfoAdapter(object):
             return self.context.file.size
         if IImage.providedBy(self.context):
             return self.context.image.size
+
+    @property
+    def _to_print(self):
+        return getattr(self.context, 'to_print', False)
+
+    @property
+    def _confidential(self):
+        return getattr(self.context, 'confidential', False)
 
 
 class CategorizedObjectPrintableAdapter(object):

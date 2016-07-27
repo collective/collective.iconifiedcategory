@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from Acquisition import aq_base
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityContent
@@ -67,8 +68,8 @@ class IconifiedCategorization(object):
 
     @property
     def to_print(self):
-        return getattr(self.context, 'to_print', False)
+        return getattr(aq_base(self.context), 'to_print', False)
 
     @property
     def confidential(self):
-        return getattr(self.context, 'confidential', False)
+        return getattr(aq_base(self.context), 'confidential', False)
