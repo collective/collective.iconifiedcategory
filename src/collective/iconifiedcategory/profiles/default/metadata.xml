@@ -3,6 +3,7 @@
   <version>1000</version>
   <dependencies>
     <dependency>profile-collective.fontawesome:default</dependency>
+    <dependency>profile-collective.js.jqueryui:default</dependency>
     <dependency>profile-collective.z3cform.select2:default</dependency>
     <dependency>profile-plone.app.relationfield:default</dependency>
   </dependencies>

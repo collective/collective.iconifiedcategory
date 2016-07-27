@@ -101,3 +101,7 @@ class ConfidentialChangeView(BaseView):
             values,
         ))
         return 0, utils.confidential_message(self.context)
+
+
+class CustomConfidentialChangeView(BaseView):
+    attribute_name = 'confidential'

@@ -78,7 +78,25 @@
     permission="zope2.View"
     />
 
-  <!-- Tab view -->
+  <browser:page
+    name="iconified-custom-confidential-action"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".actionview.CustomConfidentialChangeView"
+    permission="zope2.View"
+    />
+
+  <!-- Form views -->
+  <browser:page
+    name="iconified-custom-confidential"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".confidential.ConfidentialFormView"
+    template="templates/confidential_form.pt"
+    permission="zope2.View"
+    />
+
+  <!-- Tab views -->
   <browser:page
     for="*"
     name="iconifiedcategory"
@@ -158,6 +176,15 @@
          collective.iconifiedcategory.interfaces.ICategorizedConfidential"
     provides="z3c.table.interfaces.IColumn"
     factory=".tabview.ConfidentialColumn"
+    />
+
+  <adapter
+    name="confidential-custom-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedConfidential"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.CustomConfidentialColumn"
     />
 
   <!-- subtype views -->

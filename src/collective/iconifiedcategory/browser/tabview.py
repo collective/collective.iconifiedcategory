@@ -196,3 +196,12 @@ class ConfidentialColumn(IconClickableColumn):
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
+
+
+class CustomConfidentialColumn(ConfidentialColumn):
+    cssClasses = {'td': 'iconified-confidential iconified-custom-confidential'}
+
+    def get_action_view(self, obj):
+        if getattr(obj, self.attrName, False) is True:
+            return 'iconified-confidential'
+        return 'iconified-custom-confidential'
