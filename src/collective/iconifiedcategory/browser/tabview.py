@@ -82,7 +82,7 @@ class TitleColumn(column.GetAttrColumn):
                    u' {title}</a>')
         return content.format(
             link=obj.absolute_url,
-            title=getattr(obj, self.attrName),
+            title=getattr(obj, self.attrName).decode('utf-8'),
             icon=obj.icon_url,
             category=obj.category_title,
         )
