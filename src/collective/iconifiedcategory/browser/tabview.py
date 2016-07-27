@@ -142,7 +142,11 @@ class IconClickableColumn(column.GetAttrColumn):
     def get_url(self, obj):
         if self.is_deactivated(obj):
             return '#'
-        return '{0}/@@{1}'.format(obj.absolute_url, self.get_action_view(obj))
+        return '{context_url}/{id}/@@{action}'.format(
+            context_url=self.context.absolute_url(),
+            id=obj.id,
+            action=self.get_action_view(obj),
+        )
 
     def get_action_view(self, obj):
         return self.action_view
