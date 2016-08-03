@@ -30,6 +30,7 @@ class CategorizedObjectInfoAdapter(object):
             'category_id': category.category_id,
             'category_title': category.category_title,
             'absolute_url': self.context.absolute_url(),
+            'download_url': self._download_url,
             'icon_url': utils.get_category_icon_url(category),
             'portal_type': self.obj.portal_type,
             'filesize': self._filesize,
@@ -41,6 +42,23 @@ class CategorizedObjectInfoAdapter(object):
     def _category(self):
         """Return the category instead of the subcategory"""
         return '_-_'.join(self.obj.content_category.split('_-_')[:3])
+
+    @property
+    def _download_url(self):
+        """Return the download url (None by default) for the current object"""
+        url = u'{url}/@@download/{field}/{filename}'
+        if IFile.providedBy(self.obj):
+            return url.format(
+                url=self.context.absolute_url(),
+                field='file',
+                filename=self.obj.file.filename,
+            )
+        if IImage.providedBy(self.obj):
+            return url.format(
+                url=self.context.absolute_url(),
+                field='file',
+                filename=self.obj.image.filename,
+            )
 
     @property
     def _filesize(self):
