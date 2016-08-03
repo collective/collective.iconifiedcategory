@@ -17,9 +17,10 @@ from zope.interface import alsoProvides
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
-from collective.iconifiedcategory.interfaces import ICategorizedTable
-from collective.iconifiedcategory.interfaces import ICategorizedPrint
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
+from collective.iconifiedcategory.interfaces import ICategorizedPrint
+from collective.iconifiedcategory.interfaces import ICategorizedTable
+from collective.iconifiedcategory.interfaces import IIconifiedPreview
 
 
 class CategorizedTabView(BrowserView):
@@ -199,3 +200,25 @@ class ConfidentialColumn(IconClickableColumn):
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
+
+
+class ActionColumn(column.GetAttrColumn):
+    header = u''
+    weight = 100
+
+    def renderCell(self, obj):
+        link = u'<a href="{href}"><img src="{src}" alt="{alt}" /></a>'
+        render = []
+        if obj.download_url:
+            render.append(link.format(
+                href=obj.download_url,
+                src=u'{0}/download_icon.png'.format(obj.getURL()),
+                alt=_('Download'),
+            ))
+        if IIconifiedPreview(obj).has_preview is True:
+            render.append(link.format(
+                href=u'{0}/view'.format(obj.getURL()),
+                src=u'{0}/file_icon.png'.format(obj.getURL()),
+                alt=_('View'),
+            ))
+        return u''.join(render)

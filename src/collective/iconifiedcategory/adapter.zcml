@@ -16,6 +16,12 @@
     />
 
   <adapter
+    for="*"
+    provides=".interfaces.IIconifiedPreview"
+    factory=".adapter.CategorizedObjectPreviewAdapter"
+    />
+
+  <adapter
     for="zope.interface.Interface
          zope.publisher.interfaces.browser.IBrowserRequest"
     provides=".interfaces.IIconifiedContent"

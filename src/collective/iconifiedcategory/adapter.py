@@ -13,6 +13,8 @@ from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
 
+import pkg_resources
+
 from collective.iconifiedcategory import utils
 
 
@@ -125,3 +127,24 @@ class CategorizedObjectAdapter(object):
 
     def can_view(self):
         return api.user.has_permission('View', obj=self.context)
+
+
+class CategorizedObjectPreviewAdapter(object):
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def has_preview(self):
+        try:
+            pkg_resources.get_distribution('collective.documentviewer')
+        except pkg_resources.DistributionNotFound:
+            return False
+        else:
+            quick_installer = api.portal.get_tool('portal_quickinstaller')
+            installed_products = quick_installer.listInstalledProducts()
+            for product in installed_products:
+                if product['id'] == 'collective.documentviewer' and \
+                   product['status'] == 'installed':
+                    return True
+            return False

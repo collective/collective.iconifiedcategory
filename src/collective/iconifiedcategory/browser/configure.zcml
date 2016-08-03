@@ -160,6 +160,15 @@
     factory=".tabview.ConfidentialColumn"
     />
 
+  <adapter
+    name="action-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedConfidential"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.ActionColumn"
+    />
+
   <!-- subtype views -->
   <browser:page
     name="iconified_subtyper"

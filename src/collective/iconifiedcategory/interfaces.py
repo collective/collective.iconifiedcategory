@@ -32,6 +32,10 @@ class IIconifiedPrintable(Interface):
     pass
 
 
+class IIconifiedPreview(Interface):
+    pass
+
+
 class ICategorizedTable(Interface):
     pass
 
