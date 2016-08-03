@@ -27,6 +27,7 @@ from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
 class IIconifiedCategorization(Interface):
 
     form.order_before(content_category='title')
+    form.order_before(content_category='IBasic.title')
     form.order_before(content_category='IDublinCore.title')
     form.widget(content_category=SingleSelect2FieldWidget)
     content_category = schema.Choice(
@@ -36,6 +37,7 @@ class IIconifiedCategorization(Interface):
     )
 
     form.order_before(default_titles='title')
+    form.order_before(default_titles='IBasic.title')
     form.order_before(default_titles='IDublinCore.title')
     form.mode(default_titles='hidden')
     form.widget(default_titles=CategoryTitleFieldWidget)
