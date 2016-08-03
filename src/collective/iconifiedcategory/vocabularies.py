@@ -19,7 +19,7 @@ class CategoryVocabulary(object):
         terms = []
         categories = utils.get_categories(context)
         for category in categories:
-            obj = category.getObject()
+            obj = category._unrestrictedGetObject()
             category_id = utils.calculate_category_id(obj)
             terms.append(SimpleVocabulary.createTerm(
                 category_id,
@@ -46,7 +46,7 @@ class CategoryTitleVocabulary(object):
         terms = []
         categories = utils.get_categories(context)
         for category in categories:
-            obj = category.getObject()
+            obj = category._unrestrictedGetObject()
             category_id = utils.calculate_category_id(obj)
             if obj.predefined_title:
                 terms.append(SimpleVocabulary.createTerm(
