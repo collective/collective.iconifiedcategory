@@ -115,6 +115,7 @@ def update_categorized_elements(parent, obj, category):
         parent.categorized_elements = {}
     uid, infos = get_categorized_infos(obj, category)
     parent.categorized_elements[uid] = infos
+    parent._p_changed = True
 
 
 def remove_categorized_element(parent, obj):
