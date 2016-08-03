@@ -19,18 +19,19 @@ from collective.iconifiedcategory import utils
 class CategorizedObjectInfoAdapter(object):
 
     def __init__(self, context):
-        self.context = aq_base(context)
+        self.obj = aq_base(context)
+        self.context = context
 
     def get_infos(self, category):
         return {
-            'title': self.context.Title(),
-            'id': self.context.getId(),
+            'title': self.obj.Title(),
+            'id': self.obj.getId(),
             'category_uid': category.category_uid,
             'category_id': category.category_id,
             'category_title': category.category_title,
             'absolute_url': self.context.absolute_url(),
             'icon_url': utils.get_category_icon_url(category),
-            'portal_type': self.context.portal_type,
+            'portal_type': self.obj.portal_type,
             'filesize': self._filesize,
             'to_print': self._to_print,
             'confidential': self._confidential,
@@ -39,23 +40,23 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _category(self):
         """Return the category instead of the subcategory"""
-        return '_-_'.join(self.context.content_category.split('_-_')[:3])
+        return '_-_'.join(self.obj.content_category.split('_-_')[:3])
 
     @property
     def _filesize(self):
         """Return the filesize if the contenttype is a File or an Image"""
-        if IFile.providedBy(self.context):
-            return self.context.file.size
-        if IImage.providedBy(self.context):
-            return self.context.image.size
+        if IFile.providedBy(self.obj):
+            return self.obj.file.size
+        if IImage.providedBy(self.obj):
+            return self.obj.image.size
 
     @property
     def _to_print(self):
-        return getattr(self.context, 'to_print', False)
+        return getattr(self.obj, 'to_print', False)
 
     @property
     def _confidential(self):
-        return getattr(self.context, 'confidential', False)
+        return getattr(self.obj, 'confidential', False)
 
 
 class CategorizedObjectPrintableAdapter(object):

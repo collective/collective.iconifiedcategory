@@ -36,7 +36,7 @@ class CategorizedContent(object):
 
     def __init__(self, brain, context):
         self._obj = brain
-        self._metadata = context.categorized_elements.get(brain.UID)
+        self._metadata = context.categorized_elements.get(brain.UID, {})
 
     def __getattr__(self, key):
         if key in self._metadata:
@@ -81,7 +81,7 @@ class TitleColumn(column.GetAttrColumn):
                    u'<img src="{icon}" alt="{category}" title="{category}" />'
                    u' {title}</a>')
         return content.format(
-            link=obj.absolute_url,
+            link=obj.getURL(),
             title=getattr(obj, self.attrName).decode('utf-8'),
             icon=obj.icon_url,
             category=obj.category_title,
@@ -142,9 +142,8 @@ class IconClickableColumn(column.GetAttrColumn):
     def get_url(self, obj):
         if self.is_deactivated(obj):
             return '#'
-        return '{context_url}/{id}/@@{action}'.format(
-            context_url=self.context.absolute_url(),
-            id=obj.id,
+        return '{url}/@@{action}'.format(
+            url=obj.getURL(),
             action=self.get_action_view(obj),
         )
 
