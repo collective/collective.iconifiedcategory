@@ -10,7 +10,7 @@
   <div id="" style="display: none;" tal:attributes="id category">
     <ul>
       <li tal:repeat="element python: infos[category]">
-        <tal:if condition="python: view.has_preview(element)">
+        <tal:if condition="element/has_preview">
         <a href="" tal:attributes="href string:${element/absolute_url}/documentviewer#document/p1">
           <img src="" alt="" tal:attributes="src element/icon_url;
                                              alt element/category_title;
@@ -18,7 +18,7 @@
           <span tal:content="element/title"></span>
         </a>
         </tal:if>
-        <tal:if condition="not: python:view.has_preview(element)">
+        <tal:if condition="not: element/has_preview">
         <a href="" tal:attributes="href element/absolute_url">
           <img src="" alt="" tal:attributes="src element/icon_url;
                                              alt element/category_title;
@@ -33,7 +33,7 @@
                i18n:attributes="alt Download" />
         </a>
         </tal:if>
-        <tal:if condition="python: view.has_preview(element)">
+        <tal:if condition="element/has_preview">
         <a href="" tal:attributes="href string:${element/absolute_url}/view">
           <img src="" alt="View"
                tal:attributes="src string:${element/absolute_url}/file_icon.png"

@@ -135,7 +135,18 @@ class CategorizedObjectPreviewAdapter(object):
         self.context = context
 
     @property
+    def is_file(self):
+        if utils.is_file_type(self.context.portal_type):
+            return True
+        for interface in (IFile, IImage):
+            if interface.providedBy(self.context):
+                return True
+        return False
+
+    @property
     def has_preview(self):
+        if self.is_file is False:
+            return False
         try:
             pkg_resources.get_distribution('collective.documentviewer')
         except pkg_resources.DistributionNotFound:

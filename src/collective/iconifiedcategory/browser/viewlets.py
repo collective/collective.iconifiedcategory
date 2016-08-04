@@ -11,6 +11,8 @@ from plone import api
 from plone.app.layout.viewlets import common as base
 from zope.component import getMultiAdapter
 
+import copy
+
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
 
@@ -25,13 +27,9 @@ class CategorizedChildViewlet(base.ViewletBase):
         return ('categorized_elements' in self.context.__dict__ and
                 len(self.categorized_elements) > 0)
 
-    def has_preview(self, element):
-        """Verify if the element has a preview for collective.documentviewer"""
-        return IIconifiedPreview(element).has_preview
-
     @property
     def _categorized_elements(self):
-        return getattr(self.context, 'categorized_elements', {})
+        return copy.deepcopy(getattr(self.context, 'categorized_elements', {}))
 
     def get_categorized_elements(self):
         elements = []
@@ -42,6 +40,7 @@ class CategorizedChildViewlet(base.ViewletBase):
             adapter = getMultiAdapter((brain[0], self.request),
                                       IIconifiedContent)
             if adapter.can_view() is True:
+                element['has_preview'] = IIconifiedPreview(brain[0]).has_preview
                 elements.append(element)
         return sorted(elements, key=lambda x: x['category_title'])
 

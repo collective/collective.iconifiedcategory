@@ -9,6 +9,11 @@ Created by mpeeters
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+from plone import api
+from plone.app.contenttypes.interfaces import IFile
+from plone.app.contenttypes.interfaces import IImage
+from plone.memoize import ram
+from time import time
 from zc.relation.interfaces import ICatalog
 from zope.component import getAdapter
 from zope.component import queryAdapter
@@ -185,3 +190,21 @@ def confidential_message(obj):
         False: u'Not confidential',
     }
     return messages.get(getattr(obj, 'confidential', None), '')
+
+
+@ram.cache(lambda f, p: (p, time() // (60 * 60)))
+def is_file_type(portal_type):
+    """Verify if the given portal type provides IFile or IImage"""
+    portal_type = api.portal.get_tool('portal_types')[portal_type]
+    module_path, classname = (
+        u'.'.join(portal_type.klass.split('.')[:-1]),
+        portal_type.klass.split('.')[-1],
+    )
+    module = __import__(module_path, {}, {}, [classname])
+    cls = getattr(module, classname, None)
+    if cls is None:
+        return False
+    for interface in (IFile, IImage):
+        if cls.__implemented__(interface):
+            return True
+    return False
