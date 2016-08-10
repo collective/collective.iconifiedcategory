@@ -14,7 +14,6 @@ from zope.component import getMultiAdapter
 import copy
 
 from collective.iconifiedcategory.interfaces import IIconifiedContent
-from collective.iconifiedcategory.interfaces import IIconifiedPreview
 
 
 class CategorizedChildViewlet(base.ViewletBase):
@@ -40,7 +39,6 @@ class CategorizedChildViewlet(base.ViewletBase):
             adapter = getMultiAdapter((brain[0], self.request),
                                       IIconifiedContent)
             if adapter.can_view() is True:
-                element['has_preview'] = IIconifiedPreview(brain[0]).has_preview
                 elements.append(element)
         return sorted(elements, key=lambda x: x['category_title'])
 

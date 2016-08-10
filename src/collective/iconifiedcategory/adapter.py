@@ -16,6 +16,8 @@ from plone.app.contenttypes.interfaces import ILink
 import pkg_resources
 
 from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.preview import PreviewStatus
+from collective.iconifiedcategory.interfaces import IIconifiedPreview
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -38,6 +40,7 @@ class CategorizedObjectInfoAdapter(object):
             'filesize': self._filesize,
             'to_print': self._to_print,
             'confidential': self._confidential,
+            'preview_status': self._preview_status,
         }
 
     @property
@@ -77,6 +80,10 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _confidential(self):
         return getattr(self.obj, 'confidential', False)
+
+    @property
+    def _preview_status(self):
+        return IIconifiedPreview(self.obj).status
 
 
 class CategorizedObjectPrintableAdapter(object):
@@ -130,23 +137,34 @@ class CategorizedObjectAdapter(object):
 
 
 class CategorizedObjectPreviewAdapter(object):
+    """Base adapter to verify the preview conversion status"""
 
     def __init__(self, context):
         self.context = context
 
     @property
+    def status(self):
+        """
+        Verify if collective.documentviewer is installed and if the context
+        is a file or an image
+        """
+        if self.is_file is True and self.is_documentviewer_installed is True:
+            return PreviewStatus('converted')
+        return PreviewStatus('not_convertable')
+
+    @property
     def is_file(self):
+        # If the context is a brain
         if utils.is_file_type(self.context.portal_type):
             return True
+        # If the context is an object
         for interface in (IFile, IImage):
             if interface.providedBy(self.context):
                 return True
         return False
 
     @property
-    def has_preview(self):
-        if self.is_file is False:
-            return False
+    def is_documentviewer_installed(self):
         try:
             pkg_resources.get_distribution('collective.documentviewer')
         except pkg_resources.DistributionNotFound:

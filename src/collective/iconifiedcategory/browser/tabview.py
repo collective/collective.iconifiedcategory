@@ -20,7 +20,6 @@ from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
 from collective.iconifiedcategory.interfaces import ICategorizedTable
-from collective.iconifiedcategory.interfaces import IIconifiedPreview
 
 
 class CategorizedTabView(BrowserView):
@@ -78,11 +77,18 @@ class TitleColumn(column.GetAttrColumn):
     attrName = 'title'
 
     def renderCell(self, obj):
-        content = (u'<a href="{link}" alt="{title}" title="{title}">'
-                   u'<img src="{icon}" alt="{category}" title="{category}" />'
-                   u' {title}</a>')
+        content = (
+            u'<a href="{link}" alt="{title}" title="{title}">'
+            u'<img src="{icon}" alt="{category}" title="{category}" />'
+            u' {title}</a>'
+        )
+        url = obj.getURL()
+        target = ''
+        if obj.preview_status.converted is True:
+            url = u'{0}/documentviewer#document/p1'.format(url)
+            target = '_blank'
         return content.format(
-            link=obj.getURL(),
+            link=url,
             title=getattr(obj, self.attrName).decode('utf-8'),
             icon=obj.icon_url,
             category=obj.category_title,
@@ -215,7 +221,7 @@ class ActionColumn(column.GetAttrColumn):
                 src=u'{0}/download_icon.png'.format(obj.getURL()),
                 alt=_('Download'),
             ))
-        if IIconifiedPreview(obj).has_preview is True:
+        if obj.preview_status.converted is True:
             render.append(link.format(
                 href=u'{0}/view'.format(obj.getURL()),
                 src=u'{0}/file_icon.png'.format(obj.getURL()),
