@@ -78,7 +78,7 @@ class TitleColumn(column.GetAttrColumn):
 
     def renderCell(self, obj):
         content = (
-            u'<a href="{link}" alt="{title}" title="{title}">'
+            u'<a href="{link}" alt="{title}" title="{title}" target="{target}">'
             u'<img src="{icon}" alt="{category}" title="{category}" />'
             u' {title}</a>'
         )
@@ -90,6 +90,7 @@ class TitleColumn(column.GetAttrColumn):
         return content.format(
             link=url,
             title=getattr(obj, self.attrName).decode('utf-8'),
+            target=target,
             icon=obj.icon_url,
             category=obj.category_title,
         )
