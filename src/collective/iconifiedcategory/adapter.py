@@ -150,7 +150,7 @@ class CategorizedObjectPreviewAdapter(object):
         """
         if self.is_file is True and self.is_documentviewer_installed is True:
             return PreviewStatus('converted')
-        return PreviewStatus('not_convertable')
+        return PreviewStatus('not_convertible')
 
     @property
     def is_file(self):

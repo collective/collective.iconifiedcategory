@@ -13,13 +13,13 @@ class PreviewStatus(object):
     Preview status class
 
     Valid status codes are:
-        * not_convertable
+        * not_convertible
         * in_progress
         * converted
         * conversion_error
     """
     _valid_codes = (
-        'not_convertable',
+        'not_convertible',
         'in_progress',
         'converted',
         'conversion_error',
