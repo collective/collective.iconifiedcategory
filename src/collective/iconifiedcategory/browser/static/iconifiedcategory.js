@@ -18,6 +18,10 @@ jQuery(document).ready(function($) {
     interactive: true,
     position: 'top-left',
     theme: 'tooltipster-light',
+    speed: 0,
+    delay: 0,
+    animation: 'fade',
+    animationDuration: 0
   });
 
   $('a.iconified-action').click(function() {
