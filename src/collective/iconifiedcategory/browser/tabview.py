@@ -8,6 +8,9 @@ Created by mpeeters
 """
 
 from Products.Five import BrowserView
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFPlone.utils import safe_unicode
 from plone import api
 from z3c.table.table import Table
 from z3c.table import column
@@ -92,7 +95,7 @@ class TitleColumn(column.GetAttrColumn):
             title=getattr(obj, self.attrName).decode('utf-8'),
             target=target,
             icon=obj.icon_url,
-            category=obj.category_title,
+            category=safe_unicode(obj.category_title),
         )
 
 
@@ -100,6 +103,9 @@ class CategoryColumn(column.GetAttrColumn):
     header = _(u'Category')
     weight = 30
     attrName = 'category_title'
+
+    def renderCell(self, obj):
+        return unicode(obj.category_title, 'utf-8')
 
 
 class AuthorColumn(column.GetAttrColumn):
@@ -116,7 +122,7 @@ class CreationDateColumn(column.GetAttrColumn):
 
     def renderCell(self, obj):
         return api.portal.get_localized_time(
-            datetime=obj.creation_date,
+            datetime=obj.created,
             long_format=True,
         )
 
@@ -126,10 +132,10 @@ class LastModificationColumn(column.GetAttrColumn):
     weight = 60
 
     def renderCell(self, obj):
-        if obj.creation_date == obj.modification_date:
+        if obj.created == obj.modified:
             return ''
         return api.portal.get_localized_time(
-            datetime=obj.modification_date,
+            datetime=obj.modified,
             long_format=True,
         )
 
@@ -214,18 +220,24 @@ class ActionColumn(column.GetAttrColumn):
     weight = 100
 
     def renderCell(self, obj):
-        link = u'<a href="{href}"><img src="{src}" alt="{alt}" /></a>'
+        link = u'<a href="{href}"><img src="{src}" title="{title}" /></a>'
         render = []
+        if _checkPermission(ModifyPortalContent, obj):
+            render.append(link.format(
+                href=u'{0}/edit'.format(obj.getURL()),
+                src=u'{0}/edit.gif'.format(obj.getURL()),
+                title=_('Edit'),
+            ))
         if obj.download_url:
             render.append(link.format(
                 href=obj.download_url,
                 src=u'{0}/download_icon.png'.format(obj.getURL()),
-                alt=_('Download'),
+                title=_('Download'),
             ))
         if obj.preview_status.converted is True:
             render.append(link.format(
                 href=u'{0}/view'.format(obj.getURL()),
                 src=u'{0}/file_icon.png'.format(obj.getURL()),
-                alt=_('View'),
+                title=_('View'),
             ))
         return u''.join(render)

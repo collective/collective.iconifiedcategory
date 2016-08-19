@@ -39,7 +39,7 @@ def format_id_css(id):
 
 def query_config_root(context):
     """Try to get the categories config root for the given context"""
-    adapter = queryAdapter(IIconifiedCategoryConfig, context)
+    adapter = queryAdapter(context, IIconifiedCategoryConfig)
     config_root = adapter and adapter.get_config() or None
     if not config_root and context is not None:
         catalog = getToolByName(context, 'portal_catalog')
@@ -97,7 +97,7 @@ def calculate_category_id(category):
 
 def get_category_object(context, category_id):
     obj = get_config_root(context)
-    for path in category_id.split(CAT_SEPARATOR)[1:]:
+    for path in category_id.split(CAT_SEPARATOR)[2:]:
         obj = obj[path]
     return obj
 
