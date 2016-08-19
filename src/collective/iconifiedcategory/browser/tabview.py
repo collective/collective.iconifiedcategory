@@ -53,7 +53,7 @@ class CategorizedContent(object):
 class CategorizedTable(Table):
     implements(ICategorizedTable)
 
-    cssClasses = {'table': 'listing iconified-listing'}
+    cssClasses = {'table': 'listing iconified-listing nosort'}
 
     cssClassEven = u'odd'
     cssClassOdd = u'even'
