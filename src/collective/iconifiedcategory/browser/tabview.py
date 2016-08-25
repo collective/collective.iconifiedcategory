@@ -27,8 +27,8 @@ from collective.iconifiedcategory.interfaces import ICategorizedTable
 
 class CategorizedTabView(BrowserView):
 
-    def table_render(self):
-        table = CategorizedTable(self.context, self.request)
+    def table_render(self, portal_type=None):
+        table = CategorizedTable(self.context, self.request, portal_type=portal_type)
         alsoProvides(table, ICategorizedPrint)
         alsoProvides(table, ICategorizedConfidential)
         table.update()
@@ -57,20 +57,29 @@ class CategorizedTable(Table):
 
     cssClassEven = u'odd'
     cssClassOdd = u'even'
-    sortOn = 'table-number-0'
+    # do not sort, keep order of position in parent
+    sortOn = None
+
+    def __init__(self, context, request, portal_type=None):
+        """If received, this let's filter table for a given portal_type."""
+        self.portal_type = portal_type
+        super(CategorizedTable, self).__init__(context, request)
 
     @property
     def values(self):
         brains = api.content.find(
             context=self.context,
             depth=1,
+            sort_on='getObjPositionInParent'
         )
         return [CategorizedContent(b, self.context) for b in brains
-                if b.content_category]
+                if b.content_category and (not self.portal_type or b.portal_type == self.portal_type)]
 
     def render(self):
         if not len(self.rows):
-            return None
+            return _(
+                'no_element_to_display',
+                default="<span class='discreet iconified_category_no_element'>No element to display.</span>")
         return super(CategorizedTable, self).render()
 
 
