@@ -27,6 +27,7 @@ class CategorizedObjectInfoAdapter(object):
         self.context = context
 
     def get_infos(self, category):
+        filesize = self._filesize
         return {
             'title': self.obj.Title(),
             'id': self.obj.getId(),
@@ -37,7 +38,8 @@ class CategorizedObjectInfoAdapter(object):
             'download_url': self._download_url,
             'icon_url': utils.get_category_icon_url(category),
             'portal_type': self.obj.portal_type,
-            'filesize': self._filesize,
+            'filesize': filesize,
+            'warn_filesize': utils.warn_filesize(filesize),
             'to_print': self._to_print,
             'confidential': self._confidential,
             'preview_status': self._preview_status,

@@ -31,3 +31,11 @@ msgstr ""
 
 msgid "Not confidential"
 msgstr ""
+
+#. Default: "Annex size is huge, it could be difficult to be downloaded!"
+msgid "help_warn_filesize"
+msgstr ""
+
+#. Default: "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
+msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
+msgstr ""

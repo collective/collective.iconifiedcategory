@@ -16,6 +16,9 @@ from zope.event import notify
 from zope.intid.interfaces import IIntIds
 from zc.relation.interfaces import ICatalog
 
+from plone import api
+from plone.rfc822.interfaces import IPrimaryFieldInfo
+
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
@@ -37,6 +40,15 @@ def categorized_content_created(event):
             event.object.confidential,
         ))
         categorized_content_updated(event)
+
+        if utils.is_file_type(event.object.portal_type):
+            file_field_name = IPrimaryFieldInfo(event.object).fieldname
+            size = getattr(event.object, file_field_name).size
+            if utils.warn_filesize(size):
+                plone_utils = api.portal.get_tool('plone_utils')
+                plone_utils.addPortalMessage(_("The annex that you just added has a large size and could be "
+                                               "difficult to download by users wanting to view it!"),
+                                             type='warning')
 
 
 def categorized_content_updated(event):

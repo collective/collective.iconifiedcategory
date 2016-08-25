@@ -9,6 +9,7 @@ Created by mpeeters
 
 import copy
 from Acquisition import aq_inner
+from zope.globalrequest import getRequest
 from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
@@ -21,6 +22,7 @@ from zope.component import getMultiAdapter
 from zope.component import queryAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
+from zope.i18n import translate
 from zope.intid.interfaces import IIntIds
 
 from collective.iconifiedcategory import CAT_SEPARATOR
@@ -196,6 +198,24 @@ def calculate_filesize(size):
     if unit in ('B', 'KB'):
         size = int(size)
     return '{0} {1}'.format(size, unit)
+
+
+def warn_filesize(size):
+    if size > 100000:
+        return True
+    return False
+
+
+def render_filesize(size):
+    pretty_filesize = calculate_filesize(size)
+    if warn_filesize(size):
+        pretty_filesize = u"<span class='warn_filesize' title='{0}'>{1}</span>".format(
+            translate('help_warn_filesize',
+                      domain='collective.iconifiedcategory',
+                      context=getRequest(),
+                      default='Annex size is huge, it could be difficult to be downloaded!'),
+            pretty_filesize)
+    return pretty_filesize
 
 
 def print_message(obj):

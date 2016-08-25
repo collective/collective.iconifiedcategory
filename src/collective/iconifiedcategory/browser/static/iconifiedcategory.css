@@ -27,6 +27,11 @@
     border-radius: 5px;
 }
 
+span.warn_filesize {
+    color: red;
+    cursor: help;
+}
+
 div.tooltipster-content li {
     font-size: 0.9em;
     display: block;

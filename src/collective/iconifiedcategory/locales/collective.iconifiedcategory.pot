@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-08-22 13:54+0000\n"
+"POT-Creation-Date: 2016-08-25 14:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Activate the \"to be printed\" option"
 msgstr ""
 
-#: ../browser/tabview.py:119
+#: ../browser/tabview.py:121
 msgid "Author"
 msgstr ""
 
@@ -39,7 +39,7 @@ msgid "Categorized elements"
 msgstr ""
 
 #: ../behaviors/iconifiedcategorization.py:34
-#: ../browser/tabview.py:110
+#: ../browser/tabview.py:112
 #: ../profiles/default/types/ContentCategory.xml
 msgid "Category"
 msgstr ""
@@ -52,12 +52,12 @@ msgstr ""
 msgid "CategoryGroup"
 msgstr ""
 
-#: ../browser/tabview.py:211
+#: ../browser/tabview.py:213
 #: ../content/base.py:29
 msgid "Confidential"
 msgstr ""
 
-#: ../browser/tabview.py:127
+#: ../browser/tabview.py:129
 msgid "Creation date"
 msgstr ""
 
@@ -65,12 +65,12 @@ msgstr ""
 msgid "Default title"
 msgstr ""
 
-#: ../browser/tabview.py:242
+#: ../browser/tabview.py:244
 #: ../browser/templates/categorized-child-infos-viewlet.pt:31
 msgid "Download"
 msgstr ""
 
-#: ../browser/tabview.py:236
+#: ../browser/tabview.py:238
 msgid "Edit"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Error during process"
 msgstr ""
 
-#: ../browser/tabview.py:151
+#: ../browser/tabview.py:153
 msgid "Filesize"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: ../browser/tabview.py:138
+#: ../browser/tabview.py:140
 msgid "Last modification"
 msgstr ""
 
@@ -107,31 +107,39 @@ msgstr ""
 msgid "Subcategory"
 msgstr ""
 
-#: ../content/events.py:73
+#: ../content/events.py:49
+msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
+msgstr ""
+
+#: ../content/events.py:85
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:84
+#: ../content/events.py:96
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
-#: ../browser/tabview.py:85
+#: ../browser/tabview.py:87
 #: ../content/base.py:19
 msgid "Title"
 msgstr ""
 
-#: ../browser/tabview.py:196
+#: ../browser/tabview.py:198
 #: ../content/base.py:35
 msgid "To be printed"
 msgstr ""
 
-#: ../browser/tabview.py:248
+#: ../browser/tabview.py:250
 #: ../browser/templates/categorized-child-infos-viewlet.pt:38
 msgid "View"
 msgstr ""
 
+#. Default: "Annex size is huge, it could be difficult to be downloaded!"
+msgid "help_warn_filesize"
+msgstr ""
+
 #. Default: "<span class='discreet iconified_category_no_element'>No element to display.</span>"
-#: ../browser/tabview.py:78
+#: ../browser/tabview.py:80
 msgid "no_element_to_display"
 msgstr ""
 

@@ -156,7 +156,7 @@ class FilesizeColumn(column.GetAttrColumn):
     def renderCell(self, obj):
         if getattr(obj, 'filesize', None) is None:
             return ''
-        return utils.calculate_filesize(obj.filesize)
+        return utils.render_filesize(obj.filesize)
 
 
 class IconClickableColumn(column.GetAttrColumn):
