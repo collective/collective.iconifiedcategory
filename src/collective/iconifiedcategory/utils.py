@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+import copy
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from plone import api
@@ -16,6 +17,7 @@ from plone.memoize import ram
 from time import time
 from zc.relation.interfaces import ICatalog
 from zope.component import getAdapter
+from zope.component import getMultiAdapter
 from zope.component import queryAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -26,6 +28,7 @@ from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
+from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 
 
@@ -133,6 +136,25 @@ def remove_categorized_element(parent, obj):
 def get_categorized_infos(obj, category):
     adapter = getAdapter(obj, IIconifiedInfos)
     return obj.UID(), adapter.get_infos(category)
+
+
+def _categorized_elements(context):
+    return copy.deepcopy(getattr(context, 'categorized_elements', {}))
+
+
+def get_categorized_elements(context, sort_on=None):
+    elements = []
+    for uid, element in _categorized_elements(context).items():
+        brain = api.content.find(context=context, UID=uid)
+        if not brain:
+            continue
+        adapter = getMultiAdapter((brain[0], context.REQUEST),
+                                  IIconifiedContent)
+        if adapter.can_view() is True:
+            elements.append(element)
+    if sort_on:
+        elements = sorted(elements, key=lambda x: x[sort_on])
+    return elements
 
 
 def get_back_references(obj):
