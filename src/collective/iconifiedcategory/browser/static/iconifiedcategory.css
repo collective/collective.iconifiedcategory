@@ -1,3 +1,16 @@
+.icons-on .contenttype-contentcategoryconfiguration,
+.icons-on .contenttype-contentcategorygroup,
+.icons-on .contenttype-contentcategory {
+    background: transparent url("../contenttypes-sprite.png") no-repeat scroll 0 -644px;
+}
+.icons-on .contenttype-contentcategoryconfiguration,
+.icons-on .contenttype-contentcategorygroup,
+.icons-on .contenttype-contentcategory {
+    display: inline-block;
+    line-height: 2em;
+    padding-left: 20px !important;
+}
+
 #content div#categorized-elements h2 {
     margin-bottom: 0.3em;
 }
@@ -11,8 +24,6 @@
     padding: 0.3em 0.5em;
     margin-right: 0.3em;
     min-width: 3em;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
     border-radius: 5px;
 }
 
