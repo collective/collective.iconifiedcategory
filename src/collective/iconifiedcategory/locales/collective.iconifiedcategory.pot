@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-07-20 08:09+0000\n"
+"POT-Creation-Date: 2016-08-22 13:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Activate the \"to be printed\" option"
 msgstr ""
 
-#: ../browser/tabview.py:98
+#: ../browser/tabview.py:119
 msgid "Author"
 msgstr ""
 
@@ -38,8 +38,8 @@ msgstr ""
 msgid "Categorized elements"
 msgstr ""
 
-#: ../behaviors/iconifiedcategorization.py:32
-#: ../browser/tabview.py:92
+#: ../behaviors/iconifiedcategorization.py:34
+#: ../browser/tabview.py:110
 #: ../profiles/default/types/ContentCategory.xml
 msgid "Category"
 msgstr ""
@@ -52,24 +52,33 @@ msgstr ""
 msgid "CategoryGroup"
 msgstr ""
 
-#: ../browser/tabview.py:184
+#: ../browser/tabview.py:211
 #: ../content/base.py:29
 msgid "Confidential"
 msgstr ""
 
-#: ../browser/tabview.py:106
+#: ../browser/tabview.py:127
 msgid "Creation date"
 msgstr ""
 
-#: ../behaviors/iconifiedcategorization.py:42
+#: ../behaviors/iconifiedcategorization.py:45
 msgid "Default title"
 msgstr ""
 
-#: ../browser/actionview.py:47
+#: ../browser/tabview.py:242
+#: ../browser/templates/categorized-child-infos-viewlet.pt:31
+msgid "Download"
+msgstr ""
+
+#: ../browser/tabview.py:236
+msgid "Edit"
+msgstr ""
+
+#: ../browser/actionview.py:46
 msgid "Error during process"
 msgstr ""
 
-#: ../browser/tabview.py:130
+#: ../browser/tabview.py:151
 msgid "Filesize"
 msgstr ""
 
@@ -77,7 +86,7 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: ../browser/tabview.py:117
+#: ../browser/tabview.py:138
 msgid "Last modification"
 msgstr ""
 
@@ -106,13 +115,23 @@ msgstr ""
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
-#: ../browser/tabview.py:75
+#: ../browser/tabview.py:85
 #: ../content/base.py:19
 msgid "Title"
 msgstr ""
 
-#: ../browser/tabview.py:169
+#: ../browser/tabview.py:196
 #: ../content/base.py:35
 msgid "To be printed"
+msgstr ""
+
+#: ../browser/tabview.py:248
+#: ../browser/templates/categorized-child-infos-viewlet.pt:38
+msgid "View"
+msgstr ""
+
+#. Default: "<span class='discreet iconified_category_no_element'>No element to display.</span>"
+#: ../browser/tabview.py:78
+msgid "no_element_to_display"
 msgstr ""
 
