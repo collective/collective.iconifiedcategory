@@ -24,6 +24,15 @@
     class=".css.IconifiedCategory"
     />
 
+  <browser:page
+    for="*"
+    name="categorized-childs"
+    permission="zope2.View"
+    class=".views.CategorizedChildView"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    template="templates/categorized-childs.pt"
+    />
+
   <!-- viewlets -->
   <browser:viewlet
     name="iconifiedcategory.childs"
@@ -32,16 +41,6 @@
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     class=".viewlets.CategorizedChildViewlet"
     template="templates/categorized-child-viewlet.pt"
-    permission="zope2.View"
-    />
-
-  <browser:viewlet
-    name="iconifiedcategory.childs.infos"
-    for="*"
-    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
-    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
-    class=".viewlets.CategorizedChildViewlet"
-    template="templates/categorized-child-infos-viewlet.pt"
     permission="zope2.View"
     />
 

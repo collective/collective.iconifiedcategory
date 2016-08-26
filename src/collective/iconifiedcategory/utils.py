@@ -144,9 +144,11 @@ def _categorized_elements(context):
     return copy.deepcopy(getattr(context, 'categorized_elements', {}))
 
 
-def get_categorized_elements(context, sort_on=None):
+def get_categorized_elements(context, portal_type=None, sort_on=None):
     elements = []
     for uid, element in _categorized_elements(context).items():
+        if portal_type and not element['portal_type'] == portal_type:
+            continue
         brain = api.content.find(context=context, UID=uid)
         if not brain:
             continue

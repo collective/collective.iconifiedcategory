@@ -1,24 +1,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-	    xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-	    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="collective.iconifiedcategory" lang="en">
 
-  <tal:if condition="view/can_view">
-  <div id="categorized-elements">
-    <h2 i18n:translate="">Categorized elements</h2>
-    <tal:block repeat="element view/categories_infos">
-      <a href="" class="tooltip deactivated"
-         tal:attributes="href string:#${element/id};
-                         title element/title">
-        <span tal:content="element/counts"></span>
-        <img src="" alt="" tal:attributes="src element/icon;
-                                           alt element/title;
-                                           title element/title" />
-      </a>
-    </tal:block>
-    <div style="clear: both;"></div>
-  </div>
-  </tal:if>
+  <h2 i18n:translate="">Categorized elements</h2>
+  <tal:content replace="structure context/categorized-childs" />
 
 </html>
