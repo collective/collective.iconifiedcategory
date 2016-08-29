@@ -63,9 +63,13 @@ class IconifiedCategorization(object):
     def content_category(self, value):
         if self.content_category is None:
             category = utils.get_category_object(self.context, value)
-
-            self.context.to_print = category.to_print
-            self.context.confidential = category.confidential
+            # left False if print/confidential
+            # not enabled on ContentCategoryGroup
+            category_group = category.category_group
+            if category_group.to_be_printed_activated:
+                self.context.to_print = category.to_print
+            if category_group.confidentiality_activated:
+                self.context.confidential = category.confidential
         self.context.content_category = value
 
     @property
