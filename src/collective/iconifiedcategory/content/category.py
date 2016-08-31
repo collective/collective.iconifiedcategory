@@ -42,9 +42,10 @@ class Category(Container):
     def category_title(self):
         return self.Title()
 
-    @property
-    def category_group(self):
-        return self.aq_parent
+    def get_category_group(self, context=None):
+        if context is None:
+            context = self
+        return context.aq_parent
 
 
 class CategorySchemaPolicy(DexteritySchemaPolicy):

@@ -34,9 +34,10 @@ class Subcategory(Container):
     def category_title(self):
         return self.aq_parent.Title()
 
-    @property
-    def category_group(self):
-        return self.aq_parent.aq_parent
+    def get_category_group(self, context=None):
+        if context is None:
+            context = self
+        return context.aq_parent.aq_parent
 
 
 class SubcategorySchemaPolicy(DexteritySchemaPolicy):

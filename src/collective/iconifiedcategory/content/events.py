@@ -29,16 +29,18 @@ from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 
 def categorized_content_created(event):
     if hasattr(event.object, 'content_category'):
-        notify(IconifiedPrintChangedEvent(
-            event.object,
-            None,
-            event.object.to_print,
-        ))
-        notify(IconifiedConfidentialChangedEvent(
-            event.object,
-            None,
-            event.object.confidential,
-        ))
+        if hasattr(event.object, 'to_print'):
+            notify(IconifiedPrintChangedEvent(
+                event.object,
+                None,
+                event.object.to_print,
+            ))
+        if hasattr(event.object, 'confidential'):
+            notify(IconifiedConfidentialChangedEvent(
+                event.object,
+                None,
+                event.object.confidential,
+            ))
         categorized_content_updated(event)
 
         if utils.is_file_type(event.object.portal_type):
