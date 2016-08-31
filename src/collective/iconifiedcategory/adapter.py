@@ -179,3 +179,13 @@ class CategorizedObjectPreviewAdapter(object):
                    product['status'] == 'installed':
                     return True
             return False
+
+
+class IconifiedCategoryGroupAdapter(object):
+
+    def __init__(self, config, context):
+        self.config = config
+        self.context = context
+
+    def get_group(self):
+        return self.config

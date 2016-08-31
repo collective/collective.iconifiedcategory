@@ -20,7 +20,6 @@ from zc.relation.interfaces import ICatalog
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
-from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.i18n import translate
 from zope.intid.interfaces import IIntIds
@@ -28,6 +27,7 @@ from zope.intid.interfaces import IIntIds
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory.content.category import ICategory
+from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedContent
@@ -73,10 +73,8 @@ def get_config_root(context):
 
 def get_group(config, context):
     """Return the associated groups for the given context"""
-    adapter = queryMultiAdapter((config, context), IIconifiedCategoryGroup)
-    if adapter:
-        return adapter.get_group()
-    return config
+    adapter = getMultiAdapter((config, context), IIconifiedCategoryGroup)
+    return adapter.get_group()
 
 
 def get_categories(context):
@@ -102,7 +100,10 @@ def calculate_category_id(category):
 
 def get_category_object(context, category_id):
     obj = get_config_root(context)
-    for path in category_id.split(CAT_SEPARATOR)[2:]:
+    depth = 1
+    if ICategoryGroup.providedBy(obj):
+        depth = 2
+    for path in category_id.split(CAT_SEPARATOR)[depth:]:
         obj = obj[path]
     return obj
 
