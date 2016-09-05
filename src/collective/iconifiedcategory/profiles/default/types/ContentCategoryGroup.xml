@@ -23,13 +23,9 @@
   <property name="klass">collective.iconifiedcategory.content.categorygroup.CategoryGroup</property>
   <property name="schema_policy">category_group_schema_policy</property>
   <property name="behaviors" purge="false">
-    <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
     <element value="plone.app.content.interfaces.INameFromTitle"/>
     <element value="plone.app.dexterity.behaviors.discussion.IAllowDiscussion"/>
     <element value="plone.app.dexterity.behaviors.exclfromnav.IExcludeFromNavigation"/>
-    <element value="Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes"/>
-    <element value="plone.app.relationfield.behavior.IRelatedItems"/>
-    <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
   </property>
   <alias from="(Default)" to="(dynamic view)"/>
   <alias from="edit" to="@@edit"/>

@@ -11,6 +11,8 @@ from zope import schema
 from zope.interface import Interface
 
 from collective.iconifiedcategory import _
+from plone.autoform import directives as form
+from z3c.form.browser.radio import RadioFieldWidget
 
 
 class ICategorize(Interface):
@@ -25,12 +27,14 @@ class ICategorize(Interface):
         required=False,
     )
 
+    form.widget('confidential', RadioFieldWidget)
     confidential = schema.Bool(
         title=_(u'Confidential'),
         required=False,
         default=False,
     )
 
+    form.widget('to_print', RadioFieldWidget)
     to_print = schema.Bool(
         title=_(u'To be printed'),
         required=False,
