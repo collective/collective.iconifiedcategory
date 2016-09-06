@@ -1,8 +1,12 @@
-jQuery(document).ready(function($) {
+initializeIconifiedCategoryWidget = function () {
+
+jQuery(function($) {
 
   $('#form_widgets_IIconifiedCategorization_content_category').change(function() {
     var obj = $('#' + $(this).val());
-    $('#form-widgets-IDublinCore-title').val(obj.val());
+    /* title field id depends on used behavior (basic, dublincore, ...)
+       so we get the id beginning with 'form-widgets-' and ending with '-title' */
+    $('input#[id^=form-widgets-][id$=-title]').val(obj.val());
   });
 
   $('a.deactivated').click(function() {
@@ -47,3 +51,6 @@ jQuery(document).ready(function($) {
   });
 
 });
+};
+
+jQuery(document).ready(initializeIconifiedCategoryWidget);
