@@ -204,7 +204,7 @@ def calculate_filesize(size):
 
 
 def warn_filesize(size):
-    if size > 100000:
+    if size > 5000000:
         return True
     return False
 
