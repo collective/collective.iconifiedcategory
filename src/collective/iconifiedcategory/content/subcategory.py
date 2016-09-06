@@ -8,7 +8,7 @@ Created by mpeeters
 """
 
 from plone.app.contenttypes.interfaces import IFolder
-from plone.dexterity.content import Container
+from plone.dexterity.content import Item
 from plone.dexterity.schema import DexteritySchemaPolicy
 from zope.interface import implements
 
@@ -19,7 +19,7 @@ class ISubcategory(IFolder, ICategorize):
     pass
 
 
-class Subcategory(Container):
+class Subcategory(Item):
     implements(ISubcategory)
 
     @property
