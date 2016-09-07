@@ -20,7 +20,7 @@ from collective.iconifiedcategory.content.base import ICategorize
 
 class ICategory(IFolder, ICategorize):
 
-    form.order_after(icon='title')
+    form.order_before(icon='predefined_title')
     icon = NamedBlobImage(
         title=_(u'Icon'),
         required=True,

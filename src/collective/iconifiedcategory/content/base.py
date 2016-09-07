@@ -17,11 +17,6 @@ from z3c.form.browser.radio import RadioFieldWidget
 
 class ICategorize(Interface):
 
-    title = schema.TextLine(
-        title=_(u'Title'),
-        required=True,
-    )
-
     predefined_title = schema.TextLine(
         title=_(u'Predefined title'),
         required=False,
