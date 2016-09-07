@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <object name="ContentCategoryConfiguration" meta_type="Dexterity FTI" i18n:domain="collective.iconifiedcategory"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">CategoryConfiguration</property>
+  <property name="title" i18n:translate="">ContentCategoryConfiguration</property>
   <property name="description" i18n:translate=""></property>
   <property name="content_icon"></property>
   <property name="factory">CategoryConfiguration</property>
@@ -24,7 +24,7 @@
   <property name="model_file">plone.app.contenttypes.schema:folder.xml</property>
   <property name="behaviors" purge="false">
     <element value="plone.app.content.interfaces.INameFromTitle"/>
-    <element value="form.widgets.plone.app.dexterity.behaviors.metadata.IBasic"/>
+    <element value="plone.app.dexterity.behaviors.metadata.IBasic"/>
   </property>
   <alias from="(Default)" to="(dynamic view)"/>
   <alias from="edit" to="@@edit"/>
