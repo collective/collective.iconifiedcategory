@@ -85,6 +85,7 @@ def get_categories(context):
         'portal_type': 'ContentCategory',
         'sort_on': 'sortable_title',
         'path': '/'.join(config_root.getPhysicalPath()),
+        'enabled': True
     }
     return catalog.unrestrictedSearchResults(query)
 

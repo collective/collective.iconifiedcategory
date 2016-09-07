@@ -29,6 +29,7 @@ class CategoryVocabulary(object):
             subcategories = api.content.find(
                 context=obj,
                 portal_type='ContentSubcategory',
+                enabled=True
             )
             for subcategory in subcategories:
                 terms.append(SimpleVocabulary.createTerm(

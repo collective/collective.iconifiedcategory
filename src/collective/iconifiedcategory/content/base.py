@@ -35,3 +35,10 @@ class ICategorize(Interface):
         required=False,
         default=False,
     )
+
+    form.widget('enabled', RadioFieldWidget)
+    enabled = schema.Bool(
+        title=_(u'Enabled?'),
+        default=True,
+        required=False,
+    )

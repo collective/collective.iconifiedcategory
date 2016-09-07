@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-09-07 11:11+0000\n"
+"POT-Creation-Date: 2016-09-07 14:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,6 +81,10 @@ msgstr "Télécharger"
 #: ../browser/tabview.py:238
 msgid "Edit"
 msgstr "Éditer"
+
+#: ../content/base.py:41
+msgid "Enabled?"
+msgstr "Activé?"
 
 #: ../browser/actionview.py:46
 msgid "Error during process"

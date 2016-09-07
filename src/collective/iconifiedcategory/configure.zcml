@@ -22,6 +22,8 @@
   <include file="adapter.zcml" />
   <include file="subscriber.zcml" />
 
+  <adapter name="enabled" factory=".indexes.enabled" />
+
   <genericsetup:registerProfile
       name="default"
       title="collective.iconifiedcategory"
