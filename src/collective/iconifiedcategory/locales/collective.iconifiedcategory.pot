@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-08-25 14:48+0000\n"
+"POT-Creation-Date: 2016-09-07 11:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.iconifiedcategory\n"
 
-#: ../content/categorygroup.py:22
+#: ../content/categorygroup.py:25
 msgid "Activate the \"confidential\" option"
 msgstr ""
 
-#: ../content/categorygroup.py:28
+#: ../content/categorygroup.py:32
 msgid "Activate the \"to be printed\" option"
 msgstr ""
 
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Can not be printed"
 msgstr ""
 
-#: ../browser/templates/categorized-child-viewlet.pt:9
+#: ../browser/templates/categorized-child-viewlet.pt:7
 #: ../browser/templates/categorized-tab-view.pt:5
 #: ../profiles/default/actions.xml
 msgid "Categorized elements"
@@ -40,21 +40,28 @@ msgstr ""
 
 #: ../behaviors/iconifiedcategorization.py:34
 #: ../browser/tabview.py:112
-#: ../profiles/default/types/ContentCategory.xml
 msgid "Category"
 msgstr ""
 
+#: ../browser/tabview.py:213
+#: ../content/base.py:27
+msgid "Confidential"
+msgstr ""
+
+#: ../profiles/default/types/ContentCategory.xml
+msgid "ContentCategory"
+msgstr ""
+
 #: ../profiles/default/types/ContentCategoryConfiguration.xml
-msgid "CategoryConfiguration"
+msgid "ContentCategoryConfiguration"
 msgstr ""
 
 #: ../profiles/default/types/ContentCategoryGroup.xml
-msgid "CategoryGroup"
+msgid "ContentCategoryGroup"
 msgstr ""
 
-#: ../browser/tabview.py:213
-#: ../content/base.py:29
-msgid "Confidential"
+#: ../profiles/default/types/ContentSubcategory.xml
+msgid "ContentSubcategory"
 msgstr ""
 
 #: ../browser/tabview.py:129
@@ -66,7 +73,7 @@ msgid "Default title"
 msgstr ""
 
 #: ../browser/tabview.py:244
-#: ../browser/templates/categorized-child-infos-viewlet.pt:31
+#: ../browser/templates/categorized-childs.pt:26
 msgid "Download"
 msgstr ""
 
@@ -96,41 +103,36 @@ msgstr ""
 msgid "Not confidential"
 msgstr ""
 
-#: ../content/base.py:24
+#: ../content/base.py:21
 msgid "Predefined title"
 msgstr ""
 
 msgid "Should not be printed"
 msgstr ""
 
-#: ../profiles/default/types/ContentSubcategory.xml
-msgid "Subcategory"
-msgstr ""
-
-#: ../content/events.py:49
+#: ../content/events.py:51
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
-#: ../content/events.py:85
+#: ../content/events.py:87
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:96
+#: ../content/events.py:98
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
 #: ../browser/tabview.py:87
-#: ../content/base.py:19
 msgid "Title"
 msgstr ""
 
 #: ../browser/tabview.py:198
-#: ../content/base.py:35
+#: ../content/base.py:34
 msgid "To be printed"
 msgstr ""
 
 #: ../browser/tabview.py:250
-#: ../browser/templates/categorized-child-infos-viewlet.pt:38
+#: ../browser/templates/categorized-childs.pt:33
 msgid "View"
 msgstr ""
 
