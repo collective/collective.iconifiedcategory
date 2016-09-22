@@ -146,18 +146,24 @@ def _categorized_elements(context):
     return copy.deepcopy(getattr(context, 'categorized_elements', {}))
 
 
-def get_categorized_elements(context, portal_type=None, sort_on=None):
+def get_categorized_elements(context,
+                             portal_type=None,
+                             sort_on=None,
+                             the_objects=False):
     elements = []
     for uid, element in _categorized_elements(context).items():
         if portal_type and not element['portal_type'] == portal_type:
             continue
-        brain = api.content.find(context=context, UID=uid)
-        if not brain:
+        brains = api.content.find(context=context, UID=uid)
+        if not brains:
             continue
-        adapter = getMultiAdapter((brain[0], context.REQUEST),
+        adapter = getMultiAdapter((brains[0], context.REQUEST),
                                   IIconifiedContent)
         if adapter.can_view() is True:
-            elements.append(element)
+            if the_objects:
+                elements.append(brains[0].getObject())
+            else:
+                elements.append(element)
     if sort_on:
         elements = sorted(elements, key=lambda x: x[sort_on])
     return elements
