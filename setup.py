@@ -43,8 +43,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'collective.z3cform.select2',
         'collective.fontawesome',
+        'collective.js.tooltipster',
+        'collective.z3cform.select2',
         'plone.api',
         'plone.app.contenttypes',
         'plone.app.dexterity',

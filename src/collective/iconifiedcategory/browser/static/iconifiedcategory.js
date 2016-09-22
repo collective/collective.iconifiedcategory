@@ -21,7 +21,7 @@ jQuery(function($) {
     contentAsHTML: true,
     interactive: true,
     position: 'top-left',
-    theme: 'tooltipster-light',
+    theme: 'tooltipster-shadow',
     speed: 200,
     delay: 50,
     animation: 'fade'

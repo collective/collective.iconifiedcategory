@@ -29,32 +29,4 @@
     rendering="link"
     />
 
-  <stylesheet
-    title=""
-    cacheable="True"
-    applyPrefix="True"
-    compression="safe"
-    cookable="True"
-    enabled="on"
-    expression=""
-    id="++resource++collective.iconifiedcategory/tooltipster.css"
-    media="screen"
-    rel="stylesheet"
-    rendering="link"
-    />
-
-  <stylesheet
-    title=""
-    cacheable="True"
-    applyPrefix="True"
-    compression="safe"
-    cookable="True"
-    enabled="on"
-    expression=""
-    id="++resource++collective.iconifiedcategory/tooltipster-light.css"
-    media="screen"
-    rel="stylesheet"
-    rendering="link"
-    />
-
 </object>
