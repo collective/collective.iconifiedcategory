@@ -11,18 +11,28 @@
     padding-left: 20px !important;
 }
 
+#content div.categorized-elements {
+    display: inline-block;
+}
+
 #content div.categorized-elements h2 {
     margin-bottom: 0.3em;
+}
+
+/* display number of elements smaller */
+.tooltip.deactivated.tooltipstered > span {
+    font-size: 80%;
 }
 
 #content div.categorized-elements a:link,
 #content div.categorized-elements a:hover,
 #content div.categorized-elements a:visited {
     color: #666;
-    border: 1px solid #ccc;
+    /* added !important to override default behavior of base.css that removes border-bottom in table.listing a */
+    border: 1px solid #ccc !important;
     background: #EDEDED;
-    padding: 0.3em 0.5em;
-    margin-right: 0.3em;
+    padding: 0.2em 0.2em;
+    margin-right: 0.2em;
     border-radius: 5px;
 }
 
