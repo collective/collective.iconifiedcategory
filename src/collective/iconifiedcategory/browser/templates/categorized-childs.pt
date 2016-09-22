@@ -40,7 +40,7 @@
   </div>
   </tal:block>
   
-  <div id="categorized-elements" tal:define="cat_infos view/categories_infos">
+  <div class="categorized-elements" tal:define="cat_infos view/categories_infos">
     <tal:block repeat="element cat_infos">
       <a href="" class="tooltip deactivated"
          tal:attributes="href string:#${element/id};
