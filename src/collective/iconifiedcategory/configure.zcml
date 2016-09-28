@@ -20,7 +20,6 @@
   <include package=".widget" />
 
   <include file="adapter.zcml" />
-  <include file="subscriber.zcml" />
 
   <adapter name="enabled" factory=".indexes.enabled" />
 

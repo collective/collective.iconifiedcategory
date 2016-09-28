@@ -11,6 +11,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from z3c.relationfield import RelationValue
 from z3c.relationfield.event import _setRelation
 from zExceptions import Redirect
+from zope.component import getAdapter
 from zope.component import getUtility
 from zope.event import notify
 from zope.intid.interfaces import IIntIds
@@ -25,11 +26,14 @@ from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
 def categorized_content_created(event):
     if hasattr(event.object, 'content_category'):
         if hasattr(event.object, 'to_print'):
+            adapter = getAdapter(event.object, IIconifiedPrintable)
+            adapter.update_object()
             notify(IconifiedPrintChangedEvent(
                 event.object,
                 None,
@@ -60,15 +64,27 @@ def categorized_content_updated(event):
         target = utils.get_category_object(obj, obj.content_category)
         relation = RelationValue(intids.getId(target))
 
-        utils.update_categorized_elements(obj.aq_parent, obj, target)
         obj.related_category = relation
         _setRelation(obj, 'related_category', relation)
+
         if hasattr(obj, 'to_print'):
+            # if current 'to_print' is None, it means that current content
+            # could not be printable, but as it changed, we need to in this case
+            # to use the default value
+            if obj.to_print is None:
+                category = utils.get_category_object(obj, obj.content_category)
+                category_group = category.get_category_group(category)
+                if category_group.to_be_printed_activated:
+                    obj.to_print = category.to_print
+
+            adapter = getAdapter(event.object, IIconifiedPrintable)
+            adapter.update_object()
             notify(IconifiedPrintChangedEvent(
                 obj,
                 obj.to_print,
                 obj.to_print,
             ))
+        utils.update_categorized_elements(obj.aq_parent, obj, target)
 
 
 def categorized_content_removed(event):

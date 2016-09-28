@@ -8,16 +8,24 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
+from zope.annotation import IAnnotations
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
 
-import pkg_resources
+import logging
+logger = logging.getLogger('collective.iconifiedcategory')
 
+from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.iconifiedcategory import utils
-from collective.iconifiedcategory.preview import PreviewStatus
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
+
+from Products.MimetypesRegistry.common import MimeTypeException
+
+MIME_TYPE_NOT_FOUND = 'The mime_type for annex at %s was not found in mimetypes_registry!'
+FILE_EXTENSION_NOT_FOUND = 'The extension used by MeetingFile at %s does not correspond to ' \
+    'an extension available in the mimetype %s found in mimetypes_registry!'
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -104,16 +112,7 @@ class CategorizedObjectPrintableAdapter(object):
         return True
 
     def verify_mimetype(self, file):
-        extra_mimetypes = (
-            'application/pdf',
-            'application/plain',
-            'application/msword',
-            'application/excel',
-        )
-        mimetype = file.contentType
-        if mimetype.split('/')[0] in ('image', 'text'):
-            return True
-        if file.contentType in extra_mimetypes:
+        if file.contentType in IIconifiedPreview(self.context).convertible_mimetypes:
             return True
         return False
 
@@ -124,6 +123,7 @@ class CategorizedObjectPrintableAdapter(object):
     def update_object(self):
         self.context.to_print_message = None
         if self.is_printable is False:
+            # None means 'deactivated'
             self.context.to_print = None
             self.context.to_print_message = self.error_message
 
@@ -147,38 +147,71 @@ class CategorizedObjectPreviewAdapter(object):
     @property
     def status(self):
         """
-        Verify if collective.documentviewer is installed and if the context
-        is a file or an image
+          Returns the conversion status of context.
         """
-        if self.is_file is True and self.is_documentviewer_installed is True:
-            return PreviewStatus('converted')
-        return PreviewStatus('not_convertible')
+        # not_convertable or awaiting conversion?
+        if not self._isConvertible():
+            return 'not_convertable'
+
+        # under conversion?
+        annotations = IAnnotations(self.context)
+        if 'successfully_converted' not in annotations['collective.documentviewer']:
+            return 'in_progress'
+
+        if not annotations['collective.documentviewer']['successfully_converted'] is True:
+            return 'conversion_error'
+
+        return 'converted'
 
     @property
-    def is_file(self):
-        # If the context is a brain
-        if utils.is_file_type(self.context.portal_type):
+    def converted(self):
+        """ """
+        return self.status == 'converted'
+
+    def _isConvertible(self):
+        """
+          Check if the context is convertible (hopefully).  If the mimetype is one taken into
+          account by collective.documentviewer CONVERTABLE_TYPES, then it should be convertible...
+        """
+        # collective.documentviewer add an entry the annotations to relevant possibily convertible types
+        annotations = IAnnotations(self.context)
+        if 'collective.documentviewer' not in annotations.keys():
+            return False
+
+        # now check if current file mimetype is managed by collective.documentviewer
+        mr = api.portal.get_tool('mimetypes_registry')
+        try:
+            mime_type = mr.lookup(self.context.file.contentType)[0]
+        except MimeTypeException:
+            mime_type = None
+        if not mime_type:
+            logger.warning(MIME_TYPE_NOT_FOUND % self.context.absolute_url_path())
+            return False
+
+        if set(mime_type.mimetypes).intersection(self.convertible_mimetypes):
             return True
-        # If the context is an object
-        for interface in (IFile, IImage):
-            if interface.providedBy(self.context):
-                return True
+
         return False
 
     @property
-    def is_documentviewer_installed(self):
-        try:
-            pkg_resources.get_distribution('collective.documentviewer')
-        except pkg_resources.DistributionNotFound:
-            return False
-        else:
-            quick_installer = api.portal.get_tool('portal_quickinstaller')
-            installed_products = quick_installer.listInstalledProducts()
-            for product in installed_products:
-                if product['id'] == 'collective.documentviewer' and \
-                   product['status'] == 'installed':
-                    return True
-            return False
+    def convertible_mimetypes(self):
+        """ """
+        # we have convertible extensions in collective.documentviewer
+        extensions = []
+        for convertible_type in CONVERTABLE_TYPES.iteritems():
+            extensions.extend(convertible_type[1].extensions)
+
+        # now build a list of mimetypes
+        mr = api.portal.get_tool('mimetypes_registry')
+        mimetypes = []
+        for extension in extensions:
+            content_type = mr.lookupExtension(extension)
+            if not content_type:
+                continue
+            for mtype in content_type.mimetypes:
+                if not mtype in mimetypes:
+                    mimetypes.append(mtype)
+        return mimetypes
 
 
 class IconifiedCategoryGroupAdapter(object):

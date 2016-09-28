@@ -9,6 +9,7 @@ Created by mpeeters
 
 from Products.Five import BrowserView
 from z3c.json.interfaces import IJSONWriter
+from zope.component import getAdapter
 from zope.component import getUtility
 from zope.event import notify
 from zope.i18n import translate
@@ -18,6 +19,7 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
 class BaseView(BrowserView):
@@ -78,6 +80,8 @@ class ToPrintChangeView(BaseView):
         old_values = self.get_current_values()
         values['to_print'] = self.convert_boolean(values['to_print'])
         super(ToPrintChangeView, self).set_values(values)
+        adapter = getAdapter(self.context, IIconifiedPrintable)
+        adapter.update_object()
         notify(IconifiedPrintChangedEvent(
             self.context,
             old_values,
