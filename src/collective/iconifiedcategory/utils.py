@@ -233,6 +233,7 @@ def print_message(obj):
     messages = {
         True: u'Must be printed',
         False: u'Should not be printed',
+        None: u'Not convertible to a printable format',
     }
     return messages.get(obj.to_print, getattr(obj, 'to_print_message', ''))
 

@@ -5,34 +5,20 @@
   <div id="" style="display: none;" tal:attributes="id string:${category}_${context/UID}">
     <ul>
       <li tal:repeat="element python: infos[category]">
-        <tal:if condition="python: element['preview_status'] == 'converted'">
-        <a href="" target="_blank" tal:attributes="href string:${element/absolute_url}/documentviewer#document/p1">
-          <img src="" alt="" tal:attributes="src element/icon_url;
-                                             alt element/category_title;
-                                             title element/category_title" />
-          <span tal:content="element/title"></span>
-        </a>
-        </tal:if>
-        <tal:if condition="python: element['preview_status'] == 'converted'">
-        <a href="" tal:attributes="href element/absolute_url">
-          <img src="" alt="" tal:attributes="src element/icon_url;
-                                             alt element/category_title;
-                                             title element/category_title" />
-          <span tal:content="element/title"></span>
-        </a>
-        </tal:if>
-        <tal:if condition="element/download_url">
         <a href="" tal:attributes="href element/download_url">
-          <img src="" alt="Download"
-               tal:attributes="src string:${element/absolute_url}/download_icon.png"
-               i18n:attributes="alt Download" />
+          <img src="" alt="" tal:attributes="src element/icon_url;
+                                             alt element/category_title;
+                                             title element/category_title" />
+          <span tal:content="element/title"></span>
         </a>
-        </tal:if>
-        <tal:if condition="python: element['preview_status'] == 'converted'">
-        <a href="" tal:attributes="href string:${element/absolute_url}/view">
-          <img src="" alt="View"
-               tal:attributes="src string:${element/absolute_url}/file_icon.png"
-               i18n:attributes="alt View" />
+        <tal:if condition="python: view.showPreviewLink() and element['preview_status'] == 'converted'">
+        <a href=""
+           title="Preview"
+           i18n:attributes="title"
+           target="_blank"
+           tal:attributes="href string:${element/absolute_url}/documentviewer#document/p1">
+          <img src=""
+               tal:attributes="src string:${element/absolute_url}/file_icon.png" />
         </a>
         </tal:if>
       </li>

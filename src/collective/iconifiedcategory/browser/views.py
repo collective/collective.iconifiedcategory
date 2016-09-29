@@ -18,6 +18,10 @@ class CategorizedChildView(BrowserView):
         return ('categorized_elements' in self.context.__dict__ and
                 len(self.categorized_elements) > 0)
 
+    def showPreviewLink(self):
+        """Made to be overrided."""
+        return True
+
     def categories_infos(self):
         infos = {e['category_uid']: {'id': e['category_id'],
                                      'title': e['category_title'],
