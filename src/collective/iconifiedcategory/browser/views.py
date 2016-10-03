@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from operator import itemgetter
 from Products.Five import BrowserView
-
 from collective.iconifiedcategory.utils import get_categorized_elements
 
 
@@ -41,4 +41,8 @@ class CategorizedChildView(BrowserView):
         infos = {e: [] for e in self.categories_ids}
         for element in self.categorized_elements:
             infos[element['category_id']].append(element)
-        return infos
+        # sort by alphabetical order
+        res = infos.copy()
+        for category_id, elements in infos.items():
+            res[category_id] = sorted(elements, key=itemgetter('title'))
+        return res
