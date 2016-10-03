@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-09-07 14:08+0000\n"
+"POT-Creation-Date: 2016-10-03 12:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,7 +73,6 @@ msgid "Default title"
 msgstr ""
 
 #: ../browser/tabview.py:244
-#: ../browser/templates/categorized-childs.pt:26
 msgid "Download"
 msgstr ""
 
@@ -85,7 +84,7 @@ msgstr ""
 msgid "Enabled?"
 msgstr ""
 
-#: ../browser/actionview.py:46
+#: ../browser/actionview.py:48
 msgid "Error during process"
 msgstr ""
 
@@ -107,22 +106,30 @@ msgstr ""
 msgid "Not confidential"
 msgstr ""
 
+#. Default: "Not convertible to a printable format"
+msgid "Not convertible to a printable format"
+msgstr ""
+
 #: ../content/base.py:21
 msgid "Predefined title"
+msgstr ""
+
+#: ../browser/templates/categorized-childs.pt:15
+msgid "Preview"
 msgstr ""
 
 msgid "Should not be printed"
 msgstr ""
 
-#: ../content/events.py:51
+#: ../content/events.py:55
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
-#: ../content/events.py:87
+#: ../content/events.py:103
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:98
+#: ../content/events.py:114
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
@@ -136,7 +143,6 @@ msgid "To be printed"
 msgstr ""
 
 #: ../browser/tabview.py:250
-#: ../browser/templates/categorized-childs.pt:33
 msgid "View"
 msgstr ""
 

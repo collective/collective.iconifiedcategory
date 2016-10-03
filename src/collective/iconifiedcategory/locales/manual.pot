@@ -32,3 +32,7 @@ msgstr ""
 #. Default: "Annex size is huge, it could be difficult to be downloaded!"
 msgid "help_warn_filesize"
 msgstr ""
+
+#. Default: "Not convertible to a printable format"
+msgid "Not convertible to a printable format"
+msgstr ""
