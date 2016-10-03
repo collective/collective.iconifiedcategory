@@ -9,10 +9,6 @@ jQuery(function($) {
     $('input#[id^=form-widgets-][id$=-title]').val(obj.val());
   });
 
-  $('a.deactivated').click(function() {
-    return false;
-  });
-
   $('.tooltip').tooltipster({
     functionInit: function(origin, content) {
       var id = $(origin).attr('href');
@@ -27,6 +23,17 @@ jQuery(function($) {
     delay: 50,
     animation: 'fade'
     });
+
+});
+};
+
+initializeIconifiedActions = function () {
+
+jQuery(function($) {
+
+  $('a.deactivated').click(function() {
+    return false;
+  });
 
   $('a.iconified-action').click(function() {
     var obj = $(this);
@@ -55,3 +62,4 @@ jQuery(function($) {
 };
 
 jQuery(document).ready(initializeIconifiedCategoryWidget);
+jQuery(document).ready(initializeIconifiedActions);
