@@ -96,7 +96,7 @@ class TitleColumn(column.GetAttrColumn):
         )
         url = obj.getURL()
         target = ''
-        if obj.preview_status.converted is True:
+        if obj.preview_status == 'converted':
             url = u'{0}/documentviewer#document/p1'.format(url)
             target = '_blank'
         return content.format(
@@ -243,7 +243,7 @@ class ActionColumn(column.GetAttrColumn):
                 src=u'{0}/download_icon.png'.format(obj.getURL()),
                 title=_('Download'),
             ))
-        if obj.preview_status.converted is True:
+        if obj.preview_status == 'converted':
             render.append(link.format(
                 href=u'{0}/view'.format(obj.getURL()),
                 src=u'{0}/file_icon.png'.format(obj.getURL()),
