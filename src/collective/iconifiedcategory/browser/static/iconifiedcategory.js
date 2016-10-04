@@ -2,12 +2,19 @@ initializeIconifiedCategoryWidget = function () {
 
 jQuery(function($) {
 
-  $('#form_widgets_IIconifiedCategorization_content_category').change(function() {
-    var obj = $('#' + $(this).val());
+  var category_selector = '#form_widgets_IIconifiedCategorization_content_category';
+
+  var define_default_title = function(select) {
+    var obj = $('#' + select.val());
     /* title field id depends on used behavior (basic, dublincore, ...)
        so we get the id beginning with 'form-widgets-' and ending with '-title' */
     $('input#[id^=form-widgets-][id$=-title]').val(obj.val());
+  };
+
+  $(category_selector).change(function() {
+    define_default_title($(this));
   });
+  define_default_title($(category_selector));
 
   $('.tooltip').tooltipster({
     functionInit: function(origin, content) {
@@ -24,7 +31,9 @@ jQuery(function($) {
     animation: 'fade'
     });
 
+
 });
+
 };
 
 initializeIconifiedActions = function () {
@@ -59,6 +68,7 @@ jQuery(function($) {
   });
 
 });
+
 };
 
 jQuery(document).ready(initializeIconifiedCategoryWidget);
