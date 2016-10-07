@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-10-03 12:55+0000\n"
+"POT-Creation-Date: 2016-10-07 09:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,6 +100,10 @@ msgstr "Icône"
 #: ../browser/tabview.py:140
 msgid "Last modification"
 msgstr "Dernière modification"
+
+#: ../browser/templates/categorized-childs.pt:28
+msgid "More infos"
+msgstr "Plus d'infos"
 
 msgid "Must be printed"
 msgstr "Doit être imprimé"

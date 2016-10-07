@@ -47,6 +47,10 @@ span.warn_filesize {
     cursor: help;
 }
 
+img.categorized_elements_more_infos_icon {
+    padding-right: 0.2em;
+}
+
 div.tooltipster-content li {
     font-size: 0.9em;
     display: block;

@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from operator import itemgetter
+from plone import api
 from Products.Five import BrowserView
 from collective.iconifiedcategory.utils import get_categorized_elements
 
 
 class CategorizedChildView(BrowserView):
     """ """
+    def __init__(self, context, request):
+        """ """
+        super(CategorizedChildView, self).__init__(context, request)
+        self.portal_url = api.portal.get().absolute_url()
+
     def __call__(self, portal_type=None):
         """ """
         self.categorized_elements = get_categorized_elements(self.context,
@@ -46,3 +52,7 @@ class CategorizedChildView(BrowserView):
         for category_id, elements in infos.items():
             res[category_id] = sorted(elements, key=itemgetter('title'))
         return res
+
+    def categorized_elements_more_infos_url(self):
+        """ """
+        return "{0}/{1}".format(self.context.absolute_url(), "@@iconifiedcategory")

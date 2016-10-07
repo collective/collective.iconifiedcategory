@@ -23,6 +23,13 @@
         </tal:if>
       </li>
     </ul>
+    <br />
+    <a href="#" tal:attributes="href view/categorized_elements_more_infos_url">
+      <img class="categorized_elements_more_infos_icon"
+           src="more_infos.png"
+           tal:attributes="src string:${view/portal_url}/++resource++collective.iconifiedcategory/more_infos.png" />
+      <span i18n:translate="">More infos</span>
+    </a>
   </div>
   </tal:block>
   
