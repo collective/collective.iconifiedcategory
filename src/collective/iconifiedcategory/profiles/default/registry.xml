@@ -1,0 +1,18 @@
+<!-- Operation Definitions -->
+<registry xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="plone">
+
+    <record name="collective.iconifiedcategory.filesizelimit">
+        <field type="plone.registry.field.Int">
+            <title>Filesize limit in bytes enabling a warning</title>
+            <description>
+              If the categorized element is a file, the user will get a warning whenever
+              the filesize is bigger than defined value. &lt;span style=&quot;color: red&quot;&gt;Take care that if you change this
+              value, you will have to update the categoized elements stored informations.&lt;/span&gt;
+            </description>
+            <default>5000000</default>
+            <min>0</min>
+        </field>
+    </record>
+
+</registry>
