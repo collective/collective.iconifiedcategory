@@ -45,6 +45,7 @@
 span.warn_filesize {
     color: red;
     cursor: help;
+    font-weight: bold;
 }
 
 img.categorized_elements_more_infos_icon {

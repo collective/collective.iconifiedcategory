@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from operator import itemgetter
 from plone import api
 from Products.Five import BrowserView
 from collective.iconifiedcategory.utils import get_categorized_elements
+from collective.iconifiedcategory.utils import render_filesize
 
 
 class CategorizedChildView(BrowserView):
@@ -50,8 +50,12 @@ class CategorizedChildView(BrowserView):
         # sort by alphabetical order
         res = infos.copy()
         for category_id, elements in infos.items():
-            res[category_id] = sorted(elements, key=itemgetter('title'))
+            res[category_id] = sorted(elements, key=lambda elt: elt['title'].lower())
         return res
+
+    def render_filesize(self, size):
+        """ """
+        return render_filesize(size)
 
     def categorized_elements_more_infos_url(self):
         """ """

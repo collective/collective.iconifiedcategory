@@ -211,7 +211,8 @@ def calculate_filesize(size):
 
 
 def warn_filesize(size):
-    if size > 5000000:
+    filesizelimit = api.portal.get_registry_record('collective.iconifiedcategory.filesizelimit') or 5000000
+    if size > filesizelimit:
         return True
     return False
 

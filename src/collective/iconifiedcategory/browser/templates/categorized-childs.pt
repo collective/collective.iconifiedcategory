@@ -10,6 +10,9 @@
                                              alt element/category_title;
                                              title element/category_title" />
           <span tal:content="element/title"></span>
+          <tal:filesize tal:condition="element/warn_filesize">
+            (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
+          </tal:filesize>
         </a>
         <tal:if condition="python: view.showPreviewLink() and element['preview_status'] == 'converted'">
         <a href=""
