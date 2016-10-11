@@ -5,6 +5,9 @@
 .. image:: https://travis-ci.org/IMIO/collective.iconifiedcategory.svg?branch=master
     :target: https://travis-ci.org/IMIO/collective.iconifiedcategory
 
+.. image:: https://coveralls.io/repos/github/IMIO/collective.iconifiedcategory/badge.svg
+:target: https://coveralls.io/github/IMIO/collective.iconifiedcategory
+
 ==============================================================================
 collective.iconifiedcategory
 ==============================================================================
