@@ -20,3 +20,5 @@ output.xml
 *.swp
 log.html
 report.html
+include/
+lib/
