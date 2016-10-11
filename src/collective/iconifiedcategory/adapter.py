@@ -17,15 +17,10 @@ from plone.app.contenttypes.interfaces import ILink
 import logging
 logger = logging.getLogger('collective.iconifiedcategory')
 
-from collective.documentviewer.config import CONVERTABLE_TYPES
+from collective.documentviewer.settings import GlobalSettings
+from collective.documentviewer.utils import allowedDocumentType
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
-
-from Products.MimetypesRegistry.common import MimeTypeException
-
-MIME_TYPE_NOT_FOUND = 'The mime_type for annex at %s was not found in mimetypes_registry!'
-FILE_EXTENSION_NOT_FOUND = 'The extension used by MeetingFile at %s does not correspond to ' \
-    'an extension available in the mimetype %s found in mimetypes_registry!'
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -106,15 +101,10 @@ class CategorizedObjectPrintableAdapter(object):
         if ILink.providedBy(self.context):
             return False
         if IFile.providedBy(self.context):
-            return self.verify_mimetype(self.context.file)
+            return IIconifiedPreview(self.context).is_convertible()
         if IImage.providedBy(self.context):
             return True
         return True
-
-    def verify_mimetype(self, file):
-        if file.contentType in IIconifiedPreview(self.context).convertible_mimetypes:
-            return True
-        return False
 
     @property
     def error_message(self):
@@ -150,15 +140,15 @@ class CategorizedObjectPreviewAdapter(object):
           Returns the conversion status of context.
         """
         # not_convertable or awaiting conversion?
-        if not self._isConvertible():
+        if not self.is_convertible():
             return 'not_convertable'
 
         # under conversion?
-        annotations = IAnnotations(self.context)
-        if 'successfully_converted' not in annotations['collective.documentviewer']:
+        ann = IAnnotations(self.context)['collective.documentviewer']
+        if 'successfully_converted' not in ann:
             return 'in_progress'
 
-        if not annotations['collective.documentviewer']['successfully_converted'] is True:
+        if not ann['successfully_converted'] is True:
             return 'conversion_error'
 
         return 'converted'
@@ -168,50 +158,19 @@ class CategorizedObjectPreviewAdapter(object):
         """ """
         return self.status == 'converted'
 
-    def _isConvertible(self):
+    def is_convertible(self):
         """
-          Check if the context is convertible (hopefully).  If the mimetype is one taken into
-          account by collective.documentviewer CONVERTABLE_TYPES, then it should be convertible...
+          Check if the context is convertible (hopefully).
         """
-        # collective.documentviewer add an entry the annotations to relevant possibily convertible types
+        # collective.documentviewer add an entry the annotations
+        # to relevant possibily convertible types
         annotations = IAnnotations(self.context)
         if 'collective.documentviewer' not in annotations.keys():
             return False
 
-        # now check if current file mimetype is managed by collective.documentviewer
-        mr = api.portal.get_tool('mimetypes_registry')
-        try:
-            mime_type = mr.lookup(self.context.file.contentType)[0]
-        except MimeTypeException:
-            mime_type = None
-        if not mime_type:
-            logger.warning(MIME_TYPE_NOT_FOUND % self.context.absolute_url_path())
-            return False
-
-        if set(mime_type.mimetypes).intersection(self.convertible_mimetypes):
-            return True
-
-        return False
-
-    @property
-    def convertible_mimetypes(self):
-        """ """
-        # we have convertible extensions in collective.documentviewer
-        extensions = []
-        for convertible_type in CONVERTABLE_TYPES.iteritems():
-            extensions.extend(convertible_type[1].extensions)
-
-        # now build a list of mimetypes
-        mr = api.portal.get_tool('mimetypes_registry')
-        mimetypes = []
-        for extension in extensions:
-            content_type = mr.lookupExtension(extension)
-            if not content_type:
-                continue
-            for mtype in content_type.mimetypes:
-                if not mtype in mimetypes:
-                    mimetypes.append(mtype)
-        return mimetypes
+        settings = GlobalSettings(api.portal.get())
+        return allowedDocumentType(self.context,
+                                   settings.auto_layout_file_types)
 
 
 class IconifiedCategoryGroupAdapter(object):

@@ -211,7 +211,8 @@ def calculate_filesize(size):
 
 
 def warn_filesize(size):
-    filesizelimit = api.portal.get_registry_record('collective.iconifiedcategory.filesizelimit') or 5000000
+    filesizelimit = api.portal.get_registry_record(
+        'collective.iconifiedcategory.filesizelimit') or 5000000
     if size > filesizelimit:
         return True
     return False
@@ -220,12 +221,14 @@ def warn_filesize(size):
 def render_filesize(size):
     pretty_filesize = calculate_filesize(size)
     if warn_filesize(size):
-        pretty_filesize = u"<span class='warn_filesize' title='{0}'>{1}</span>".format(
-            translate('help_warn_filesize',
-                      domain='collective.iconifiedcategory',
-                      context=getRequest(),
-                      default='Annex size is huge, it could be difficult to be downloaded!'),
-            pretty_filesize)
+        pretty_filesize = \
+            u"<span class='warn_filesize' title='{0}'>{1}</span>".format(
+                translate('help_warn_filesize',
+                          domain='collective.iconifiedcategory',
+                          context=getRequest(),
+                          default='Annex size is huge, it could '
+                          'be difficult to be downloaded!'),
+                pretty_filesize)
     return pretty_filesize
 
 

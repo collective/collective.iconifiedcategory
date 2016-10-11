@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from collective.iconifiedcategory.testing import COLLECTIVE_ICONIFIED_CATEGORY_INTEGRATION_TESTING  # noqa
+from collective.iconifiedcategory.testing import \
+    COLLECTIVE_ICONIFIED_CATEGORY_INTEGRATION_TESTING
 from plone import api
 
 import unittest
@@ -26,7 +27,8 @@ class TestSetup(unittest.TestCase):
         from collective.iconifiedcategory.interfaces import (
             ICollectiveIconifiedCategoryLayer)
         from plone.browserlayer import utils
-        self.assertIn(ICollectiveIconifiedCategoryLayer, utils.registered_layers())
+        self.assertIn(ICollectiveIconifiedCategoryLayer,
+                      utils.registered_layers())
 
 
 class TestUninstall(unittest.TestCase):

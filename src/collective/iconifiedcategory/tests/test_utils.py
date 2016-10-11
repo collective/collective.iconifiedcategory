@@ -231,10 +231,8 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(u'Must be printed', utils.print_message(obj))
 
         obj.to_print = None
-        self.assertEqual(u'', utils.print_message(obj))
-
-        obj.to_print_message = u'foo'
-        self.assertEqual(u'foo', utils.print_message(obj))
+        self.assertEqual(u'Not convertible to a printable format',
+                         utils.print_message(obj))
 
     def test_confidential_message(self):
         obj = type('obj', (object, ), {})()

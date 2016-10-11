@@ -24,7 +24,8 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
-from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.event import \
+    IconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
@@ -52,9 +53,10 @@ def categorized_content_created(event):
             size = getattr(event.object, file_field_name).size
             if utils.warn_filesize(size):
                 plone_utils = api.portal.get_tool('plone_utils')
-                plone_utils.addPortalMessage(_("The annex that you just added has a large size and could be "
-                                               "difficult to download by users wanting to view it!"),
-                                             type='warning')
+                plone_utils.addPortalMessage(
+                    _("The annex that you just added has a large size and "
+                      "could be difficult to download by users wanting to "
+                      "view it!"), type='warning')
 
 
 def categorized_content_updated(event):
@@ -69,8 +71,8 @@ def categorized_content_updated(event):
 
         if hasattr(obj, 'to_print'):
             # if current 'to_print' is None, it means that current content
-            # could not be printable, but as it changed, we need to in this case
-            # to use the default value
+            # could not be printable, but as it changed,
+            # we need to in this case to use the default value
             if obj.to_print is None:
                 category = utils.get_category_object(obj, obj.content_category)
                 category_group = category.get_category_group(category)

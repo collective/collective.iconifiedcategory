@@ -10,8 +10,10 @@ Created by mpeeters
 from zope.component.interfaces import ObjectEvent
 from zope.interface import implements
 
-from collective.iconifiedcategory.interfaces import IIconifiedPrintChangedEvent
-from collective.iconifiedcategory.interfaces import IIconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.interfaces import \
+    IIconifiedPrintChangedEvent
+from collective.iconifiedcategory.interfaces import \
+    IIconifiedConfidentialChangedEvent
 
 
 class IconifiedChangedEvent(ObjectEvent):

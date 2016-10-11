@@ -10,7 +10,9 @@
   <include package="Products.CMFCore" />
   <include package="plone.app.dexterity" />
   <include package="plone.app.contenttypes" />
+  <include package="collective.documentviewer" />
   <include package="collective.fontawesome" />
+  <include package="collective.js.tooltipster" />
   <include package="collective.z3cform.select2" />
   <include package="z3c.json" />
 
