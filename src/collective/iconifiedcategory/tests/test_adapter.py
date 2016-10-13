@@ -18,9 +18,11 @@ from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
 from zope.interface import alsoProvides
 
+from time import sleep
 import os
 import unittest
 
+from collective.documentviewer.async import queueJob
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
 from collective.documentviewer.settings import Settings
@@ -28,7 +30,8 @@ from collective.iconifiedcategory import adapter
 from collective.iconifiedcategory import testing
 
 
-class TestCategorizedObjectInfoAdapter(unittest.TestCase):
+class BaseTestCase(unittest.TestCase):
+
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     @property
@@ -79,6 +82,9 @@ class TestCategorizedObjectInfoAdapter(unittest.TestCase):
         api.content.delete(self.portal['file'])
         api.content.delete(self.portal['image'])
 
+
+class TestCategorizedObjectInfoAdapter(BaseTestCase):
+
     def test_category(self):
         file_adapter = adapter.CategorizedObjectInfoAdapter(
             self.portal['file'])
@@ -99,8 +105,30 @@ class TestCategorizedObjectInfoAdapter(unittest.TestCase):
             self.portal['file'])
         self.assertEqual(3017, file_adapter._filesize)
 
+    def test_download_url(self):
+        image_adapter = adapter.CategorizedObjectInfoAdapter(
+            self.portal['image'])
+        self.assertEqual('http://nohost/plone/image/@@download/file/icon1.png',
+                         image_adapter._download_url)
 
-class TestCategorizedObjectPrintableAdapter(TestCategorizedObjectInfoAdapter):
+        file_adapter = adapter.CategorizedObjectInfoAdapter(
+            self.portal['file'])
+        self.assertEqual('http://nohost/plone/file/@@download/file/file.txt',
+                         file_adapter._download_url)
+
+    def test_preview_status(self):
+        image_adapter = adapter.CategorizedObjectInfoAdapter(
+            self.portal['image'])
+        self.assertEqual('not_convertable',
+                         image_adapter._preview_status)
+
+        file_adapter = adapter.CategorizedObjectInfoAdapter(
+            self.portal['file'])
+        self.assertEqual('not_convertable',
+                         file_adapter._preview_status)
+
+
+class TestCategorizedObjectPrintableAdapter(BaseTestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -151,7 +179,7 @@ class TestCategorizedObjectPrintableAdapter(TestCategorizedObjectInfoAdapter):
         self.assertFalse(obj.to_print)
 
 
-class TestCategorizedObjectPreviewAdapter(TestCategorizedObjectInfoAdapter):
+class TestCategorizedObjectPreviewAdapter(BaseTestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     def test_is_convertible(self):
@@ -196,3 +224,32 @@ class TestCategorizedObjectPreviewAdapter(TestCategorizedObjectInfoAdapter):
         for not_convertable in not_convertables:
             obj.file.contentType = not_convertable
             self.assertFalse(preview_adapter.is_convertible())
+
+    def test_status(self):
+        obj = self.portal['file']
+        # initialize annotations on file
+        Settings(obj)
+
+        preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
+
+        gsettings = GlobalSettings(self.portal)
+        self.assertEqual(gsettings.auto_layout_file_types, ['pdf'])
+
+        obj.file.contentType = 'application/rtf'
+        self.assertEqual(preview_adapter.status, 'not_convertable')
+
+        obj.file.contentType = 'application/pdf'
+        self.assertEqual(preview_adapter.status, 'in_progress')
+
+        queueJob(obj)
+        # not a real PDF actually...
+        self.assertEqual(preview_adapter.status, 'conversion_error')
+
+        # enable every supported types including txt
+        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        obj.file.contentType = 'text/plain'
+        # collective.documentviewer checks if element was modified
+        # or it does not convert again
+        sleep(0.1)
+        obj.notifyModified()
+        self.assertEqual(preview_adapter.status, 'converted')
