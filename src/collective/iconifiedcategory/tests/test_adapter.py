@@ -250,6 +250,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
         obj.file.contentType = 'text/plain'
         # collective.documentviewer checks if element was modified
         # or it does not convert again
-        sleep(0.1)
+        sleep(1)
         obj.notifyModified()
+        queueJob(obj)
         self.assertEqual(preview_adapter.status, 'converted')
