@@ -7,12 +7,14 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from zope.component import getMultiAdapter
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
+from plone.app.testing import logout
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
@@ -27,6 +29,7 @@ from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
 from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory import adapter
+from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory import testing
 
 
@@ -126,6 +129,21 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
             self.portal['file'])
         self.assertEqual('not_convertable',
                          file_adapter._preview_status)
+
+
+class TestCategorizedObjectAdapter(BaseTestCase):
+    layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
+
+    def test_can_view(self):
+        obj = self.portal.file
+        obj.manage_permission('View', roles=['Manager'])
+        cat_adapter = getMultiAdapter((obj, self.portal.REQUEST),
+                                      IIconifiedContent)
+
+        self.assertTrue(cat_adapter.can_view())
+        logout()
+        self.assertFalse(cat_adapter.can_view())
+        login(self.portal, 'adminuser')
 
 
 class TestCategorizedObjectPrintableAdapter(BaseTestCase):
@@ -237,13 +255,16 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
 
         obj.file.contentType = 'application/rtf'
         self.assertEqual(preview_adapter.status, 'not_convertable')
+        self.assertFalse(preview_adapter.converted)
 
         obj.file.contentType = 'application/pdf'
         self.assertEqual(preview_adapter.status, 'in_progress')
+        self.assertFalse(preview_adapter.converted)
 
         queueJob(obj)
         # not a real PDF actually...
         self.assertEqual(preview_adapter.status, 'conversion_error')
+        self.assertFalse(preview_adapter.converted)
 
         # enable every supported types including txt
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
@@ -254,3 +275,4 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
         obj.notifyModified()
         queueJob(obj)
         self.assertEqual(preview_adapter.status, 'converted')
+        self.assertTrue(preview_adapter.converted)
