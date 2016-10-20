@@ -7,13 +7,17 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from AccessControl import Unauthorized
 from Products.Five import BrowserView
+from Products.CMFCore.permissions import ModifyPortalContent
 from z3c.json.interfaces import IJSONWriter
 from zope.component import getAdapter
 from zope.component import getUtility
 from zope.event import notify
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent
+
+from plone import api
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
@@ -42,22 +46,32 @@ class BaseView(BrowserView):
             values['status'] = status
             if msg:
                 values['msg'] = self._translate(msg)
-            notify(ObjectModifiedEvent(self.context))
+            if not status == 1:
+                notify(ObjectModifiedEvent(self.context))
         except Exception:
             values['status'] = 1
             values['msg'] = self._translate(_('Error during process'))
         return writer.write(values)
 
     def get_current_values(self):
-        return {k: self.context.get(k) for k in self.attribute_mapping.keys()}
+        return {k: getattr(self.context, k)
+                for k in self.attribute_mapping.keys()}
 
     def get_values(self):
         return {k: self.request.get(v)
                 for k, v in self.attribute_mapping.items()}
 
     def set_values(self, values):
+        if not api.user.has_permission(ModifyPortalContent,
+                                       obj=self.context):
+            raise Unauthorized
+
+        if not values:
+            return 1, self._translate(_('No values to set'))
+
         for key, value in values.items():
             self.set_value(key, value)
+        return 0, self._translate(_('Values have been set'))
 
     def set_value(self, attrname, value):
         setattr(self.context, attrname, value)

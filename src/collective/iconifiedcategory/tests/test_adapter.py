@@ -7,22 +7,18 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from time import sleep
+
 from zope.component import getMultiAdapter
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 
-from plone import api
-from plone import namedfile
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
 from zope.interface import alsoProvides
-
-from time import sleep
-import os
-import unittest
 
 from collective.documentviewer.async import queueJob
 from collective.documentviewer.config import CONVERTABLE_TYPES
@@ -31,59 +27,7 @@ from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory import adapter
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory import testing
-
-
-class BaseTestCase(unittest.TestCase):
-
-    layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
-
-    @property
-    def image(self):
-        current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'icon1.png'), 'r')
-        return namedfile.NamedBlobFile(f.read(), filename=u'icon1.png')
-
-    @property
-    def file(self):
-        current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'file.txt'), 'r')
-        return namedfile.NamedBlobFile(f.read(), filename=u'file.txt')
-
-    def setUp(self):
-        self.portal = self.layer['portal']
-        api.user.create(
-            email='test@test.com',
-            username='adminuser',
-            password='secret',
-        )
-        api.user.grant_roles(
-            username='adminuser',
-            roles=['Manager'],
-        )
-        login(self.portal, 'adminuser')
-        api.content.create(
-            id='file',
-            type='File',
-            file=self.file,
-            container=self.portal,
-            content_category='config_-_group-1_-_category-1-1',
-            to_print=False,
-            confidential=False,
-        )
-        cat_id = 'config_-_group-1_-_category-1-1_-_subcategory-1-1-1'
-        api.content.create(
-            id='image',
-            type='Image',
-            image=self.image,
-            container=self.portal,
-            content_category=cat_id,
-            to_print=False,
-            confidential=False,
-        )
-
-    def tearDown(self):
-        api.content.delete(self.portal['file'])
-        api.content.delete(self.portal['image'])
+from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
 class TestCategorizedObjectInfoAdapter(BaseTestCase):
@@ -154,8 +98,8 @@ class TestCategorizedObjectPrintableAdapter(BaseTestCase):
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
 
-        # initialize annotations on file
         obj = self.portal['file']
+        # initialize collective.documentviewer annotations on file
         Settings(obj)
 
     def test_is_printable_default(self):
@@ -202,7 +146,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
 
     def test_is_convertible(self):
         obj = self.portal['file']
-        # initialize annotations on file
+        # initialize collective.documentviewer annotations on file
         Settings(obj)
 
         preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
@@ -245,7 +189,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
 
     def test_status(self):
         obj = self.portal['file']
-        # initialize annotations on file
+        # initialize collective.documentviewer annotations on file
         Settings(obj)
 
         preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
