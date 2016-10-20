@@ -16,10 +16,10 @@ before_install:
   - echo "[buildout]" > $HOME/.buildout/default.cfg
   - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
   - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-  - apt-get install rubygems
-  - apt-get install graphicsmagick
-  - apt-get install poppler-utils
-  - gem install docsplit
+  - sudo apt-get install rubygems
+  - sudo apt-get install graphicsmagick
+  - sudo apt-get install poppler-utils
+  - sudo gem install docsplit
 
 install:
   - python bootstrap.py -c travis.cfg
