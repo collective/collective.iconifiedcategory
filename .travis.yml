@@ -20,6 +20,7 @@ before_install:
   - sudo apt-get install graphicsmagick
   - sudo apt-get install poppler-utils
   - sudo gem install docsplit
+  - sudo apt-get install libreoffice
 
 install:
   - python bootstrap.py -c travis.cfg
