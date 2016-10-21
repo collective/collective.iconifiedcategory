@@ -11,6 +11,7 @@ from plone import api
 from plone import namedfile
 from plone.app.testing import login
 from plone.app.testing import logout
+from plone.dexterity.utils import createContentInContainer
 from zExceptions import Redirect
 
 import os
@@ -243,3 +244,38 @@ class TestUtils(unittest.TestCase):
 
         obj.confidential = False
         self.assertEqual(u'Not confidential', utils.confidential_message(obj))
+
+    def test_get_categorized_elements(self):
+        category = api.content.create(
+            type='ContentCategory',
+            title='Category X',
+            icon=self.icon,
+            container=self.config['group-1'],
+        )
+        document = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc-subcategory-move',
+            content_category='config_-_group-1_-_category-x',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertEquals(
+            utils.get_categorized_elements(self.portal),
+            [{'category_id': 'category-x',
+              'confidential': False,
+              'title': 'doc-subcategory-move',
+              'icon_url': 'config/group-1/category-x/@@download/icon/icon1.png',
+              'portal_type': 'Document',
+              'preview_status': 'not_convertable',
+              'download_url': None,
+              'to_print': False,
+              'category_uid': category.UID(),
+              'filesize': None,
+              'absolute_url': 'http://nohost/plone/doc-subcategory-move',
+              'warn_filesize': False,
+              'id': 'doc-subcategory-move',
+              'category_title': 'Category X'}])
+        self.assertRaises(Redirect, api.content.delete, category)
+        api.content.delete(document)
+        api.content.delete(category)

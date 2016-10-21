@@ -10,7 +10,6 @@ Created by mpeeters
 import copy
 from Acquisition import aq_inner
 from zope.globalrequest import getRequest
-from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
@@ -47,7 +46,7 @@ def query_config_root(context):
     adapter = queryAdapter(context, IIconifiedCategoryConfig)
     config_root = adapter and adapter.get_config() or None
     if not config_root and context is not None:
-        catalog = getToolByName(context, 'portal_catalog')
+        catalog = api.portal.get_tool('portal_catalog')
         query = {
             'portal_type': 'ContentCategoryConfiguration',
         }
@@ -80,7 +79,7 @@ def get_group(config, context):
 def get_categories(context):
     """Return the categories brains for a specific context"""
     config_root = get_config_root(context)
-    catalog = getToolByName(config_root, 'portal_catalog')
+    catalog = api.portal.get_tool('portal_catalog')
     query = {
         'portal_type': 'ContentCategory',
         'sort_on': 'sortable_title',
