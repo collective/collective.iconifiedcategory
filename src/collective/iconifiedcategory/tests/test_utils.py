@@ -19,9 +19,10 @@ import unittest
 
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
-class TestUtils(unittest.TestCase):
+class TestUtils(BaseTestCase, unittest.TestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -245,6 +246,56 @@ class TestUtils(unittest.TestCase):
         obj.confidential = False
         self.assertEqual(u'Not confidential', utils.confidential_message(obj))
 
+    def test_warn_filesize(self):
+        # default warning is for files > 5Mb
+        self.assertEqual(
+            api.portal.get_registry_record(
+                'collective.iconifiedcategory.filesizelimit'),
+            5000000)
+        file1 = api.content.create(
+            id='file1',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertEqual(file1.file.size, 3017)
+        self.assertFalse(utils.warn_filesize(file1.file.size))
+
+        # now enable warning (a specific portal_message is added when file created)
+        api.portal.set_registry_record(
+            'collective.iconifiedcategory.filesizelimit',
+            3000)
+        file2 = api.content.create(
+            id='file2',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertEqual(file2.file.size, 3017)
+        self.assertTrue(utils.warn_filesize(file2.file.size))
+
+    def test_render_filesize(self):
+        self.assertEqual(utils.render_filesize(1000),
+                         '1000 B')
+        self.assertEqual(utils.render_filesize(1024),
+                         '1 KB')
+        self.assertEqual(utils.render_filesize(5000),
+                         '4 KB')
+        self.assertEqual(utils.render_filesize(5000000),
+                         '4.8 MB')
+        self.assertEqual(utils.render_filesize(5000000),
+                         '4.8 MB')
+        # warning if filesize > 5000000
+        self.assertEqual(utils.render_filesize(5000001),
+                         u"<span class='warn_filesize' title='Annex size is huge, "
+                         "it could be difficult to be downloaded!'>4.8 MB</span>")
+
     def test_get_categorized_elements(self):
         category = api.content.create(
             type='ContentCategory',
@@ -260,8 +311,9 @@ class TestUtils(unittest.TestCase):
             to_print=False,
             confidential=False,
         )
-        self.assertEquals(
-            utils.get_categorized_elements(self.portal),
+        result = utils.get_categorized_elements(self.portal)
+        self.assertEqual(
+            result,
             [{'category_id': 'category-x',
               'confidential': False,
               'title': 'doc-subcategory-move',
@@ -276,6 +328,37 @@ class TestUtils(unittest.TestCase):
               'warn_filesize': False,
               'id': 'doc-subcategory-move',
               'category_title': 'Category X'}])
+        # filter on portal_type
+        self.assertEqual(
+            utils.get_categorized_elements(self.portal,
+                                           portal_type='Document'),
+            result)
+        self.failIf(utils.get_categorized_elements(self.portal,
+                                                   portal_type='Document2'))
+        # ask the_objects
+        self.assertEqual(
+            utils.get_categorized_elements(self.portal,
+                                           the_objects=True),
+            [document])
+        # sort_on
+        document2 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='2doc-subcategory-move',
+            content_category='config_-_group-1_-_category-x',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertEqual(
+            set(utils.get_categorized_elements(self.portal, the_objects=True)),
+            set([document, document2]))
+        self.assertEqual(
+            utils.get_categorized_elements(self.portal,
+                                           the_objects=True,
+                                           sort_on='title'),
+            [document2, document])
+        # teardown
         self.assertRaises(Redirect, api.content.delete, category)
         api.content.delete(document)
+        api.content.delete(document2)
         api.content.delete(category)
