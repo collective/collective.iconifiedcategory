@@ -57,7 +57,3 @@ class BaseTestCase(unittest.TestCase):
             to_print=False,
             confidential=False,
         )
-
-    def tearDown(self):
-        api.content.delete(self.portal['file'])
-        api.content.delete(self.portal['image'])
