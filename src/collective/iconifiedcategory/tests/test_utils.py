@@ -10,7 +10,6 @@ Created by mpeeters
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
-from plone.app.testing import logout
 from plone.dexterity.utils import createContentInContainer
 from zExceptions import Redirect
 
@@ -38,12 +37,6 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             roles=['Manager'],
         )
         login(self.portal, 'adminuser')
-
-    def tearDown(self):
-        if 'category-x' in self.config['group-1']:
-            api.content.delete(self.config['group-1']['category-x'])
-        api.user.delete(username='adminuser')
-        logout()
 
     @property
     def icon(self):
@@ -352,11 +345,17 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         self.assertEqual(
             set(utils.get_categorized_elements(self.portal, the_objects=True)),
             set([document, document2]))
+        # the_objects = True
         self.assertEqual(
             utils.get_categorized_elements(self.portal,
                                            the_objects=True,
                                            sort_on='title'),
             [document2, document])
+        # the_objects = False
+        result = utils.get_categorized_elements(self.portal, sort_on='title')
+        expected = [res['title'] for res in result]
+        self.assertEqual(expected, ['2doc-subcategory-move', 'doc-subcategory-move'])
+
         # teardown
         self.assertRaises(Redirect, api.content.delete, category)
         api.content.delete(document)
