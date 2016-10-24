@@ -164,7 +164,10 @@ def get_categorized_elements(context,
             else:
                 elements.append(element)
     if sort_on:
-        elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
+        if the_objects:
+            elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
+        else:
+            elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
     return elements
 
 
