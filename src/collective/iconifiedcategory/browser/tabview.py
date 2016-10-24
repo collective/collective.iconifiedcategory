@@ -257,8 +257,8 @@ class ActionColumn(column.GetAttrColumn):
             ))
         if obj.preview_status == 'converted':
             render.append(link.format(
-                href=u'{0}/view'.format(obj.getURL()),
+                href=u'{0}/documentviewer#document/p1'.format(obj.getURL()),
                 src=u'{0}/file_icon.png'.format(obj.getURL()),
-                title=_('View'),
+                title=_('Preview'),
             ))
         return u''.join(render)

@@ -33,14 +33,17 @@ class TestCategorizedTabView(BaseTestCase):
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
         # initialize collective.documentviewer annotations on file
-        Settings(self.portal['file'])
-        Settings(self.portal['image'])
-        notify(ObjectModifiedEvent(self.portal['file']))
-        notify(ObjectModifiedEvent(self.portal['image']))
+        file_obj = self.portal['file']
+        image_obj = self.portal['image']
+        Settings(file_obj)
+        Settings(image_obj)
+        notify(ObjectModifiedEvent(file_obj))
+        notify(ObjectModifiedEvent(image_obj))
 
         view = self.portal.restrictedTraverse('@@iconifiedcategory')
         result = view()
-        self.assertTrue('<a href="http://nohost/plone/image/documentviewer#document/p1" ' in result)
+        # by default, images are not handled by collective.documentviewer
+        self.assertTrue('<a href="http://nohost/plone/image" ' in result)
         self.assertTrue('<a href="http://nohost/plone/file/documentviewer#document/p1" ' in result)
 
     def test_PrintColumn(self):
