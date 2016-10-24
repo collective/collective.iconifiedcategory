@@ -28,6 +28,21 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertEqual(self.portal.categorized_elements, {})
         self.assertTrue('No element to display.' in view())
 
+    def test_table_render_when_preview_enabled(self):
+        # enable collective.documentviewer so document is convertible
+        gsettings = GlobalSettings(self.portal)
+        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        # initialize collective.documentviewer annotations on file
+        Settings(self.portal['file'])
+        Settings(self.portal['image'])
+        notify(ObjectModifiedEvent(self.portal['file']))
+        notify(ObjectModifiedEvent(self.portal['image']))
+
+        view = self.portal.restrictedTraverse('@@iconifiedcategory')
+        result = view()
+        self.assertTrue('<a href="http://nohost/plone/image/documentviewer#document/p1" ' in result)
+        self.assertTrue('<a href="http://nohost/plone/file/documentviewer#document/p1" ' in result)
+
     def test_PrintColumn(self):
         table = self.portal.restrictedTraverse('@@iconifiedcategory')
         brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file'].UID())[0],
