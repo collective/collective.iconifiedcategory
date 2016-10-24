@@ -37,4 +37,5 @@ after_success:
 
 notifications:
   email:
-    - martin.peeters@affinitic.be;devs@imio.be
+    - martin.peeters@affinitic.be
+    - devs@imio.be
