@@ -49,6 +49,11 @@ class CategorizedContent(object):
         except AttributeError:
             return self.__getattribute__(key)
 
+    def real_object(self):
+        if not hasattr(self, '_real_object'):
+            self._real_object = self._obj.getObject()
+        return self._real_object
+
 
 class CategorizedTable(Table):
     implements(ICategorizedTable)
@@ -179,10 +184,17 @@ class IconClickableColumn(column.GetAttrColumn):
     def is_deactivated(self, obj):
         return getattr(obj, self.attrName, False) is None
 
+    def is_editable(self, obj):
+        return _checkPermission(ModifyPortalContent,
+                                obj.real_object())
+
     def css_class(self, obj):
         if self.is_deactivated(obj):
             return ' deactivated'
-        return getattr(obj, self.attrName, False) and ' active' or ''
+        base_css = getattr(obj, self.attrName, False) and ' active' or ''
+        if self.is_editable(obj):
+            return '{0} editable'.format(base_css)
+        return base_css
 
     def renderCell(self, obj):
         link = (u'<a href="{0}" class="iconified-action{1}" alt="{2}" '

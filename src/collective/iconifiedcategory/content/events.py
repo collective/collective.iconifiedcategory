@@ -72,7 +72,7 @@ def categorized_content_updated(event):
         if hasattr(obj, 'to_print'):
             # if current 'to_print' is None, it means that current content
             # could not be printable, but as it changed,
-            # we need to in this case to use the default value
+            # in this case we use the default value
             if obj.to_print is None:
                 category = utils.get_category_object(obj, obj.content_category)
                 category_group = category.get_category_group(category)

@@ -46,7 +46,7 @@ jQuery(function($) {
 
   $('a.iconified-action').click(function() {
     var obj = $(this);
-    if (obj.hasClass('deactivated')) {
+    if (!obj.hasClass('editable')) {
       return false;
     }
     var values = {'iconified-value': !obj.hasClass('active')};
