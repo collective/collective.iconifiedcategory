@@ -75,13 +75,8 @@ class CategorizedTable(Table):
 
     @property
     def values(self):
-        brains = api.content.find(
-            context=self.context,
-            depth=1,
-            sort_on='getObjPositionInParent'
-        )
-        return [CategorizedContent(b, self.context) for b in brains
-                if b.content_category and (not self.portal_type or b.portal_type == self.portal_type)]
+        return [CategorizedContent(content, self.context) for content in
+                utils.get_categorized_elements(self.context, portal_type=self.portal_type, the_brains=True)]
 
     def render(self):
         if not len(self.rows):

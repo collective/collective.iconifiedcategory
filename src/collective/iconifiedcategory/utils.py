@@ -148,7 +148,8 @@ def _categorized_elements(context):
 def get_categorized_elements(context,
                              portal_type=None,
                              sort_on=None,
-                             the_objects=False):
+                             the_objects=False,
+                             the_brains=False):
     elements = []
     for uid, element in _categorized_elements(context).items():
         if portal_type and not element['portal_type'] == portal_type:
@@ -156,11 +157,14 @@ def get_categorized_elements(context,
         brains = api.content.find(context=context, UID=uid)
         if not brains:
             continue
-        adapter = getMultiAdapter((brains[0], context.REQUEST),
+        brain = brains[0]
+        adapter = getMultiAdapter((context, context.REQUEST, brain),
                                   IIconifiedContent)
         if adapter.can_view() is True:
             if the_objects:
-                elements.append(brains[0].getObject())
+                elements.append(brain.getObject())
+            if the_brains:
+                elements.append(brain)
             else:
                 elements.append(element)
     if sort_on:

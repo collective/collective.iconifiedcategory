@@ -120,9 +120,10 @@ class CategorizedObjectPrintableAdapter(object):
 
 class CategorizedObjectAdapter(object):
 
-    def __init__(self, context, request):
+    def __init__(self, context, request, brain):
         self.context = context
         self.request = request
+        self.brain = brain
 
     def can_view(self):
         return api.user.has_permission('View', obj=self.context)
