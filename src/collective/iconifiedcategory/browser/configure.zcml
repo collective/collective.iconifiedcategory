@@ -163,7 +163,7 @@
     name="action-column"
     for="zope.interface.Interface
          zope.interface.Interface
-         collective.iconifiedcategory.interfaces.ICategorizedConfidential"
+         collective.iconifiedcategory.interfaces.ICategorizedTable"
     provides="z3c.table.interfaces.IColumn"
     factory=".tabview.ActionColumn"
     />

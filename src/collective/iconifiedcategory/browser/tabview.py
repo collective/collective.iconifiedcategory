@@ -29,11 +29,11 @@ class CategorizedTabView(BrowserView):
 
     def table_render(self, portal_type=None):
         table = CategorizedTable(self.context, self.request, portal_type=portal_type)
-        self._prepare_table_render(table)
+        self._prepare_table_render(table, portal_type)
         table.update()
         return table.render()
 
-    def _prepare_table_render(self, table):
+    def _prepare_table_render(self, table, portal_type):
         alsoProvides(table, ICategorizedPrint)
         alsoProvides(table, ICategorizedConfidential)
 
