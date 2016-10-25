@@ -55,11 +55,23 @@ class TestVocabularies(unittest.TestCase):
             IVocabularyFactory,
             name='collective.iconifiedcategory.category_titles',
         )
-        vocabulary = vocabulary(self.portal)
-        terms = [t.title for t in vocabulary]
+        terms = [t.title for t in vocabulary(self.portal)]
         self.assertEqual(6, len(terms))
-        categories = [
+        expected = [
             'Category 1-1', 'Category 1-2', 'Category 1-3',
             'Category 2-1', 'Category 2-2', 'Category 2-3',
         ]
-        self.assertListEqual(sorted(categories), sorted(terms))
+        self.assertListEqual(sorted(expected), sorted(terms))
+
+        # add some predefined_title to some subcategories
+        subcat = self.portal.config['group-1']['category-1-1']['subcategory-1-1-1']
+        self.assertIsNone(subcat.predefined_title)
+        subcat.predefined_title = u'Some predefined title'
+        terms = [t.title for t in vocabulary(self.portal)]
+        self.assertEqual(7, len(terms))
+        expected = [
+            'Category 1-1', u'Some predefined title',
+            'Category 1-2', 'Category 1-3',
+            'Category 2-1', 'Category 2-2', 'Category 2-3',
+        ]
+        self.assertListEqual(sorted(expected), sorted(terms))
