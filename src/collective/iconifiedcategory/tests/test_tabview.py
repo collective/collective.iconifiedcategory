@@ -22,6 +22,10 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertTrue('<a href="http://nohost/plone/file" ' in result)
         self.assertTrue('<td>Category 1-1</td>' in result)
 
+        # 'to_print' and 'confidential' related columns are displayed by default
+        self.assertTrue('<th>To be printed</th>' in result)
+        self.assertTrue('<th>Confidential</th>' in result)
+
         # when nothing to display
         api.content.delete(self.portal['file'])
         api.content.delete(self.portal['image'])
