@@ -163,7 +163,7 @@ def get_categorized_elements(context,
         if adapter.can_view() is True:
             if the_objects:
                 elements.append(brain.getObject())
-            if the_brains:
+            elif the_brains:
                 elements.append(brain)
             else:
                 elements.append(element)

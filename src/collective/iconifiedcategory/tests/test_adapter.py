@@ -79,15 +79,11 @@ class TestCategorizedObjectAdapter(BaseTestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     def test_can_view(self):
-        obj = self.portal.file
-        obj.manage_permission('View', roles=['Manager'])
-        cat_adapter = getMultiAdapter((obj, self.portal.REQUEST),
+        brain = self.portal.portal_catalog(UID=self.portal['file'].UID())[0]
+        cat_adapter = getMultiAdapter((self.portal, self.portal.REQUEST, brain),
                                       IIconifiedContent)
 
         self.assertTrue(cat_adapter.can_view())
-        logout()
-        self.assertFalse(cat_adapter.can_view())
-        login(self.portal, 'adminuser')
 
 
 class TestCategorizedObjectPrintableAdapter(BaseTestCase):

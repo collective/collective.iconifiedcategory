@@ -126,7 +126,7 @@ class CategorizedObjectAdapter(object):
         self.brain = brain
 
     def can_view(self):
-        return api.user.has_permission('View', obj=self.context)
+        return True
 
 
 class CategorizedObjectPreviewAdapter(object):
