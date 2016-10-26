@@ -61,9 +61,11 @@ class BaseView(BrowserView):
         return {k: self.request.get(v)
                 for k, v in self.attribute_mapping.items()}
 
+    def _may_set_values(self, values):
+        return bool(api.user.has_permission(ModifyPortalContent, obj=self.context))
+
     def set_values(self, values):
-        if not api.user.has_permission(ModifyPortalContent,
-                                       obj=self.context):
+        if not self._may_set_values(values):
             raise Unauthorized
 
         if not values:
@@ -90,6 +92,15 @@ class ToPrintChangeView(BaseView):
         'to_print': 'iconified-value',
     }
 
+    def _may_set_values(self, values):
+        res = super(ToPrintChangeView, self)._may_set_values(values)
+        if res:
+            # is this functionnality enabled?
+            category = utils.get_category_object(self.context, self.context.content_category)
+            category_group = category.get_category_group()
+            res = category_group.to_be_printed_activated
+        return res
+
     def set_values(self, values):
         old_values = self.get_current_values()
         values['to_print'] = self.convert_boolean(values['to_print'])
@@ -108,6 +119,15 @@ class ConfidentialChangeView(BaseView):
     attribute_mapping = {
         'confidential': 'iconified-value',
     }
+
+    def _may_set_values(self, values):
+        res = super(ConfidentialChangeView, self)._may_set_values(values)
+        if res:
+            # is this functionnality enabled?
+            category = utils.get_category_object(self.context, self.context.content_category)
+            category_group = category.get_category_group()
+            res = category_group.confidentiality_activated
+        return res
 
     def set_values(self, values):
         old_values = self.get_current_values()

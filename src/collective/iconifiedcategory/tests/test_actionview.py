@@ -5,10 +5,12 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from z3c.json.interfaces import IJSONReader
 from zope.component import getUtility
 
+from plone import api
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
 from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory.browser.actionview import BaseView
+from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
@@ -57,13 +59,23 @@ class TestToPrintChangeView(BaseTestCase):
         Settings(obj)
         view = obj.restrictedTraverse('@@iconified-print')
 
-        # only doable if user has Modify portal content on obj
+        # works only if functionnality enabled and user have Modify portal content
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+
+        # fails if one of 2 conditions is not fullfilled
+        self.assertTrue(api.user.has_permission(ModifyPortalContent, obj=obj))
+        group.to_be_printed_activated = False
+        self.assertRaises(Unauthorized, view.set_values, {'to_print': True})
+        group.to_be_printed_activated = True
+
         obj.manage_permission(ModifyPortalContent, roles=[])
         self.assertRaises(Unauthorized, view.set_values, {'to_print': True})
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
+
+        # set to None when format not managed by collective.documentviewer
         self.assertFalse(obj.to_print)
         view.set_values({'to_print': True})
-        # set to None when format not managed by collective.documentviewer
         self.assertIsNone(obj.to_print)
 
         # will be correctly set if format is managed
@@ -81,10 +93,21 @@ class TestConfidentialChangeView(BaseTestCase):
         obj = self.portal['file']
         view = obj.restrictedTraverse('@@iconified-confidential')
 
-        # only doable if user has Modify portal content on obj
+        # works only if functionnality enabled and user have Modify portal content
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+
+        # fails if one of 2 conditions is not fullfilled
+        self.assertTrue(api.user.has_permission(ModifyPortalContent, obj=obj))
+        group.confidentiality_activated = False
+        self.assertRaises(Unauthorized, view.set_values, {'confidential': True})
+        group.confidentiality_activated = True
+
         obj.manage_permission(ModifyPortalContent, roles=[])
         self.assertRaises(Unauthorized, view.set_values, {'confidential': True})
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
+
+        # functionnality enabled and user have Modify portal content
         self.assertFalse(obj.confidential)
         view.set_values({'confidential': True})
         self.assertTrue(obj.confidential)
