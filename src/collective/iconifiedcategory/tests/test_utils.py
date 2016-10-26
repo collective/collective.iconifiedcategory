@@ -369,7 +369,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             [brain.UID for brain in
              utils.get_categorized_elements(self.portal,
                                             result_type='brains',
-                                            sort_on='Title')],
+                                            sort_on='sortable_title')],
             [document2.UID(), document.UID()])
 
         # teardown

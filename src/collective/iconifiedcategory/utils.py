@@ -155,13 +155,16 @@ def get_categorized_elements(context,
        - 'objects': categorized objects are returned;
        - 'brains': categorized brains are returned."""
     elements = []
-    for uid, element in _categorized_elements(context).items():
-        if portal_type and not element['portal_type'] == portal_type:
-            continue
-        brains = api.content.find(context=context, UID=uid)
-        if not brains:
-            continue
-        brain = brains[0]
+    categorized_elements = _categorized_elements(context)
+    uids = categorized_elements.keys()
+    query = {'UID': uids}
+    # sort in the catalog query if we want brains
+    if sort_on and result_type == 'brains':
+        query['sort_on'] = sort_on
+    if portal_type:
+        query['portal_type'] = portal_type
+    brains = api.content.find(context=context, **query)
+    for brain in brains:
         adapter = getMultiAdapter((context, context.REQUEST, brain),
                                   IIconifiedContent)
         if adapter.can_view() is True:
@@ -170,8 +173,8 @@ def get_categorized_elements(context,
             elif result_type == 'brains':
                 elements.append(brain)
             else:
-                elements.append(element)
-    if sort_on:
+                elements.append(categorized_elements[brain.UID])
+    if sort_on and not result_type == 'brains':
         if result_type == 'dict':
             elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
         else:

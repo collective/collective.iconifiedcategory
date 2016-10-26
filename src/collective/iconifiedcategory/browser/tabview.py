@@ -78,7 +78,8 @@ class CategorizedTable(Table):
         return [CategorizedContent(content, self.context) for content in
                 utils.get_categorized_elements(self.context,
                                                result_type='brains',
-                                               portal_type=self.portal_type)]
+                                               portal_type=self.portal_type,
+                                               sort_on='getObjPositionInParent')]
 
     def render(self):
         if not len(self.rows):
