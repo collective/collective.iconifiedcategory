@@ -173,7 +173,10 @@ def get_categorized_elements(context,
             elif result_type == 'brains':
                 elements.append(brain)
             else:
-                elements.append(categorized_elements[brain.UID])
+                # add 'UID' to the available infos
+                tmp = categorized_elements[brain.UID].copy()
+                tmp['UID'] = brain.UID
+                elements.append(tmp)
     if sort_on and not result_type == 'brains':
         if result_type == 'dict':
             elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])

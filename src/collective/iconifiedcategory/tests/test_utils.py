@@ -307,7 +307,8 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         result = utils.get_categorized_elements(self.portal)
         self.assertEqual(
             result,
-            [{'category_id': 'category-x',
+            [{'UID': document.UID(),
+              'category_id': 'category-x',
               'confidential': False,
               'title': 'doc-subcategory-move',
               'icon_url': 'config/group-1/category-x/@@download/icon/icon1.png',
