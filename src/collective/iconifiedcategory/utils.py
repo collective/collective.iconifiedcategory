@@ -146,10 +146,14 @@ def _categorized_elements(context):
 
 
 def get_categorized_elements(context,
+                             result_type='dict',
                              portal_type=None,
-                             sort_on=None,
-                             the_objects=False,
-                             the_brains=False):
+                             sort_on=None):
+    """Return categorized elements.
+       p_result_type may be :
+       - 'dict': default, essential metadata are returned as a dict;
+       - 'objects': categorized objects are returned;
+       - 'brains': categorized brains are returned."""
     elements = []
     for uid, element in _categorized_elements(context).items():
         if portal_type and not element['portal_type'] == portal_type:
@@ -161,17 +165,17 @@ def get_categorized_elements(context,
         adapter = getMultiAdapter((context, context.REQUEST, brain),
                                   IIconifiedContent)
         if adapter.can_view() is True:
-            if the_objects:
+            if result_type == 'objects':
                 elements.append(brain.getObject())
-            elif the_brains:
+            elif result_type == 'brains':
                 elements.append(brain)
             else:
                 elements.append(element)
     if sort_on:
-        if the_objects:
-            elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
-        else:
+        if result_type == 'dict':
             elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
+        else:
+            elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
     return elements
 
 

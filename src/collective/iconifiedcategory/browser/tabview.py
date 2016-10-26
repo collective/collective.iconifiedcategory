@@ -76,7 +76,9 @@ class CategorizedTable(Table):
     @property
     def values(self):
         return [CategorizedContent(content, self.context) for content in
-                utils.get_categorized_elements(self.context, portal_type=self.portal_type, the_brains=True)]
+                utils.get_categorized_elements(self.context,
+                                               result_type='brains',
+                                               portal_type=self.portal_type)]
 
     def render(self):
         if not len(self.rows):

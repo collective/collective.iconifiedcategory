@@ -328,11 +328,18 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             result)
         self.failIf(utils.get_categorized_elements(self.portal,
                                                    portal_type='Document2'))
-        # ask the_objects
+        # ask the objects
         self.assertEqual(
             utils.get_categorized_elements(self.portal,
-                                           the_objects=True),
+                                           result_type='objects'),
             [document])
+        # ask brains
+        self.assertEqual(
+            [brain.UID for brain in
+             utils.get_categorized_elements(self.portal,
+                                            result_type='brains')],
+            [document.UID()])
+
         # sort_on
         document2 = createContentInContainer(
             container=self.portal,
@@ -342,19 +349,28 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             to_print=False,
             confidential=False,
         )
-        self.assertEqual(
-            set(utils.get_categorized_elements(self.portal, the_objects=True)),
-            set([document, document2]))
-        # the_objects = True
-        self.assertEqual(
-            utils.get_categorized_elements(self.portal,
-                                           the_objects=True,
-                                           sort_on='title'),
-            [document2, document])
-        # the_objects = False
+        # result_type='dict'
         result = utils.get_categorized_elements(self.portal, sort_on='title')
         expected = [res['title'] for res in result]
         self.assertEqual(expected, ['2doc-subcategory-move', 'doc-subcategory-move'])
+
+        # result_type='objects'
+        self.assertEqual(
+            set(utils.get_categorized_elements(self.portal,
+                                               result_type='objects')),
+            set([document, document2]))
+        self.assertEqual(
+            utils.get_categorized_elements(self.portal,
+                                           result_type='objects',
+                                           sort_on='title'),
+            [document2, document])
+        # result_type='brains'
+        self.assertEqual(
+            [brain.UID for brain in
+             utils.get_categorized_elements(self.portal,
+                                            result_type='brains',
+                                            sort_on='Title')],
+            [document2.UID(), document.UID()])
 
         # teardown
         self.assertRaises(Redirect, api.content.delete, category)
