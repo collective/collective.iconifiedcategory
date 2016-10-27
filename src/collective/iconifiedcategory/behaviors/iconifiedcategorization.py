@@ -68,8 +68,12 @@ class IconifiedCategorization(object):
             category_group = category.get_category_group(category)
             if category_group.to_be_printed_activated:
                 self.context.to_print = category.to_print
+            else:
+                self.context.to_print = False
             if category_group.confidentiality_activated:
                 self.context.confidential = category.confidential
+            else:
+                self.context.confidential = False
         self.context.content_category = value
 
     @property
