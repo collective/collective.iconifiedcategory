@@ -26,6 +26,7 @@ from collective.iconifiedcategory import adapter
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.utils import get_category_object
 
 
 class TestCategorizedObjectInfoAdapter(BaseTestCase):
@@ -53,12 +54,12 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
     def test_download_url(self):
         image_adapter = adapter.CategorizedObjectInfoAdapter(
             self.portal['image'])
-        self.assertEqual('http://nohost/plone/image/@@download/file/icon1.png',
+        self.assertEqual('image/@@download/file/icon1.png',
                          image_adapter._download_url)
 
         file_adapter = adapter.CategorizedObjectInfoAdapter(
             self.portal['file'])
-        self.assertEqual('http://nohost/plone/file/@@download/file/file.txt',
+        self.assertEqual('file/@@download/file/file.txt',
                          file_adapter._download_url)
 
     def test_preview_status(self):
@@ -71,6 +72,17 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
             self.portal['file'])
         self.assertEqual('not_convertable',
                          file_adapter._preview_status)
+
+    def test_uri_are_relative_to_portal(self):
+        obj = self.portal['file']
+        file_adapter = adapter.CategorizedObjectInfoAdapter(
+            obj)
+        category = get_category_object(obj, obj.content_category)
+        infos = file_adapter.get_infos(category)
+        portal_url = self.portal.absolute_url()
+        self.assertTrue(not infos['relative_url'].startswith(portal_url))
+        self.assertTrue(not infos['download_url'].startswith(portal_url))
+        self.assertTrue(not infos['icon_url'].startswith(portal_url))
 
 
 class TestCategorizedObjectAdapter(BaseTestCase):

@@ -31,13 +31,14 @@ class CategorizedObjectInfoAdapter(object):
 
     def get_infos(self, category):
         filesize = self._filesize
+        portal_url = api.portal.get_tool('portal_url')
         return {
             'title': self.obj.Title(),
             'id': self.obj.getId(),
             'category_uid': category.category_uid,
             'category_id': category.category_id,
             'category_title': category.category_title,
-            'absolute_url': self.context.absolute_url(),
+            'relative_url': portal_url.getRelativeUrl(self.context),
             'download_url': self._download_url,
             'icon_url': utils.get_category_icon_url(category),
             'portal_type': self.obj.portal_type,
@@ -57,15 +58,16 @@ class CategorizedObjectInfoAdapter(object):
     def _download_url(self):
         """Return the download url (None by default) for the current object"""
         url = u'{url}/@@download/{field}/{filename}'
+        portal_url = api.portal.get_tool('portal_url')
         if IFile.providedBy(self.obj):
             return url.format(
-                url=self.context.absolute_url(),
+                url=portal_url.getRelativeUrl(self.context),
                 field='file',
                 filename=self.obj.file.filename,
             )
         if IImage.providedBy(self.obj):
             return url.format(
-                url=self.context.absolute_url(),
+                url=portal_url.getRelativeUrl(self.context),
                 field='file',
                 filename=self.obj.image.filename,
             )

@@ -318,7 +318,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
               'to_print': False,
               'category_uid': category.UID(),
               'filesize': None,
-              'absolute_url': 'http://nohost/plone/doc-subcategory-move',
+              'relative_url': 'doc-subcategory-move',
               'warn_filesize': False,
               'id': 'doc-subcategory-move',
               'category_title': 'Category X'}])
