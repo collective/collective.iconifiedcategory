@@ -12,9 +12,7 @@ jQuery(function($) {
     /* title field id depends on used behavior (basic, dublincore, ...)
        so we get the id beginning with 'form-widgets-' and ending with '-title' */
     field = $('input#[id^=form-widgets-][id$=-title]')
-    if (!field.val()) {
-      field.val(obj.val());
-    }
+    field.val(obj.val());
   };
 
   $(category_selector).change(function() {

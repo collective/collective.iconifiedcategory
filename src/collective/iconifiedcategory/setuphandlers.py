@@ -32,6 +32,7 @@ def create_config(context):
             type='ContentCategoryGroup',
             title='Group {0}'.format(idx),
             container=config,
+            to_be_printed_activated=True
         )
         groups.append(obj)
     for group_idx, group in enumerate(groups):

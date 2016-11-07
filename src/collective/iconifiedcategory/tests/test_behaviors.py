@@ -28,8 +28,8 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         """ """
         category_group = self.portal.config['group-1']
         category = self.portal.config['group-1']['category-1-1']
-        self.assertFalse(category_group.to_be_printed_activated)
-        self.assertFalse(category_group.confidentiality_activated)
+        category_group.to_be_printed_activated = False
+        category_group.confidentiality_activated = False
         category.to_print = True
         category.confidential = True
         obj = api.content.create(
