@@ -15,6 +15,7 @@ class CategorizedChildView(BrowserView):
 
     def __call__(self, portal_type=None):
         """ """
+        self.portal_type = portal_type
         self.categorized_elements = get_categorized_elements(self.context,
                                                              portal_type=portal_type,
                                                              sort_on='category_title')

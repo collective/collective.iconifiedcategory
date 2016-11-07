@@ -38,6 +38,11 @@
     />
 
   <subscriber
+    for="OFS.interfaces.IObjectClonedEvent"
+    handler=".events.categorized_content_container_cloned"
+    />
+
+  <subscriber
     for=".category.ICategory
          OFS.interfaces.IObjectWillBeRemovedEvent"
     handler=".events.category_before_remove"

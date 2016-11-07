@@ -378,3 +378,32 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         api.content.delete(document)
         api.content.delete(document2)
         api.content.delete(category)
+
+    def test_update_all_categorized_elements(self):
+        document1 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc1',
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        document1UID = document1.UID()
+        document2 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc2',
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        document2UID = document2.UID()
+        self.assertEqual(len(self.portal.categorized_elements), 2)
+        self.assertTrue(document1UID in self.portal.categorized_elements)
+        self.assertTrue(document2UID in self.portal.categorized_elements)
+        self.portal.categorized_elements = {}
+        self.assertEqual(len(self.portal.categorized_elements), 0)
+        utils.update_all_categorized_elements(self.portal)
+        self.assertEqual(len(self.portal.categorized_elements), 2)
+        self.assertTrue(document1UID in self.portal.categorized_elements)
+        self.assertTrue(document2UID in self.portal.categorized_elements)

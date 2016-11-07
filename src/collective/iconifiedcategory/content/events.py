@@ -98,6 +98,10 @@ def categorized_content_removed(event):
         catalog.unindex(obj.related_category)
 
 
+def categorized_content_container_cloned(event):
+    utils.update_all_categorized_elements(event.object)
+
+
 def category_before_remove(obj, event):
     if ICategory.providedBy(obj) is True:
         if utils.has_relations(obj) is True:

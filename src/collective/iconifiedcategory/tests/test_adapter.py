@@ -24,7 +24,6 @@ from collective.documentviewer.settings import GlobalSettings
 from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory import adapter
 from collective.iconifiedcategory.interfaces import IIconifiedContent
-from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
 
@@ -86,7 +85,6 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
 
 
 class TestCategorizedObjectAdapter(BaseTestCase):
-    layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     def test_can_view(self):
         brain = self.portal.portal_catalog(UID=self.portal['file'].UID())[0]
@@ -97,7 +95,6 @@ class TestCategorizedObjectAdapter(BaseTestCase):
 
 
 class TestCategorizedObjectPrintableAdapter(BaseTestCase):
-    layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     def setUp(self):
         super(TestCategorizedObjectPrintableAdapter, self).setUp()
@@ -148,7 +145,6 @@ class TestCategorizedObjectPrintableAdapter(BaseTestCase):
 
 
 class TestCategorizedObjectPreviewAdapter(BaseTestCase):
-    layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
     def test_is_convertible(self):
         obj = self.portal['file']

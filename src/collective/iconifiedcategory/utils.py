@@ -131,6 +131,17 @@ def update_categorized_elements(parent, obj, category):
     parent._p_changed = True
 
 
+def update_all_categorized_elements(container):
+    if 'categorized_elements' in container.__dict__:
+        container.categorized_elements = {}
+        for obj in container.objectValues():
+            if hasattr(obj, 'content_category'):
+                category = get_category_object(obj, obj.content_category)
+                uid, infos = get_categorized_infos(obj, category)
+                container.categorized_elements[uid] = infos
+        container._p_changed = True
+
+
 def remove_categorized_element(parent, obj):
     if obj.UID() in parent.categorized_elements:
         del parent.categorized_elements[obj.UID()]
@@ -169,7 +180,7 @@ def get_categorized_elements(context,
                                   IIconifiedContent)
         if adapter.can_view() is True:
             if result_type == 'objects':
-                elements.append(brain.getObject())
+                elements.append(brain._unrestrictedGetObject())
             elif result_type == 'brains':
                 elements.append(brain)
             else:
