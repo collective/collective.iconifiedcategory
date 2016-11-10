@@ -32,14 +32,6 @@ from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 def categorized_content_created(event):
     if hasattr(event.object, 'content_category'):
-        if hasattr(event.object, 'to_print'):
-            adapter = getAdapter(event.object, IIconifiedPrintable)
-            adapter.update_object()
-            notify(IconifiedPrintChangedEvent(
-                event.object,
-                None,
-                event.object.to_print,
-            ))
         if hasattr(event.object, 'confidential'):
             notify(IconifiedConfidentialChangedEvent(
                 event.object,
