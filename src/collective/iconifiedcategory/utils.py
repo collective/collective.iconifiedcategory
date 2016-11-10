@@ -34,10 +34,6 @@ from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 
 
-def format_id(*args):
-    return CAT_SEPARATOR.join(args)
-
-
 def format_id_css(id):
     return id.replace(CAT_SEPARATOR, CSS_SEPARATOR)
 
@@ -96,23 +92,32 @@ def get_categories(context, the_objects=False, only_enabled=True):
 
 def calculate_category_id(category):
     """Return the caculated category id for a category object"""
-    return '{0}_-_{1}_-_{2}'.format(
-        category.aq_parent.aq_parent.id,
-        category.aq_parent.id,
-        category.id,
-    )
+    if category.portal_type == 'ContentCategory':
+        return '{0}_-_{1}_-_{2}'.format(
+            category.aq_parent.aq_parent.id,
+            category.aq_parent.id,
+            category.id,
+        )
+    if category.portal_type == 'ContentSubcategory':
+        return '{0}_-_{1}_-_{2}_-_{3}'.format(
+            category.aq_parent.aq_parent.aq_parent.id,
+            category.aq_parent.aq_parent.id,
+            category.aq_parent.id,
+            category.id,
+        )
 
 
 def get_category_object(context, category_id):
-    obj = get_config_root(context)
+    config_root = get_config_root(context)
+    config_group = get_group(config_root, context)
     depth = 1
-    if ICategoryGroup.providedBy(obj):
+    if ICategoryGroup.providedBy(config_group):
         depth = 2
     for path in category_id.split(CAT_SEPARATOR)[depth:]:
-        obj = obj[path]
-    if not ICategory.providedBy(obj) and not ISubcategory.providedBy(obj):
+        config_group = config_group[path]
+    if not ICategory.providedBy(config_group) and not ISubcategory.providedBy(config_group):
         raise KeyError
-    return obj
+    return config_group
 
 
 def get_category_icon_url(category):

@@ -31,9 +31,10 @@ class CategoryVocabulary(object):
                 enabled=True,
             )
             for subcategory in subcategories:
+                subcategory_id = utils.calculate_category_id(subcategory.getObject())
                 terms.append(SimpleVocabulary.createTerm(
-                    utils.format_id(category_id, subcategory.id),
-                    utils.format_id(category_id, subcategory.id),
+                    subcategory_id,
+                    subcategory_id,
                     subcategory.Title,
                 ))
         return SimpleVocabulary(terms)
@@ -59,11 +60,12 @@ class CategoryTitleVocabulary(object):
                 enabled=True,
             )
             for subcategory in subcategories:
-                obj = subcategory.getObject()
-                if obj.predefined_title:
+                subcategory = subcategory.getObject()
+                subcategory_id = utils.calculate_category_id(subcategory)
+                if subcategory.predefined_title:
                     terms.append(SimpleVocabulary.createTerm(
-                        utils.format_id(category_id, subcategory.id),
-                        utils.format_id(category_id, subcategory.id),
-                        obj.predefined_title,
+                        subcategory_id,
+                        subcategory_id,
+                        subcategory.predefined_title,
                     ))
         return SimpleVocabulary(terms)
