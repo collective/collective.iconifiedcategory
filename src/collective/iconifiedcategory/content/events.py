@@ -108,7 +108,7 @@ def category_before_remove(obj, event):
                   'another object and cannot be deleted'),
                 type='error',
             )
-            raise Redirect(obj.absolute_url())
+            raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
 
 
 def subcategory_before_remove(obj, event):
@@ -119,7 +119,7 @@ def subcategory_before_remove(obj, event):
                   'deleted'),
                 type='error',
             )
-            raise Redirect(obj.absolute_url())
+            raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
 
 
 def category_moved(obj, event):
@@ -131,7 +131,7 @@ def category_moved(obj, event):
               'another object and cannot be deleted'),
             type='error',
         )
-        raise Redirect(event.oldParent.absolute_url())
+        raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
 
 
 def subcategory_moved(obj, event):
@@ -143,4 +143,4 @@ def subcategory_moved(obj, event):
               'deleted'),
             type='error',
         )
-        raise Redirect(event.oldParent.absolute_url())
+        raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
