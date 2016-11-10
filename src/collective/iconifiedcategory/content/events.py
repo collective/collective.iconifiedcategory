@@ -95,7 +95,13 @@ def categorized_content_removed(event):
         utils.remove_categorized_element(obj.aq_parent, obj)
 
         catalog = getUtility(ICatalog)
-        catalog.unindex(obj.related_category)
+        try:
+            # do not fail if relation is not found
+            # it can be the case if event.object is created
+            # then removed in the same transaction
+            catalog.unindex(obj.related_category)
+        except KeyError:
+            pass
 
 
 def categorized_content_container_cloned(event):

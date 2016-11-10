@@ -17,17 +17,16 @@ class CategoryVocabulary(object):
 
     def __call__(self, context):
         terms = []
-        categories = utils.get_categories(context)
+        categories = utils.get_categories(context, the_objects=True)
         for category in categories:
-            obj = category._unrestrictedGetObject()
-            category_id = utils.calculate_category_id(obj)
+            category_id = utils.calculate_category_id(category)
             terms.append(SimpleVocabulary.createTerm(
                 category_id,
                 category_id,
-                category.Title,
+                category.Title(),
             ))
             subcategories = api.content.find(
-                context=obj,
+                context=category,
                 portal_type='ContentSubcategory',
                 enabled=True,
             )
@@ -45,18 +44,17 @@ class CategoryTitleVocabulary(object):
     def __call__(self, context):
         terms = []
         terms = []
-        categories = utils.get_categories(context)
+        categories = utils.get_categories(context, the_objects=True)
         for category in categories:
-            obj = category._unrestrictedGetObject()
-            category_id = utils.calculate_category_id(obj)
-            if obj.predefined_title:
+            category_id = utils.calculate_category_id(category)
+            if category.predefined_title:
                 terms.append(SimpleVocabulary.createTerm(
                     category_id,
                     category_id,
-                    obj.predefined_title,
+                    category.predefined_title,
                 ))
             subcategories = api.content.find(
-                context=obj,
+                context=category,
                 portal_type='ContentSubcategory',
                 enabled=True,
             )

@@ -407,3 +407,9 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         self.assertEqual(len(self.portal.categorized_elements), 2)
         self.assertTrue(document1UID in self.portal.categorized_elements)
         self.assertTrue(document2UID in self.portal.categorized_elements)
+
+        # if a content_category is wrong, element is no more stored in categorized_elements
+        document1.content_category = 'some_wrong_category_id'
+        utils.update_all_categorized_elements(self.portal)
+        self.assertEqual(len(self.portal.categorized_elements), 1)
+        self.assertTrue(document2UID in self.portal.categorized_elements)

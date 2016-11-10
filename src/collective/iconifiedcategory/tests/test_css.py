@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from plone import api
+from zope.annotation import IAnnotations
 
 
 class TestIconifiedCategoryCSS(BaseTestCase):
@@ -21,3 +23,12 @@ class TestIconifiedCategoryCSS(BaseTestCase):
         self.assertTrue("background: transparent url("
                         "'http://nohost/plone/config/group-2/category-2-3/@@download/icon/icon3.png')"
                         in css)
+
+        # delete the config
+        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['image'])
+        api.content.delete(self.portal['config'])
+        # view is memoized, we need to clean the cache
+        annotations = IAnnotations(self.portal.REQUEST)
+        del annotations['plone.memoize']
+        self.assertEqual(view(), '')

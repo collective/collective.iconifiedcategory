@@ -27,6 +27,7 @@ from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
+from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedContent
@@ -76,17 +77,21 @@ def get_group(config, context):
     return adapter.get_group()
 
 
-def get_categories(context):
+def get_categories(context, the_objects=False, only_enabled=True):
     """Return the categories brains for a specific context"""
     config_root = get_config_root(context)
+    config_group = get_group(config_root, context)
     catalog = api.portal.get_tool('portal_catalog')
     query = {
-        'portal_type': 'ContentCategory',
+        'object_provides': 'collective.iconifiedcategory.content.category.ICategory',
         'sort_on': 'sortable_title',
-        'path': '/'.join(config_root.getPhysicalPath()),
-        'enabled': True
+        'path': '/'.join(config_group.getPhysicalPath()),
+        'enabled': only_enabled
     }
-    return catalog.unrestrictedSearchResults(query)
+    res = catalog.unrestrictedSearchResults(query)
+    if the_objects:
+        res = [brain.getObject() for brain in res]
+    return res
 
 
 def calculate_category_id(category):
@@ -105,6 +110,8 @@ def get_category_object(context, category_id):
         depth = 2
     for path in category_id.split(CAT_SEPARATOR)[depth:]:
         obj = obj[path]
+    if not ICategory.providedBy(obj) and not ISubcategory.providedBy(obj):
+        raise KeyError
     return obj
 
 
@@ -136,7 +143,10 @@ def update_all_categorized_elements(container):
         container.categorized_elements = {}
         for obj in container.objectValues():
             if hasattr(obj, 'content_category'):
-                category = get_category_object(obj, obj.content_category)
+                try:
+                    category = get_category_object(obj, obj.content_category)
+                except KeyError:
+                    continue
                 uid, infos = get_categorized_infos(obj, category)
                 container.categorized_elements[uid] = infos
         container._p_changed = True
