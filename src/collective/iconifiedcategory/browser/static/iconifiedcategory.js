@@ -6,8 +6,8 @@ jQuery(function($) {
 
   var define_default_title = function(select) {
     var obj = $('#' + select.val());
-    if (!obj) {
-      return
+    if (!obj.length) {
+      return false;
     }
     /* title field id depends on used behavior (basic, dublincore, ...)
        so we get the id beginning with 'form-widgets-' and ending with '-title' */
