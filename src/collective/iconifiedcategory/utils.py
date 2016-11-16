@@ -113,11 +113,12 @@ def get_category_object(context, category_id):
     depth = 1
     if ICategoryGroup.providedBy(config_group):
         depth = 2
+    category = None
     for path in category_id.split(CAT_SEPARATOR)[depth:]:
-        config_group = config_group[path]
-    if not ICategory.providedBy(config_group) and not ISubcategory.providedBy(config_group):
+        category = config_group[path]
+    if not ICategory.providedBy(category) and not ISubcategory.providedBy(category):
         raise KeyError
-    return config_group
+    return category
 
 
 def get_category_icon_url(category):
