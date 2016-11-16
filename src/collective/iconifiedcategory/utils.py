@@ -113,9 +113,9 @@ def get_category_object(context, category_id):
     depth = 1
     if ICategoryGroup.providedBy(config_group):
         depth = 2
-    category = None
+    category = config_group
     for path in category_id.split(CAT_SEPARATOR)[depth:]:
-        category = config_group[path]
+        category = category[path]
     if not ICategory.providedBy(category) and not ISubcategory.providedBy(category):
         raise KeyError
     return category
