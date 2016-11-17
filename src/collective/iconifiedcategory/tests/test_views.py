@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import lxml
+from AccessControl import Unauthorized
+from Products.Five import zcml
 from plone import api
+from collective import iconifiedcategory as collective_iconifiedcategory
 from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
@@ -29,3 +32,28 @@ class TestCategorizedChildView(BaseTestCase):
         api.content.delete(self.portal['image'])
         result = lxml.html.fromstring(view())
         self.assertEqual(result.text, 'Nothing.')
+
+
+class TestCanViewAwareDownload(BaseTestCase):
+
+    def test_default(self):
+        # by default @@download returns the file, here
+        # it is also the case as IIconifiedContent.can_view adapter returns True by default
+        file_obj = self.portal['file']
+        img_obj = self.portal['image']
+        self.assertTrue(isinstance(file_obj.restrictedTraverse('@@download')(), file))
+        self.assertTrue(isinstance(file_obj.restrictedTraverse('@@display-file')(), file))
+        self.assertTrue(isinstance(img_obj.restrictedTraverse('@@download')(), file))
+        self.assertTrue(isinstance(img_obj.restrictedTraverse('@@display-file')(), file))
+
+    def test_can_not_view(self):
+        # register an adapter that will return False
+        zcml.load_config('testing-adapters.zcml', collective_iconifiedcategory)
+        file_obj = self.portal['file']
+        img_obj = self.portal['image']
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@display-file'))
+        self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@download'))
+        self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@display-file'))
+        # cleanUp zmcl.load_config because it impact other tests
+        zcml.cleanUp()

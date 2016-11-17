@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from AccessControl import Unauthorized
+from zope.component import getMultiAdapter
 from plone import api
+from plone.namedfile.browser import Download
+from plone.namedfile.browser import DisplayFile
 from Products.Five import BrowserView
+from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.utils import get_categorized_elements
 from collective.iconifiedcategory.utils import render_filesize
 
@@ -61,3 +66,20 @@ class CategorizedChildView(BrowserView):
     def categorized_elements_more_infos_url(self):
         """ """
         return "{0}/{1}".format(self.context.absolute_url(), "@@iconifiedcategory")
+
+
+class CanViewAwareDownload(Download):
+    """ """
+    def __call__(self):
+        catalog = api.portal.get_tool('portal_catalog')
+        brains = catalog(UID=self.context.UID())
+        brain = brains[0]
+        adapter = getMultiAdapter((self.context.aq_parent, self.request, brain),
+                                  IIconifiedContent)
+        if not adapter.can_view():
+            raise Unauthorized
+        return super(CanViewAwareDownload, self).__call__()
+
+
+class CanViewAwareDisplayFile(DisplayFile, CanViewAwareDownload):
+    """ """
