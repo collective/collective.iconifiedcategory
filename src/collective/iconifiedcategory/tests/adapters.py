@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from collective.iconifiedcategory.adapter import CategorizedObjectAdapter
 
 
