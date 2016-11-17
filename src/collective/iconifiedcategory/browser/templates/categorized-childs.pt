@@ -9,7 +9,8 @@
           <img src="" alt="" tal:attributes="src string:${view/portal_url}/${element/icon_url};
                                              alt element/category_title;
                                              title element/category_title" />
-          <span tal:content="element/title"></span>
+          <span tal:content="element/title"
+                tal:attributes="title element/description"></span>
           <tal:filesize tal:condition="element/warn_filesize">
             (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
           </tal:filesize>

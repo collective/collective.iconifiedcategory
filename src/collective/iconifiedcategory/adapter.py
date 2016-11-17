@@ -34,6 +34,7 @@ class CategorizedObjectInfoAdapter(object):
         portal_url = api.portal.get_tool('portal_url')
         return {
             'title': self.obj.Title(),
+            'description': self.obj.Description(),
             'id': self.obj.getId(),
             'category_uid': category.category_uid,
             'category_id': category.category_id,

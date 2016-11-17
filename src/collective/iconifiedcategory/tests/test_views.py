@@ -18,7 +18,9 @@ class TestCategorizedChildView(BaseTestCase):
         self.assertTrue('<img src="http://nohost/plone/config/group-1/category-1-1/@@download/icon/icon1.png"'
                         in result)
         self.assertTrue('<a href="http://nohost/plone/file/@@download/file/file.txt">' in result)
+        self.assertTrue('<span title="File description">file.txt</span>' in result)
         self.assertTrue('<a href="http://nohost/plone/image/@@download/file/icon1.png">' in result)
+        self.assertTrue('<span title="Image description">icon1.png</span>' in result)
 
         # in case a file is too large, a warning is displayed
         # manipulate stored categorized_elements

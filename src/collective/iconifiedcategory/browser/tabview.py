@@ -98,7 +98,7 @@ class TitleColumn(column.GetAttrColumn):
         content = (
             u'<a href="{link}" alt="{title}" title="{title}" target="{target}">'
             u'<img src="{icon}" alt="{category}" title="{category}" />'
-            u' {title}</a>'
+            u' {title}</a><p class="discreet">{description}</p>'
         )
         url = obj.getURL()
         target = ''
@@ -111,6 +111,7 @@ class TitleColumn(column.GetAttrColumn):
             target=target,
             icon=obj.icon_url,
             category=safe_unicode(obj.category_title),
+            description=safe_unicode(obj.Description),
         )
 
 
