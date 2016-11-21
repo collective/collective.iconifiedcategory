@@ -23,7 +23,6 @@
 
   <include file="adapter.zcml" />
 
-  <adapter name="enabled" factory=".indexes.enabled" />
 
   <genericsetup:registerProfile
       name="default"
@@ -66,6 +65,17 @@
     provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.category_titles"
     factory=".vocabularies.CategoryTitleVocabulary"
+    />
+
+  <!-- indexes -->
+  <adapter
+    name="enabled"
+    factory=".indexes.enabled"
+    />
+
+  <adapter
+    name="content_category_uid"
+    factory=".indexes.content_category_uid"
     />
 
 </configure>

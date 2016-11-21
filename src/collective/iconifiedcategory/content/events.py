@@ -8,14 +8,9 @@ Created by mpeeters
 """
 
 from Products.statusmessages.interfaces import IStatusMessage
-from z3c.relationfield import RelationValue
-from z3c.relationfield.event import _setRelation
 from zExceptions import Redirect
 from zope.component import getAdapter
-from zope.component import getUtility
 from zope.event import notify
-from zope.intid.interfaces import IIntIds
-from zc.relation.interfaces import ICatalog
 
 from plone import api
 from plone.rfc822.interfaces import IPrimaryFieldInfo
@@ -54,12 +49,7 @@ def categorized_content_created(event):
 def categorized_content_updated(event):
     if hasattr(event.object, 'content_category'):
         obj = event.object
-        intids = getUtility(IIntIds)
         target = utils.get_category_object(obj, obj.content_category)
-        relation = RelationValue(intids.getId(target))
-
-        obj.related_category = relation
-        _setRelation(obj, 'related_category', relation)
 
         if hasattr(obj, 'to_print'):
             # if current 'to_print' is None, it means that current content
@@ -85,15 +75,6 @@ def categorized_content_removed(event):
     if hasattr(event.object, 'content_category'):
         obj = event.object
         utils.remove_categorized_element(obj.aq_parent, obj)
-
-        catalog = getUtility(ICatalog)
-        try:
-            # do not fail if relation is not found
-            # it can be the case if event.object is created
-            # then removed in the same transaction
-            catalog.unindex(obj.related_category)
-        except KeyError:
-            pass
 
 
 def categorized_content_container_cloned(event):

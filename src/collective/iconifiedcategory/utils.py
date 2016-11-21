@@ -8,20 +8,16 @@ Created by mpeeters
 """
 
 import copy
-from Acquisition import aq_inner
 from zope.globalrequest import getRequest
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.memoize import ram
 from time import time
-from zc.relation.interfaces import ICatalog
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
-from zope.component import queryUtility
 from zope.i18n import translate
-from zope.intid.interfaces import IIntIds
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
@@ -213,14 +209,8 @@ def get_categorized_elements(context,
 
 
 def get_back_references(obj):
-    catalog = queryUtility(ICatalog)
-    intids = queryUtility(IIntIds)
-    if not catalog or not intids:
-        return []
-    return catalog.findRelations(
-        dict(to_id=intids.getId(aq_inner(obj)),
-             from_attribute='related_category'),
-    )
+    portal = api.portal.get()
+    return api.content.find(context=portal, content_category_uid=obj.UID())
 
 
 def has_relations(obj):
