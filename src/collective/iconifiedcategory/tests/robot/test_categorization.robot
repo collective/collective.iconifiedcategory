@@ -76,6 +76,7 @@ Select a category
   [Arguments]  ${category}
 
   Click Link  css=a.select2-choice
+  Click Link  css=a.select2-choice
   Click Element  css=span.config-group-1-${category}
 
 # --- Given ------------------------------------------------------------------
