@@ -20,7 +20,7 @@
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>
-  <property name="klass">plone.app.contenttypes.content.Folder</property>
+  <property name="klass">collective.iconifiedcategory.content.categoryconfiguration.CategoryConfiguration</property>
   <property name="model_file">plone.app.contenttypes.schema:folder.xml</property>
   <property name="behaviors" purge="false">
     <element value="plone.app.content.interfaces.INameFromTitle"/>

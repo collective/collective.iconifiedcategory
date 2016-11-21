@@ -11,6 +11,9 @@ from Acquisition import aq_base
 from Products.Five import BrowserView
 from zope.interface import implements
 
+from collective.iconifiedcategory.content.base import ICategorize
+from collective.iconifiedcategory.content.categoryconfiguration import ICategoryConfiguration
+from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySubtyper
 
 
@@ -24,6 +27,19 @@ class IconifiedCategoryPublicSubtyper(BrowserView):
     @property
     def have_categorized_elements(self):
         """See IIconifiedCategorySubtyper"""
+        return False
+
+    @property
+    def on_config(self):
+        """Verifiy if we are on a config or category folder"""
+        interfaces = (
+            ICategorize,
+            ICategoryConfiguration,
+            ICategoryGroup,
+        )
+        for interface in interfaces:
+            if interface.providedBy(self.context):
+                return True
         return False
 
 
