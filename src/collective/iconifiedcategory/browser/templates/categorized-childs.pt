@@ -22,7 +22,7 @@
            title="Preview"
            i18n:attributes="title"
            target="_blank"
-           tal:attributes="href string:${portal_url}/{element/relative_url}/documentviewer#document/p1">
+           tal:attributes="href string:${portal_url}/${element/relative_url}/documentviewer#document/p1">
           <img src=""
                tal:attributes="src string:${portal_url}/file_icon.png" />
         </a>
