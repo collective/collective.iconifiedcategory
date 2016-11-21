@@ -178,7 +178,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
             'image/png',
             'image/jpeg',
             'text/html',
-            )
+        )
         for convertable in convertables:
             obj.file.contentType = convertable
             self.assertTrue(preview_adapter.is_convertible())
