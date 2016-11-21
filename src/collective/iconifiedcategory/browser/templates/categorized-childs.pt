@@ -1,12 +1,14 @@
 <tal:defines define="can_view view/can_view">
   <tal:if i18n:domain="collective.iconifiedcategory" condition="can_view">
   <tal:block repeat="category view/categories_ids"
-             define="infos view/infos">
+             define="infos view/infos;
+                     portal_url view/portal_url">
   <div id="" style="display: none;" tal:attributes="id string:${category}_${context/UID|context/getId}">
     <ul>
       <li tal:repeat="element python: infos[category]">
-        <a href="" tal:attributes="href string:${view/portal_url}/${element/download_url}">
-          <img src="" alt="" tal:attributes="src string:${view/portal_url}/${element/icon_url};
+        <tal:block define="element_url python:element['download_url'] and element['download_url'] or element['relative_url']">
+        <a href="" tal:attributes="href string:${portal_url}/${element_url}">
+          <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
                                              alt element/category_title;
                                              title element/category_title" />
           <span tal:content="element/title"
@@ -20,23 +22,24 @@
            title="Preview"
            i18n:attributes="title"
            target="_blank"
-           tal:attributes="href string:${view/portal_url}/{element/relative_url}/documentviewer#document/p1">
+           tal:attributes="href string:${portal_url}/{element/relative_url}/documentviewer#document/p1">
           <img src=""
-               tal:attributes="src string:${view/portal_url}/file_icon.png" />
+               tal:attributes="src string:${portal_url}/file_icon.png" />
         </a>
         </tal:if>
+        </tal:block>
       </li>
     </ul>
     <br />
     <a href="#" tal:attributes="href view/categorized_elements_more_infos_url">
       <img class="categorized_elements_more_infos_icon"
            src="more_infos.png"
-           tal:attributes="src string:${view/portal_url}/++resource++collective.iconifiedcategory/more_infos.png" />
+           tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory/more_infos.png" />
       <span i18n:translate="">More infos</span>
     </a>
   </div>
   </tal:block>
-  
+
   <div class="categorized-elements" tal:define="cat_infos view/categories_infos">
     <tal:block repeat="element cat_infos">
       <a href="" class="tooltip deactivated"
