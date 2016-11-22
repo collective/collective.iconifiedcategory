@@ -75,6 +75,7 @@ class IconifiedCategorization(object):
             else:
                 self.context.confidential = False
         self.context.content_category = value
+        self.context.reindexObject(idxs=['content_category_uid'])
 
     @property
     def to_print(self):

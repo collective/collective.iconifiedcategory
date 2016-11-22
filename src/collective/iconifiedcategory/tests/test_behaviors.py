@@ -19,6 +19,7 @@ from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.behaviors.iconifiedcategorization import IconifiedCategorization
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.utils import get_category_object
 
 
 class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
@@ -129,3 +130,23 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         setattr(adapted_file2, 'content_category', 'config_-_group-1_-_category-1-1')
         notify(ObjectModifiedEvent(file2))
         self.assertIsNone(file2.to_print)
+
+    def test_content_category_setter_reindex_content_category_uid(self):
+        """ """
+        catalog = api.portal.get_tool('portal_catalog')
+        obj = self.portal['file']
+        category = get_category_object(obj, obj.content_category)
+        # correctly indexed on creation
+        category_brain = catalog(content_category_uid=category.UID())[0]
+        self.assertEqual(category_brain.UID, obj.UID())
+        obj_brain = catalog(UID=obj.UID())[0]
+        self.assertEqual(obj_brain.content_category_uid, category.UID())
+        # correctly reindexed when content_category changed thru setter
+        category2 = self.portal.config['group-1']['category-1-2']
+        self.assertNotEqual(category, category2)
+        adapted_obj = IconifiedCategorization(obj)
+        setattr(adapted_obj, 'content_category', 'config_-_group-1_-_category-1-2')
+        category2_brain = catalog(content_category_uid=category2.UID())[0]
+        self.assertEqual(category2_brain.UID, obj.UID())
+        obj_brain = catalog(UID=obj.UID())[0]
+        self.assertEqual(obj_brain.content_category_uid, category2.UID())
