@@ -7,14 +7,16 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from zope.schema.vocabulary import SimpleVocabulary
+from imio.helpers import cache
 from plone import api
+from zope.schema.vocabulary import SimpleVocabulary
 
 from collective.iconifiedcategory import utils
 
 
 class CategoryVocabulary(object):
 
+    @cache.volatile_cache_with_parameters
     def __call__(self, context):
         terms = []
         categories = utils.get_categories(context, the_objects=True)
@@ -42,6 +44,7 @@ class CategoryVocabulary(object):
 
 class CategoryTitleVocabulary(object):
 
+    @cache.volatile_cache_with_parameters
     def __call__(self, context):
         terms = []
         terms = []
