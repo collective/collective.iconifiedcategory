@@ -17,15 +17,22 @@ from collective.iconifiedcategory.content.category import ICategory
 
 
 class UpdateCategorizedElementsBase(BrowserView):
+    _notified = []
+
+    def _notify(self, brain):
+        if brain.UID in self._notified:
+            return
+        self._notified.append(brain.UID)
+        event = ObjectModifiedEvent(brain.getObject())
+        notify(event)
 
     def notify_category_updated(self, obj):
         brains = [b for b in utils.get_back_references(obj)]
         if ICategory.providedBy(obj):
             for subcategory in obj.listFolderContents():
                 brains.extend(utils.get_back_references(subcategory))
-        for brain in brains:
-            event = ObjectModifiedEvent(brain.getObject())
-            notify(event)
+        for b in brains:
+            self._notify(b)
 
 
 class UpdateCategorizedElementsConfig(UpdateCategorizedElementsBase):
