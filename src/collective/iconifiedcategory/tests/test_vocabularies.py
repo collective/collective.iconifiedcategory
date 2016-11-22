@@ -8,6 +8,8 @@ Created by mpeeters
 """
 
 from zope.component import getUtility
+from zope.lifecycleevent import ObjectModifiedEvent
+from zope.event import notify
 from zope.schema.interfaces import IVocabularyFactory
 
 import unittest
@@ -67,6 +69,7 @@ class TestVocabularies(unittest.TestCase):
         subcat = self.portal.config['group-1']['category-1-1']['subcategory-1-1-1']
         self.assertIsNone(subcat.predefined_title)
         subcat.predefined_title = u'Some predefined title'
+        notify(ObjectModifiedEvent(subcat))
         terms = [t.title for t in vocabulary(self.portal)]
         self.assertEqual(7, len(terms))
         expected = [
