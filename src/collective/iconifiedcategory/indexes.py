@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from Products.PluginIndexes.common.UnIndex import _marker
 from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer import indexer
 
@@ -20,5 +21,8 @@ def content_category_uid(obj):
     """Index the category_uid"""
     if not hasattr(obj, 'content_category'):
         return
-    category_object = utils.get_category_object(obj, obj.content_category)
+    try:
+        category_object = utils.get_category_object(obj, obj.content_category)
+    except KeyError:
+        return _marker
     return category_object.UID()
