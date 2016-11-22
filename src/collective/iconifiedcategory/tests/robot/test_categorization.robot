@@ -75,7 +75,7 @@ I am logged in as a ${role}
 Select a category
   [Arguments]  ${category}
 
-  Click Link  css=a.select2-choice
+  Focus  css=a.select2-choice
   Click Link  css=a.select2-choice
   Click Element  css=span.config-group-1-${category}
 
