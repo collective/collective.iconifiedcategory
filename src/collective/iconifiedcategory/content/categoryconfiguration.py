@@ -9,7 +9,6 @@ Created by mpeeters
 
 from plone.app.contenttypes.interfaces import IFolder
 from plone.dexterity.content import Container
-from plone.dexterity.schema import DexteritySchemaPolicy
 from zope.interface import implements
 
 
@@ -19,9 +18,3 @@ class ICategoryConfiguration(IFolder):
 
 class CategoryConfiguration(Container):
     implements(ICategoryConfiguration)
-
-
-class CategoryConfigurationSchemaPolicy(DexteritySchemaPolicy):
-
-    def bases(self, schema_name, tree):
-        return (ICategoryConfiguration, )
