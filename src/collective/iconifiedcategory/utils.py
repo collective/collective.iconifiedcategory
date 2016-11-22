@@ -72,7 +72,7 @@ def get_group(config, context):
 def get_categories(context,
                    the_objects=False,
                    only_enabled=True,
-                   sort_on='sortable_title'):
+                   sort_on='getObjPositionInParent'):
     """Return the categories brains for a specific context"""
     config_root = get_config_root(context)
     config_group = get_group(config_root, context)
