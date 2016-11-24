@@ -15,7 +15,6 @@ import unittest
 
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
-from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.behaviors.iconifiedcategorization import IconifiedCategorization
 from collective.iconifiedcategory.tests.base import BaseTestCase
@@ -122,8 +121,6 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         # enable conversion
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
-        # initialize collective.documentviewer annotations on file
-        Settings(file2)
         file2.file.contentType = 'text/unknown'
 
         adapted_file2 = IconifiedCategorization(file2)

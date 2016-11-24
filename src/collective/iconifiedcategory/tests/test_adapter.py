@@ -21,7 +21,6 @@ from zope.interface import alsoProvides
 from collective.documentviewer.async import queueJob
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
-from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory import adapter
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.tests.base import BaseTestCase
@@ -101,10 +100,6 @@ class TestCategorizedObjectPrintableAdapter(BaseTestCase):
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
 
-        obj = self.portal['file']
-        # initialize collective.documentviewer annotations on file
-        Settings(obj)
-
     def test_is_printable_default(self):
         obj = self.portal.file
         print_adapter = adapter.CategorizedObjectPrintableAdapter(obj)
@@ -148,8 +143,6 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
 
     def test_is_convertible(self):
         obj = self.portal['file']
-        # initialize collective.documentviewer annotations on file
-        Settings(obj)
 
         preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
 
@@ -191,8 +184,6 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
 
     def test_status(self):
         obj = self.portal['file']
-        # initialize collective.documentviewer annotations on file
-        Settings(obj)
 
         preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
 

@@ -8,7 +8,6 @@ from zope.component import getUtility
 from plone import api
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
-from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory.browser.actionview import BaseView
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.tests.base import BaseTestCase
@@ -55,8 +54,6 @@ class TestToPrintChangeView(BaseTestCase):
 
     def test_set_values(self):
         obj = self.portal['file']
-        # initialize collective.documentviewer annotations on file
-        Settings(obj)
         view = obj.restrictedTraverse('@@iconified-print')
 
         # works only if functionnality enabled and user have Modify portal content

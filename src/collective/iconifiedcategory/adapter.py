@@ -18,6 +18,7 @@ import logging
 logger = logging.getLogger('collective.iconifiedcategory')
 
 from collective.documentviewer.settings import GlobalSettings
+from collective.documentviewer.settings import Settings
 from collective.documentviewer.utils import allowedDocumentType
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
@@ -166,11 +167,10 @@ class CategorizedObjectPreviewAdapter(object):
         """
           Check if the context is convertible (hopefully).
         """
-        # collective.documentviewer add an entry the annotations
-        # to relevant possibily convertible types
+        # collective.documentviewer add an entry to the annotations
         annotations = IAnnotations(self.context)
         if 'collective.documentviewer' not in annotations.keys():
-            return False
+            Settings(self.context)
 
         settings = GlobalSettings(api.portal.get())
         return allowedDocumentType(self.context,

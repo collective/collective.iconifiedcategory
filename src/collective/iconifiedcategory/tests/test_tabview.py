@@ -6,7 +6,6 @@ from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
-from collective.documentviewer.settings import Settings
 from collective.iconifiedcategory.browser.tabview import PrintColumn
 from collective.iconifiedcategory.browser.tabview import CategorizedContent
 from collective.iconifiedcategory.tests.base import BaseTestCase
@@ -41,8 +40,6 @@ class TestCategorizedTabView(BaseTestCase):
         # initialize collective.documentviewer annotations on file
         file_obj = self.portal['file']
         image_obj = self.portal['image']
-        Settings(file_obj)
-        Settings(image_obj)
         notify(ObjectModifiedEvent(file_obj))
         notify(ObjectModifiedEvent(image_obj))
 
@@ -71,8 +68,6 @@ class TestCategorizedTabView(BaseTestCase):
         # enable collective.documentviewer so document is convertible
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
-        # initialize collective.documentviewer annotations on file
-        Settings(obj)
         # enable to_print management in configuration
         category = utils.get_category_object(obj, obj.content_category)
         category_group = category.get_category_group(category)
