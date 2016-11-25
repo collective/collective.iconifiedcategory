@@ -91,13 +91,13 @@ def get_categories(context,
 
 def calculate_category_id(category):
     """Return the caculated category id for a category object"""
-    if category.portal_type == 'ContentCategory':
+    if ICategory.providedBy(category):
         return '{0}_-_{1}_-_{2}'.format(
             category.aq_parent.aq_parent.id,
             category.aq_parent.id,
             category.id,
         )
-    if category.portal_type == 'ContentSubcategory':
+    if ISubcategory.providedBy(category):
         return '{0}_-_{1}_-_{2}_-_{3}'.format(
             category.aq_parent.aq_parent.aq_parent.id,
             category.aq_parent.aq_parent.id,
