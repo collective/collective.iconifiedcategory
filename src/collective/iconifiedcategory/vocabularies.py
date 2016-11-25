@@ -29,7 +29,7 @@ class CategoryVocabulary(object):
             ))
             subcategories = api.content.find(
                 context=category,
-                portal_type='ContentSubcategory',
+                object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
                 enabled=True,
             )
             for subcategory in subcategories:
@@ -59,7 +59,7 @@ class CategoryTitleVocabulary(object):
                 ))
             subcategories = api.content.find(
                 context=category,
-                portal_type='ContentSubcategory',
+                object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
                 enabled=True,
             )
             for subcategory in subcategories:
