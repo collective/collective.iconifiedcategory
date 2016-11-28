@@ -28,7 +28,7 @@ install:
 
 script:
   - bin/code-analysis
-  - bin/test
+  - bin/test --all
 
 after_success:
   - bin/coverage run bin/test
