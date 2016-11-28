@@ -40,7 +40,7 @@ Scenario: As a member I want to be able to log into the website
    When I enter valid credentials
    Then I am logged in
 
-Scenario: As an editor I want to be able to categorized content
+Scenario: As an editor I want to be able to categorize content
   Given I am logged in as a Manager
    When I create a folder
     And I create a categorized document
@@ -52,9 +52,17 @@ Scenario: As an editor I want to be able to use categorized predefined titles
   Given I am logged in as a Manager
    When I create a folder
     And I go to the document creation
-    And I select a category
+    And I select a category using predefined title
    Then I should have a predefined title
     And I delete the folder
+
+Scenario: As an editor the predefined title does not erase an existing title
+  Given I am logged in as a Manager
+   When I create a folder
+    And I go to the document creation
+    And I select a category using predefined title
+    And I set a title
+   Then I edit the document again, the title should remain
 
 Scenario: As an editor I can change the print status of a categorized content
   Given I am logged in as a Manager
@@ -100,6 +108,10 @@ I create a folder
   Input Text  form.widgets.IDublinCore.title  Folder
   Click Button  Save
 
+I edit a folder
+  Go To  ${PLONE_URL}/folder/edit
+  Wait Until Page Contains  Title
+
 I delete the folder
   Go To  ${PLONE_URL}/folder
   Wait Until Page Contains  Folder
@@ -114,14 +126,18 @@ I create a categorized document
   I go to the document creation
   Select a category  category-1-2
   Wait Until Page Contains  Category 1-2
-  Input Text  form.widgets.IDublinCore.title  Document
+  Input Text  form.widgets.IDublinCore.title  DocumentTitle
   Click Button  Save
-  Wait Until Page Contains  Document
+  Wait Until Page Contains  DocumentTitle
   Page Should Contain  Item created
 
-I select a category
+I select a category using predefined title
   Select a category  category-1-3
   Wait Until Page Contains  Category 1-3
+
+I set a title
+  Input Text  form.widgets.IDublinCore.title  DocumentTitle
+  Click Button  Save
 
 I move to the parent
   Click Link  link=Folder
@@ -152,6 +168,12 @@ I should have a predefined title
   Click Button  Save
   Wait Until Page Contains  Category 1-3
   Page Should Contain  Item created
+
+I edit the document again, the title should remain
+  Go To  ${PLONE_URL}/folder/documenttitle/edit
+  Textfield Value Should Be  name=form.widgets.IDublinCore.title  DocumentTitle
+  Click Button  Save
+  Page Should Contain  DocumentTitle
 
 I should change the print status
   Page Should Not Contain Element  css=td.iconified-print a.active
