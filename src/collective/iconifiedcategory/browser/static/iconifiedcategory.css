@@ -132,3 +132,11 @@ div.tooltipster-content li {
 .select2-container, .select2-results {
     font-size: 90%;
 }
+/* add left margin to subcategories displayed in the select2 dropdown */
+ul.select2-results span.subcategory {
+    margin-left: 1em;
+}
+/* reduce space under selectable elements displayed in the dropdown */
+ul.select2-results .select2-result-label {
+    padding-bottom: 0px;
+}
