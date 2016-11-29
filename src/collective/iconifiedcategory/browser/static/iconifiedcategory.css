@@ -127,3 +127,8 @@ div.tooltipster-content li {
 #content .iconified-listing td.iconified-confidential a.active:before {
     content: "\f023";
 }
+
+/* reduce select2 font-size */
+.select2-container, .select2-results {
+    font-size: 90%;
+}
