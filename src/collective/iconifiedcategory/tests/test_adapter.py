@@ -22,12 +22,69 @@ from collective.documentviewer.async import queueJob
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory import adapter
+from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
 
 
 class TestCategorizedObjectInfoAdapter(BaseTestCase):
+
+    def test_get_infos(self):
+        obj = self.portal['file']
+        file_adapter = adapter.CategorizedObjectInfoAdapter(
+            obj)
+        category = get_category_object(obj, obj.content_category)
+        infos = file_adapter.get_infos(category)
+        self.diffMax = None
+        self.assertEqual(
+            infos,
+            {'category_id': category.category_id,
+             'category_title': category.category_title,
+             'category_uid': category.category_uid,
+             'confidential': False,
+             'description': obj.Description(),
+             'download_url': u'file/@@download/file/file.txt',
+             'filesize': 3017,
+             'icon_url': 'config/group-1/category-1-1/@@download/icon/icon1.png',
+             'id': obj.getId(),
+             'portal_type': obj.portal_type,
+             'preview_status': 'not_convertable',
+             'relative_url': 'file',
+             'subcategory_id': None,
+             'subcategory_title': None,
+             'subcategory_uid': None,
+             'title': obj.Title(),
+             'to_print': None,
+             'warn_filesize': False})
+
+    def test_get_infos_with_subcategory(self):
+        obj = self.portal['file']
+        file_adapter = adapter.CategorizedObjectInfoAdapter(
+            obj)
+        subcategory = self.portal.restrictedTraverse('config/group-1/category-1-1/subcategory-1-1-1')
+        self.assertTrue(ISubcategory.providedBy(subcategory))
+        infos = file_adapter.get_infos(subcategory)
+        self.assertEqual(
+            infos,
+            {'category_id': subcategory.category_id,
+             'category_title': subcategory.category_title,
+             'category_uid': subcategory.category_uid,
+             'confidential': False,
+             'description': obj.Description(),
+             'download_url': u'file/@@download/file/file.txt',
+             'filesize': 3017,
+             'icon_url': 'config/group-1/category-1-1/@@download/icon/icon1.png',
+             'id': obj.getId(),
+             'portal_type': obj.portal_type,
+             'preview_status': 'not_convertable',
+             'relative_url': 'file',
+             'subcategory_id': subcategory.getId(),
+             'subcategory_title': subcategory.Title(),
+             'subcategory_uid': subcategory.UID(),
+             'title': obj.Title(),
+             'to_print': None,
+             'warn_filesize': False})
 
     def test_category(self):
         file_adapter = adapter.CategorizedObjectInfoAdapter(

@@ -310,6 +310,11 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             result,
             [{'UID': document.UID(),
               'category_id': 'category-x',
+              'category_title': 'Category X',
+              'category_uid': category.UID(),
+              'subcategory_id': None,
+              'subcategory_title': None,
+              'subcategory_uid': None,
               'confidential': False,
               'title': 'doc-subcategory-move',
               'description': 'Document description',
@@ -318,12 +323,10 @@ class TestUtils(BaseTestCase, unittest.TestCase):
               'preview_status': 'not_convertable',
               'download_url': None,
               'to_print': False,
-              'category_uid': category.UID(),
               'filesize': None,
               'relative_url': 'doc-subcategory-move',
               'warn_filesize': False,
-              'id': 'doc-subcategory-move',
-              'category_title': 'Category X'}])
+              'id': 'doc-subcategory-move'}])
         # filter on portal_type
         self.assertEqual(
             utils.get_categorized_elements(self.portal,

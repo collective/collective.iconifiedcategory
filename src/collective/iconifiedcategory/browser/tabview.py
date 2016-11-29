@@ -121,7 +121,11 @@ class CategoryColumn(column.GetAttrColumn):
     attrName = 'category_title'
 
     def renderCell(self, obj):
-        return unicode(obj.category_title, 'utf-8')
+        category_title = safe_unicode(obj.category_title)
+        if obj.subcategory_title:
+            category_title = "{0} / {1}".format(category_title,
+                                                safe_unicode(obj.subcategory_title))
+        return category_title
 
 
 class AuthorColumn(column.GetAttrColumn):

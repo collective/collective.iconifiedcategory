@@ -22,6 +22,7 @@ from collective.documentviewer.settings import Settings
 from collective.documentviewer.utils import allowedDocumentType
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
+from collective.iconifiedcategory.content.subcategory import ISubcategory
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -33,13 +34,16 @@ class CategorizedObjectInfoAdapter(object):
     def get_infos(self, category):
         filesize = self._filesize
         portal_url = api.portal.get_tool('portal_url')
-        return {
+        infos = {
             'title': self.obj.Title(),
             'description': self.obj.Description(),
             'id': self.obj.getId(),
             'category_uid': category.category_uid,
             'category_id': category.category_id,
             'category_title': category.category_title,
+            'subcategory_uid': None,
+            'subcategory_id': None,
+            'subcategory_title': None,
             'relative_url': portal_url.getRelativeUrl(self.context),
             'download_url': self._download_url,
             'icon_url': utils.get_category_icon_url(category),
@@ -50,6 +54,14 @@ class CategorizedObjectInfoAdapter(object):
             'confidential': self._confidential,
             'preview_status': self._preview_status,
         }
+        # update subcategory infos if any
+        if ISubcategory.providedBy(category):
+            subcategory_infos = {}
+            subcategory_infos['subcategory_uid'] = category.UID()
+            subcategory_infos['subcategory_id'] = category.getId()
+            subcategory_infos['subcategory_title'] = category.Title()
+            infos.update(subcategory_infos)
+        return infos
 
     @property
     def _category(self):
