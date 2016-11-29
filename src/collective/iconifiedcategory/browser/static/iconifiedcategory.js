@@ -41,7 +41,6 @@ jQuery(function($) {
     animation: 'fade'
     });
 
-
 });
 
 };
