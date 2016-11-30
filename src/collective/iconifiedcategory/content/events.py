@@ -8,7 +8,6 @@ Created by mpeeters
 """
 
 from Products.statusmessages.interfaces import IStatusMessage
-from imio.helpers import cache
 from plone import api
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from zExceptions import Redirect
@@ -17,7 +16,6 @@ from zope.event import notify
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
-from collective.iconifiedcategory import vocabularies
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.event import \
@@ -126,13 +124,3 @@ def subcategory_moved(obj, event):
             type='error',
         )
         raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
-
-
-def category_updated(obj, event):
-    """Invalidate the cache for vocabularies when a category is updated"""
-    cache.invalidate_cachekey_volatile_for(cache.generate_key(
-        vocabularies.CategoryTitleVocabulary.__call__,
-    ))
-    cache.invalidate_cachekey_volatile_for(cache.generate_key(
-        vocabularies.CategoryVocabulary.__call__,
-    ))

@@ -47,7 +47,6 @@ setup(
         'collective.fontawesome',
         'collective.js.tooltipster',
         'collective.z3cform.select2',
-        'imio.helpers',
         'plone.api',
         'plone.app.contenttypes',
         'plone.app.dexterity',

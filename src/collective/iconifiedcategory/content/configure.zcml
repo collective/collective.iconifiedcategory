@@ -66,22 +66,4 @@
     handler=".events.subcategory_moved"
     />
 
-  <subscriber
-    for=".base.ICategorize
-         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
-    handler=".events.category_updated"
-    />
-
-  <subscriber
-    for=".base.ICategorize
-         zope.lifecycleevent.interfaces.IObjectRemovedEvent"
-    handler=".events.category_updated"
-    />
-
-  <subscriber
-    for=".base.ICategorize
-         zope.lifecycleevent.interfaces.IObjectAddedEvent"
-    handler=".events.category_updated"
-    />
-
 </configure>
