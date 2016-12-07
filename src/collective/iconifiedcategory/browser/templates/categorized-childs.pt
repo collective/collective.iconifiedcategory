@@ -31,7 +31,9 @@
       </li>
     </ul>
     <br />
-    <a href="#" tal:attributes="href view/categorized_elements_more_infos_url">
+    <a href="#"
+       target="_parent"
+       tal:attributes="href view/categorized_elements_more_infos_url">
       <img class="categorized_elements_more_infos_icon"
            src="more_infos.png"
            tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory/more_infos.png" />
@@ -43,6 +45,7 @@
   <div class="categorized-elements" tal:define="cat_infos view/categories_infos">
     <tal:block repeat="element cat_infos">
       <a href="" class="tooltip deactivated"
+         onclick="javascript:event.preventDefault();"
          tal:attributes="href string:#${element/id}_${context/UID|context/getId};
                          title element/title">
         <span tal:content="element/counts"></span>
