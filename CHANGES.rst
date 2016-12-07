@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.2 (unreleased)
+0.2 (2016-12-07)
 ----------------
 
 - Use `javascript:event.preventDefault()` when clicking on the tooltipster root
