@@ -5,7 +5,8 @@ Changelog
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Changed icon used with link to `More infos`.
+  [gbastien]
 
 
 0.2 (2016-12-07)
