@@ -26,8 +26,15 @@ class BaseTestCase(unittest.TestCase):
         f = open(os.path.join(current_path, 'file.txt'), 'r')
         return namedfile.NamedBlobFile(f.read(), filename=u'file.txt')
 
+    @property
+    def icon(self):
+        current_path = os.path.dirname(__file__)
+        f = open(os.path.join(current_path, 'icon1.png'), 'r')
+        return namedfile.NamedBlobFile(f.read(), filename=u'icon1.png')
+
     def setUp(self):
         self.portal = self.layer['portal']
+        self.config = self.portal['config']
         api.user.create(
             email='test@test.com',
             username='adminuser',

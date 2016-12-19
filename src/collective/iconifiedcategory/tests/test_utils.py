@@ -8,12 +8,9 @@ Created by mpeeters
 """
 
 from plone import api
-from plone import namedfile
-from plone.app.testing import login
 from plone.dexterity.utils import createContentInContainer
 from zExceptions import Redirect
 
-import os
 import unittest
 
 from collective.iconifiedcategory import testing
@@ -23,26 +20,6 @@ from collective.iconifiedcategory.tests.base import BaseTestCase
 
 class TestUtils(BaseTestCase, unittest.TestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
-
-    def setUp(self):
-        self.portal = self.layer['portal']
-        self.config = self.portal['config']
-        api.user.create(
-            email='test@test.com',
-            username='adminuser',
-            password='secret',
-        )
-        api.user.grant_roles(
-            username='adminuser',
-            roles=['Manager'],
-        )
-        login(self.portal, 'adminuser')
-
-    @property
-    def icon(self):
-        current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'icon1.png'), 'r')
-        return namedfile.NamedBlobFile(f.read(), filename=u'icon1.png')
 
     def test_category_before_remove(self):
         """
@@ -290,6 +267,10 @@ class TestUtils(BaseTestCase, unittest.TestCase):
                          "it could be difficult to be downloaded!'>4.8 MB</span>")
 
     def test_get_categorized_elements(self):
+        # first remove existing elements so it does not influence our test
+        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['image'])
+
         category = api.content.create(
             type='ContentCategory',
             title='Category X',
@@ -385,6 +366,10 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         api.content.delete(category)
 
     def test_update_all_categorized_elements(self):
+        # first remove existing elements so it does not influence our test
+        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['image'])
+
         document1 = createContentInContainer(
             container=self.portal,
             portal_type='Document',
