@@ -33,6 +33,46 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertEqual(self.portal.categorized_elements, {})
         self.assertTrue('No element to display.' in view())
 
+    def test_table_render_special_chars(self):
+        """Special chars used in :
+           - element's title;
+           - category title;
+           - subcategory title."""
+        category = api.content.create(
+            type='ContentCategory',
+            title='Category \xc3\xa0',
+            icon=self.icon,
+            container=self.portal.config['group-1'],
+        )
+        subcategory = api.content.create(
+            type='ContentSubcategory',
+            title='Subcategory \xc3\xa0',
+            icon=self.icon,
+            container=category,
+        )
+        document = api.content.create(
+            type='Document',
+            title='Document \xc3\xa0',
+            container=self.portal,
+            content_category=utils.calculate_category_id(category),
+            to_print=False,
+            confidential=False,
+        )
+        document2 = api.content.create(
+            type='Document',
+            title='Document \xc3\xa0',
+            container=self.portal,
+            content_category=utils.calculate_category_id(subcategory),
+            to_print=False,
+            confidential=False,
+        )
+        view = self.portal.restrictedTraverse('@@iconifiedcategory')
+        result = view()
+        self.assertTrue(category.title in result)
+        self.assertTrue(subcategory.title in result)
+        self.assertTrue(document.title in result)
+        self.assertTrue(document2.title in result)
+
     def test_table_render_when_preview_enabled(self):
         # enable collective.documentviewer so document is convertible
         gsettings = GlobalSettings(self.portal)

@@ -1,13 +1,13 @@
 Changelog
 =========
 
-
 0.3 (unreleased)
 ----------------
 
 - Changed icon used with link to `More infos`.
   [gbastien]
-
+- Do not fail if subcategory title contains special characters.
+  [gbastien]
 
 0.2 (2016-12-07)
 ----------------
@@ -18,7 +18,6 @@ Changelog
 - Open `More infos` link in `target=_parent` so it opens in the _parent frame
   when displayed in an iframe, namely outside the iframe.
   [gbastien]
-
 
 0.1 (2016-12-02)
 ----------------
