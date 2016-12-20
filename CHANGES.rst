@@ -8,6 +8,10 @@ Changelog
   [gbastien]
 - Do not fail if subcategory title contains special characters.
   [gbastien]
+- Turn icon `more_infos.png` into a separated resource, in addition to other
+  resources stored in the `static` folder declared as resourceDirectory,
+  so it is easy to override.
+  [gbastien]
 
 0.2 (2016-12-07)
 ----------------
