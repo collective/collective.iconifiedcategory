@@ -1,30 +1,32 @@
+var IconifiedCategory = {};
+
+IconifiedCategory.defineDefaultTitle = function(select, init_time=false) {
+  var container = select.closest('form');
+  var obj = $('#' + select.val());
+  if (!obj.length) {
+    return false;
+  }
+  /* title field id depends on used behavior (basic, dublincore, ...)
+     so we get the id beginning with 'form-widgets-' and ending with '-title' */
+  var field = container.find('input#[id^=form-widgets-][id$=-title]');
+  if (init_time && field.val()) {
+    return
+  }
+  field.val(obj.val());
+};
+
+IconifiedCategory.initializeCategoryWidget = function(obj) {
+  obj.change(function() {
+    IconifiedCategory.defineDefaultTitle($(this));
+  });
+  IconifiedCategory.defineDefaultTitle(obj, init_time=true);
+}
+
 initializeIconifiedCategoryWidget = function () {
 
 jQuery(function($) {
 
-  var category_selector = '#form_widgets_IIconifiedCategorization_content_category';
-
-  var define_default_title = function(select, init_time=false) {
-    var obj = $('#' + select.val());
-    if (!obj.length) {
-      return false;
-    }
-    /* title field id depends on used behavior (basic, dublincore, ...)
-       so we get the id beginning with 'form-widgets-' and ending with '-title' */
-    field = $('input#[id^=form-widgets-][id$=-title]')
-
-    /* if we are calling this at form init_time (add/edit), do not replace an existing value,
-       this avoid loosing the title on second edit if used category as a predefined title */
-    if (init_time && field.val()) {
-      return
-    }
-    field.val(obj.val());
-  };
-
-  $(category_selector).change(function() {
-    define_default_title($(this));
-  });
-  define_default_title($(category_selector), init_time=true);
+  IconifiedCategory.initializeCategoryWidget($('#form_widgets_IIconifiedCategorization_content_category'));
 
   $('.tooltip').tooltipster({
     functionInit: function(origin, content) {

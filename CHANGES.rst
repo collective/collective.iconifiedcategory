@@ -4,7 +4,8 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Refactoring of iconified JavaScript functions
+  [mpeeters]
 
 
 0.3 (2016-12-21)
