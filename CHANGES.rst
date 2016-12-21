@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3 (unreleased)
+0.3 (2016-12-21)
 ----------------
 
 - Changed icon used with link to `More infos`.
