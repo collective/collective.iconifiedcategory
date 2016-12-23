@@ -6,7 +6,8 @@ Changelog
 
 - Refactoring of iconified JavaScript functions
   [mpeeters]
-
+- Increase speed that show the categorized elements in the tooltipster.
+  [gbastien]
 
 0.3 (2016-12-21)
 ----------------

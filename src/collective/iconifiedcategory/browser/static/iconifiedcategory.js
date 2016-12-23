@@ -38,8 +38,8 @@ jQuery(function($) {
     position: 'top-left',
     theme: 'tooltipster-shadow',
     position: 'bottom',
-    speed: 200,
-    delay: 50,
+    speed: 100,
+    delay: 0,
     animation: 'fade'
     });
 
