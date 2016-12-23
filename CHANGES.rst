@@ -8,6 +8,8 @@ Changelog
   [mpeeters]
 - Increase speed that show the categorized elements in the tooltipster.
   [gbastien]
+- Do not fail to remove the Plone Site if categories or subcategorie exist.
+  [gbastien]
 
 0.3 (2016-12-21)
 ----------------

@@ -81,7 +81,9 @@ def categorized_content_container_cloned(event):
 
 
 def category_before_remove(obj, event):
-    if ICategory.providedBy(obj) is True:
+    # do not fail if removing the Plone Site
+    if not event.object.meta_type == 'Plone Site' and \
+       ICategory.providedBy(obj) is True:
         if utils.has_relations(obj) is True:
             IStatusMessage(obj.REQUEST).addStatusMessage(
                 _('This category or one of is subcategory are used by '
@@ -92,7 +94,9 @@ def category_before_remove(obj, event):
 
 
 def subcategory_before_remove(obj, event):
-    if ISubcategory.providedBy(obj) is True:
+    # do not fail if removing the Plone Site
+    if not event.object.meta_type == 'Plone Site' and \
+       ISubcategory.providedBy(obj) is True:
         if utils.has_relations(obj) is True:
             IStatusMessage(obj.REQUEST).addStatusMessage(
                 _('This subcategory is used by another object and cannot be '

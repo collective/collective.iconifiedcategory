@@ -43,6 +43,16 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         api.content.delete(document)
         api.content.delete(category)
 
+    def test_category_before_remove_while_removing_plone_site(self):
+        """
+        Removing the Plone Site is not prohibited if categories exist.
+        """
+        app = self.portal.aq_inner.aq_parent
+        self.assertEqual(self.portal.getId(), 'plone')
+        self.assertTrue('plone' in app.objectIds())
+        app.manage_delObjects(ids=['plone'])
+        self.assertFalse('plone' in app.objectIds())
+
     def test_category_with_subcategory_before_remove(self):
         """
         Ensure that an error is raised if we try to remove a category that
