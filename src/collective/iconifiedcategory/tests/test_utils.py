@@ -22,6 +22,13 @@ from collective.iconifiedcategory.tests.base import BaseTestCase
 class TestUtils(BaseTestCase, unittest.TestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
+    def setUp(self):
+        super(TestUtils, self).setUp()
+        elements = ('file', 'image')
+        for element in elements:
+            if element in self.portal:
+                api.content.delete(self.portal[element])
+
     def test_category_before_remove(self):
         """
         Ensure that an error is raised if we try to remove an used category
@@ -278,10 +285,6 @@ class TestUtils(BaseTestCase, unittest.TestCase):
                          "it could be difficult to be downloaded!'>4.8 MB</span>")
 
     def test_get_categorized_elements(self):
-        # first remove existing elements so it does not influence our test
-        api.content.delete(self.portal['file'])
-        api.content.delete(self.portal['image'])
-
         category = api.content.create(
             type='ContentCategory',
             title='Category X',
@@ -376,11 +379,41 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         api.content.delete(document2)
         api.content.delete(category)
 
-    def test_update_all_categorized_elements(self):
-        # first remove existing elements so it does not influence our test
-        api.content.delete(self.portal['file'])
-        api.content.delete(self.portal['image'])
+    def test_update_categorized_elements(self):
+        document3 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc3',
+            content_category='config_-_group-1_-_category-1-2',
+            to_print=False,
+            confidential=False,
+        )
+        document2 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc2',
+            content_category='config_-_group-1_-_category-1-2',
+            to_print=False,
+            confidential=False,
+        )
+        document1 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc1',
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        result = ['doc3', 'doc2', 'doc1']
+        self.assertItemsEqual(
+            result,
+            [e['title'] for e in self.portal.categorized_elements.values()],
+        )
+        api.content.delete(document1)
+        api.content.delete(document2)
+        api.content.delete(document3)
 
+    def test_update_all_categorized_elements(self):
         document1 = createContentInContainer(
             container=self.portal,
             portal_type='Document',

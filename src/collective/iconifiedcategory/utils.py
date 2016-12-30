@@ -170,6 +170,7 @@ def get_categorized_infos(obj, category):
 
 
 def _categorized_elements(context):
+    """Return a deepcopy of the categorized elements of the given context"""
     return copy.deepcopy(
         getattr(context, 'categorized_elements', OrderedDict())
     )
