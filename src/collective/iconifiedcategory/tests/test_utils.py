@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collections import OrderedDict
 from plone import api
 from plone.dexterity.utils import createContentInContainer
 from zExceptions import Redirect
@@ -217,7 +218,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
                          utils.print_message(obj))
 
     def test_confidential_message(self):
-        obj = type('obj', (object, ), {})()
+        obj = type('obj', (object, ), OrderedDict())()
         self.assertEqual(u'', utils.confidential_message(obj))
 
         obj.confidential = True
@@ -401,7 +402,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         self.assertEqual(len(self.portal.categorized_elements), 2)
         self.assertTrue(document1UID in self.portal.categorized_elements)
         self.assertTrue(document2UID in self.portal.categorized_elements)
-        self.portal.categorized_elements = {}
+        self.portal.categorized_elements = OrderedDict()
         self.assertEqual(len(self.portal.categorized_elements), 0)
         utils.update_all_categorized_elements(self.portal)
         self.assertEqual(len(self.portal.categorized_elements), 2)

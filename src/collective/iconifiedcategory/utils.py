@@ -7,8 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-import copy
-from zope.globalrequest import getRequest
+from collections import OrderedDict
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
@@ -17,7 +16,10 @@ from time import time
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
+from zope.globalrequest import getRequest
 from zope.i18n import translate
+
+import copy
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
@@ -137,7 +139,7 @@ def get_category_icon_url(category):
 
 def update_categorized_elements(parent, obj, category):
     if 'categorized_elements' not in parent.__dict__:
-        parent.categorized_elements = {}
+        parent.categorized_elements = OrderedDict()
     uid, infos = get_categorized_infos(obj, category)
     parent.categorized_elements[uid] = infos
     parent._p_changed = True
@@ -145,7 +147,7 @@ def update_categorized_elements(parent, obj, category):
 
 def update_all_categorized_elements(container):
     if 'categorized_elements' in container.__dict__:
-        container.categorized_elements = {}
+        container.categorized_elements = OrderedDict()
         for obj in container.objectValues():
             if hasattr(obj, 'content_category'):
                 try:
@@ -168,7 +170,9 @@ def get_categorized_infos(obj, category):
 
 
 def _categorized_elements(context):
-    return copy.deepcopy(getattr(context, 'categorized_elements', {}))
+    return copy.deepcopy(
+        getattr(context, 'categorized_elements', OrderedDict())
+    )
 
 
 def get_categorized_elements(context,

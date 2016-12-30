@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
-from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
+from collections import OrderedDict
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
+from plone import api
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
+
 from collective.iconifiedcategory.browser.tabview import PrintColumn
 from collective.iconifiedcategory.browser.tabview import CategorizedContent
 from collective.iconifiedcategory.tests.base import BaseTestCase
@@ -30,7 +32,7 @@ class TestCategorizedTabView(BaseTestCase):
         # when nothing to display
         api.content.delete(self.portal['file'])
         api.content.delete(self.portal['image'])
-        self.assertEqual(self.portal.categorized_elements, {})
+        self.assertEqual(self.portal.categorized_elements, OrderedDict())
         self.assertTrue('No element to display.' in view())
 
     def test_table_render_special_chars(self):
