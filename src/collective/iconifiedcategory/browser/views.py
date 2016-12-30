@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import Unauthorized
-from zope.component import getMultiAdapter
-from plone import api
-from plone.namedfile.browser import Download
-from plone.namedfile.browser import DisplayFile
 from Products.Five import BrowserView
+from collections import OrderedDict
+from plone import api
+from plone.namedfile.browser import DisplayFile
+from plone.namedfile.browser import Download
+from zope.component import getMultiAdapter
+
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.utils import get_categorized_elements
 from collective.iconifiedcategory.utils import render_filesize
@@ -35,11 +37,12 @@ class CategorizedChildView(BrowserView):
         return True
 
     def categories_infos(self):
-        infos = {e['category_uid']: {'id': e['category_id'],
-                                     'title': e['category_title'],
-                                     'counts': 0,
-                                     'icon': e['icon_url']}
-                 for e in self.categorized_elements}
+        infos = [(e['category_uid'], {'id': e['category_id'],
+                                      'title': e['category_title'],
+                                      'counts': 0,
+                                      'icon': e['icon_url']})
+                 for e in self.categorized_elements]
+        infos = OrderedDict(sorted(infos, key=lambda x: x[1]['title']))
         for key, element in infos.items():
             element['counts'] = len([e for e in self.categorized_elements
                                      if e['category_uid'] == key])
@@ -50,14 +53,10 @@ class CategorizedChildView(BrowserView):
         return set([e['category_id'] for e in self.categorized_elements])
 
     def infos(self):
-        infos = {e: [] for e in self.categories_ids}
+        infos = OrderedDict([(e, []) for e in self.categories_ids])
         for element in self.categorized_elements:
             infos[element['category_id']].append(element)
-        # sort by alphabetical order
-        res = infos.copy()
-        for category_id, elements in infos.items():
-            res[category_id] = sorted(elements, key=lambda elt: elt['title'].lower())
-        return res
+        return infos
 
     def render_filesize(self, size):
         """ """
