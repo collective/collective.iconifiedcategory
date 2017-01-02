@@ -380,19 +380,19 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         api.content.delete(category)
 
     def test_update_categorized_elements(self):
-        document3 = createContentInContainer(
-            container=self.portal,
-            portal_type='Document',
-            title='doc3',
-            content_category='config_-_group-1_-_category-1-2',
-            to_print=False,
-            confidential=False,
-        )
         document2 = createContentInContainer(
             container=self.portal,
             portal_type='Document',
             title='doc2',
             content_category='config_-_group-1_-_category-1-2',
+            to_print=False,
+            confidential=False,
+        )
+        document3 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc3',
+            content_category='config_-_group-1_-_category-1-3',
             to_print=False,
             confidential=False,
         )
@@ -405,7 +405,8 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             confidential=False,
         )
         result = ['doc3', 'doc2', 'doc1']
-        self.assertItemsEqual(
+        # order is respected, by category
+        self.assertEqual(
             result,
             [e['title'] for e in self.portal.categorized_elements.values()],
         )
