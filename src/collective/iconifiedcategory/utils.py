@@ -225,9 +225,10 @@ def get_categorized_elements(context,
     if portal_type:
         query['portal_type'] = portal_type
     brains = {b.UID: b for b in api.content.find(context=context, **query)}
-
     for uid, element in categorized_elements.items():
-        brain = brains[uid]
+        brain = brains.get(uid)
+        if not brain:
+            continue
         adapter = getMultiAdapter((context, context.REQUEST, brain),
                                   IIconifiedContent)
         if adapter.can_view() is True:
