@@ -142,6 +142,7 @@ def update_categorized_elements(parent, obj, category):
         parent.categorized_elements = OrderedDict()
     uid, infos = get_categorized_infos(obj, category)
     parent.categorized_elements[uid] = infos
+    sort_categorized_elements(parent)
     parent._p_changed = True
 
 
@@ -156,7 +157,36 @@ def update_all_categorized_elements(container):
                     continue
                 uid, infos = get_categorized_infos(obj, category)
                 container.categorized_elements[uid] = infos
+        sort_categorized_elements(container)
         container._p_changed = True
+
+
+def get_ordered_categories(context):
+    """Return an ordered dict for categories (id and uids)"""
+    elements = {}
+    for idx, category in enumerate(get_categories(context)):
+        elements[category.UID] = idx
+        elements[calculate_category_id(category.getObject())] = idx
+
+        subcategories = api.content.find(
+            context=category,
+            object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
+            enabled=True,
+        )
+        for subcategory in subcategories:
+            elements[subcategory.UID] = idx
+            elements[calculate_category_id(subcategory.getObject())] = idx
+    return elements
+
+
+def sort_categorized_elements(context):
+    """Sort the categorized elements on an object"""
+    ordered_categories = get_ordered_categories(context)
+    elements = sorted(
+        context.categorized_elements.items(),
+        key=lambda x: ordered_categories[x[1]['category_uid']],
+    )
+    context.categorized_elements = OrderedDict([(k, v) for k, v in elements])
 
 
 def remove_categorized_element(parent, obj):
@@ -194,8 +224,10 @@ def get_categorized_elements(context,
         query['sort_on'] = sort_on
     if portal_type:
         query['portal_type'] = portal_type
-    brains = api.content.find(context=context, **query)
-    for brain in brains:
+    brains = {b.UID: b for b in api.content.find(context=context, **query)}
+
+    for uid, element in categorized_elements.items():
+        brain = brains[uid]
         adapter = getMultiAdapter((context, context.REQUEST, brain),
                                   IIconifiedContent)
         if adapter.can_view() is True:
@@ -208,6 +240,7 @@ def get_categorized_elements(context,
                 tmp = categorized_elements[brain.UID].copy()
                 tmp['UID'] = brain.UID
                 elements.append(tmp)
+
     if sort_on and not result_type == 'brains':
         if result_type == 'dict':
             elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
