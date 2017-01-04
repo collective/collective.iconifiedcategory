@@ -7,6 +7,8 @@ from zope.interface import Attribute
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
+from collective.iconifiedcategory import _
+
 
 class ICollectiveIconifiedCategoryLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
@@ -53,6 +55,14 @@ class IIconifiedCategorySubtyper(Interface):
     have_categorized_elements = schema.Bool(
         u'Is current object contains categorized elements',
         readonly=True,
+    )
+
+
+class IIconifiedCategorySettings(Interface):
+
+    sort_categorized_tab = schema.Bool(
+        title=_(u'Sort categorized elements on categorized tab'),
+        default=False,
     )
 
 

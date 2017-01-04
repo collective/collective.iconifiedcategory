@@ -233,4 +233,12 @@
     template="templates/update_categorize_elements.pt"
     />
 
+  <!-- control panel -->
+  <browser:page
+    name="iconifiedcategory-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".controlpanel.IconifiedCategorySettingsView"
+    permission="cmf.ManagePortal"
+    />
+
 </configure>

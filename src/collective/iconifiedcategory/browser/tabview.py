@@ -23,6 +23,7 @@ from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
 from collective.iconifiedcategory.interfaces import ICategorizedTable
+from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 
 
 class CategorizedTabView(BrowserView):
@@ -75,11 +76,22 @@ class CategorizedTable(Table):
 
     @property
     def values(self):
-        return [CategorizedContent(content, self.context) for content in
-                utils.get_categorized_elements(self.context,
-                                               result_type='brains',
-                                               portal_type=self.portal_type,
-                                               sort_on='getObjPositionInParent')]
+        sort_on = 'getObjPositionInParent'
+        sort_categorized_tab = api.portal.get_registry_record(
+            'sort_categorized_tab',
+            interface=IIconifiedCategorySettings,
+        )
+        if sort_categorized_tab is True:
+            sort_on = 'sortable_title'
+        return [
+            CategorizedContent(content, self.context) for content in
+            utils.get_categorized_elements(
+                self.context,
+                result_type='brains',
+                portal_type=self.portal_type,
+                sort_on=sort_on,
+            )
+        ]
 
     def render(self):
         if not len(self.rows):
