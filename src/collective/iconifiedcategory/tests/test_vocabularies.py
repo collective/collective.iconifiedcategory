@@ -32,24 +32,28 @@ class TestVocabularies(unittest.TestCase):
         terms = [t.title for t in vocabulary]
         self.assertEqual(2 * 3 * 3, len(terms))
         categories = [
-            'Category 1-1', 'Category 1-2', 'Category 1-3',
-            'Category 2-1', 'Category 2-2', 'Category 2-3',
+            'Category 1-3',
+            'Category 2-3',
+            'Category 1-2',
+            'Category 2-2',
+            'Category 1-1',
+            'Category 2-1',
         ]
         self.assertListEqual(
-            sorted([t for t in terms if t.startswith('Category')]),
-            sorted(categories),
+            [t for t in terms if t.startswith('Category')],
+            categories,
         )
         subcategories = [
-            'Subcategory 1-1-1', 'Subcategory 1-1-2',
-            'Subcategory 1-2-1', 'Subcategory 1-2-2',
-            'Subcategory 1-3-1', 'Subcategory 1-3-2',
-            'Subcategory 2-1-1', 'Subcategory 2-1-2',
-            'Subcategory 2-2-1', 'Subcategory 2-2-2',
-            'Subcategory 2-3-1', 'Subcategory 2-3-2',
+            'Subcategory 1-3-2', 'Subcategory 1-3-1',
+            'Subcategory 2-3-2', 'Subcategory 2-3-1',
+            'Subcategory 1-2-2', 'Subcategory 1-2-1',
+            'Subcategory 2-2-2', 'Subcategory 2-2-1',
+            'Subcategory 1-1-2', 'Subcategory 1-1-1',
+            'Subcategory 2-1-2', 'Subcategory 2-1-1',
         ]
         self.assertListEqual(
-            sorted([t for t in terms if t.startswith('Subcategory')]),
-            sorted(subcategories),
+            [t for t in terms if t.startswith('Subcategory')],
+            subcategories,
         )
 
     def test_category_title_vocabulary(self):

@@ -36,7 +36,7 @@ def create_config(context):
         )
         groups.append(obj)
     for group_idx, group in enumerate(groups):
-        for cat_idx in range(1, 4):
+        for cat_idx in reversed(range(1, 4)):
             filename = u'icon{0}.png'.format(cat_idx)
             f = open(os.path.join(current_path, 'tests', filename), 'r')
             icon = namedfile.NamedBlobFile(f.read(), filename=filename)
@@ -48,7 +48,7 @@ def create_config(context):
                 icon=icon,
                 predefined_title=title,
             )
-            for idx in range(1, 3):
+            for idx in reversed(range(1, 3)):
                 api.content.create(
                     type='ContentSubcategory',
                     title='Subcategory {0}-{1}-{2}'.format(
