@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-10-07 09:55+0000\n"
+"POT-Creation-Date: 2017-01-04 15:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Activate the \"to be printed\" option"
 msgstr ""
 
-#: ../browser/tabview.py:121
+#: ../browser/tabview.py:144
 msgid "Author"
 msgstr ""
 
@@ -39,11 +39,11 @@ msgid "Categorized elements"
 msgstr ""
 
 #: ../behaviors/iconifiedcategorization.py:34
-#: ../browser/tabview.py:112
+#: ../browser/tabview.py:131
 msgid "Category"
 msgstr ""
 
-#: ../browser/tabview.py:213
+#: ../browser/tabview.py:243
 #: ../content/base.py:27
 msgid "Confidential"
 msgstr ""
@@ -64,7 +64,7 @@ msgstr ""
 msgid "ContentSubcategory"
 msgstr ""
 
-#: ../browser/tabview.py:129
+#: ../browser/tabview.py:152
 msgid "Creation date"
 msgstr ""
 
@@ -72,23 +72,27 @@ msgstr ""
 msgid "Default title"
 msgstr ""
 
-#: ../browser/tabview.py:244
+#: ../browser/tabview.py:274
 msgid "Download"
 msgstr ""
 
-#: ../browser/tabview.py:238
+#: ../browser/tabview.py:268
 msgid "Edit"
+msgstr ""
+
+#: ../browser/templates/update_categorize_elements.pt:5
+msgid "Elements updated!"
 msgstr ""
 
 #: ../content/base.py:41
 msgid "Enabled?"
 msgstr ""
 
-#: ../browser/actionview.py:48
+#: ../browser/actionview.py:53
 msgid "Error during process"
 msgstr ""
 
-#: ../browser/tabview.py:153
+#: ../browser/tabview.py:176
 msgid "Filesize"
 msgstr ""
 
@@ -96,15 +100,27 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: ../browser/tabview.py:140
+#: ../profiles/default/controlpanel.xml
+msgid "Iconified Category"
+msgstr ""
+
+#: ../browser/controlpanel.py:18
+msgid "Iconified Category Settings"
+msgstr ""
+
+#: ../browser/tabview.py:163
 msgid "Last modification"
 msgstr ""
 
-#: ../browser/templates/categorized-childs.pt:28
+#: ../browser/templates/categorized-childs.pt:40
 msgid "More infos"
 msgstr ""
 
 msgid "Must be printed"
+msgstr ""
+
+#: ../browser/actionview.py:72
+msgid "No values to set"
 msgstr ""
 
 msgid "Not confidential"
@@ -118,36 +134,45 @@ msgstr ""
 msgid "Predefined title"
 msgstr ""
 
-#: ../browser/templates/categorized-childs.pt:15
+#: ../browser/tabview.py:280
+#: ../browser/templates/categorized-childs.pt:21
 msgid "Preview"
 msgstr ""
 
 msgid "Should not be printed"
 msgstr ""
 
-#: ../content/events.py:55
+#: ../interfaces.py:64
+msgid "Sort categorized elements on categorized tab"
+msgstr ""
+
+#: ../content/events.py:43
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
-#: ../content/events.py:103
+#: ../content/events.py:89
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:114
+#: ../content/events.py:102
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
-#: ../browser/tabview.py:87
+#: ../browser/tabview.py:105
 msgid "Title"
 msgstr ""
 
-#: ../browser/tabview.py:198
+#: ../browser/tabview.py:228
 #: ../content/base.py:34
 msgid "To be printed"
 msgstr ""
 
-#: ../browser/tabview.py:250
-msgid "View"
+#: ../profiles/default/actions.xml
+msgid "Update categorized elements"
+msgstr ""
+
+#: ../browser/actionview.py:76
+msgid "Values have been set"
 msgstr ""
 
 #. Default: "Annex size is huge, it could be difficult to be downloaded!"
@@ -155,7 +180,7 @@ msgid "help_warn_filesize"
 msgstr ""
 
 #. Default: "<span class='discreet iconified_category_no_element'>No element to display.</span>"
-#: ../browser/tabview.py:80
+#: ../browser/tabview.py:98
 msgid "no_element_to_display"
 msgstr ""
 
