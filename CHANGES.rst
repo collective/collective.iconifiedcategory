@@ -4,6 +4,11 @@ Changelog
 0.4 (unreleased)
 ----------------
 
+- Add a configlet to allow user to sort elements on title on the
+  categorized tab view
+  [mpeeters]
+- Ensure that categorized elements are sorted by group folder order
+  [mpeeters]
 - Refactoring of iconified JavaScript functions
   [mpeeters]
 - Increase speed that show the categorized elements in the tooltipster.
