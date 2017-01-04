@@ -47,7 +47,7 @@ setup(
         'collective.fontawesome',
         'collective.js.tooltipster',
         'collective.z3cform.select2',
-        'plone.api',
+        'plone.api>=1.4.11',
         'plone.app.contenttypes',
         'plone.app.dexterity',
         'plone.autoform',
