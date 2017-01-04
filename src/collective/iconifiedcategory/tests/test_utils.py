@@ -371,7 +371,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
              utils.get_categorized_elements(self.portal,
                                             result_type='brains',
                                             sort_on='sortable_title')],
-            [document.UID(), document2.UID()])
+            [document2.UID(), document.UID()])
 
         # teardown
         self.assertRaises(Redirect, api.content.delete, category)

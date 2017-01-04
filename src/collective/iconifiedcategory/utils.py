@@ -20,6 +20,7 @@ from zope.globalrequest import getRequest
 from zope.i18n import translate
 
 import copy
+import types
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
@@ -224,11 +225,8 @@ def get_categorized_elements(context,
         query['sort_on'] = sort_on
     if portal_type:
         query['portal_type'] = portal_type
-    brains = {b.UID: b for b in api.content.find(context=context, **query)}
-    for uid, element in categorized_elements.items():
-        brain = brains.get(uid)
-        if not brain:
-            continue
+    order = categorized_elements.keys()
+    for brain in api.content.find(context=context, **query):
         adapter = getMultiAdapter((context, context.REQUEST, brain),
                                   IIconifiedContent)
         if adapter.can_view() is True:
@@ -241,6 +239,11 @@ def get_categorized_elements(context,
                 tmp = categorized_elements[brain.UID].copy()
                 tmp['UID'] = brain.UID
                 elements.append(tmp)
+    if not sort_on:
+        elements = sorted(
+            elements,
+            key=lambda x: order.index(get_UID(x)),
+        )
 
     if sort_on and not result_type == 'brains':
         if result_type == 'dict':
@@ -248,6 +251,13 @@ def get_categorized_elements(context,
         else:
             elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
     return elements
+
+
+def get_UID(obj):
+    uid = getattr(obj, 'UID', None) or obj['UID']
+    if isinstance(uid, types.MethodType):
+        uid = uid()
+    return uid
 
 
 def get_back_references(obj):
