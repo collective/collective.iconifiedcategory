@@ -66,3 +66,9 @@ class BaseTestCase(unittest.TestCase):
             to_print=False,
             confidential=False,
         )
+
+    def tearDown(self):
+        elements = ('file', 'image')
+        for element in elements:
+            if element in self.portal:
+                api.content.delete(self.portal[element])

@@ -20,13 +20,16 @@ class CategorizedChildView(BrowserView):
         super(CategorizedChildView, self).__init__(context, request)
         self.portal_url = api.portal.get().absolute_url()
 
+    def update(self):
+        self.categorized_elements = get_categorized_elements(
+            self.context,
+            portal_type=self.portal_type,
+        )
+
     def __call__(self, portal_type=None):
         """ """
         self.portal_type = portal_type
-        self.categorized_elements = get_categorized_elements(
-            self.context,
-            portal_type=portal_type,
-        )
+        self.update()
         return super(CategorizedChildView, self).__call__()
 
     def can_view(self):
@@ -51,7 +54,9 @@ class CategorizedChildView(BrowserView):
 
     @property
     def categories_ids(self):
-        return set([e['category_id'] for e in self.categorized_elements])
+        return OrderedDict.fromkeys(
+            [e['category_id'] for e in self.categorized_elements],
+        ).keys()
 
     def infos(self):
         infos = OrderedDict([(e, []) for e in self.categories_ids])
