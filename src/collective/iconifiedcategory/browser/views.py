@@ -23,9 +23,10 @@ class CategorizedChildView(BrowserView):
     def __call__(self, portal_type=None):
         """ """
         self.portal_type = portal_type
-        self.categorized_elements = get_categorized_elements(self.context,
-                                                             portal_type=portal_type,
-                                                             sort_on='category_title')
+        self.categorized_elements = get_categorized_elements(
+            self.context,
+            portal_type=portal_type,
+        )
         return super(CategorizedChildView, self).__call__()
 
     def can_view(self):
@@ -42,7 +43,7 @@ class CategorizedChildView(BrowserView):
                                       'counts': 0,
                                       'icon': e['icon_url']})
                  for e in self.categorized_elements]
-        infos = OrderedDict(sorted(infos, key=lambda x: x[1]['title']))
+        infos = OrderedDict(infos)
         for key, element in infos.items():
             element['counts'] = len([e for e in self.categorized_elements
                                      if e['category_uid'] == key])
@@ -56,6 +57,8 @@ class CategorizedChildView(BrowserView):
         infos = OrderedDict([(e, []) for e in self.categories_ids])
         for element in self.categorized_elements:
             infos[element['category_id']].append(element)
+        for category in infos:
+            infos[category] = sorted(infos[category], key=lambda x: x['title'])
         return infos
 
     def render_filesize(self, size):
