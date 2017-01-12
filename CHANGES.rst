@@ -4,6 +4,12 @@ Changelog
 0.4 (unreleased)
 ----------------
 
+- Add method IconifiedCategoryGroupAdapter.get_every_categories
+  that gets every available categories.  Mainly made to be overrided,
+  it is used in utils.get_ordered_categories to manage the fact
+  that a container could contain categorized elements using different
+  group of categories
+  [gbastien]
 - Add a configlet to allow user to sort elements on title on the
   categorized tab view
   [mpeeters]

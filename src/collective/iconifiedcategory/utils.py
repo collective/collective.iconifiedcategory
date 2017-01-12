@@ -165,7 +165,10 @@ def update_all_categorized_elements(container):
 def get_ordered_categories(context):
     """Return an ordered dict for categories (id and uids)"""
     elements = {}
-    for idx, category in enumerate(get_categories(context)):
+    config_root = get_config_root(context)
+    adapter = getMultiAdapter((config_root, context), IIconifiedCategoryGroup)
+    categories = adapter.get_every_categories()
+    for idx, category in enumerate(categories):
         elements[category.UID] = idx
         elements[calculate_category_id(category.getObject())] = idx
 
