@@ -82,7 +82,7 @@ class CategorizedTable(Table):
             interface=IIconifiedCategorySettings,
         )
         if sort_categorized_tab is True:
-            sort_on = 'sortable_title'
+            sort_on = None
         return [
             CategorizedContent(content, self.context) for content in
             utils.get_categorized_elements(

@@ -62,8 +62,6 @@ class CategorizedChildView(BrowserView):
         infos = OrderedDict([(e, []) for e in self.categories_ids])
         for element in self.categorized_elements:
             infos[element['category_id']].append(element)
-        for category in infos:
-            infos[category] = sorted(infos[category], key=lambda x: x['title'])
         return infos
 
     def render_filesize(self, size):

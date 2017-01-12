@@ -4,9 +4,13 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Add method IconifiedCategoryGroupAdapter.get_every_categories
+- Sort `categorized_elements` by alphabetical order into a category,
+  this way it can be directly displayed as it in the tooltipster
+  or in the tabview without having to sort elements again
+  [gbastien]
+- Add method `IconifiedCategoryGroupAdapter.get_every_categories`
   that gets every available categories.  Mainly made to be overrided,
-  it is used in utils.get_ordered_categories to manage the fact
+  it is used in `utils.get_ordered_categories` to manage the fact
   that a container could contain categorized elements using different
   group of categories
   [gbastien]

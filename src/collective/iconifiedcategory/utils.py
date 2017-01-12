@@ -188,7 +188,8 @@ def sort_categorized_elements(context):
     ordered_categories = get_ordered_categories(context)
     elements = sorted(
         context.categorized_elements.items(),
-        key=lambda x: ordered_categories[x[1]['category_uid']],
+        key=lambda x: (ordered_categories[x[1]['category_uid']],
+                       x[1]['title'].lower(),),
     )
     context.categorized_elements = OrderedDict([(k, v) for k, v in elements])
 
