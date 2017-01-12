@@ -62,7 +62,7 @@ class IIconifiedCategorySettings(Interface):
 
     sort_categorized_tab = schema.Bool(
         title=_(u'Sort categorized elements on categorized tab'),
-        default=False,
+        default=True,
     )
 
 
