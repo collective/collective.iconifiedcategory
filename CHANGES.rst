@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4 (unreleased)
+0.4 (2017-01-12)
 ----------------
 
 - Sort `categorized_elements` by alphabetical order into a category,
