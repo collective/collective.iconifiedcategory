@@ -4,6 +4,10 @@ Changelog
 0.4 (unreleased)
 ----------------
 
+- Do not fail in `utils.sort_categorized_elements` if a key is not found,
+  it can be the case when copy/pasting and new element use another
+  configuration
+  [gbastien]
 - Sort `categorized_elements` by alphabetical order into a category,
   this way it can be directly displayed as it in the tooltipster
   or in the tabview without having to sort elements again

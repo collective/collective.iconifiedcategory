@@ -186,11 +186,14 @@ def get_ordered_categories(context):
 def sort_categorized_elements(context):
     """Sort the categorized elements on an object"""
     ordered_categories = get_ordered_categories(context)
-    elements = sorted(
-        context.categorized_elements.items(),
-        key=lambda x: (ordered_categories[x[1]['category_uid']],
-                       x[1]['title'].lower(),),
-    )
+    try:
+        elements = sorted(
+            context.categorized_elements.items(),
+            key=lambda x: (ordered_categories[x[1]['category_uid']],
+                           x[1]['title'].lower(),),
+        )
+    except KeyError:
+        return
     context.categorized_elements = OrderedDict([(k, v) for k, v in elements])
 
 
