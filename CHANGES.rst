@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5 (unreleased)
+0.5 (2017-01-13)
 ----------------
 
 - Do not fail in `utils.sort_categorized_elements` if a key is not found,
