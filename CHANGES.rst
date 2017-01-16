@@ -4,8 +4,9 @@ Changelog
 0.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Display select2 widget larger and with no padding between options
+  so more options are displayed together
+  [gbastien]
 
 0.5 (2017-01-13)
 ----------------
