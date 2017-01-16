@@ -61,6 +61,6 @@
   </tal:if>
 
   <tal:nothing condition="python: not can_view and view.show_nothing">
-    <span class="discreet" i18n:translate="">-</span>
+    <span class="discreet" i18n:translate="">Nothing.</span>
   </tal:nothing>
 </tal:defines>
