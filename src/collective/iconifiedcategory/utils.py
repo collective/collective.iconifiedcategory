@@ -217,7 +217,8 @@ def _categorized_elements(context):
 def get_categorized_elements(context,
                              result_type='dict',
                              portal_type=None,
-                             sort_on=None):
+                             sort_on=None,
+                             uids=[]):
     """Return categorized elements.
        p_result_type may be :
        - 'dict': default, essential metadata are returned as a dict;
@@ -225,7 +226,7 @@ def get_categorized_elements(context,
        - 'brains': categorized brains are returned."""
     elements = []
     categorized_elements = _categorized_elements(context)
-    uids = categorized_elements.keys()
+    uids = uids or categorized_elements.keys()
     query = {'UID': uids}
     # sort in the catalog query if we want brains
     if sort_on and result_type == 'brains':

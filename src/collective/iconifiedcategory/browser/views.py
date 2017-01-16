@@ -33,9 +33,47 @@ class CategorizedChildView(BrowserView):
         self.update()
         return super(CategorizedChildView, self).__call__()
 
-    def can_view(self):
+    def has_elements_to_show(self):
         return ('categorized_elements' in self.context.__dict__ and
                 len(self.categorized_elements) > 0)
+
+    def categories_infos(self):
+        infos = [(e['category_uid'], {'id': e['category_id'],
+                                      'title': e['category_title'],
+                                      'counts': 0,
+                                      'icon': e['icon_url']})
+                 for e in self.categorized_elements]
+        infos = OrderedDict(infos)
+        for key, element in infos.items():
+            element['counts'] = len([e for e in self.categorized_elements
+                                     if e['category_uid'] == key])
+        return infos.values()
+
+
+class CategorizedChildInfosView(BrowserView):
+    """ """
+    def __init__(self, context, request):
+        """ """
+        super(CategorizedChildInfosView, self).__init__(context, request)
+        self.portal_url = api.portal.get().absolute_url()
+
+    def update(self):
+        uids = self._find_uids()
+        self.categorized_elements = get_categorized_elements(self.context, uids=uids)
+
+    def _find_uids(self):
+        """ """
+        uids = []
+        for k, v in self.context.categorized_elements.items():
+            if v['category_id'] == self.category_id:
+                uids.append(k)
+        return uids
+
+    def __call__(self, category_id):
+        """ """
+        self.category_id = category_id
+        self.update()
+        return super(CategorizedChildInfosView, self).__call__()
 
     def show_preview_link(self):
         """Made to be overrided."""

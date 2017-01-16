@@ -4,6 +4,8 @@ Changelog
 0.6 (unreleased)
 ----------------
 
+- Use ajax to display the categorized childs informations
+  [gbastien]
 - Display select2 widget larger and with no padding between options
   so more options are displayed together
   [gbastien]

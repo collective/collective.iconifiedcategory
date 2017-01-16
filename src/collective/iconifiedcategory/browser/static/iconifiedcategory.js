@@ -82,5 +82,45 @@ jQuery(function($) {
 
 };
 
+function categorizedChildsInfos() {
+    jQuery(function($){
+
+    $('.tooltipster-childs-infos').tooltipster({
+
+        contentAsHTML: true,
+        interactive: true,
+        position: 'top-left',
+        theme: 'tooltipster-shadow',
+        position: 'bottom',
+        speed: 100,
+        delay: 50,
+        animation: 'fade',
+        trigger: 'hover',
+
+        functionBefore: function (origin, helper) {
+            helper();
+            if (origin.data('loaded') !== true) {
+                var category_id = $(origin).attr('data-category_id');
+                var base_url = $(origin).attr('data-base_url');
+                $.ajax({
+                    type: 'GET',
+                    url: base_url + '/@@categorized-childs-infos',
+                    data: {
+                        category_id: category_id,
+                        ajax_load: new Date().getTime(),
+                    },
+                    success: function (data) {
+                        origin.tooltipster('update', data).data('ajax ', 'cached');
+                        origin.data('loaded', true);
+                        helper();
+                    }
+                });
+            }
+        }
+    });
+})
+};
+
 jQuery(document).ready(initializeIconifiedCategoryWidget);
 jQuery(document).ready(initializeIconifiedActions);
+jQuery(document).ready(categorizedChildsInfos);

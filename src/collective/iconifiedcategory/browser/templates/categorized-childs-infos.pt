@@ -1,0 +1,41 @@
+<tal:defines define="infos view/infos;
+                     portal_url view/portal_url"
+             i18n:domain="collective.iconifiedcategory">
+  <div tal:attributes="id string:${view.category_id}_${context/UID|context/getId}">
+    <ul>
+      <li tal:repeat="element python: infos[view.category_id]">
+        <tal:block define="element_url python:element['download_url'] and element['download_url'] or element['relative_url']">
+        <a href="" tal:attributes="href string:${portal_url}/${element_url}">
+          <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
+                                             alt element/category_title;
+                                             title element/category_title" />
+          <span tal:content="element/title"
+                tal:attributes="title element/description"></span>
+          <tal:filesize tal:condition="element/warn_filesize">
+            (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
+          </tal:filesize>
+        </a>
+        <tal:if condition="python: view.show_preview_link() and element['preview_status'] == 'converted'">
+        <a href=""
+           title="Preview"
+           i18n:attributes="title"
+           target="_blank"
+           tal:attributes="href string:${portal_url}/${element/relative_url}/documentviewer#document/p1">
+          <img src=""
+               tal:attributes="src string:${portal_url}/file_icon.png" />
+        </a>
+        </tal:if>
+        </tal:block>
+      </li>
+    </ul>
+    <br />
+    <a href="#"
+       target="_parent"
+       tal:attributes="href view/categorized_elements_more_infos_url">
+      <img class="categorized_elements_more_infos_icon"
+           src="more_infos.png"
+           tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory.more_infos.png" />
+      <span i18n:translate="">More infos</span>
+    </a>
+  </div>
+</tal:defines>

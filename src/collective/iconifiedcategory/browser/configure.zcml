@@ -38,6 +38,15 @@
     template="templates/categorized-childs.pt"
     />
 
+  <browser:page
+    for="*"
+    name="categorized-childs-infos"
+    permission="zope2.View"
+    class=".views.CategorizedChildInfosView"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    template="templates/categorized-childs-infos.pt"
+    />
+
   <!-- viewlets -->
   <browser:viewlet
     name="iconifiedcategory.childs"
