@@ -26,9 +26,10 @@ class CategorizedChildView(BrowserView):
             portal_type=self.portal_type,
         )
 
-    def __call__(self, portal_type=None):
+    def __call__(self, portal_type=None, show_nothing=True):
         """ """
         self.portal_type = portal_type
+        self.show_nothing = show_nothing
         self.update()
         return super(CategorizedChildView, self).__call__()
 
@@ -36,7 +37,7 @@ class CategorizedChildView(BrowserView):
         return ('categorized_elements' in self.context.__dict__ and
                 len(self.categorized_elements) > 0)
 
-    def showPreviewLink(self):
+    def show_preview_link(self):
         """Made to be overrided."""
         return True
 

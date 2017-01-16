@@ -17,7 +17,7 @@
             (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
           </tal:filesize>
         </a>
-        <tal:if condition="python: view.showPreviewLink() and element['preview_status'] == 'converted'">
+        <tal:if condition="python: view.show_preview_link() and element['preview_status'] == 'converted'">
         <a href=""
            title="Preview"
            i18n:attributes="title"
@@ -60,7 +60,7 @@
   </div>
   </tal:if>
 
-  <tal:nothing condition="not:can_view">
-    <span class="discreet" i18n:translate="">Nothing.</span>
+  <tal:nothing condition="python: not can_view and view.show_nothing">
+    <span class="discreet" i18n:translate="">-</span>
   </tal:nothing>
 </tal:defines>

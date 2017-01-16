@@ -7,6 +7,11 @@ Changelog
 - Display select2 widget larger and with no padding between options
   so more options are displayed together
   [gbastien]
+- Added option `show_nothing=True` to the `categorized-childs` view
+  to be able to show/hide the 'Nothing' label when there is no categorized
+  content to display
+  [gbastien]
+
 
 0.5 (2017-01-13)
 ----------------
