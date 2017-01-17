@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.6 (unreleased)
+0.6 (2017-01-17)
 ----------------
 
 - Use ajax to display the categorized childs informations
