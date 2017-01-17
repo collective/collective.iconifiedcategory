@@ -100,13 +100,13 @@ function categorizedChildsInfos() {
         functionBefore: function (origin, helper) {
             helper();
             if (origin.data('loaded') !== true) {
-                var category_id = $(origin).attr('data-category_id');
+                var category_uid = $(origin).attr('data-category_uid');
                 var base_url = $(origin).attr('data-base_url');
                 $.ajax({
                     type: 'GET',
                     url: base_url + '/@@categorized-childs-infos',
                     data: {
-                        category_id: category_id,
+                        category_uid: category_uid,
                         ajax_load: new Date().getTime(),
                     },
                     success: function (data) {

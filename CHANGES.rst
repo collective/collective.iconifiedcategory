@@ -4,7 +4,11 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Use `category_uid` instead `category_id` as key for infos dict used by
+  `CategorizedChildInfosView`, indeed we may have different configurations
+  used on same container for different categorized elements and those
+  configurations may contain categories with same id
+  [gbastien]
 
 
 0.6 (2017-01-17)

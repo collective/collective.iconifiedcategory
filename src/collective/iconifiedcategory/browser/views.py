@@ -39,6 +39,7 @@ class CategorizedChildView(BrowserView):
 
     def categories_infos(self):
         infos = [(e['category_uid'], {'id': e['category_id'],
+                                      'uid': e['category_uid'],
                                       'title': e['category_title'],
                                       'counts': 0,
                                       'icon': e['icon_url']})
@@ -59,19 +60,20 @@ class CategorizedChildInfosView(BrowserView):
 
     def update(self):
         uids = self._find_uids()
-        self.categorized_elements = get_categorized_elements(self.context, uids=uids)
+        self.categorized_elements = get_categorized_elements(self.context,
+                                                             uids=uids)
 
     def _find_uids(self):
         """ """
         uids = []
         for k, v in self.context.categorized_elements.items():
-            if v['category_id'] == self.category_id:
+            if v['category_uid'] == self.category_uid:
                 uids.append(k)
         return uids
 
-    def __call__(self, category_id):
+    def __call__(self, category_uid):
         """ """
-        self.category_id = category_id
+        self.category_uid = category_uid
         self.update()
         return super(CategorizedChildInfosView, self).__call__()
 
@@ -80,15 +82,15 @@ class CategorizedChildInfosView(BrowserView):
         return True
 
     @property
-    def categories_ids(self):
+    def categories_uids(self):
         return OrderedDict.fromkeys(
-            [e['category_id'] for e in self.categorized_elements],
+            [e['category_uid'] for e in self.categorized_elements],
         ).keys()
 
     def infos(self):
-        infos = OrderedDict([(e, []) for e in self.categories_ids])
+        infos = OrderedDict([(e, []) for e in self.categories_uids])
         for element in self.categorized_elements:
-            infos[element['category_id']].append(element)
+            infos[element['category_uid']].append(element)
         return infos
 
     def render_filesize(self, size):

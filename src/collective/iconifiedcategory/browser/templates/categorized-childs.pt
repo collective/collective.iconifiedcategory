@@ -6,7 +6,7 @@
        onclick="javascript:event.preventDefault();"
        tal:attributes="href string:#${element/id}_${context/UID|context/getId};
                        title element/title;
-                       data-category_id string:${element/id};
+                       data-category_uid string:${element/uid};
                        data-base_url string:${context/absolute_url};">
       <span tal:content="element/counts"></span>
       <img src=""

@@ -4,7 +4,7 @@
              i18n:domain="collective.iconifiedcategory">
   <div>
     <ul>
-      <li tal:repeat="element python: infos[view.category_id]">
+      <li tal:repeat="element python: infos[view.category_uid]">
         <tal:block define="element_url python:element['download_url'] and element['download_url'] or element['relative_url']">
         <a href="" tal:attributes="href string:${portal_url}/${element_url}">
           <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};

@@ -65,7 +65,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
     def setUp(self):
         super(TestCategorizedChildInfosView, self).setUp()
         self.viewinfos = self.portal.restrictedTraverse('@@categorized-childs-infos')
-        self.viewinfos.category_id = 'category-1-1'
+        self.viewinfos.category_uid = self.config['group-1']['category-1-1'].UID()
 
     def test__call__(self):
         # the category and elements of category is displayed
@@ -92,35 +92,35 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.viewinfos.update()
         self.assertEqual(self.viewinfos.index(), u'')
 
-    def test_categories_ids(self):
+    def test_categories_uids(self):
         self.viewinfos.update()
         self.assertEqual(
-            ['category-1-1'],
-            self.viewinfos.categories_ids,
+            [self.viewinfos.category_uid],
+            self.viewinfos.categories_uids,
         )
-        self.viewinfos.category_id = 'category-1-2'
+        self.viewinfos.category_uid = self.config['group-1']['category-1-2'].UID()
         self.viewinfos.update()
         self.assertEqual(
-            ['category-1-2'],
-            self.viewinfos.categories_ids,
+            [self.viewinfos.category_uid],
+            self.viewinfos.categories_uids,
         )
 
     def test_infos(self):
         self.viewinfos.update()
         infos = self.viewinfos.infos()
-        self.assertItemsEqual(['category-1-1'], infos.keys())
+        self.assertItemsEqual([self.viewinfos.category_uid], infos.keys())
         self.assertItemsEqual(
             ['file.txt', 'icon1.png'],
-            [e['title'] for e in infos['category-1-1']],
+            [e['title'] for e in infos[self.viewinfos.category_uid]],
         )
 
-        self.viewinfos.category_id = 'category-1-2'
+        self.viewinfos.category_uid = self.config['group-1']['category-1-2'].UID()
         self.viewinfos.update()
         infos = self.viewinfos.infos()
-        self.assertItemsEqual(['category-1-2'], infos.keys())
+        self.assertItemsEqual([self.viewinfos.category_uid], infos.keys())
         self.assertItemsEqual(
             ['A', 'B'],
-            [e['title'] for e in infos['category-1-2']],
+            [e['title'] for e in infos[self.viewinfos.category_uid]],
         )
 
 
