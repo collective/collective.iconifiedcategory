@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import lxml
 from AccessControl import Unauthorized
 from Products.Five import zcml
 from plone import api
@@ -45,6 +44,33 @@ class TestCategorizedChildView(BaseTestCase):
         result = self.view()
         self.assertTrue('<img src="http://nohost/plone/config/group-1/category-1-1/@@download/icon/icon1.png"'
                         in result)
+
+        # remove the categorized elements
+        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['image'])
+        api.content.delete(self.portal['docB'])
+        api.content.delete(self.portal['docA'])
+        self.assertEqual(self.view().strip(), u'<span class="discreet">Nothing.</span>')
+
+    def test_categories_infos(self):
+        self.view.update()
+        infos = self.view.categories_infos()
+        self.assertEqual(2, len(infos))
+        self.assertEqual('category-1-1', infos[1]['id'])
+        self.assertEqual(2, infos[0]['counts'])
+
+
+class TestCategorizedChildInfosView(TestCategorizedChildView):
+
+    def setUp(self):
+        super(TestCategorizedChildInfosView, self).setUp()
+        self.viewinfos = self.portal.restrictedTraverse('@@categorized-childs-infos')
+        self.viewinfos.category_id = 'category-1-1'
+
+    def test__call__(self):
+        # the category and elements of category is displayed
+        self.viewinfos.update()
+        result = self.viewinfos.index()
         self.assertTrue('<a href="http://nohost/plone/file/@@download/file/file.txt">' in result)
         self.assertTrue('<span title="File description">file.txt</span>' in result)
         self.assertTrue('<a href="http://nohost/plone/image/@@download/file/icon1.png">' in result)
@@ -54,39 +80,44 @@ class TestCategorizedChildView(BaseTestCase):
         # manipulate stored categorized_elements
         self.portal.categorized_elements[self.portal['file'].UID()]['warn_filesize'] = True
         self.portal.categorized_elements[self.portal['file'].UID()]['filesize'] = 7000000
+        self.viewinfos.update()
         self.assertTrue("(<span class=\'warn_filesize\' title=\'Annex size is huge, "
-                        "it could be difficult to be downloaded!\'>6.7 MB</span>)" in self.view())
+                        "it could be difficult to be downloaded!\'>6.7 MB</span>)" in self.viewinfos.index())
 
         # remove the categorized elements
         api.content.delete(self.portal['file'])
         api.content.delete(self.portal['image'])
         api.content.delete(self.portal['docB'])
         api.content.delete(self.portal['docA'])
-        result = lxml.html.fromstring(self.view())
-        self.assertEqual(result.text, 'Nothing.')
-
-    def test_categories_infos(self):
-        self.view.update()
-        infos = self.view.categories_infos()
-        self.assertEqual(2, len(infos))
-        self.assertEqual('category-1-1', infos[1]['id'])
-        self.assertEqual(2, infos[0]['counts'])
+        self.viewinfos.update()
+        self.assertEqual(self.viewinfos.index(), u'')
 
     def test_categories_ids(self):
-        self.view.update()
+        self.viewinfos.update()
         self.assertEqual(
-            ['category-1-2', 'category-1-1'],
-            self.view.categories_ids,
+            ['category-1-1'],
+            self.viewinfos.categories_ids,
+        )
+        self.viewinfos.category_id = 'category-1-2'
+        self.viewinfos.update()
+        self.assertEqual(
+            ['category-1-2'],
+            self.viewinfos.categories_ids,
         )
 
     def test_infos(self):
-        self.view.update()
-        infos = self.view.infos()
-        self.assertItemsEqual(['category-1-2', 'category-1-1'], infos.keys())
+        self.viewinfos.update()
+        infos = self.viewinfos.infos()
+        self.assertItemsEqual(['category-1-1'], infos.keys())
         self.assertItemsEqual(
             ['file.txt', 'icon1.png'],
             [e['title'] for e in infos['category-1-1']],
         )
+
+        self.viewinfos.category_id = 'category-1-2'
+        self.viewinfos.update()
+        infos = self.viewinfos.infos()
+        self.assertItemsEqual(['category-1-2'], infos.keys())
         self.assertItemsEqual(
             ['A', 'B'],
             [e['title'] for e in infos['category-1-2']],

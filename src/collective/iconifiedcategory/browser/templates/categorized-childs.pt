@@ -1,4 +1,6 @@
-<div class="categorized-elements" tal:define="cat_infos view/categories_infos">
+<div class="categorized-elements"
+     tal:define="cat_infos view/categories_infos"
+     tal:condition="cat_infos">
   <tal:block repeat="element cat_infos">
     <a href="" class="tooltipster-childs-infos deactivated"
        onclick="javascript:event.preventDefault();"
@@ -16,7 +18,6 @@
   </tal:block>
   <div style="clear: both;"></div>
 </div>
-
 <tal:nothing condition="python: not view.has_elements_to_show() and view.show_nothing">
-  <span class="discreet" i18n:translate="">Nothing.</span>
+<span class="discreet" i18n:translate="">Nothing.</span>
 </tal:nothing>

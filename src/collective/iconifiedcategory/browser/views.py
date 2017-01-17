@@ -79,18 +79,6 @@ class CategorizedChildInfosView(BrowserView):
         """Made to be overrided."""
         return True
 
-    def categories_infos(self):
-        infos = [(e['category_uid'], {'id': e['category_id'],
-                                      'title': e['category_title'],
-                                      'counts': 0,
-                                      'icon': e['icon_url']})
-                 for e in self.categorized_elements]
-        infos = OrderedDict(infos)
-        for key, element in infos.items():
-            element['counts'] = len([e for e in self.categorized_elements
-                                     if e['category_uid'] == key])
-        return infos.values()
-
     @property
     def categories_ids(self):
         return OrderedDict.fromkeys(

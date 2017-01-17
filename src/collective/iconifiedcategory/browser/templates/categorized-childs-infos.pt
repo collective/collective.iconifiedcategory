@@ -1,7 +1,8 @@
 <tal:defines define="infos view/infos;
                      portal_url view/portal_url"
+             condition="infos"
              i18n:domain="collective.iconifiedcategory">
-  <div tal:attributes="id string:${view.category_id}_${context/UID|context/getId}">
+  <div>
     <ul>
       <li tal:repeat="element python: infos[view.category_id]">
         <tal:block define="element_url python:element['download_url'] and element['download_url'] or element['relative_url']">
