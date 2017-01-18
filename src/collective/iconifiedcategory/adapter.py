@@ -8,21 +8,22 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
-from zope.annotation import IAnnotations
+from collective.documentviewer.settings import GlobalSettings
+from collective.documentviewer.settings import Settings
+from collective.documentviewer.utils import allowedDocumentType
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
+from zope.annotation import IAnnotations
 
 import logging
-logger = logging.getLogger('collective.iconifiedcategory')
 
-from collective.documentviewer.settings import GlobalSettings
-from collective.documentviewer.settings import Settings
-from collective.documentviewer.utils import allowedDocumentType
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
 from collective.iconifiedcategory.content.subcategory import ISubcategory
+
+logger = logging.getLogger('collective.iconifiedcategory')
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -163,7 +164,9 @@ class CategorizedObjectPreviewAdapter(object):
         # under conversion?
         ann = IAnnotations(self.context)['collective.documentviewer']
         if 'successfully_converted' not in ann:
-            return 'in_progress'
+            if 'filehash' in ann:
+                return 'in_progress'
+            return 'not_converted'
 
         if not ann['successfully_converted'] is True:
             return 'conversion_error'

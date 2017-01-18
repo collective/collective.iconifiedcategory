@@ -144,3 +144,7 @@ ul.select2-results span.subcategory {
 ul.select2-results .select2-result-label {
     padding: 0px;
 }
+
+span.help {
+    cursor: help;
+}

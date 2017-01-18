@@ -16,15 +16,30 @@
             (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
           </tal:filesize>
         </a>
-        <tal:if condition="python: view.show_preview_link() and element['preview_status'] == 'converted'">
+        <tal:if condition="view/show_preview_link">
         <a href=""
            title="Preview"
            i18n:attributes="title"
            target="_blank"
+           tal:condition="python: element['preview_status'] == 'converted'"
            tal:attributes="href string:${portal_url}/${element/relative_url}/documentviewer#document/p1">
           <img src=""
                tal:attributes="src string:${portal_url}/file_icon.png" />
         </a>
+        <span class="help"
+              title="The document is currently under conversion, please refresh the page in a few minutes"
+              i18n:attributes="title"
+              tal:condition="python: element['preview_status'] == 'in_progress'">
+          <img src=""
+               tal:attributes="src string:${portal_url}/spinner.gif" />
+        </span>
+        <span class="help"
+              title="The document conversion failed"
+              i18n:attributes="title"
+              tal:condition="python: element['preview_status'] == 'conversion_error'">
+          <img src=""
+               tal:attributes="src string:${portal_url}/error_icon.png" />
+        </span>
         </tal:if>
         </tal:block>
       </li>
