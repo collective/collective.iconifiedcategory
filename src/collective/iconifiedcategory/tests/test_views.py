@@ -90,7 +90,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         api.content.delete(self.portal['docB'])
         api.content.delete(self.portal['docA'])
         self.viewinfos.update()
-        self.assertEqual(self.viewinfos.index(), u'')
+        self.assertEqual(self.viewinfos.index(), u'\n')
 
     def test_categories_uids(self):
         self.viewinfos.update()

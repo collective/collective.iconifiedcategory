@@ -9,6 +9,7 @@ Created by mpeeters
 
 from time import sleep
 
+from zope.annotation import IAnnotations
 from zope.component import getMultiAdapter
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -251,6 +252,12 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
         self.assertEqual(preview_adapter.status, 'not_convertable')
         self.assertFalse(preview_adapter.converted)
 
+        obj.file.contentType = 'application/pdf'
+        self.assertEqual(preview_adapter.status, 'not_converted')
+        self.assertFalse(preview_adapter.converted)
+
+        ann = IAnnotations(obj)['collective.documentviewer']
+        ann['filehash'] = '--foobar--'
         obj.file.contentType = 'application/pdf'
         self.assertEqual(preview_adapter.status, 'in_progress')
         self.assertFalse(preview_adapter.converted)
