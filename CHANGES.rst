@@ -25,7 +25,6 @@ Changelog
   content to display
   [gbastien]
 
-
 0.5 (2017-01-13)
 ----------------
 
