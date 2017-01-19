@@ -9,7 +9,8 @@ Changelog
   used on same container for different categorized elements and those
   configurations may contain categories with same id
   [gbastien]
-
+- Do not break if icon used for iconified category contains special characters
+  [gbastien]
 
 0.6 (2017-01-17)
 ----------------

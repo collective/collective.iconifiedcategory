@@ -37,7 +37,7 @@ def create_config(context):
         groups.append(obj)
     for group_idx, group in enumerate(groups):
         for cat_idx in reversed(range(1, 4)):
-            filename = u'icon{0}.png'.format(cat_idx)
+            filename = u'icône{0}.png'.format(cat_idx)
             f = open(os.path.join(current_path, 'tests', filename), 'r')
             icon = namedfile.NamedBlobFile(f.read(), filename=filename)
             title = 'Category {0}-{1}'.format(group_idx + 1, cat_idx)

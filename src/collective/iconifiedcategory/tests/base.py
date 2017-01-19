@@ -17,8 +17,8 @@ class BaseTestCase(unittest.TestCase):
     @property
     def image(self):
         current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'icon1.png'), 'r')
-        return namedfile.NamedBlobFile(f.read(), filename=u'icon1.png')
+        f = open(os.path.join(current_path, 'icône1.png'), 'r')
+        return namedfile.NamedBlobFile(f.read(), filename=u'icône1.png')
 
     @property
     def file(self):
@@ -29,8 +29,8 @@ class BaseTestCase(unittest.TestCase):
     @property
     def icon(self):
         current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'icon1.png'), 'r')
-        return namedfile.NamedBlobFile(f.read(), filename=u'icon1.png')
+        f = open(os.path.join(current_path, 'icône1.png'), 'r')
+        return namedfile.NamedBlobFile(f.read(), filename=u'icône1.png')
 
     def setUp(self):
         self.portal = self.layer['portal']

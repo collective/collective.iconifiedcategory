@@ -313,7 +313,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
               'confidential': False,
               'title': 'doc-subcategory-move',
               'description': 'Document description',
-              'icon_url': 'config/group-1/category-x/@@download/icon/icon1.png',
+              'icon_url': u'config/group-1/category-x/@@download/icon/ic\xf4ne1.png',
               'portal_type': 'Document',
               'preview_status': 'not_convertable',
               'download_url': None,

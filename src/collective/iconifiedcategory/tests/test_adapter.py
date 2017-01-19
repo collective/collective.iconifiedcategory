@@ -47,7 +47,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'description': obj.Description(),
              'download_url': u'file/@@download/file/file.txt',
              'filesize': 3017,
-             'icon_url': 'config/group-1/category-1-1/@@download/icon/icon1.png',
+             'icon_url': u'config/group-1/category-1-1/@@download/icon/ic\xf4ne1.png',
              'id': obj.getId(),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -75,7 +75,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'description': obj.Description(),
              'download_url': u'file/@@download/file/file.txt',
              'filesize': 3017,
-             'icon_url': 'config/group-1/category-1-1/@@download/icon/icon1.png',
+             'icon_url': u'config/group-1/category-1-1/@@download/icon/ic\xf4ne1.png',
              'id': obj.getId(),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -110,7 +110,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
     def test_download_url(self):
         image_adapter = adapter.CategorizedObjectInfoAdapter(
             self.portal['image'])
-        self.assertEqual('image/@@download/file/icon1.png',
+        self.assertEqual(u'image/@@download/file/ic\xf4ne1.png',
                          image_adapter._download_url)
 
         file_adapter = adapter.CategorizedObjectInfoAdapter(

@@ -31,6 +31,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
+from Products.CMFPlone.utils import safe_unicode
 
 
 def format_id_css(id):
@@ -132,7 +133,7 @@ def get_category_icon_url(category):
         icon = category.aq_parent.icon
         obj = category.aq_parent
 
-    return '{0}/@@download/icon/{1}'.format(
+    return u'{0}/@@download/icon/{1}'.format(
         portal_url.getRelativeContentURL(obj),
         icon.filename,
     )

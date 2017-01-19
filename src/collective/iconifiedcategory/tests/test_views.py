@@ -42,8 +42,9 @@ class TestCategorizedChildView(BaseTestCase):
     def test__call__(self):
         # the category and elements of category is displayed
         result = self.view()
-        self.assertTrue('<img src="http://nohost/plone/config/group-1/category-1-1/@@download/icon/icon1.png"'
-                        in result)
+        self.assertTrue(
+            u'<img src="http://nohost/plone/config/group-1/category-1-1/@@download/icon/ic\xf4ne1.png"'
+            in result)
 
         # remove the categorized elements
         api.content.delete(self.portal['file'])
@@ -73,8 +74,8 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         result = self.viewinfos.index()
         self.assertTrue('<a href="http://nohost/plone/file/@@download/file/file.txt">' in result)
         self.assertTrue('<span title="File description">file.txt</span>' in result)
-        self.assertTrue('<a href="http://nohost/plone/image/@@download/file/icon1.png">' in result)
-        self.assertTrue('<span title="Image description">icon1.png</span>' in result)
+        self.assertTrue(u'<a href="http://nohost/plone/image/@@download/file/ic\xf4ne1.png">' in result)
+        self.assertTrue(u'<span title="Image description">ic\xf4ne1.png</span>' in result)
 
         # in case a file is too large, a warning is displayed
         # manipulate stored categorized_elements
@@ -110,7 +111,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         infos = self.viewinfos.infos()
         self.assertItemsEqual([self.viewinfos.category_uid], infos.keys())
         self.assertItemsEqual(
-            ['file.txt', 'icon1.png'],
+            ['file.txt', 'ic\xc3\xb4ne1.png'],
             [e['title'] for e in infos[self.viewinfos.category_uid]],
         )
 
