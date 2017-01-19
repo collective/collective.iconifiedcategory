@@ -31,7 +31,6 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
-from Products.CMFPlone.utils import safe_unicode
 
 
 def format_id_css(id):
