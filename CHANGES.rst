@@ -4,8 +4,9 @@ Changelog
 0.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Do not fail in `categorized-childs-infos` if current context does not have
+  the `categorized_elements` dict
+  [gbastien]
 
 0.7 (2017-01-23)
 ----------------
