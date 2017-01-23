@@ -66,7 +66,7 @@ class CategorizedChildInfosView(BrowserView):
     def _find_uids(self):
         """ """
         uids = []
-        for k, v in self.context.categorized_elements.items():
+        for k, v in getattr(self.context, 'categorized_elements', {}).items():
             if v['category_uid'] == self.category_uid:
                 uids.append(k)
         return uids
