@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.7 (unreleased)
+0.7 (2017-01-23)
 ----------------
 
 - Use `category_uid` instead `category_id` as key for infos dict used by
