@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8 (unreleased)
+0.8 (2017-01-25)
 ----------------
 
 - Do not fail in `categorized-childs-infos` if current context does not have
