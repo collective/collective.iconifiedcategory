@@ -4,8 +4,9 @@ Changelog
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Adapted CSS selector that changes `font-size` of number of categorized
+  elements displayed in the tooltipster
+  [gbastien]
 
 0.8 (2017-01-25)
 ----------------

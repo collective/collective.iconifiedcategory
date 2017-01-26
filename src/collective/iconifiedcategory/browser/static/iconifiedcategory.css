@@ -20,8 +20,8 @@
 }
 
 /* display number of elements smaller */
-.tooltip.deactivated.tooltipstered > span {
-    font-size: 80%;
+div.categorized-elements a.deactivated.tooltipstered > span {
+    font-size: 90%;
 }
 
 #content div.categorized-elements a:link,
