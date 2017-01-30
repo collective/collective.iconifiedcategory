@@ -10,10 +10,12 @@ Created by mpeeters
 import unittest
 
 from plone import api
+from Products.CMFPlone.utils import base_hasattr
 
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.event import IconifiedChangedEvent
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory import utils
 
 
 class TestIconifiedChangedEvent(unittest.TestCase):
@@ -105,3 +107,100 @@ class testTriggeredEvents(BaseTestCase, unittest.TestCase):
         copied_file2 = new_container['file2']
         self.assertTrue(copied_file1.UID() in new_container.categorized_elements)
         self.assertTrue(copied_file2.UID() in new_container.categorized_elements)
+
+    def test_defer_events(self):
+        """Test that when defering various parts :
+           - defer_categorized_content_created_event will defer management of the entire
+             categorized_content_created event;
+           - defer_update_categorized_elements will only avoid the call to
+             utils.update_all_categorized_elements on categorized element create/update."""
+        # not defered
+        container = api.content.create(
+            id='folder',
+            type='Folder',
+            container=self.portal
+        )
+        self.portal.REQUEST.set('defer_categorized_content_created_event', False)
+        file_obj1 = api.content.create(
+            id='file1',
+            type='File',
+            file=self.file,
+            container=container,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        file_obj2 = api.content.create(
+            id='file2',
+            type='File',
+            file=self.file,
+            container=container,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertTrue(file_obj1.UID() in container.categorized_elements)
+        self.assertTrue(file_obj2.UID() in container.categorized_elements)
+
+        # defered defer_categorized_content_created_event
+        container2 = api.content.create(
+            id='folder2',
+            type='Folder',
+            container=self.portal
+        )
+        self.portal.REQUEST.set('defer_categorized_content_created_event', True)
+        file_obj3 = api.content.create(
+            id='file3',
+            type='File',
+            file=self.file,
+            container=container2,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        file_obj4 = api.content.create(
+            id='file4',
+            type='File',
+            file=self.file,
+            container=container2,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertFalse(base_hasattr(container2, 'categorized_elements'))
+        # calling utils.update_all_categorized_elements will update necessary things
+        utils.update_all_categorized_elements(container2)
+        self.assertTrue(file_obj3.UID() in container2.categorized_elements)
+        self.assertTrue(file_obj4.UID() in container2.categorized_elements)
+
+        # defered defer_update_categorized_elements
+        container3 = api.content.create(
+            id='folder3',
+            type='Folder',
+            container=self.portal
+        )
+        self.portal.REQUEST.set('defer_categorized_content_created_event', False)
+        self.portal.REQUEST.set('defer_update_categorized_elements', False)
+        file_obj5 = api.content.create(
+            id='file5',
+            type='File',
+            file=self.file,
+            container=container3,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        file_obj6 = api.content.create(
+            id='file6',
+            type='File',
+            file=self.file,
+            container=container3,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertFalse(base_hasattr(container3, 'categorized_elements'))
+        # calling utils.update_all_categorized_elements will update necessary things
+        utils.update_all_categorized_elements(container3)
+        self.assertTrue(file_obj5.UID() in container2.categorized_elements)
+        self.assertTrue(file_obj6.UID() in container2.categorized_elements)

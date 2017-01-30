@@ -25,7 +25,13 @@ from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
 def categorized_content_created(event):
+
     if hasattr(event.object, 'content_category'):
+        # if 'to_print' and 'confidential' are managed manually,
+        # we may defer events if relevant value found in the REQUEST
+        if event.object.REQUEST.get('defer_categorized_content_created_event', False):
+            return
+
         if hasattr(event.object, 'confidential'):
             notify(IconifiedConfidentialChangedEvent(
                 event.object,
@@ -67,6 +73,13 @@ def categorized_content_updated(event):
                 obj.to_print,
                 obj.to_print,
             ))
+        # we may defer call to utils.update_categorized_elements
+        # if relevant value found in the REQUEST
+        # this is useful when adding several categorized elements without
+        # calling update_categorized_elements between every added element
+        if event.object.REQUEST.get('defer_update_categorized_elements', False):
+            return
+
         utils.update_categorized_elements(obj.aq_parent, obj, target)
 
 

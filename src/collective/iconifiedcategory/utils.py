@@ -148,16 +148,16 @@ def update_categorized_elements(parent, obj, category):
 
 
 def update_all_categorized_elements(container):
-    if 'categorized_elements' in container.__dict__:
-        container.categorized_elements = OrderedDict()
-        for obj in container.objectValues():
-            if hasattr(obj, 'content_category'):
-                try:
-                    category = get_category_object(obj, obj.content_category)
-                except KeyError:
-                    continue
-                uid, infos = get_categorized_infos(obj, category)
-                container.categorized_elements[uid] = infos
+    container.categorized_elements = OrderedDict()
+    for obj in container.objectValues():
+        if hasattr(obj, 'content_category'):
+            try:
+                category = get_category_object(obj, obj.content_category)
+            except KeyError:
+                continue
+            uid, infos = get_categorized_infos(obj, category)
+            container.categorized_elements[uid] = infos
+    if container.categorized_elements:
         sort_categorized_elements(container)
         container._p_changed = True
 

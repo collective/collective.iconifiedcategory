@@ -7,6 +7,12 @@ Changelog
 - Adapted CSS selector that changes `font-size` of number of categorized
   elements displayed in the tooltipster
   [gbastien]
+- Added a way to defer the categorized_content_created event and to defer
+  call to utils.update_categorized_elements in the categorized_content_updated
+  event.  This way we may manage adding several categorized elements but only
+  updating the categorized_elements dict (including time consuming sorting)
+  at the right time
+  [gbastien]
 
 0.8 (2017-01-25)
 ----------------
