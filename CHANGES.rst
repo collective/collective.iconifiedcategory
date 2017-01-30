@@ -13,6 +13,8 @@ Changelog
   updating the categorized_elements dict (including time consuming sorting)
   at the right time
   [gbastien]
+- Fixed tests to work in both Plone 4.3.7 and Plone 4.3.11
+  [gbastien]
 
 0.8 (2017-01-25)
 ----------------

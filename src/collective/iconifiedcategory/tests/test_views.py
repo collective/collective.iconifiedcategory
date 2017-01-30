@@ -132,10 +132,10 @@ class TestCanViewAwareDownload(BaseTestCase):
         # it is also the case as IIconifiedContent.can_view adapter returns True by default
         file_obj = self.portal['file']
         img_obj = self.portal['image']
-        self.assertTrue(isinstance(file_obj.restrictedTraverse('@@download')(), file))
-        self.assertTrue(isinstance(file_obj.restrictedTraverse('@@display-file')(), file))
-        self.assertTrue(isinstance(img_obj.restrictedTraverse('@@download')(), file))
-        self.assertTrue(isinstance(img_obj.restrictedTraverse('@@display-file')(), file))
+        self.assertTrue(file_obj.restrictedTraverse('@@download')())
+        self.assertTrue(file_obj.restrictedTraverse('@@display-file')())
+        self.assertTrue(img_obj.restrictedTraverse('@@download')())
+        self.assertTrue(img_obj.restrictedTraverse('@@display-file')())
 
     def test_can_not_view(self):
         # register an adapter that will return False
