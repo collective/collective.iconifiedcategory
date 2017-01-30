@@ -180,7 +180,7 @@ class testTriggeredEvents(BaseTestCase, unittest.TestCase):
             container=self.portal
         )
         self.portal.REQUEST.set('defer_categorized_content_created_event', False)
-        self.portal.REQUEST.set('defer_update_categorized_elements', False)
+        self.portal.REQUEST.set('defer_update_categorized_elements', True)
         file_obj5 = api.content.create(
             id='file5',
             type='File',
@@ -202,5 +202,8 @@ class testTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertFalse(base_hasattr(container3, 'categorized_elements'))
         # calling utils.update_all_categorized_elements will update necessary things
         utils.update_all_categorized_elements(container3)
-        self.assertTrue(file_obj5.UID() in container2.categorized_elements)
-        self.assertTrue(file_obj6.UID() in container2.categorized_elements)
+        self.assertTrue(file_obj5.UID() in container3.categorized_elements)
+        self.assertTrue(file_obj6.UID() in container3.categorized_elements)
+        # tear down
+        self.portal.REQUEST.set('defer_categorized_content_created_event', False)
+        self.portal.REQUEST.set('defer_update_categorized_elements', False)
