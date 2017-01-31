@@ -19,7 +19,7 @@ long_description = (
 
 setup(
     name='collective.iconifiedcategory',
-    version='0.9',
+    version='0.10.dev0',
     description="An add-on for Plone",
     long_description=long_description,
     # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers
