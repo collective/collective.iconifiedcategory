@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9 (unreleased)
+0.9 (2017-01-31)
 ----------------
 
 - Adapted CSS selector that changes `font-size` of number of categorized
