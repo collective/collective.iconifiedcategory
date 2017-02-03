@@ -35,7 +35,6 @@ jQuery(function($) {
     },
     contentAsHTML: true,
     interactive: true,
-    position: 'top-left',
     theme: 'tooltipster-shadow',
     position: 'bottom',
     speed: 100,
@@ -89,7 +88,6 @@ function categorizedChildsInfos() {
 
         contentAsHTML: true,
         interactive: true,
-        position: 'top-left',
         theme: 'tooltipster-shadow',
         position: 'bottom',
         speed: 100,
