@@ -4,8 +4,10 @@ Changelog
 0.10 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Only check `can_view` if current element is `confidential`, moreover only
+  instanciate the `IIconifiedContent` adapter to check for `can_view` when
+  element is `confidential`.
+  [gbastien]
 
 0.9 (2017-01-31)
 ----------------

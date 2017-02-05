@@ -235,9 +235,12 @@ def get_categorized_elements(context,
         query['portal_type'] = portal_type
     order = categorized_elements.keys()
     for brain in api.content.find(context=context, **query):
-        adapter = getMultiAdapter((context, context.REQUEST, brain),
-                                  IIconifiedContent)
-        if adapter.can_view() is True:
+        can_view = True
+        if categorized_elements[brain.UID]['confidential']:
+            adapter = getMultiAdapter((context, context.REQUEST, brain),
+                                      IIconifiedContent)
+            can_view = adapter.can_view()
+        if can_view:
             if result_type == 'objects':
                 elements.append(brain._unrestrictedGetObject())
             elif result_type == 'brains':
