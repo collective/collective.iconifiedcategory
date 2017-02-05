@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.10 (unreleased)
+0.10 (2017-02-05)
 -----------------
 
 - Only check `can_view` if current element is `confidential`, moreover only
