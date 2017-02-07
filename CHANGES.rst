@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.11 (unreleased)
+0.11 (2017-02-07)
 -----------------
 
 - Use a batchSize of 999 in the tabview to show every categorized elements.
