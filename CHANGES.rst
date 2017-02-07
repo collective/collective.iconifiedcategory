@@ -4,8 +4,8 @@ Changelog
 0.11 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Use a batchSize of 999 in the tabview to show every categorized elements.
+  [gbastien]
 
 0.10 (2017-02-05)
 -----------------

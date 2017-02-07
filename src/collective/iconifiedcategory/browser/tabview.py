@@ -68,6 +68,8 @@ class CategorizedTable(Table):
     cssClassOdd = u'even'
     # do not sort, keep order of position in parent
     sortOn = None
+    batchSize = 999
+    startBatchingAt = 999
 
     def __init__(self, context, request, portal_type=None):
         """If received, this let's filter table for a given portal_type."""
