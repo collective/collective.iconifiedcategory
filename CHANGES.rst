@@ -6,6 +6,9 @@ Changelog
 
 - Use a batchSize of 999 in the tabview to show every categorized elements.
   [gbastien]
+- In `utils.get_categorized_elements`, do not do the catalog query if the
+  categorized_elements dict is empty.
+  [gbastien]
 
 0.10 (2017-02-05)
 -----------------

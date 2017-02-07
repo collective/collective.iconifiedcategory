@@ -225,6 +225,9 @@ def get_categorized_elements(context,
        - 'objects': categorized objects are returned;
        - 'brains': categorized brains are returned."""
     elements = []
+    if not context.categorized_elements:
+        return elements
+
     categorized_elements = _categorized_elements(context)
     uids = uids or categorized_elements.keys()
     query = {'UID': uids}
