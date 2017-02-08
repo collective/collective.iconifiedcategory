@@ -4,8 +4,9 @@ Changelog
 0.12 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Do not fail in `utils.get_categorized_elements` if context does not have the
+  `categorized_elements` OrderedDict.
+  [gbastien]
 
 0.11 (2017-02-07)
 -----------------
