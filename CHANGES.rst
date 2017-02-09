@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.12 (unreleased)
+0.12 (2017-02-09)
 -----------------
 
 - Do not fail in `utils.get_categorized_elements` if context does not have the
