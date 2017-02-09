@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.13 (unreleased)
+0.13 (2017-02-09)
 -----------------
 
 - Makes `collective-iconifiedcategory.css` cacheable and cookable to avoid
