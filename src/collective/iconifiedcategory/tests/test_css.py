@@ -2,14 +2,12 @@
 
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
-from zope.annotation import IAnnotations
 
 
 class TestIconifiedCategoryCSS(BaseTestCase):
 
     def test__call__(self):
-        obj = self.portal['file']
-        view = obj.restrictedTraverse('@@collective-iconifiedcategory.css')
+        view = self.portal.restrictedTraverse('@@collective-iconifiedcategory.css')
         css = view()
         self.assertTrue(".config-group-1-category-1-1 " in css)
         self.assertTrue(u"background: transparent url("
@@ -28,7 +26,34 @@ class TestIconifiedCategoryCSS(BaseTestCase):
         api.content.delete(self.portal['file'])
         api.content.delete(self.portal['image'])
         api.content.delete(self.portal['config'])
-        # view is memoized, we need to clean the cache
-        annotations = IAnnotations(self.portal.REQUEST)
-        del annotations['plone.memoize']
         self.assertEqual(view(), '')
+
+    def test_css_recooked(self):
+        """portal_css is recooked when a category is added/moved/removed."""
+        # portal_css is cooked, the collective-iconfiedcategory.css is stored with ploneCustom, get the key
+        cachekey1 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
+                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
+
+        # add a category, css resources is cooked
+        category = api.content.create(
+            type='ContentCategory',
+            title='Brand new category',
+            icon=self.icon,
+            container=self.portal.config['group-1'],
+        )
+        cachekey2 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
+                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
+        self.assertNotEqual(cachekey1, cachekey2)
+
+        # rename the category so it is moved
+        category_parent = category.aq_inner.aq_parent
+        category_parent.manage_renameObject(category.getId(), 'renamed_id')
+        cachekey3 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
+                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
+        self.assertNotEqual(cachekey2, cachekey3)
+
+        # remove the category
+        api.content.delete(category)
+        cachekey4 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
+                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
+        self.assertNotEqual(cachekey3, cachekey4)

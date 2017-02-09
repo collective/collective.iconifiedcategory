@@ -104,6 +104,7 @@ def category_before_remove(obj, event):
                 type='error',
             )
             raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
+    _cookCssResources()
 
 
 def subcategory_before_remove(obj, event):
