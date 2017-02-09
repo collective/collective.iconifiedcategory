@@ -66,4 +66,10 @@
     handler=".events.subcategory_moved"
     />
 
+  <subscriber
+    for=".category.ICategory
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
+    handler=".events.category_created"
+    />
+
 </configure>

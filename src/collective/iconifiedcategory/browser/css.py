@@ -8,14 +8,12 @@ Created by mpeeters
 """
 
 from Products.Five import BrowserView
-from plone.memoize import view
 
 from collective.iconifiedcategory import utils
 
 
 class IconifiedCategory(BrowserView):
 
-    @view.memoize
     def __call__(self, *args, **kwargs):
         self.request.response.setHeader('Content-Type', 'text/css')
         content = []

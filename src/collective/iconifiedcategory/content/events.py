@@ -129,6 +129,7 @@ def category_moved(obj, event):
             type='error',
         )
         raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
+    _cookCssResources()
 
 
 def subcategory_moved(obj, event):
@@ -141,3 +142,15 @@ def subcategory_moved(obj, event):
             type='error',
         )
         raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
+
+
+def _cookCssResources():
+    # recook portal_css because we need
+    # iconified-category.css to be compiled again as it is cached
+    import ipdb; ipdb.set_trace()
+    portal_css = api.portal.get_tool('portal_css')
+    portal_css.cookResources()
+
+
+def category_created(category, event):
+    _cookCssResources()

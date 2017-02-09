@@ -4,8 +4,11 @@ Changelog
 0.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Makes `collective-iconifiedcategory.css` cacheable and cookable to avoid
+  recomputing it for every pages.  We call `portal_css.cookResources` when
+  a category is added or moved.  Not necessary to recook for subcategory
+  as it uses same CSS class as parent category.
+  [gbastien]
 
 0.12 (2017-02-09)
 -----------------

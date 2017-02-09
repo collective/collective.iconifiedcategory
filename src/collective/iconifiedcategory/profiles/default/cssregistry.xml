@@ -3,10 +3,10 @@
 
   <stylesheet
     title=""
-    cacheable="False"
+    cacheable="True"
     applyPrefix="True"
     compression="safe"
-    cookable="False"
+    cookable="True"
     enabled="on"
     expression=""
     id="collective-iconifiedcategory.css"
