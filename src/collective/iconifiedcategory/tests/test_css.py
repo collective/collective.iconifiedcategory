@@ -30,30 +30,29 @@ class TestIconifiedCategoryCSS(BaseTestCase):
 
     def test_css_recooked(self):
         """portal_css is recooked when a category is added/moved/removed."""
-        # portal_css is cooked, the collective-iconfiedcategory.css is stored with ploneCustom, get the key
-        cachekey1 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
-                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
-
-        # add a category, css resources is cooked
+        def _current_css_cachekey():
+            cachekey = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
+                        if 'collective-iconifiedcategory.css' in v and '-cachekey-' in k][0]
+            return cachekey
+        # portal_css is cooked, the collective-iconfiedcategory.css is stored in a cachekey cooked css
+        cachekey1 = _current_css_cachekey()
+        # add a category, css resources are cooked again
         category = api.content.create(
             type='ContentCategory',
             title='Brand new category',
             icon=self.icon,
             container=self.portal.config['group-1'],
         )
-        cachekey2 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
-                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
+        cachekey2 = _current_css_cachekey()
         self.assertNotEqual(cachekey1, cachekey2)
 
-        # rename the category so it is moved
+        # rename the category so it is moved, css resources are cooked again
         category_parent = category.aq_inner.aq_parent
         category_parent.manage_renameObject(category.getId(), 'renamed_id')
-        cachekey3 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
-                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
+        cachekey3 = _current_css_cachekey()
         self.assertNotEqual(cachekey2, cachekey3)
 
-        # remove the category
+        # remove the category, css resources are cooked again
         api.content.delete(category)
-        cachekey4 = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
-                     if 'collective-iconifiedcategory.css' in v and k.startswith('ploneCustom')][0]
+        cachekey4 = _current_css_cachekey()
         self.assertNotEqual(cachekey3, cachekey4)
