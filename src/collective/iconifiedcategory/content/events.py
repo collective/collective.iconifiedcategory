@@ -147,7 +147,6 @@ def subcategory_moved(obj, event):
 def _cookCssResources():
     # recook portal_css because we need
     # iconified-category.css to be compiled again as it is cached
-    import ipdb; ipdb.set_trace()
     portal_css = api.portal.get_tool('portal_css')
     portal_css.cookResources()
 
