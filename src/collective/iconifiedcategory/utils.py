@@ -29,6 +29,7 @@ from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
+from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 
@@ -311,7 +312,9 @@ def calculate_filesize(size):
 
 def warn_filesize(size):
     filesizelimit = api.portal.get_registry_record(
-        'collective.iconifiedcategory.filesizelimit') or 5000000
+        'filesizelimit',
+        interface=IIconifiedCategorySettings,
+    )
     if size > filesizelimit:
         return True
     return False

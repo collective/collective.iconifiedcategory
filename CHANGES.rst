@@ -12,6 +12,8 @@ Changelog
   when displaying categorized elements of same category in the tooltipster widget`
   can be defined in the iconifiedcategory control panel.
   [gbastien]
+- Moved registry parameter `filesizelimit` to the IIconifiedCategorySettings.
+  [gbastien]
 
 0.13 (2017-02-09)
 -----------------

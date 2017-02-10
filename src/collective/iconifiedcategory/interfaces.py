@@ -72,6 +72,16 @@ class IIconifiedCategorySettings(Interface):
         default=25,
     )
 
+    filesizelimit = schema.Int(
+        title=_(u'Filesize limit in bytes enabling a warning'),
+        description=_(u'If the categorized element is a file, the user will '
+                      u'get a warning whenever the filesize is bigger than '
+                      u'defined value. <span style="color: red">Take care that '
+                      u'if you change this value, you will have to update the '
+                      u'categoized elements stored informations.</span> '),
+        default=5000000,
+    )
+
 
 # Events
 
