@@ -16,6 +16,7 @@ import unittest
 
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
@@ -238,7 +239,9 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         # default warning is for files > 5Mb
         self.assertEqual(
             api.portal.get_registry_record(
-                'collective.iconifiedcategory.filesizelimit'),
+                'filesizelimit',
+                interface=IIconifiedCategorySettings,
+            ),
             5000000)
         file1 = api.content.create(
             id='file1',
@@ -254,8 +257,9 @@ class TestUtils(BaseTestCase, unittest.TestCase):
 
         # now enable warning (a specific portal_message is added when file created)
         api.portal.set_registry_record(
-            'collective.iconifiedcategory.filesizelimit',
-            3000)
+            'filesizelimit',
+            interface=IIconifiedCategorySettings,
+            value=3000)
         file2 = api.content.create(
             id='file2',
             type='File',
