@@ -8,6 +8,7 @@ from plone.namedfile.browser import DisplayFile
 from plone.namedfile.browser import Download
 from zope.component import getMultiAdapter
 
+from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.utils import get_categorized_elements
 from collective.iconifiedcategory.utils import render_filesize
@@ -100,6 +101,15 @@ class CategorizedChildInfosView(BrowserView):
     def categorized_elements_more_infos_url(self):
         """ """
         return "{0}/{1}".format(self.context.absolute_url(), "@@iconifiedcategory")
+
+    def number_of_columns(self, elements):
+        """Return a number to """
+        columns_treshold = api.portal.get_registry_record(
+            'categorized_childs_infos_columns_threshold',
+            interface=IIconifiedCategorySettings,
+        )
+        columns_treshold = float(columns_treshold)
+        return round(len(elements)/columns_treshold)
 
 
 class CanViewAwareDownload(Download):

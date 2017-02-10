@@ -65,6 +65,13 @@ class IIconifiedCategorySettings(Interface):
         default=True,
     )
 
+    categorized_childs_infos_columns_threshold = schema.Int(
+        title=_(u'Maximum number of elements to display by columns when '
+                u'displaying categorized elements of same category in the '
+                u'tooltipster widget'),
+        default=25,
+    )
+
 
 # Events
 

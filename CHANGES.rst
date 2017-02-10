@@ -4,8 +4,14 @@ Changelog
 0.14 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Generate a CSS class on the `<ul>` tag of the `categorized-childs-infos` view
+  that is the AJAX view called when hovering the `categorized-childs` elements
+  that will give the ability to display the infos on several columns.  This is
+  necessary when displaying a large amount of categorized elements using same
+  content_category.  The `Maximum number of elements to display by columns
+  when displaying categorized elements of same category in the tooltipster widget`
+  can be defined in the iconifiedcategory control panel.
+  [gbastien]
 
 0.13 (2017-02-09)
 -----------------

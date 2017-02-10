@@ -51,6 +51,37 @@ img.categorized_elements_more_infos_icon {
     padding-right: 0.2em;
 }
 
+div.tooltipster-content ul.many_elements_1_columns {
+    columns: 1;
+    -webkit-columns: 1;
+    -moz-columns: 1;
+}
+div.tooltipster-content ul.many_elements_2_columns {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+}
+div.tooltipster-content ul.many_elements_3_columns {
+    columns: 3;
+    -webkit-columns: 3;
+    -moz-columns: 3;
+}
+div.tooltipster-content ul.many_elements_4_columns {
+    columns: 4;
+    -webkit-columns: 4;
+    -moz-columns: 4;
+}
+div.tooltipster-content ul.many_elements_5_columns {
+    columns: 5;
+    -webkit-columns: 5;
+    -moz-columns: 5;
+}
+div.tooltipster-content ul.many_elements_6_columns {
+    columns: 6;
+    -webkit-columns: 6;
+    -moz-columns: 6;
+}
+
 div.tooltipster-content li {
     font-size: 0.9em;
     display: block;
