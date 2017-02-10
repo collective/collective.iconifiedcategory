@@ -43,7 +43,7 @@ class TestIconifiedChangedEvent(unittest.TestCase):
         self.assertEqual(dummy, [event])
 
 
-class testTriggeredEvents(BaseTestCase, unittest.TestCase):
+class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
 
     def test_categorized_elements_correct_after_copy_paste_categorized_content(self):
         file_obj = self.portal['file']
@@ -108,12 +108,9 @@ class testTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertTrue(copied_file1.UID() in new_container.categorized_elements)
         self.assertTrue(copied_file2.UID() in new_container.categorized_elements)
 
-    def test_defer_events(self):
-        """Test that when defering various parts :
-           - defer_categorized_content_created_event will defer management of the entire
-             categorized_content_created event;
-           - defer_update_categorized_elements will only avoid the call to
-             utils.update_all_categorized_elements on categorized element create/update."""
+    def test_defer_categorized_content_created_event(self):
+        """Test that when defering management of the entire
+           categorized_content_created event."""
         # not defered
         container = api.content.create(
             id='folder',
@@ -172,38 +169,86 @@ class testTriggeredEvents(BaseTestCase, unittest.TestCase):
         utils.update_all_categorized_elements(container2)
         self.assertTrue(file_obj3.UID() in container2.categorized_elements)
         self.assertTrue(file_obj4.UID() in container2.categorized_elements)
+        # tear down
+        self.portal.REQUEST.set('defer_categorized_content_created_event', False)
+        self.portal.REQUEST.set('defer_update_categorized_elements', False)
 
+    def test_defer_update_categorized_elements(self):
+        """Using 'defer_update_categorized_elements' will avoid the call to
+           utils.update_all_categorized_elements on categorized element create/update."""
         # defered defer_update_categorized_elements
-        container3 = api.content.create(
-            id='folder3',
+        container = api.content.create(
+            id='folder',
             type='Folder',
             container=self.portal
         )
-        self.portal.REQUEST.set('defer_categorized_content_created_event', False)
         self.portal.REQUEST.set('defer_update_categorized_elements', True)
-        file_obj5 = api.content.create(
-            id='file5',
+        file_obj1 = api.content.create(
+            id='file1',
             type='File',
             file=self.file,
-            container=container3,
+            container=container,
             content_category='config_-_group-1_-_category-1-1',
             to_print=False,
             confidential=False,
         )
-        file_obj6 = api.content.create(
-            id='file6',
+        file_obj2 = api.content.create(
+            id='file2',
             type='File',
             file=self.file,
-            container=container3,
+            container=container,
             content_category='config_-_group-1_-_category-1-1',
             to_print=False,
             confidential=False,
         )
-        self.assertFalse(base_hasattr(container3, 'categorized_elements'))
+        self.assertFalse(base_hasattr(container, 'categorized_elements'))
         # calling utils.update_all_categorized_elements will update necessary things
-        utils.update_all_categorized_elements(container3)
-        self.assertTrue(file_obj5.UID() in container3.categorized_elements)
-        self.assertTrue(file_obj6.UID() in container3.categorized_elements)
+        utils.update_all_categorized_elements(container)
+        self.assertTrue(file_obj1.UID() in container.categorized_elements)
+        self.assertTrue(file_obj2.UID() in container.categorized_elements)
         # tear down
         self.portal.REQUEST.set('defer_categorized_content_created_event', False)
+        self.portal.REQUEST.set('defer_update_categorized_elements', False)
+
+    def test_defer_update_categorized_elements_when_cloned(self):
+        """Call to 'update_all_categorized_elements' may be defered
+           when cloning a categorized elements container."""
+        container = api.content.create(
+            id='folder',
+            type='Folder',
+            container=self.portal
+        )
+        api.content.create(
+            id='file1',
+            type='File',
+            file=self.file,
+            container=container,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        api.content.create(
+            id='file2',
+            type='File',
+            file=self.file,
+            container=container,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        # clone container
+        self.portal.REQUEST.set('defer_update_categorized_elements', True)
+        copy_info = self.portal.manage_copyObjects(ids=[container.getId()])
+        paste_infos = self.portal.manage_pasteObjects(copy_info)
+        new_container = self.portal.get(paste_infos[0]['new_id'])
+        new_file_obj1 = new_container.file1
+        new_file_obj2 = new_container.file2
+        self.assertFalse(new_file_obj1.UID() in new_container.categorized_elements)
+        self.assertFalse(new_file_obj2.UID() in new_container.categorized_elements)
+        # calling utils.update_all_categorized_elements will update necessary things
+        utils.update_all_categorized_elements(new_container)
+        self.assertTrue(new_file_obj1.UID() in new_container.categorized_elements)
+        self.assertTrue(new_file_obj2.UID() in new_container.categorized_elements)
+        self.assertEqual(len(new_container.categorized_elements), 2)
+        # tear down
         self.portal.REQUEST.set('defer_update_categorized_elements', False)

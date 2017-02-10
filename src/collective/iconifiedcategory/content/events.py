@@ -90,6 +90,8 @@ def categorized_content_removed(event):
 
 
 def categorized_content_container_cloned(event):
+    if event.object.REQUEST.get('defer_update_categorized_elements', False):
+        return
     utils.update_all_categorized_elements(event.object)
 
 

@@ -14,6 +14,9 @@ Changelog
   [gbastien]
 - Moved registry parameter `filesizelimit` to the IIconifiedCategorySettings.
   [gbastien]
+- Added a way to defer call to `utils.update_all_categorized_elements` in the
+  `categorized_content_container_cloned` IObjectClonedEvent event handler.
+  [gbastien]
 
 0.13 (2017-02-09)
 -----------------
