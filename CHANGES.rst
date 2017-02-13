@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.14 (unreleased)
+0.14 (2017-02-13)
 -----------------
 
 - Generate a CSS class on the `<ul>` tag of the `categorized-childs-infos` view
