@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-01-04 15:08+0000\n"
+"POT-Creation-Date: 2017-02-13 08:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Activate the \"to be printed\" option"
 msgstr ""
 
-#: ../browser/tabview.py:144
+#: ../browser/tabview.py:146
 msgid "Author"
 msgstr ""
 
@@ -39,11 +39,11 @@ msgid "Categorized elements"
 msgstr ""
 
 #: ../behaviors/iconifiedcategorization.py:34
-#: ../browser/tabview.py:131
+#: ../browser/tabview.py:133
 msgid "Category"
 msgstr ""
 
-#: ../browser/tabview.py:243
+#: ../browser/tabview.py:245
 #: ../content/base.py:27
 msgid "Confidential"
 msgstr ""
@@ -64,7 +64,7 @@ msgstr ""
 msgid "ContentSubcategory"
 msgstr ""
 
-#: ../browser/tabview.py:152
+#: ../browser/tabview.py:154
 msgid "Creation date"
 msgstr ""
 
@@ -72,11 +72,11 @@ msgstr ""
 msgid "Default title"
 msgstr ""
 
-#: ../browser/tabview.py:274
+#: ../browser/tabview.py:276
 msgid "Download"
 msgstr ""
 
-#: ../browser/tabview.py:268
+#: ../browser/tabview.py:270
 msgid "Edit"
 msgstr ""
 
@@ -92,8 +92,12 @@ msgstr ""
 msgid "Error during process"
 msgstr ""
 
-#: ../browser/tabview.py:176
+#: ../browser/tabview.py:178
 msgid "Filesize"
+msgstr ""
+
+#: ../interfaces.py:76
+msgid "Filesize limit in bytes enabling a warning"
 msgstr ""
 
 #: ../content/category.py:25
@@ -108,11 +112,19 @@ msgstr ""
 msgid "Iconified Category Settings"
 msgstr ""
 
-#: ../browser/tabview.py:163
+#: ../interfaces.py:77
+msgid "If the categorized element is a file, the user will get a warning whenever the filesize is bigger than defined value. <span style=\"color: red\">Take care that if you change this value, you will have to update the categoized elements stored informations.</span> "
+msgstr ""
+
+#: ../browser/tabview.py:165
 msgid "Last modification"
 msgstr ""
 
-#: ../browser/templates/categorized-childs.pt:40
+#: ../interfaces.py:69
+msgid "Maximum number of elements to display by columns when displaying categorized elements of same category in the tooltipster widget"
+msgstr ""
+
+#: ../browser/templates/categorized-childs-infos.pt:54
 msgid "More infos"
 msgstr ""
 
@@ -134,8 +146,8 @@ msgstr ""
 msgid "Predefined title"
 msgstr ""
 
-#: ../browser/tabview.py:280
-#: ../browser/templates/categorized-childs.pt:21
+#: ../browser/tabview.py:282
+#: ../browser/templates/categorized-childs-infos.pt:20
 msgid "Preview"
 msgstr ""
 
@@ -146,23 +158,31 @@ msgstr ""
 msgid "Sort categorized elements on categorized tab"
 msgstr ""
 
-#: ../content/events.py:43
+#: ../content/events.py:49
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
-#: ../content/events.py:89
+#: ../browser/templates/categorized-childs-infos.pt:36
+msgid "The document conversion failed"
+msgstr ""
+
+#: ../browser/templates/categorized-childs-infos.pt:29
+msgid "The document is currently under conversion, please refresh the page in a few minutes"
+msgstr ""
+
+#: ../content/events.py:104
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:102
+#: ../content/events.py:118
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
-#: ../browser/tabview.py:105
+#: ../browser/tabview.py:107
 msgid "Title"
 msgstr ""
 
-#: ../browser/tabview.py:228
+#: ../browser/tabview.py:230
 #: ../content/base.py:34
 msgid "To be printed"
 msgstr ""
@@ -180,7 +200,7 @@ msgid "help_warn_filesize"
 msgstr ""
 
 #. Default: "<span class='discreet iconified_category_no_element'>No element to display.</span>"
-#: ../browser/tabview.py:98
+#: ../browser/tabview.py:100
 msgid "no_element_to_display"
 msgstr ""
 
