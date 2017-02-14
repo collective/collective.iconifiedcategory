@@ -230,10 +230,10 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         self.assertEqual(u'', utils.confidential_message(obj))
 
         obj.confidential = True
-        self.assertEqual(u'Confidential', utils.confidential_message(obj))
+        self.assertEqual(u'Element is confidential', utils.confidential_message(obj))
 
         obj.confidential = False
-        self.assertEqual(u'Not confidential', utils.confidential_message(obj))
+        self.assertEqual(u'Element is not confidential', utils.confidential_message(obj))
 
     def test_warn_filesize(self):
         # default warning is for files > 5Mb
