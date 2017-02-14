@@ -347,8 +347,8 @@ def print_message(obj):
 def confidential_message(obj):
     """Return the confidential status message for the given object"""
     messages = {
-        True: u'Confidential',
-        False: u'Not confidential',
+        True: u'Element is confidential',
+        False: u'Element is not confidential',
     }
     return messages.get(getattr(obj, 'confidential', None), '')
 

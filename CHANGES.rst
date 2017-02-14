@@ -4,8 +4,8 @@ Changelog
 0.15 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Adapted translations so it is more understandable.
+  [gbastien]
 
 0.14 (2017-02-13)
 -----------------

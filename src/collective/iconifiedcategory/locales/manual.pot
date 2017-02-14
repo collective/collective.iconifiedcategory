@@ -26,7 +26,10 @@ msgstr ""
 msgid "Should not be printed"
 msgstr ""
 
-msgid "Not confidential"
+msgid "Element is confidential"
+msgstr ""
+
+msgid "Element is not confidential"
 msgstr ""
 
 #. Default: "Annex size is huge, it could be difficult to be downloaded!"

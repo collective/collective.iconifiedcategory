@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-02-13 08:30+0000\n"
+"POT-Creation-Date: 2017-02-14 10:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,8 +44,11 @@ msgid "Category"
 msgstr ""
 
 #: ../browser/tabview.py:245
-#: ../content/base.py:27
 msgid "Confidential"
+msgstr ""
+
+#: ../content/base.py:27
+msgid "Confidential default"
 msgstr ""
 
 #: ../profiles/default/types/ContentCategory.xml
@@ -78,6 +81,12 @@ msgstr ""
 
 #: ../browser/tabview.py:270
 msgid "Edit"
+msgstr ""
+
+msgid "Element is confidential"
+msgstr ""
+
+msgid "Element is not confidential"
 msgstr ""
 
 #: ../browser/templates/update_categorize_elements.pt:5
@@ -135,9 +144,6 @@ msgstr ""
 msgid "No values to set"
 msgstr ""
 
-msgid "Not confidential"
-msgstr ""
-
 #. Default: "Not convertible to a printable format"
 msgid "Not convertible to a printable format"
 msgstr ""
@@ -183,8 +189,11 @@ msgid "Title"
 msgstr ""
 
 #: ../browser/tabview.py:230
-#: ../content/base.py:34
 msgid "To be printed"
+msgstr ""
+
+#: ../content/base.py:34
+msgid "To be printed default"
 msgstr ""
 
 #: ../profiles/default/actions.xml

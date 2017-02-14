@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-02-13 08:30+0000\n"
+"POT-Creation-Date: 2017-02-14 10:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,9 +41,12 @@ msgid "Category"
 msgstr "Catégorie"
 
 #: ../browser/tabview.py:245
-#: ../content/base.py:27
 msgid "Confidential"
-msgstr "Confidentiel"
+msgstr "Confidentiel?"
+
+#: ../content/base.py:27
+msgid "Confidential default"
+msgstr "Confidentiel par défaut?"
 
 #. Default: "Category"
 #: ../profiles/default/types/ContentCategory.xml
@@ -80,6 +83,12 @@ msgstr "Télécharger"
 #: ../browser/tabview.py:270
 msgid "Edit"
 msgstr "Éditer"
+
+msgid "Element is confidential"
+msgstr "Cet élément est confidentiel"
+
+msgid "Element is not confidential"
+msgstr "Cet élément n'est pas confidentiel"
 
 #: ../browser/templates/update_categorize_elements.pt:5
 msgid "Elements updated!"
@@ -136,9 +145,6 @@ msgstr "Doit être imprimé"
 msgid "No values to set"
 msgstr "Aucune valeur à définir"
 
-msgid "Not confidential"
-msgstr "Non confidentiel"
-
 #. Default: "Not convertible to a printable format"
 msgid "Not convertible to a printable format"
 msgstr "Ce fichier ne peut pas être converti dans un format imprimable"
@@ -184,9 +190,12 @@ msgid "Title"
 msgstr "Titre"
 
 #: ../browser/tabview.py:230
-#: ../content/base.py:34
 msgid "To be printed"
-msgstr "A imprimer"
+msgstr "À imprimer?"
+
+#: ../content/base.py:34
+msgid "To be printed default"
+msgstr "À imprimer par défaut?"
 
 #: ../profiles/default/actions.xml
 msgid "Update categorized elements"

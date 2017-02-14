@@ -24,14 +24,14 @@ class ICategorize(Interface):
 
     form.widget('confidential', RadioFieldWidget)
     confidential = schema.Bool(
-        title=_(u'Confidential'),
+        title=_(u'Confidential default'),
         required=False,
         default=False,
     )
 
     form.widget('to_print', RadioFieldWidget)
     to_print = schema.Bool(
-        title=_(u'To be printed'),
+        title=_(u'To be printed default'),
         required=False,
         default=False,
     )
