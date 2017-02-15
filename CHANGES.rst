@@ -6,6 +6,9 @@ Changelog
 
 - Adapted translations so it is more understandable.
   [gbastien]
+- Do only call `_cookCssResources` in `category_before_remove` if not currently
+  removing the `Plone Site`.
+  [gbastien]
 
 0.14 (2017-02-13)
 -----------------
