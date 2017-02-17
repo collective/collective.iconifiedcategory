@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.15 (unreleased)
+0.15 (2017-02-17)
 -----------------
 
 - Adapted translations so it is more understandable.
