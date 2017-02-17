@@ -17,6 +17,7 @@ from zope.lifecycleevent import ObjectModifiedEvent
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
+from plone.namedfile.utils import stream_data
 from zope.interface import alsoProvides
 
 from collective.documentviewer.async import queueJob
@@ -141,7 +142,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         self.assertEqual(image_download_url, u'image/@@download')
         # element is really downloadable
         download_view = self.portal.restrictedTraverse(str(image_download_url))
-        self.assertTrue(isinstance(download_view(), file))
+        self.assertEqual(stream_data(image.image), download_view())
 
         file_obj = self.portal['file']
         file_adapter = adapter.CategorizedObjectInfoAdapter(file_obj)
@@ -149,7 +150,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         self.assertEqual(file_download_url, u'file/@@download')
         # element is really downloadable
         download_view = self.portal.restrictedTraverse(str(file_download_url))
-        self.assertTrue(isinstance(download_view(), file))
+        self.assertEqual(stream_data(file_obj.file), download_view())
 
     def test_preview_status(self):
         image_adapter = adapter.CategorizedObjectInfoAdapter(
