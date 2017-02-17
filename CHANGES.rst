@@ -9,6 +9,11 @@ Changelog
 - Do only call `_cookCssResources` in `category_before_remove` if not currently
   removing the `Plone Site`.
   [gbastien]
+- Make `ICategory.icon` a primary field so we may use a simpler download URL
+  that is only the `path_to_object/@@downwload` without the file name anymore.
+  This is done to surround a bug in Apache that occurs when the filename
+  contains the `%` character.
+  [gbastien]
 
 0.14 (2017-02-13)
 -----------------

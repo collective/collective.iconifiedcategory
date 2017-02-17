@@ -31,13 +31,12 @@ from collective.iconifiedcategory.utils import get_category_object
 
 class TestCategorizedObjectInfoAdapter(BaseTestCase):
 
-    def test_get_infos(self):
+    def test_get_infos_for_file(self):
         obj = self.portal['file']
         file_adapter = adapter.CategorizedObjectInfoAdapter(
             obj)
         category = get_category_object(obj, obj.content_category)
         infos = file_adapter.get_infos(category)
-        self.diffMax = None
         self.assertEqual(
             infos,
             {'category_id': category.category_id,
@@ -45,9 +44,9 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'category_uid': category.category_uid,
              'confidential': False,
              'description': obj.Description(),
-             'download_url': u'file/@@download/file/file.txt',
+             'download_url': u'file/@@download',
              'filesize': 3017,
-             'icon_url': u'config/group-1/category-1-1/@@download/icon/ic\xf4ne1.png',
+             'icon_url': u'config/group-1/category-1-1/@@download',
              'id': obj.getId(),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -57,6 +56,34 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'subcategory_uid': None,
              'title': obj.Title(),
              'to_print': None,
+             'warn_filesize': False})
+
+    def test_get_infos_for_image(self):
+        obj = self.portal['image']
+        image_adapter = adapter.CategorizedObjectInfoAdapter(
+            obj)
+        # image use a subcategory
+        subcategory = get_category_object(obj, obj.content_category)
+        infos = image_adapter.get_infos(subcategory)
+        self.assertEqual(
+            infos,
+            {'category_id': subcategory.category_id,
+             'category_title': subcategory.category_title,
+             'category_uid': subcategory.category_uid,
+             'confidential': False,
+             'description': obj.Description(),
+             'download_url': u'image/@@download',
+             'filesize': 3742,
+             'icon_url': u'config/group-1/category-1-1/@@download',
+             'id': obj.getId(),
+             'portal_type': obj.portal_type,
+             'preview_status': 'not_convertable',
+             'relative_url': 'image',
+             'subcategory_id': subcategory.id,
+             'subcategory_title': subcategory.Title(),
+             'subcategory_uid': subcategory.UID(),
+             'title': obj.Title(),
+             'to_print': False,
              'warn_filesize': False})
 
     def test_get_infos_with_subcategory(self):
@@ -73,9 +100,9 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'category_uid': subcategory.category_uid,
              'confidential': False,
              'description': obj.Description(),
-             'download_url': u'file/@@download/file/file.txt',
+             'download_url': u'file/@@download',
              'filesize': 3017,
-             'icon_url': u'config/group-1/category-1-1/@@download/icon/ic\xf4ne1.png',
+             'icon_url': u'config/group-1/category-1-1/@@download',
              'id': obj.getId(),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -108,15 +135,21 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         self.assertEqual(3017, file_adapter._filesize)
 
     def test_download_url(self):
-        image_adapter = adapter.CategorizedObjectInfoAdapter(
-            self.portal['image'])
-        self.assertEqual(u'image/@@download/file/ic\xf4ne1.png',
-                         image_adapter._download_url)
+        image = self.portal['image']
+        image_adapter = adapter.CategorizedObjectInfoAdapter(image)
+        image_download_url = image_adapter._download_url
+        self.assertEqual(image_download_url, u'image/@@download')
+        # element is really downloadable
+        download_view = self.portal.restrictedTraverse(str(image_download_url))
+        self.assertTrue(isinstance(download_view(), file))
 
-        file_adapter = adapter.CategorizedObjectInfoAdapter(
-            self.portal['file'])
-        self.assertEqual('file/@@download/file/file.txt',
-                         file_adapter._download_url)
+        file_obj = self.portal['file']
+        file_adapter = adapter.CategorizedObjectInfoAdapter(file_obj)
+        file_download_url = file_adapter._download_url
+        self.assertEqual(file_download_url, u'file/@@download')
+        # element is really downloadable
+        download_view = self.portal.restrictedTraverse(str(file_download_url))
+        self.assertTrue(isinstance(download_view(), file))
 
     def test_preview_status(self):
         image_adapter = adapter.CategorizedObjectInfoAdapter(

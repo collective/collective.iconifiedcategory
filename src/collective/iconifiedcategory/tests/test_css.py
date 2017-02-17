@@ -11,15 +11,15 @@ class TestIconifiedCategoryCSS(BaseTestCase):
         css = view()
         self.assertTrue(".config-group-1-category-1-1 " in css)
         self.assertTrue(u"background: transparent url("
-                        u"'http://nohost/plone/config/group-1/category-1-1/@@download/icon/ic\xf4ne1.png')"
+                        u"'http://nohost/plone/config/group-1/category-1-1/@@download')"
                         in css)
         self.assertTrue(".config-group-2-category-2-2 " in css)
         self.assertTrue(u"background: transparent url("
-                        u"'http://nohost/plone/config/group-2/category-2-2/@@download/icon/ic\xf4ne2.png')"
+                        u"'http://nohost/plone/config/group-2/category-2-2/@@download')"
                         in css)
         self.assertTrue(".config-group-2-category-2-3 " in css)
         self.assertTrue(u"background: transparent url("
-                        u"'http://nohost/plone/config/group-2/category-2-3/@@download/icon/ic\xf4ne3.png')"
+                        u"'http://nohost/plone/config/group-2/category-2-3/@@download')"
                         in css)
 
         # delete the config

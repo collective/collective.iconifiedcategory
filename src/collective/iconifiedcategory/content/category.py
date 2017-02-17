@@ -12,6 +12,8 @@ from plone.dexterity.content import Container
 from plone.dexterity.schema import DexteritySchemaPolicy
 from plone.autoform import directives as form
 from plone.namedfile.field import NamedBlobImage
+from plone.rfc822.interfaces import IPrimaryField
+from zope.interface import alsoProvides
 from zope.interface import implements
 
 from collective.iconifiedcategory import _
@@ -25,6 +27,7 @@ class ICategory(IFolder, ICategorize):
         title=_(u'Icon'),
         required=True,
     )
+alsoProvides(ICategory['icon'], IPrimaryField)
 
 
 class Category(Container):

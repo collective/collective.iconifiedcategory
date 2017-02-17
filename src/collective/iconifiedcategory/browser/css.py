@@ -25,9 +25,6 @@ class IconifiedCategory(BrowserView):
         for category in categories:
             obj = category._unrestrictedGetObject()
             category_id = utils.calculate_category_id(obj)
-            url = u'{0}/@@download/icon/{1}'.format(
-                obj.absolute_url(),
-                obj.icon.filename,
-            )
+            url = u'{0}/@@download'.format(obj.absolute_url())
             content.append(css.format(utils.format_id_css(category_id), url))
         return ' '.join(content)

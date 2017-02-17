@@ -72,20 +72,14 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _download_url(self):
         """Return the download url (None by default) for the current object"""
-        url = u'{url}/@@download/{field}/{filename}'
+        url = u'{url}/@@download'
         portal_url = api.portal.get_tool('portal_url')
         if IFile.providedBy(self.obj):
             return url.format(
-                url=portal_url.getRelativeUrl(self.context),
-                field='file',
-                filename=self.obj.file.filename,
-            )
+                url=portal_url.getRelativeUrl(self.context))
         if IImage.providedBy(self.obj):
             return url.format(
-                url=portal_url.getRelativeUrl(self.context),
-                field='file',
-                filename=self.obj.image.filename,
-            )
+                url=portal_url.getRelativeUrl(self.context))
 
     @property
     def _filesize(self):

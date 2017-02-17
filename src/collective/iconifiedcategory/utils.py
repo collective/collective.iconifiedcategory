@@ -127,16 +127,12 @@ def get_category_object(context, category_id):
 def get_category_icon_url(category):
     portal_url = api.portal.get_tool('portal_url')
     if ICategory.providedBy(category):
-        icon = category.icon
         obj = category
     else:
-        icon = category.aq_parent.icon
         obj = category.aq_parent
 
-    return u'{0}/@@download/icon/{1}'.format(
-        portal_url.getRelativeContentURL(obj),
-        icon.filename,
-    )
+    return u'{0}/@@download'.format(
+        portal_url.getRelativeContentURL(obj))
 
 
 def update_categorized_elements(parent, obj, category):

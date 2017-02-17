@@ -33,6 +33,7 @@ class BaseTestCase(unittest.TestCase):
         return namedfile.NamedBlobFile(f.read(), filename=u'icône1.png')
 
     def setUp(self):
+        self.maxDiff = None
         self.portal = self.layer['portal']
         self.config = self.portal['config']
         api.user.create(

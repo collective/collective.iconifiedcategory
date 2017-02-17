@@ -317,7 +317,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
               'confidential': False,
               'title': 'doc-subcategory-move',
               'description': 'Document description',
-              'icon_url': u'config/group-1/category-x/@@download/icon/ic\xf4ne1.png',
+              'icon_url': u'config/group-1/category-x/@@download',
               'portal_type': 'Document',
               'preview_status': 'not_convertable',
               'download_url': None,
@@ -452,3 +452,34 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         utils.update_all_categorized_elements(self.portal)
         self.assertEqual(len(self.portal.categorized_elements), 1)
         self.assertTrue(document2UID in self.portal.categorized_elements)
+
+    def test_get_category_icon_url(self):
+        category = api.content.create(
+            type='ContentCategory',
+            title='Category X',
+            icon=self.icon,
+            container=self.config['group-1'],
+        )
+        # need to commit for icon Blob to be available
+        import transaction
+        transaction.commit()
+        subcategory = api.content.create(
+            type='ContentSubcategory',
+            title='Subcategory X',
+            container=category,
+        )
+        document = api.content.create(
+            type='Document',
+            title='doc-subcategory-remove',
+            container=self.portal,
+            content_category='config_-_group-1_-_category-x_-_subcategory-x',
+            to_print=False,
+            confidential=False,
+        )
+
+        subcategory = utils.get_category_object(document, document.content_category)
+        doc_icon_url = utils.get_category_icon_url(subcategory)
+        self.assertEqual(doc_icon_url, u'config/group-1/category-x/@@download')
+        # element is really downloadable as icon is a primary field
+        download_view = self.portal.restrictedTraverse(str(doc_icon_url))
+        self.assertTrue(isinstance(download_view(), file))
