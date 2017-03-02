@@ -63,17 +63,60 @@
     name="edit"
     for="collective.iconifiedcategory.content.category.ICategory"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
-    class=".editview.BaseEditView"
-    permission="zope2.View"
+    class=".contentview.BaseEditView"
+    permission="cmf.ModifyPortalContent"
     />
 
   <browser:page
     name="edit"
     for="collective.iconifiedcategory.content.subcategory.ISubcategory"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
-    class=".editview.BaseEditView"
-    permission="zope2.View"
+    class=".contentview.BaseEditView"
+    permission="cmf.ModifyPortalContent"
     />
+
+  <adapter
+    for="Products.CMFCore.interfaces.IFolderish
+         zope.publisher.interfaces.browser.IDefaultBrowserLayer
+         plone.dexterity.interfaces.IDexterityFTI"
+    provides="zope.publisher.interfaces.browser.IBrowserPage"
+    factory=".contentview.BaseAddView"
+    name="Category"
+    />
+  <adapter
+    for="Products.CMFCore.interfaces.IFolderish
+         zope.publisher.interfaces.browser.IDefaultBrowserLayer
+         plone.dexterity.interfaces.IDexterityFTI"
+    provides="zope.publisher.interfaces.browser.IBrowserPage"
+    factory=".contentview.BaseAddView"
+    name="Subcategory"
+    />
+  <class class=".contentview.BaseAddView">
+    <require
+      permission="cmf.AddPortalContent"
+      interface="zope.publisher.interfaces.browser.IBrowserPage"
+      />
+  </class>
+
+  <configure package="plone.dexterity.browser">
+    <browser:page
+      name="view"
+      for="collective.iconifiedcategory.content.category.ICategory"
+      layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+      class="collective.iconifiedcategory.browser.contentview.BaseView"
+      permission="zope2.View"
+      template="item.pt"
+      />
+
+    <browser:page
+      name="view"
+      for="collective.iconifiedcategory.content.subcategory.ISubcategory"
+      layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+      class="collective.iconifiedcategory.browser.contentview.BaseView"
+      permission="zope2.View"
+      template="item.pt"
+      />
+  </configure>
 
   <browser:page
     name="iconified-print"
