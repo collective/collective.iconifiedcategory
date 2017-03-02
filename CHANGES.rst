@@ -4,6 +4,9 @@ Changelog
 0.16 (unreleased)
 -----------------
 
+- Correctly hide to_print and confidential widgets on add and display view
+  if they were deactivated on the group
+  [mpeeters]
 - Add new events to limit updated informations on parent
   [mpeeters]
 - Add an option to update only category informations on parent
