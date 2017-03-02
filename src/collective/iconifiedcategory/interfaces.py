@@ -97,3 +97,11 @@ class IIconifiedPrintChangedEvent(IIconifiedChangedEvent):
 
 class IIconifiedConfidentialChangedEvent(IIconifiedChangedEvent):
     pass
+
+
+class IIconifiedModifiedEvent(IObjectEvent):
+    pass
+
+
+class IIconifiedCategoryChangedEvent(IObjectEvent):
+    pass

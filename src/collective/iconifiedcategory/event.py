@@ -14,6 +14,9 @@ from collective.iconifiedcategory.interfaces import \
     IIconifiedPrintChangedEvent
 from collective.iconifiedcategory.interfaces import \
     IIconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.interfaces import \
+    IIconifiedCategoryChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
 
 
 class IconifiedChangedEvent(ObjectEvent):
@@ -22,6 +25,14 @@ class IconifiedChangedEvent(ObjectEvent):
         super(IconifiedChangedEvent, self).__init__(object)
         self.old_value = old_value
         self.new_value = new_value
+
+
+class IconifiedModifiedEvent(ObjectEvent):
+    implements(IIconifiedModifiedEvent)
+
+
+class IconifiedCategoryChangedEvent(ObjectEvent):
+    implements(IIconifiedCategoryChangedEvent)
 
 
 class IconifiedPrintChangedEvent(IconifiedChangedEvent):

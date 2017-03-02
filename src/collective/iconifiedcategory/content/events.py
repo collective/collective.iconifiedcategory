@@ -51,6 +51,11 @@ def categorized_content_created(event):
                       "view it!"), type='warning')
 
 
+def content_updated(event):
+    if hasattr(event.object, 'content_category'):
+        categorized_content_updated(event)
+
+
 def categorized_content_updated(event):
     if hasattr(event.object, 'content_category'):
         obj = event.object
@@ -81,6 +86,18 @@ def categorized_content_updated(event):
             return
 
         utils.update_categorized_elements(obj.aq_parent, obj, target)
+
+
+def content_category_updated(event):
+    if hasattr(event.object, 'content_category'):
+        obj = event.object
+        target = utils.get_category_object(obj, obj.content_category)
+        utils.update_categorized_elements(
+            obj.aq_parent,
+            obj,
+            target,
+            limited=True,
+        )
 
 
 def categorized_content_removed(event):
