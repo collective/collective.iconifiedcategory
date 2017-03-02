@@ -4,7 +4,10 @@ Changelog
 0.16 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Add new events to limit updated informations on parent
+  [mpeeters]
+- Add an option to update only category informations on parent
+  [mpeeters]
 
 
 0.15 (2017-02-17)
