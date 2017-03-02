@@ -7,17 +7,18 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from zope.lifecycleevent import IObjectModifiedEvent
 from zope.component import adapter
 from zope.component import getGlobalSiteManager
 
+from collective.iconifiedcategory.interfaces import \
+    IIconifiedCategoryChangedEvent
 from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
 SUBSCRIBED_ELEMENTS = []
 
 
-@adapter(IObjectModifiedEvent)
+@adapter(IIconifiedCategoryChangedEvent)
 def object_modified_subscriber(event):
     SUBSCRIBED_ELEMENTS.append(event.object.id)
 
@@ -54,6 +55,7 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         config = self.portal['config']
         category = config['group-1']['category-1-1']
         plone_file = self.portal['file']
+        plone_file.title = 'foo.txt'
         element = self.portal.categorized_elements[plone_file.UID()]
         self.assertEqual('Category 1-1', element['category_title'])
         category.title = 'Category 1-1 Modified'
@@ -62,6 +64,8 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         view.process()
         element = self.portal.categorized_elements[plone_file.UID()]
         self.assertEqual('Category 1-1 Modified', element['category_title'])
+        # Title must remain the same
+        self.assertEqual('file.txt', element['title'])
 
 
 class TestUpdateCategorizedElementsCategory(BaseTestCase):

@@ -10,10 +10,10 @@ Created by mpeeters
 from Products.Five import BrowserView
 from plone import api
 from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
 
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
+from collective.iconifiedcategory.event import IconifiedCategoryChangedEvent
 
 
 class UpdateCategorizedElementsBase(BrowserView):
@@ -23,7 +23,7 @@ class UpdateCategorizedElementsBase(BrowserView):
         if brain.UID in self._notified:
             return
         self._notified.append(brain.UID)
-        event = ObjectModifiedEvent(brain.getObject())
+        event = IconifiedCategoryChangedEvent(brain.getObject())
         notify(event)
 
     def notify_category_updated(self, obj):
