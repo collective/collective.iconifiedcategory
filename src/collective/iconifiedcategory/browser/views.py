@@ -109,7 +109,7 @@ class CategorizedChildInfosView(BrowserView):
             interface=IIconifiedCategorySettings,
         )
         columns_treshold = float(columns_treshold)
-        return round(len(elements)/columns_treshold)
+        return round(len(elements) / columns_treshold)
 
 
 class CanViewAwareDownload(Download):
