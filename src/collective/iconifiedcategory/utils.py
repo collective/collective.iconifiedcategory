@@ -135,16 +135,25 @@ def get_category_icon_url(category):
         portal_url.getRelativeContentURL(obj))
 
 
-def update_categorized_elements(parent, obj, category):
+def update_categorized_elements(parent, obj, category, limited=False):
+    """ Update categorized elements
+    parameters:
+        - parent : The object parent
+        - obj : The categorized element
+        - category : The category object
+        - limited : Update only category related informations
+    """
     if 'categorized_elements' not in parent.__dict__:
         parent.categorized_elements = OrderedDict()
-    uid, infos = get_categorized_infos(obj, category)
+    uid, new_infos = get_categorized_infos(obj, category, limited=limited)
+    infos = parent.categorized_elements.get(uid, {})
+    infos.update(new_infos)
     parent.categorized_elements[uid] = infos
     sort_categorized_elements(parent)
     parent._p_changed = True
 
 
-def update_all_categorized_elements(container):
+def update_all_categorized_elements(container, limited=False):
     container.categorized_elements = OrderedDict()
     for obj in container.objectValues():
         if hasattr(obj, 'content_category'):
@@ -152,7 +161,13 @@ def update_all_categorized_elements(container):
                 category = get_category_object(obj, obj.content_category)
             except KeyError:
                 continue
-            uid, infos = get_categorized_infos(obj, category)
+            uid, new_infos = get_categorized_infos(
+                obj,
+                category,
+                limited=limited,
+            )
+            infos = container.categorized_elements.get(uid, {})
+            infos.update(new_infos)
             container.categorized_elements[uid] = infos
     if container.categorized_elements:
         sort_categorized_elements(container)
@@ -199,9 +214,9 @@ def remove_categorized_element(parent, obj):
         del parent.categorized_elements[obj.UID()]
 
 
-def get_categorized_infos(obj, category):
+def get_categorized_infos(obj, category, limited=False):
     adapter = getAdapter(obj, IIconifiedInfos)
-    return obj.UID(), adapter.get_infos(category)
+    return obj.UID(), adapter.get_infos(category, limited=limited)
 
 
 def _categorized_elements(context):
