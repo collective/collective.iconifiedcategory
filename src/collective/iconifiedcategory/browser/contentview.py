@@ -71,6 +71,5 @@ class BaseView(DefaultView):
                 rel_attribute,
                 None,
             )
-            if parent_value is False:
-                del self.fields[rel_widget]
+            if parent_value is False and rel_widget in self.widgets:
                 del self.widgets[rel_widget]
