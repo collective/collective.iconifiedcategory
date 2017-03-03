@@ -37,20 +37,19 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         category.title = 'Category 1-1'
         super(TestUpdateCategorizedElementsConfig, self).tearDown()
 
-    def test_process_subscriber(self):
+    def test_subscriber(self):
         """
         Test the ObjectModified event notifier for update-categorized-elements
         view on config context
         """
         config = self.portal['config']
         view = config.restrictedTraverse('@@update-categorized-elements')
-        view.process()
+        view()
         self.assertListEqual(['file', 'image'], SUBSCRIBED_ELEMENTS)
 
-    def test_process_result(self):
+    def test_result(self):
         """
-        Test the process from update-categorized-elements view on config
-        context
+        Test the update-categorized-elements view on config context
         """
         config = self.portal['config']
         category = config['group-1']['category-1-1']
@@ -61,7 +60,7 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         category.title = 'Category 1-1 Modified'
 
         view = config.restrictedTraverse('@@update-categorized-elements')
-        view.process()
+        view()
         element = self.portal.categorized_elements[plone_file.UID()]
         self.assertEqual('Category 1-1 Modified', element['category_title'])
         # Title must remain the same
@@ -82,7 +81,7 @@ class TestUpdateCategorizedElementsCategory(BaseTestCase):
         category.title = 'Category 1-1'
         super(TestUpdateCategorizedElementsCategory, self).tearDown()
 
-    def test_process_subscriber(self):
+    def test_subscriber(self):
         """
         Test the ObjectModified event notifier for update-categorized-elements
         view on category context
@@ -90,13 +89,12 @@ class TestUpdateCategorizedElementsCategory(BaseTestCase):
         config = self.portal['config']
         category = config['group-1']['category-1-1']['subcategory-1-1-1']
         view = category.restrictedTraverse('@@update-categorized-elements')
-        view.process()
+        view()
         self.assertListEqual(['image'], SUBSCRIBED_ELEMENTS)
 
-    def test_process_result(self):
+    def test_result(self):
         """
-        Test the process from update-categorized-elements view on category
-        context
+        Test the update-categorized-elements view on category context
         """
         config = self.portal['config']
         category = config['group-1']['category-1-1']
@@ -106,6 +104,6 @@ class TestUpdateCategorizedElementsCategory(BaseTestCase):
         category.title = 'Category 1-1 Modified'
 
         view = category.restrictedTraverse('@@update-categorized-elements')
-        view.process()
+        view()
         element = self.portal.categorized_elements[plone_file.UID()]
         self.assertEqual('Category 1-1 Modified', element['category_title'])

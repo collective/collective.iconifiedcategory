@@ -140,7 +140,7 @@ def update_categorized_elements(parent,
                                 obj,
                                 category,
                                 limited=False,
-                                sort=False,
+                                sort=True,
                                 logging=False):
     """ Update categorized elements
     parameters:

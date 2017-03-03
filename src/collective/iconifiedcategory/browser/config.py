@@ -22,7 +22,8 @@ class UpdateCategorizedElementsBase(BrowserView):
     def __init__(self, context, request):
         super(UpdateCategorizedElementsBase, self).__init__(context, request)
         self._notified = []
-        self.sort = self.request.get('sort_updated_categorized_elements', False) is True or False
+        self.sort = self.request.get(
+            'sort_updated_categorized_elements', False) is True or False
 
     def _notify(self, brain):
         if brain.UID in self._notified:
