@@ -97,6 +97,8 @@ def content_category_updated(event):
             obj,
             target,
             limited=True,
+            sort=event.sort,
+            logging=True
         )
 
 

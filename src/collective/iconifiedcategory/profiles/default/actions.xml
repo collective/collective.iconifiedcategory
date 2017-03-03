@@ -17,8 +17,19 @@
  <object name="object_buttons" meta_type="CMF Action Category">
   <object name="update_categorized_elements" meta_type="CMF Action" i18n:domain="collective.iconifiedcategory">
    <property name="title" i18n:translate="">Update categorized elements</property>
-   <property name="description" i18n:translate=""></property>
+   <property name="description" i18n:translate="">This will update title and url of elements using categories defined here.</property>
    <property name="url_expr">string:${object/absolute_url}/@@update-categorized-elements</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">object/@@iconified_subtyper/on_config</property>
+   <property name="permissions">
+    <element value="Modify portal content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="update_and_sort_categorized_elements" meta_type="CMF Action" i18n:domain="collective.iconifiedcategory">
+   <property name="title" i18n:translate="">Update and sort categorized elements</property>
+   <property name="description" i18n:translate="">This will update and sort title and url of elements using categories defined here.  Sorting is only necessary if you changed some categories position and is time-consuming so use it carefully.</property>
+   <property name="url_expr">string:${object/absolute_url}/@@update-categorized-elements?sort_updated_categorized_elements:boolean=True</property>
    <property name="icon_expr"></property>
    <property name="available_expr">object/@@iconified_subtyper/on_config</property>
    <property name="permissions">

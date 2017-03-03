@@ -24,6 +24,7 @@ import types
 
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
+from collective.iconifiedcategory import logger
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.content.subcategory import ISubcategory
@@ -135,13 +136,19 @@ def get_category_icon_url(category):
         portal_url.getRelativeContentURL(obj))
 
 
-def update_categorized_elements(parent, obj, category, limited=False):
+def update_categorized_elements(parent,
+                                obj,
+                                category,
+                                limited=False,
+                                sort=False,
+                                logging=False):
     """ Update categorized elements
     parameters:
         - parent : The object parent
         - obj : The categorized element
         - category : The category object
         - limited : Update only category related informations
+        - logging : Enables logging
     """
     if 'categorized_elements' not in parent.__dict__:
         parent.categorized_elements = OrderedDict()
@@ -149,8 +156,12 @@ def update_categorized_elements(parent, obj, category, limited=False):
     infos = parent.categorized_elements.get(uid, {})
     infos.update(new_infos)
     parent.categorized_elements[uid] = infos
-    sort_categorized_elements(parent)
+    if sort:
+        sort_categorized_elements(parent)
     parent._p_changed = True
+    if logging:
+        logger.info('Updated categorized elements of {0}'.format(
+            obj.absolute_url_path()))
 
 
 def update_all_categorized_elements(container, limited=False):

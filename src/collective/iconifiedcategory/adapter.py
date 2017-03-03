@@ -17,13 +17,9 @@ from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
 from zope.annotation import IAnnotations
 
-import logging
-
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
 from collective.iconifiedcategory.content.subcategory import ISubcategory
-
-logger = logging.getLogger('collective.iconifiedcategory')
 
 
 class CategorizedObjectInfoAdapter(object):

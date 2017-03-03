@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-02-14 10:01+0000\n"
+"POT-Creation-Date: 2017-03-03 12:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,10 +89,6 @@ msgstr ""
 msgid "Element is not confidential"
 msgstr ""
 
-#: ../browser/templates/update_categorize_elements.pt:5
-msgid "Elements updated!"
-msgstr ""
-
 #: ../content/base.py:41
 msgid "Enabled?"
 msgstr ""
@@ -109,7 +105,7 @@ msgstr ""
 msgid "Filesize limit in bytes enabling a warning"
 msgstr ""
 
-#: ../content/category.py:25
+#: ../content/category.py:27
 msgid "Icon"
 msgstr ""
 
@@ -176,12 +172,20 @@ msgstr ""
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr ""
 
-#: ../content/events.py:104
+#: ../content/events.py:123
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:118
+#: ../content/events.py:137
 msgid "This subcategory is used by another object and cannot be deleted"
+msgstr ""
+
+#: ../profiles/default/actions.xml
+msgid "This will update and sort title and url of elements using categories defined here.  Sorting is only necessary if you changed some categories position and is time-consuming so use it carefully."
+msgstr ""
+
+#: ../profiles/default/actions.xml
+msgid "This will update title and url of elements using categories defined here."
 msgstr ""
 
 #: ../browser/tabview.py:107
@@ -194,6 +198,10 @@ msgstr ""
 
 #: ../content/base.py:34
 msgid "To be printed default"
+msgstr ""
+
+#: ../profiles/default/actions.xml
+msgid "Update and sort categorized elements"
 msgstr ""
 
 #: ../profiles/default/actions.xml

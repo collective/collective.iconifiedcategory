@@ -261,28 +261,25 @@
     />
 
   <!-- Config views -->
-  <browser:page
+  <browser:view
     name="update-categorized-elements"
     for="collective.iconifiedcategory.content.categoryconfiguration.ICategoryConfiguration"
     class=".config.UpdateCategorizedElementsConfig"
     permission="cmf.AddPortalContent"
-    template="templates/update_categorize_elements.pt"
     />
 
-  <browser:page
+  <browser:view
     name="update-categorized-elements"
     for="collective.iconifiedcategory.content.categorygroup.ICategoryGroup"
     class=".config.UpdateCategorizedElementsConfig"
     permission="cmf.AddPortalContent"
-    template="templates/update_categorize_elements.pt"
     />
 
-  <browser:page
+  <browser:view
     name="update-categorized-elements"
     for="collective.iconifiedcategory.content.base.ICategorize"
     class=".config.UpdateCategorizedElementsCategory"
     permission="cmf.AddPortalContent"
-    template="templates/update_categorize_elements.pt"
     />
 
   <!-- control panel -->
