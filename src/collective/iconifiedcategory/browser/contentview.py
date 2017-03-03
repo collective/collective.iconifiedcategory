@@ -72,4 +72,5 @@ class BaseView(DefaultView):
                 None,
             )
             if parent_value is False:
+                del self.fields[rel_widget]
                 del self.widgets[rel_widget]
