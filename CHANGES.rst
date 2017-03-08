@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.16 (unreleased)
+0.16 (2017-03-08)
 -----------------
 
 - Correctly hide to_print and confidential widgets on add and display view
