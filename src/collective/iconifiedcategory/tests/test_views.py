@@ -134,8 +134,10 @@ class TestCanViewAwareDownload(BaseTestCase):
         img_obj = self.portal['image']
         self.assertTrue(file_obj.restrictedTraverse('@@download')())
         self.assertTrue(file_obj.restrictedTraverse('@@display-file')())
+        self.assertTrue(file_obj.unrestrictedTraverse('view/++widget++form.widgets.file/@@download')())
         self.assertTrue(img_obj.restrictedTraverse('@@download')())
         self.assertTrue(img_obj.restrictedTraverse('@@display-file')())
+        self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
 
     def test_can_not_view(self):
         # register an adapter that will return False
@@ -144,7 +146,9 @@ class TestCanViewAwareDownload(BaseTestCase):
         img_obj = self.portal['image']
         self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))
         self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@display-file'))
+        self.assertRaises(Unauthorized, file_obj.unrestrictedTraverse('view/++widget++form.widgets.file/@@download'))
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@download'))
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@display-file'))
+        self.assertRaises(Unauthorized, img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download'))
         # cleanUp zmcl.load_config because it impact other tests
         zcml.cleanUp()

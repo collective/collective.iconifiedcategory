@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import Unauthorized
+from Acquisition import aq_inner
 from Products.Five import BrowserView
 from collections import OrderedDict
 from plone import api
 from plone.namedfile.browser import DisplayFile
 from plone.namedfile.browser import Download
+from plone.formwidget.namedfile.widget import Download as fnw_Download
 from zope.component import getMultiAdapter
 
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
@@ -112,18 +114,31 @@ class CategorizedChildInfosView(BrowserView):
         return round(len(elements) / columns_treshold)
 
 
+def check_can_view(obj, request):
+    """ """
+    catalog = api.portal.get_tool('portal_catalog')
+    brains = catalog(UID=obj.UID())
+    brain = brains[0]
+    adapter = getMultiAdapter((obj.aq_parent, request, brain),
+                              IIconifiedContent)
+    return adapter.can_view()
+
+
 class CanViewAwareDownload(Download):
     """ """
     def __call__(self):
-        catalog = api.portal.get_tool('portal_catalog')
-        brains = catalog(UID=self.context.UID())
-        brain = brains[0]
-        adapter = getMultiAdapter((self.context.aq_parent, self.request, brain),
-                                  IIconifiedContent)
-        if not adapter.can_view():
+        if not check_can_view(self.context, self.request):
             raise Unauthorized
         return super(CanViewAwareDownload, self).__call__()
 
 
 class CanViewAwareDisplayFile(DisplayFile, CanViewAwareDownload):
     """ """
+
+
+class CanViewAwareFNWDownload(fnw_Download):
+    """ """
+    def __call__(self):
+        if not check_can_view(aq_inner(self.context.context), self.request):
+            raise Unauthorized
+        return super(CanViewAwareFNWDownload, self).__call__()

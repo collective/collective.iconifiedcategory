@@ -4,7 +4,8 @@ Changelog
 0.17 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Make the `plone.formwidget.namedfile` `@@download` view can_view aware.
+  [gbastien]
 
 
 0.16 (2017-03-08)
@@ -28,7 +29,7 @@ Changelog
   removing the `Plone Site`.
   [gbastien]
 - Make `ICategory.icon` a primary field so we may use a simpler download URL
-  that is only the `path_to_object/@@downwload` without the file name anymore.
+  that is only the `path_to_object/@@download` without the file name anymore.
   This is done to surround a bug in Apache that occurs when the filename
   contains the `%` character.
   [gbastien]
