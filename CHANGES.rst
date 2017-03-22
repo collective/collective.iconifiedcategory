@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.17 (unreleased)
+0.17 (2017-03-22)
 -----------------
 
 - Make the `plone.formwidget.namedfile` `@@download` view can_view aware.
