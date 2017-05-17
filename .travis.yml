@@ -23,7 +23,7 @@ before_install:
   - sudo apt-get install libreoffice
 
 install:
-  - python bootstrap.py -c travis.cfg
+  - python bootstrap.py --version=2.5.3 -c travis.cfg
   - bin/buildout -Nc travis.cfg
 
 script:
