@@ -4,7 +4,9 @@ Changelog
 0.18 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added missing translation when updating categorized elements using the
+  @@update-categorized-elements view.
+  [gbastien]
 
 
 0.17 (2017-03-22)

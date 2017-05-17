@@ -39,3 +39,7 @@ msgstr ""
 #. Default: "Not convertible to a printable format"
 msgid "Not convertible to a printable format"
 msgstr ""
+
+#. Default: "Elements updated!"
+msgid "Elements updated!"
+msgstr ""

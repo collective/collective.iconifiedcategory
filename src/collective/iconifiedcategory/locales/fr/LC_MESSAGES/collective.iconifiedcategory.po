@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-03-03 12:10+0000\n"
+"POT-Creation-Date: 2017-05-17 12:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,6 +89,10 @@ msgstr "Cet élément est confidentiel"
 
 msgid "Element is not confidential"
 msgstr "Cet élément n'est pas confidentiel"
+
+#. Default: "Elements updated!"
+msgid "Elements updated!"
+msgstr "Les éléments ont été mis à jour!"
 
 #: ../content/base.py:41
 msgid "Enabled?"
@@ -184,7 +188,6 @@ msgstr "Cette catégorie est utilisée par un autre objet et ne peut dès lors �
 #: ../profiles/default/actions.xml
 msgid "This will update and sort title and url of elements using categories defined here.  Sorting is only necessary if you changed some categories position and is time-consuming so use it carefully."
 msgstr "Cette action mettra à jour le titre et l'URL des éléments utilisant les catégories définies ici.  Le tri n'est nécessaire que si des catégories utilisées ont changé de position, comme ceci prend du temps, utilisez cette action avec précaution."
-
 
 #: ../profiles/default/actions.xml
 msgid "This will update title and url of elements using categories defined here."

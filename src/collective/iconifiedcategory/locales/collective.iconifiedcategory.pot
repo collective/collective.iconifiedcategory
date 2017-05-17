@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-03-03 12:10+0000\n"
+"POT-Creation-Date: 2017-05-17 12:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,6 +87,10 @@ msgid "Element is confidential"
 msgstr ""
 
 msgid "Element is not confidential"
+msgstr ""
+
+#. Default: "Elements updated!"
+msgid "Elements updated!"
 msgstr ""
 
 #: ../content/base.py:41
