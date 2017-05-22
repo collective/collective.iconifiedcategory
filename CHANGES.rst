@@ -7,6 +7,9 @@ Changelog
 - Added missing translation when updating categorized elements using the
   @@update-categorized-elements view.
   [gbastien]
+- Use icon_expr instead content_icon on the types fti to define the icon.
+  Actually we want to define no icon as the type icon is displayed using CSS.
+  [gbastien]
 
 
 0.17 (2017-03-22)
