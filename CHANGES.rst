@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.18 (unreleased)
+0.18 (2017-05-29)
 -----------------
 
 - Added missing translation when updating categorized elements using the
