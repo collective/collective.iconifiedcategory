@@ -166,7 +166,7 @@ def update_categorized_elements(parent,
             obj.absolute_url_path()))
 
 
-def update_all_categorized_elements(container, limited=False):
+def update_all_categorized_elements(container, limited=False, sort=True):
     container.categorized_elements = OrderedDict()
     for obj in container.objectValues():
         if hasattr(obj, 'content_category'):
@@ -182,7 +182,7 @@ def update_all_categorized_elements(container, limited=False):
             infos = container.categorized_elements.get(uid, {})
             infos.update(new_infos)
             container.categorized_elements[uid] = infos
-    if container.categorized_elements:
+    if container.categorized_elements and sort:
         sort_categorized_elements(container)
         container._p_changed = True
 
