@@ -63,6 +63,7 @@ class CategorizedObjectInfoAdapter(object):
             'warn_filesize': utils.warn_filesize(filesize),
             'to_print': self._to_print,
             'confidential': self._confidential,
+            'signed': self._signed,
             'preview_status': self._preview_status,
         }
         infos.update(base_infos)
@@ -100,6 +101,10 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _confidential(self):
         return getattr(self.obj, 'confidential', False)
+
+    @property
+    def _signed(self):
+        return getattr(self.obj, 'signed', None)
 
     @property
     def _preview_status(self):

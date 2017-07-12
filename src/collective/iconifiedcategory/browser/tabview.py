@@ -22,6 +22,7 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
+from collective.iconifiedcategory.interfaces import ICategorizedSigned
 from collective.iconifiedcategory.interfaces import ICategorizedTable
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 
@@ -35,8 +36,9 @@ class CategorizedTabView(BrowserView):
         return table.render()
 
     def _prepare_table_render(self, table, portal_type):
-        alsoProvides(table, ICategorizedPrint)
         alsoProvides(table, ICategorizedConfidential)
+        alsoProvides(table, ICategorizedPrint)
+        alsoProvides(table, ICategorizedSigned)
 
 
 class CategorizedContent(object):
@@ -187,8 +189,12 @@ class FilesizeColumn(column.GetAttrColumn):
 class IconClickableColumn(column.GetAttrColumn):
     action_view = ''
 
+    def _deactivated_is_useable(self):
+        '''Is deactivated value a useable one?'''
+        return False
+
     def get_url(self, obj):
-        if self.is_deactivated(obj):
+        if not self._deactivated_is_useable() and self.is_deactivated(obj):
             return '#'
         return '{url}/@@{action}'.format(
             url=obj.getURL(),
@@ -209,9 +215,12 @@ class IconClickableColumn(column.GetAttrColumn):
                                 obj.real_object())
 
     def css_class(self, obj):
-        if self.is_deactivated(obj):
+        is_deactivated = self.is_deactivated(obj)
+        if not self._deactivated_is_useable() and is_deactivated:
             return ' deactivated'
         base_css = getattr(obj, self.attrName, False) and ' active' or ''
+        if is_deactivated:
+            base_css = ' deactivated' + base_css
         if self.is_editable(obj):
             return '{0} editable'.format(base_css)
         return base_css
@@ -254,6 +263,25 @@ class ConfidentialColumn(IconClickableColumn):
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
+
+
+class SignedColumn(IconClickableColumn):
+    header = _(u'Signed')
+    cssClasses = {'td': 'iconified-signed'}
+    weight = 95
+    attrName = 'signed'
+    action_view = 'iconified-signed'
+
+    def alt(self, obj):
+        return translate(
+            utils.signed_message(obj),
+            domain='collective.iconifiedcategory',
+            context=self.table.request,
+        )
+
+    def _deactivated_is_useable(self):
+        '''Is deactivated value a useable one?'''
+        return True
 
 
 class ActionColumn(column.GetAttrColumn):

@@ -21,8 +21,9 @@ from plone import api
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
-from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
+from collective.iconifiedcategory.event import IconifiedSignedChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
@@ -134,6 +135,36 @@ class ConfidentialChangeView(BaseView):
         values['confidential'] = self.convert_boolean(values['confidential'])
         super(ConfidentialChangeView, self).set_values(values)
         notify(IconifiedConfidentialChangedEvent(
+            self.context,
+            old_values,
+            values,
+        ))
+        return 0, utils.confidential_message(self.context)
+
+
+class SignedChangeView(BaseView):
+    attribute_mapping = {
+        'signed': 'iconified-value',
+    }
+
+    def _may_set_values(self, values):
+        res = super(SignedChangeView, self)._may_set_values(values)
+        if res:
+            # is this functionnality enabled?
+            category = utils.get_category_object(self.context, self.context.content_category)
+            category_group = category.get_category_group()
+            res = category_group.signed_activated
+        return res
+
+    def set_values(self, values):
+        """Value are set looping on :
+           - None;
+           - False;
+           - True."""
+        old_values = self.get_current_values()
+        values['signed'] = self.convert_boolean(values['signed'])
+        super(SignedChangeView, self).set_values(values)
+        notify(IconifiedSignedChangedEvent(
             self.context,
             old_values,
             values,
