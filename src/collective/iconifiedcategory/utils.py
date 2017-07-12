@@ -388,6 +388,16 @@ def confidential_message(obj):
     return messages.get(getattr(obj, 'confidential', None), '')
 
 
+def signed_message(obj):
+    """Return the signed message for the given object"""
+    messages = {
+        None: u'Element is not to be signed',
+        True: u'Element is to be signed',
+        False: u'Element is signed',
+    }
+    return messages.get(getattr(obj, 'signed', None), '')
+
+
 @ram.cache(lambda f, p: (p, time() // (60 * 60)))
 def is_file_type(portal_type):
     """Verify if the given portal type provides IFile or IImage"""

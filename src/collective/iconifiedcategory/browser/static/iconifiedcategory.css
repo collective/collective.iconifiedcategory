@@ -93,6 +93,7 @@ div.tooltipster-content li {
 }
 
 #content .iconified-listing td.iconified-print a,
+#content .iconified-listing td.iconified-signed a,
 #content .iconified-listing td.iconified-confidential a {
     font-family: 'FontAwesome';
     font-size: 120%;
@@ -101,6 +102,7 @@ div.tooltipster-content li {
 
 /* need to use !important to have a border-bottom because it is removed using !important in base.css... */
 #content .iconified-listing td.iconified-print a.editable,
+#content .iconified-listing td.iconified-signed a.editable,
 #content .iconified-listing td.iconified-confidential a.editable {
     border-bottom: 1px dotted !important;
     padding-bottom: 2px;
@@ -108,36 +110,43 @@ div.tooltipster-content li {
 }
 
 #content .iconified-listing td.iconified-print a,
+#content .iconified-listing td.iconified-signed a,
 #content .iconified-listing td.iconified-confidential a.active {
     color: #EA0000;
 }
 
 #content .iconified-listing td.iconified-print a.active,
+#content .iconified-listing td.iconified-signed a.active,
 #content .iconified-listing td.iconified-confidential a {
     color: #75ad0a;
 }
 
 #content .iconified-listing td.iconified-print a.active:hover,
+#content .iconified-listing td.iconified-signed a.active:hover,
 #content .iconified-listing td.iconified-confidential a:hover {
     color: #0B8400!important;
 }
 
 #content .iconified-listing td.iconified-print a:hover,
+#content .iconified-listing td.iconified-signed a:hover,
 #content .iconified-listing td.iconified-confidential a.active:hover {
     color: #B50000!important;
 }
 
 #content .iconified-listing td.iconified-print a.deactivated,
+#content .iconified-listing td.iconified-signed a.deactivated,
 #content .iconified-listing td.iconified-confidential a.deactivated {
     color: #999;
 }
 
 #content .iconified-listing td.iconified-print a.deactivated:hover,
+#content .iconified-listing td.iconified-signed a.deactivated:hover,
 #content .iconified-listing td.iconified-confidential a.deactivated:hover {
     color: #666!important;
 }
 
 #content .iconified-listing td.iconified-print a.error,
+#content .iconified-listing td.iconified-signed a.error,
 #content .iconified-listing td.iconified-confidential a.error {
     color: #E58200;
 }
@@ -157,6 +166,10 @@ div.tooltipster-content li {
 
 #content .iconified-listing td.iconified-confidential a.active:before {
     content: "\f023";
+}
+
+#content .iconified-listing td.iconified-signed a:before {
+    content: "\f044";
 }
 
 /* reduce select2 font-size */

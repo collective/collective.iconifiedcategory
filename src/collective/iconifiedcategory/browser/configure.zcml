@@ -134,6 +134,14 @@
     permission="zope2.View"
     />
 
+  <browser:page
+    name="iconified-signed"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".actionview.SignedChangeView"
+    permission="zope2.View"
+    />
+
   <!-- Tab view -->
   <browser:page
     for="*"
@@ -214,6 +222,15 @@
          collective.iconifiedcategory.interfaces.ICategorizedConfidential"
     provides="z3c.table.interfaces.IColumn"
     factory=".tabview.ConfidentialColumn"
+    />
+
+  <adapter
+    name="signed-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedSigned"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.SignedColumn"
     />
 
   <adapter

@@ -10,13 +10,11 @@ Created by mpeeters
 from zope.component.interfaces import ObjectEvent
 from zope.interface import implements
 
-from collective.iconifiedcategory.interfaces import \
-    IIconifiedPrintChangedEvent
-from collective.iconifiedcategory.interfaces import \
-    IIconifiedConfidentialChangedEvent
-from collective.iconifiedcategory.interfaces import \
-    IIconifiedCategoryChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedPrintChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedSignedChangedEvent
 
 
 class IconifiedChangedEvent(ObjectEvent):
@@ -45,3 +43,7 @@ class IconifiedPrintChangedEvent(IconifiedChangedEvent):
 
 class IconifiedConfidentialChangedEvent(IconifiedChangedEvent):
     implements(IIconifiedConfidentialChangedEvent)
+
+
+class IconifiedSignedChangedEvent(IconifiedChangedEvent):
+    implements(IIconifiedSignedChangedEvent)

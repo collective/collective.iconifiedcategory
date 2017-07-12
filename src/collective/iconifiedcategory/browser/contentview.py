@@ -61,6 +61,7 @@ class BaseView(DefaultView):
     related_widgets = {
         'confidential': 'confidentiality_activated',
         'to_print': 'to_be_printed_activated',
+        'signed': 'signed_activated',
     }
 
     def updateWidgets(self):

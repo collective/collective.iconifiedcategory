@@ -63,17 +63,25 @@ class IconifiedCategorization(object):
     def content_category(self, value):
         if self.content_category is None:
             category = utils.get_category_object(self.context, value)
-            # left False if print/confidential
+            # left False if to_print/confidential/to_sign
             # not enabled on ContentCategoryGroup
             category_group = category.get_category_group(category)
+
             if category_group.to_be_printed_activated:
                 self.context.to_print = category.to_print
             else:
                 self.context.to_print = False
+
             if category_group.confidentiality_activated:
                 self.context.confidential = category.confidential
             else:
                 self.context.confidential = False
+
+            if category_group.signed_activated:
+                self.context.signed = category.signed
+            else:
+                self.context.signed = None
+
         self.context.content_category = value
         self.context.reindexObject(idxs=['content_category_uid'])
 
@@ -84,3 +92,7 @@ class IconifiedCategorization(object):
     @property
     def confidential(self):
         return getattr(aq_base(self.context), 'confidential', False)
+
+    @property
+    def signed(self):
+        return getattr(aq_base(self.context), 'signed', None)

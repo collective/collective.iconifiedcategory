@@ -50,6 +50,10 @@ class ICategorizedConfidential(ICategorizedTable):
     pass
 
 
+class ICategorizedSigned(ICategorizedTable):
+    pass
+
+
 class IIconifiedCategorySubtyper(Interface):
 
     have_categorized_elements = schema.Bool(
@@ -104,4 +108,8 @@ class IIconifiedModifiedEvent(IObjectEvent):
 
 
 class IIconifiedCategoryChangedEvent(IObjectEvent):
+    pass
+
+
+class IIconifiedSignedChangedEvent(IObjectEvent):
     pass

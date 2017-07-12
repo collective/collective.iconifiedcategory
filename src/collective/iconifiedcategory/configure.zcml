@@ -22,7 +22,7 @@
   <include package=".widget" />
 
   <include file="adapter.zcml" />
-
+  <include file="upgrades.zcml" />
 
   <genericsetup:registerProfile
       name="default"

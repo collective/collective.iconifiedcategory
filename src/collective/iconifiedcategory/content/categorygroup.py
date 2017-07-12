@@ -34,6 +34,13 @@ class ICategoryGroup(IFolder):
         default=False,
     )
 
+    form.widget('signed_activated', RadioFieldWidget)
+    signed_activated = schema.Bool(
+        title=_(u'Activate the "signed" option'),
+        required=False,
+        default=False,
+    )
+
 
 class CategoryGroup(Container):
     implements(ICategoryGroup)
