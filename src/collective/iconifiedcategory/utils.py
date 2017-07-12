@@ -239,6 +239,21 @@ def _categorized_elements(context):
     )
 
 
+def _check_can_view(obj, request, brain=False):
+    """ """
+    if not getattr(obj, 'confidential', None):
+        return True
+
+    if not brain:
+        catalog = api.portal.get_tool('portal_catalog')
+        brains = catalog(UID=obj.UID())
+        brain = brains[0]
+
+    adapter = getMultiAdapter((obj.aq_parent, request, brain),
+                              IIconifiedContent)
+    return adapter.can_view()
+
+
 def get_categorized_elements(context,
                              result_type='dict',
                              portal_type=None,
@@ -263,11 +278,7 @@ def get_categorized_elements(context,
         query['portal_type'] = portal_type
     order = categorized_elements.keys()
     for brain in api.content.find(context=context, **query):
-        can_view = True
-        if categorized_elements[brain.UID]['confidential']:
-            adapter = getMultiAdapter((context, context.REQUEST, brain),
-                                      IIconifiedContent)
-            can_view = adapter.can_view()
+        can_view = _check_can_view(context, context.REQUEST, brain)
         if can_view:
             if result_type == 'objects':
                 elements.append(brain._unrestrictedGetObject())

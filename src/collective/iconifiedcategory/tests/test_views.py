@@ -144,6 +144,18 @@ class TestCanViewAwareDownload(BaseTestCase):
         zcml.load_config('testing-adapters.zcml', collective_iconifiedcategory)
         file_obj = self.portal['file']
         img_obj = self.portal['image']
+        # downloadable when element is not confidential
+        self.assertFalse(file_obj.confidential)
+        self.assertFalse(img_obj.confidential)
+        self.assertTrue(file_obj.restrictedTraverse('@@download')())
+        self.assertTrue(file_obj.restrictedTraverse('@@display-file')())
+        self.assertTrue(file_obj.unrestrictedTraverse('view/++widget++form.widgets.file/@@download')())
+        self.assertTrue(img_obj.restrictedTraverse('@@download')())
+        self.assertTrue(img_obj.restrictedTraverse('@@display-file')())
+        self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
+        # when confidential, check is to can_view is done
+        file_obj.confidential = True
+        img_obj.confidential = True
         self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))
         self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@display-file'))
         self.assertRaises(Unauthorized, file_obj.unrestrictedTraverse('view/++widget++form.widgets.file/@@download'))

@@ -4,8 +4,11 @@ Changelog
 0.19 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Factorized call to _check_can_view from utils and views so we are sure that
+  the check is only done if obj is confidential.  This fix a bug where can_view
+  check was done for not confidential obj and raised an error on @@download even
+  though it was displayed in the categorized elements table.
+  [gbastien]
 
 0.18 (2017-05-29)
 -----------------
