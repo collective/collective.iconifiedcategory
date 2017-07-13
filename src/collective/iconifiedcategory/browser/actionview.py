@@ -157,13 +157,10 @@ class SignedChangeView(BaseView):
             res = category_group.signed_activated
         return res
 
-    def set_values(self, values):
-        """Value are set looping on :
-           - None;
-           - False;
-           - True."""
+    def _get_next_values(self, old_values):
+        """ """
         status = 0
-        old_values = self.get_current_values()
+        values = {}
         if old_values['to_sign'] is False:
             values['to_sign'] = True
             values['signed'] = False
@@ -176,6 +173,16 @@ class SignedChangeView(BaseView):
             values['to_sign'] = False
             values['signed'] = False
             status = -1
+        return status, values
+
+    def set_values(self, values):
+        """Value are setting 'to_print' and 'signed' attributes with following
+           possibility depending on allowed ones :
+           - False/False;
+           - True/False;
+           - True/True."""
+        old_values = self.get_current_values()
+        status, values = self._get_next_values(old_values)
         super(SignedChangeView, self).set_values(values)
         notify(IconifiedSignedChangedEvent(
             self.context,
