@@ -65,11 +65,16 @@ jQuery(function($) {
       values,
       function(data) {
         if (data['status'] == 0) {
-          obj.toggleClass('active');
+          obj.removeClass('active');
+          obj.removeClass('deactivated');
+          obj.removeClass('error');
+        } else if (data['status'] == 1) {
+          obj.addClass('active');
           obj.removeClass('deactivated');
           obj.removeClass('error');
         } else if (data['status'] == -1) {
-          obj.toggleClass('deactivated');
+          obj.removeClass('active');
+          obj.addClass('deactivated');
           obj.removeClass('error');
         } else {
           obj.addClass('error');

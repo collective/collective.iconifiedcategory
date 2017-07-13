@@ -38,8 +38,15 @@ class BaseView(BrowserView):
         )
 
     def __call__(self):
+        """Do the work :
+           - status :
+               -1 --> deactivate;
+               0 --> set to False;
+               1 --> set to True;
+               2 --> error;
+           """
         writer = getUtility(IJSONWriter)
-        values = {'status': 0, 'msg': 'success'}
+        values = {'msg': 'success'}
         try:
             self.request.response.setHeader('content-type',
                                             'application/json')
@@ -47,10 +54,10 @@ class BaseView(BrowserView):
             values['status'] = status
             if msg:
                 values['msg'] = self._translate(msg)
-            if not status == 1:
+            if not status == 2:
                 notify(ObjectModifiedEvent(self.context))
         except Exception:
-            values['status'] = 1
+            values['status'] = 2
             values['msg'] = self._translate(_('Error during process'))
         return writer.write(values)
 
@@ -70,11 +77,20 @@ class BaseView(BrowserView):
             raise Unauthorized
 
         if not values:
-            return 1, self._translate(_('No values to set'))
+            return 2, self._translate(_('No values to set'))
 
         for key, value in values.items():
             self.set_value(key, value)
-        return 0, self._translate(_('Values have been set'))
+        return self._get_status(values), self._translate(_('Values have been set'))
+
+    def _get_status(self, values):
+        value = values.get(self.attribute_mapping.keys()[0], None)
+        if value is False:
+            return 0
+        elif value is True:
+            return 1
+        else:
+            return -1
 
     def set_value(self, attrname, value):
         setattr(self.context, attrname, value)
@@ -113,7 +129,7 @@ class ToPrintChangeView(BaseView):
             old_values,
             values,
         ))
-        return 0, utils.print_message(self.context)
+        return self._get_status(values), utils.print_message(self.context)
 
 
 class ConfidentialChangeView(BaseView):
@@ -139,7 +155,7 @@ class ConfidentialChangeView(BaseView):
             old_values,
             values,
         ))
-        return 0, utils.confidential_message(self.context)
+        return self._get_status(values), utils.confidential_message(self.context)
 
 
 class SignedChangeView(BaseView):
@@ -164,9 +180,9 @@ class SignedChangeView(BaseView):
         if old_values['to_sign'] is False:
             values['to_sign'] = True
             values['signed'] = False
-        elif old_values['to_sign'] is True and old_values['signed'] is False:
-            values['to_sign'] = True
-            values['signed'] = True
+        #elif old_values['to_sign'] is True and old_values['signed'] is False:
+        #    values['to_sign'] = True
+        #    values['signed'] = True
         else:
             # old_values['to_sign'] is True and old_values['signed'] is True
             # disable to_sign and signed
