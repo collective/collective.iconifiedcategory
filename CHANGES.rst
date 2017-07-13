@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.19 (unreleased)
+0.19 (2017-07-13)
 -----------------
 
 - Factorized call to _check_can_view from utils and views so we are sure that
