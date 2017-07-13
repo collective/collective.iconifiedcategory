@@ -30,7 +30,7 @@ def upgrade_to_2000(context):
             setattr(obj, 'signed', False)
 
         parent = obj.aq_parent
-        if not 'to_sign' in parent.categorized_elements.get(obj.UID(), {}):
+        if 'to_sign' not in parent.categorized_elements.get(obj.UID(), {}):
             category = get_category_object(obj, obj.content_category)
             update_categorized_elements(parent=obj.aq_parent,
                                         obj=obj,

@@ -172,7 +172,7 @@ class SignedChangeView(BaseView):
             values['signed'] = True
         else:
             # old_values['to_sign'] is True and old_values['signed'] is True
-            # disable to_sign
+            # disable to_sign and signed
             values['to_sign'] = False
             values['signed'] = False
             status = -1
