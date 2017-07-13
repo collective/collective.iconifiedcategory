@@ -18,8 +18,7 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
-from collective.iconifiedcategory.event import \
-    IconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 

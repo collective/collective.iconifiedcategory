@@ -50,9 +50,9 @@ initializeIconifiedActions = function () {
 
 jQuery(function($) {
 
-  $('a.deactivated').click(function() {
-    return false;
-  });
+  //$('a.deactivated').click(function() {
+  //  return false;
+  //});
 
   $('a.iconified-action').click(function() {
     var obj = $(this);
@@ -66,10 +66,14 @@ jQuery(function($) {
       function(data) {
         if (data['status'] == 0) {
           obj.toggleClass('active');
+          obj.removeClass('deactivated');
+          obj.removeClass('error');
+        } else if (data['status'] == -1) {
+          obj.toggleClass('deactivated');
           obj.removeClass('error');
         } else {
           obj.addClass('error');
-        }
+          }
         obj.attr('alt', data['msg']);
         obj.attr('title', data['msg']);
       }

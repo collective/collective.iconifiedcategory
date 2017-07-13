@@ -32,6 +32,15 @@ msgstr ""
 msgid "Element is not confidential"
 msgstr ""
 
+msgid "Element must be signed but is still not"
+msgstr ""
+
+msgid "Element is signed"
+msgstr ""
+
+msgid "Element should not be signed"
+msgstr ""
+
 #. Default: "Annex size is huge, it could be difficult to be downloaded!"
 msgid "help_warn_filesize"
 msgstr ""

@@ -391,11 +391,12 @@ def confidential_message(obj):
 def signed_message(obj):
     """Return the signed message for the given object"""
     messages = {
-        None: u'Element is not to be signed',
-        True: u'Element is to be signed',
-        False: u'Element is signed',
+        False: u'Element must be signed but is still not',
+        True: u'Element is signed',
     }
-    return messages.get(getattr(obj, 'signed', None), '')
+    if getattr(obj, 'to_sign', False) is False:
+        return u'Element should not be signed'
+    return messages.get(getattr(obj, 'signed', False), '')
 
 
 @ram.cache(lambda f, p: (p, time() // (60 * 60)))

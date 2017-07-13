@@ -145,6 +145,7 @@ class ConfidentialChangeView(BaseView):
 class SignedChangeView(BaseView):
     attribute_mapping = {
         'signed': 'iconified-value',
+        'to_sign': 'iconified-value',
     }
 
     def _may_set_values(self, values):
@@ -161,12 +162,24 @@ class SignedChangeView(BaseView):
            - None;
            - False;
            - True."""
+        status = 0
         old_values = self.get_current_values()
-        values['signed'] = self.convert_boolean(values['signed'])
+        if old_values['to_sign'] is False:
+            values['to_sign'] = True
+            values['signed'] = False
+        elif old_values['to_sign'] is True and old_values['signed'] is False:
+            values['to_sign'] = True
+            values['signed'] = True
+        else:
+            # old_values['to_sign'] is True and old_values['signed'] is True
+            # disable to_sign
+            values['to_sign'] = False
+            values['signed'] = False
+            status = -1
         super(SignedChangeView, self).set_values(values)
         notify(IconifiedSignedChangedEvent(
             self.context,
             old_values,
             values,
         ))
-        return 0, utils.confidential_message(self.context)
+        return status, utils.signed_message(self.context)
