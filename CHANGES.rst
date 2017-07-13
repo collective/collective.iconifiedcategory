@@ -1,7 +1,16 @@
 Changelog
 =========
 
-0.19 (unreleased)
+0.20 (unreleased)
+-----------------
+
+- Added `Signed?` management like it is the case for `Confidential?` and
+  `To print?`.  This rely on 2 attributes `to_print` and `signed` that are
+  initialized if not existing but that may also be added using the
+  `Scan metadata` behavior from `collective.dms.scanbehavior`.
+  [gbastien]
+
+0.19 (2017-07-13)
 -----------------
 
 - Factorized call to _check_can_view from utils and views so we are sure that
