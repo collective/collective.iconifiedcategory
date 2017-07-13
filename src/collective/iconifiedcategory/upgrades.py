@@ -23,8 +23,14 @@ def upgrade_to_2000(context):
     brains = catalog(portal_type=portal_types)
     for brain in brains:
         obj = brain.getObject()
+        # this can be useless if using behavior 'Scan metadata' collective.dms.scanbehavior
+        if not(base_hasattr(obj, 'to_sign')):
+            setattr(obj, 'to_sign', False)
         if not(base_hasattr(obj, 'signed')):
-            setattr(obj, 'signed', None)
+            setattr(obj, 'signed', False)
+
+        parent = obj.aq_parent
+        if not 'to_sign' in parent.categorized_elements.get(obj.UID(), {}):
             category = get_category_object(obj, obj.content_category)
             update_categorized_elements(parent=obj.aq_parent,
                                         obj=obj,

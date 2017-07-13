@@ -214,11 +214,14 @@ class IconClickableColumn(column.GetAttrColumn):
         return _checkPermission(ModifyPortalContent,
                                 obj.real_object())
 
+    def is_active(self, obj):
+        return getattr(obj, self.attrName, False)
+
     def css_class(self, obj):
         is_deactivated = self.is_deactivated(obj)
         if not self._deactivated_is_useable() and is_deactivated:
             return ' deactivated'
-        base_css = getattr(obj, self.attrName, False) and ' active' or ''
+        base_css = self.is_active(obj) and ' active' or ''
         if is_deactivated:
             base_css = ' deactivated' + base_css
         if self.is_editable(obj):
@@ -282,6 +285,9 @@ class SignedColumn(IconClickableColumn):
     def _deactivated_is_useable(self):
         '''Is deactivated value a useable one?'''
         return True
+
+    def is_deactivated(self, obj):
+        return not getattr(obj, 'to_sign', True)
 
 
 class ActionColumn(column.GetAttrColumn):

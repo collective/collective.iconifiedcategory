@@ -52,11 +52,13 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
              'relative_url': 'file',
+             'signed': False,
              'subcategory_id': None,
              'subcategory_title': None,
              'subcategory_uid': None,
              'title': obj.Title(),
              'to_print': None,
+             'to_sign': False,
              'warn_filesize': False})
 
     def test_get_infos_for_image(self):
@@ -80,11 +82,13 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
              'relative_url': 'image',
+             'signed': False,
              'subcategory_id': subcategory.id,
              'subcategory_title': subcategory.Title(),
              'subcategory_uid': subcategory.UID(),
              'title': obj.Title(),
              'to_print': False,
+             'to_sign': False,
              'warn_filesize': False})
 
     def test_get_infos_with_subcategory(self):
@@ -108,11 +112,13 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
              'relative_url': 'file',
+             'signed': False,
              'subcategory_id': subcategory.getId(),
              'subcategory_title': subcategory.Title(),
              'subcategory_uid': subcategory.UID(),
              'title': obj.Title(),
              'to_print': None,
+             'to_sign': False,
              'warn_filesize': False})
 
     def test_category(self):
