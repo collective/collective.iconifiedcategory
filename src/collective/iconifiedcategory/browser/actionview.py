@@ -175,14 +175,15 @@ class SignedChangeView(BaseView):
 
     def _get_next_values(self, old_values):
         """ """
-        status = 0
         values = {}
         if old_values['to_sign'] is False:
             values['to_sign'] = True
             values['signed'] = False
-        #elif old_values['to_sign'] is True and old_values['signed'] is False:
-        #    values['to_sign'] = True
-        #    values['signed'] = True
+            status = 0
+        elif old_values['to_sign'] is True and old_values['signed'] is False:
+            values['to_sign'] = True
+            values['signed'] = True
+            status = 1
         else:
             # old_values['to_sign'] is True and old_values['signed'] is True
             # disable to_sign and signed
