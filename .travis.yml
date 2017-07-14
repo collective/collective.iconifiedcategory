@@ -5,7 +5,8 @@ sudo: required
 cache:
   pip: true
   directories:
-    - $HOME/buildout-cache
+    - buildout-cache/downloads
+    - buildout-cache/eggs
 
 python:
   - 2.7
@@ -24,6 +25,7 @@ before_install:
 
 install:
   - python bootstrap.py --version=2.5.3 -c travis.cfg
+  - bin/buildout -Nc travis.cfg annotate
   - bin/buildout -Nc travis.cfg
 
 script:

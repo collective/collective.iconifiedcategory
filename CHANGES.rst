@@ -4,10 +4,9 @@ Changelog
 0.20 (unreleased)
 -----------------
 
-- Added `Signed?` management like it is the case for `Confidential?` and
-  `To print?`.  This rely on 2 attributes `to_print` and `signed` that are
-  initialized if not existing but that may also be added using the
-  `Scan metadata` behavior from `collective.dms.scanbehavior`.
+- Make sure we correctly bypass `can_view` in `utils._check_van_view` when
+  element is not confidential in case we do not receive `obj` but
+  `categorized_elements`.
   [gbastien]
 
 0.19 (2017-07-13)
