@@ -4,8 +4,10 @@ Changelog
 0.20 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Make sure we correctly bypass `can_view` in `utils._check_van_view` when
+  element is not confidential in case we do not receive `obj` but
+  `categorized_elements`.
+  [gbastien]
 
 0.19 (2017-07-13)
 -----------------

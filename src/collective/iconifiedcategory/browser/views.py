@@ -116,7 +116,7 @@ class CategorizedChildInfosView(BrowserView):
 class CanViewAwareDownload(Download):
     """ """
     def __call__(self):
-        if not _check_can_view(self.context, self.request):
+        if not _check_can_view(obj=aq_inner(self.context)):
             raise Unauthorized
         return super(CanViewAwareDownload, self).__call__()
 
@@ -128,6 +128,6 @@ class CanViewAwareDisplayFile(DisplayFile, CanViewAwareDownload):
 class CanViewAwareFNWDownload(fnw_Download):
     """ """
     def __call__(self):
-        if not _check_can_view(aq_inner(self.context.context), self.request):
+        if not _check_can_view(obj=aq_inner(self.context.context)):
             raise Unauthorized
         return super(CanViewAwareFNWDownload, self).__call__()
