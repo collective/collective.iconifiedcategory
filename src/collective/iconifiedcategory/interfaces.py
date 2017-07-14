@@ -91,8 +91,8 @@ class IIconifiedCategorySettings(Interface):
 
 class IIconifiedChangedEvent(IObjectEvent):
 
-    old_value = Attribute("The old value")
-    new_value = Attribute("The new value")
+    old_values = Attribute("The old values")
+    new_values = Attribute("The new values")
 
 
 class IIconifiedPrintChangedEvent(IIconifiedChangedEvent):

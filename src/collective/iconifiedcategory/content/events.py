@@ -70,13 +70,13 @@ def categorized_content_updated(event):
                 if category_group.to_be_printed_activated:
                     obj.to_print = category.to_print
 
-            adapter = getAdapter(event.object, IIconifiedPrintable)
-            adapter.update_object()
-            notify(IconifiedPrintChangedEvent(
-                obj,
-                obj.to_print,
-                obj.to_print,
-            ))
+                adapter = getAdapter(event.object, IIconifiedPrintable)
+                adapter.update_object()
+                notify(IconifiedPrintChangedEvent(
+                    obj,
+                    obj.to_print,
+                    obj.to_print,
+                ))
         # we may defer call to utils.update_categorized_elements
         # if relevant value found in the REQUEST
         # this is useful when adding several categorized elements without
