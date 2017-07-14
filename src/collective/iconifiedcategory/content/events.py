@@ -34,8 +34,8 @@ def categorized_content_created(event):
         if hasattr(event.object, 'confidential'):
             notify(IconifiedConfidentialChangedEvent(
                 event.object,
-                None,
-                event.object.confidential,
+                old_values={},
+                new_values={'confidential': event.object.confidential},
             ))
         categorized_content_updated(event)
 
@@ -74,8 +74,8 @@ def categorized_content_updated(event):
             adapter.update_object()
             notify(IconifiedPrintChangedEvent(
                 obj,
-                obj.to_print,
-                obj.to_print,
+                old_values={'to_print': obj.to_print},
+                new_values={'to_print': obj.to_print},
             ))
         # we may defer call to utils.update_categorized_elements
         # if relevant value found in the REQUEST
