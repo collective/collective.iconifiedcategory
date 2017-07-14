@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.20 (unreleased)
+0.20 (2017-07-14)
 -----------------
 
 - Make sure we correctly bypass `can_view` in `utils._check_van_view` when
