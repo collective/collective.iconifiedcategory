@@ -4,8 +4,10 @@ Changelog
 0.21 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Reverted changes from releases `0.19` and `0.20`, we do not bypass can_view if
+  element is not `confiential` because `can_view` could take into account other
+  elements than `confidential`.
+  [gbastien]
 
 0.20 (2017-07-14)
 -----------------

@@ -239,26 +239,6 @@ def _categorized_elements(context):
     )
 
 
-def _check_can_view(obj=None, brain=None, categorized_elements={}):
-    """We need at least obj or categorized_elements or brain."""
-    # bypass if not confidential
-    if (categorized_elements and not categorized_elements[brain.UID]['confidential']):
-        return True
-    if not obj:
-        obj = brain._unrestrictedGetObject()
-    if not getattr(obj, 'confidential', None):
-        return True
-
-    if not brain:
-        catalog = api.portal.get_tool('portal_catalog')
-        brains = catalog(UID=obj.UID())
-        brain = brains[0]
-
-    adapter = getMultiAdapter((obj.aq_parent, obj.REQUEST, brain),
-                              IIconifiedContent)
-    return adapter.can_view()
-
-
 def get_categorized_elements(context,
                              result_type='dict',
                              portal_type=None,
@@ -283,10 +263,11 @@ def get_categorized_elements(context,
         query['portal_type'] = portal_type
     order = categorized_elements.keys()
     for brain in api.content.find(context=context, **query):
-        can_view = _check_can_view(obj=None,
-                                   brain=brain,
-                                   categorized_elements=categorized_elements)
-        if can_view:
+        obj = brain._unrestrictedGetObject()
+        adapter = getMultiAdapter(
+            (obj.aq_parent, obj.REQUEST, brain),
+            IIconifiedContent)
+        if adapter.can_view():
             if result_type == 'objects':
                 elements.append(brain._unrestrictedGetObject())
             elif result_type == 'brains':
