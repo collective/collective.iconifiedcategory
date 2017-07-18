@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.21 (unreleased)
+0.21 (2017-07-18)
 -----------------
 
 - Reverted changes from releases `0.19` and `0.20`, we do not bypass can_view if
