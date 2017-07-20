@@ -23,25 +23,25 @@ from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
-def categorized_content_created(event):
+def categorized_content_created(obj, event):
 
-    if hasattr(event.object, 'content_category'):
+    if hasattr(obj, 'content_category'):
         # if 'to_print' and 'confidential' are managed manually,
         # we may defer events if relevant value found in the REQUEST
-        if event.object.REQUEST.get('defer_categorized_content_created_event', False):
+        if obj.REQUEST.get('defer_categorized_content_created_event', False):
             return
 
-        if hasattr(event.object, 'confidential'):
+        if hasattr(obj, 'confidential'):
             notify(IconifiedConfidentialChangedEvent(
-                event.object,
+                obj,
                 old_values={},
-                new_values={'confidential': event.object.confidential},
+                new_values={'confidential': obj.confidential},
             ))
         categorized_content_updated(event)
 
-        if utils.is_file_type(event.object.portal_type):
-            file_field_name = IPrimaryFieldInfo(event.object).fieldname
-            size = getattr(event.object, file_field_name).size
+        if utils.is_file_type(obj.portal_type):
+            file_field_name = IPrimaryFieldInfo(obj).fieldname
+            size = getattr(obj, file_field_name).size
             if utils.warn_filesize(size):
                 plone_utils = api.portal.get_tool('plone_utils')
                 plone_utils.addPortalMessage(
@@ -50,14 +50,14 @@ def categorized_content_created(event):
                       "view it!"), type='warning')
 
 
-def content_updated(event):
-    if hasattr(event.object, 'content_category'):
+def content_updated(obj, event):
+    if hasattr(obj, 'content_category'):
         categorized_content_updated(event)
 
 
 def categorized_content_updated(event):
-    if hasattr(event.object, 'content_category'):
-        obj = event.object
+    obj = event.object
+    if hasattr(obj, 'content_category'):
         target = utils.get_category_object(obj, obj.content_category)
 
         if hasattr(obj, 'to_print'):
@@ -70,7 +70,7 @@ def categorized_content_updated(event):
                 if category_group.to_be_printed_activated:
                     obj.to_print = category.to_print
 
-            adapter = getAdapter(event.object, IIconifiedPrintable)
+            adapter = getAdapter(obj, IIconifiedPrintable)
             adapter.update_object()
             notify(IconifiedPrintChangedEvent(
                 obj,
@@ -81,7 +81,7 @@ def categorized_content_updated(event):
         # if relevant value found in the REQUEST
         # this is useful when adding several categorized elements without
         # calling update_categorized_elements between every added element
-        if event.object.REQUEST.get('defer_update_categorized_elements', False):
+        if obj.REQUEST.get('defer_update_categorized_elements', False):
             return
 
         utils.update_categorized_elements(obj.aq_parent, obj, target)

@@ -16,11 +16,11 @@ from zope.component import adapter
 from zope.interface import Interface
 from zope.interface import implementer
 from zope.interface import provider
-from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
+from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 
 
 @provider(IFormFieldProvider)
@@ -94,5 +94,9 @@ class IconifiedCategorization(object):
         return getattr(aq_base(self.context), 'confidential', False)
 
     @property
+    def to_sign(self):
+        return getattr(aq_base(self.context), 'to_sign', False)
+
+    @property
     def signed(self):
-        return getattr(aq_base(self.context), 'signed', None)
+        return getattr(aq_base(self.context), 'signed', False)

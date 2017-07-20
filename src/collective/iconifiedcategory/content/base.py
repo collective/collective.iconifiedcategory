@@ -9,6 +9,8 @@ Created by mpeeters
 
 from zope import schema
 from zope.interface import Interface
+from zope.interface import invariant
+from zope.interface import Invalid
 
 from collective.iconifiedcategory import _
 from plone.autoform import directives as form
@@ -36,9 +38,29 @@ class ICategorize(Interface):
         default=False,
     )
 
+    form.widget('to_sign', RadioFieldWidget)
+    to_sign = schema.Bool(
+        title=_(u'To sign default'),
+        required=False,
+        default=False,
+    )
+
+    form.widget('signed', RadioFieldWidget)
+    signed = schema.Bool(
+        title=_(u'Signed default'),
+        required=False,
+        default=False,
+    )
+
     form.widget('enabled', RadioFieldWidget)
     enabled = schema.Bool(
         title=_(u'Enabled?'),
         default=True,
         required=False,
     )
+
+    @invariant
+    def signedInvariant(data):
+        """'signed' may only be True if 'to_sign' is True."""
+        if data.to_sign is False and data.signed is True:
+            raise Invalid(_(u"'Signed' can not be True when 'To sign?' is False!"))
