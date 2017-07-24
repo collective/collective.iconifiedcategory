@@ -1,10 +1,23 @@
 Changelog
 =========
 
-0.21 (unreleased)
+0.22 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added management of `to_sign` and `signed` attributes like it is the case for
+  `to_print` and `confidential` attributes.  Both attributes are used behind a
+  single action `signed` that have 3 options : `not to sign`, `to sign` and
+  `signed`.
+  [gbastien]
+- Default values for `to_print`, `confidential` and `to_sign/signed` are now
+  managed in the `IObjectAddedEvent` no more in the `content_category setter`,
+  this way every attribtues are managed the same way because `to_print` and
+  `confidential` are simple attributes where `to_sign/signed` can come from the
+  `Scan metadata` behavior of `collective.dms.scanbehavior`.
+  [gbastien]
+
+0.21 (2017-07-18)
+-----------------
 
 - Reverted changes from releases `0.19` and `0.20`, we do not bypass can_view if
   element is not `confiential` because `can_view` could take into account other
