@@ -31,12 +31,35 @@ def categorized_content_created(obj, event):
         if obj.REQUEST.get('defer_categorized_content_created_event', False):
             return
 
-        if hasattr(obj, 'confidential'):
-            notify(IconifiedConfidentialChangedEvent(
-                obj,
-                old_values={},
-                new_values={'confidential': obj.confidential},
-            ))
+        # set default values for to_print, confidential and to_sign/signed
+        category = utils.get_category_object(obj, obj.content_category)
+        # left False if to_print/confidential/to_sign
+        # not enabled on ContentCategoryGroup
+        category_group = category.get_category_group(category)
+
+        if category_group.to_be_printed_activated:
+            obj.to_print = category.to_print
+        else:
+            obj.to_print = False
+
+        if category_group.confidentiality_activated:
+            obj.confidential = category.confidential
+        else:
+            obj.confidential = False
+        notify(IconifiedConfidentialChangedEvent(
+            obj,
+            old_values={},
+            new_values={'confidential': obj.confidential},
+        ))
+
+        if category_group.signed_activated:
+            obj.to_sign = category.to_sign
+            obj.signed = category.signed
+        else:
+            obj.to_sign = False
+            obj.signed = False
+
+        # to_print changed event is managed in categorized_content_updated
         categorized_content_updated(event)
 
         if utils.is_file_type(obj.portal_type):
