@@ -18,7 +18,6 @@ from zope.interface import implementer
 from zope.interface import provider
 
 from collective.iconifiedcategory import _
-from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
 from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 
