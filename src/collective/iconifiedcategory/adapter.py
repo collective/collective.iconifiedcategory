@@ -38,6 +38,9 @@ class CategorizedObjectInfoAdapter(object):
             'subcategory_id': None,
             'subcategory_title': None,
             'icon_url': utils.get_category_icon_url(category),
+            'to_be_printed_activated': self._to_be_printed_activated(category),
+            'confidentiality_activated': self._confidentiality_activated(category),
+            'signed_activated': self._signed_activated(category)
         }
         # update subcategory infos if any
         if ISubcategory.providedBy(category):
@@ -95,13 +98,25 @@ class CategorizedObjectInfoAdapter(object):
         if IImage.providedBy(self.obj):
             return self.obj.image.size
 
+    def _to_be_printed_activated(self, category):
+        category_group = category.get_category_group()
+        return category_group.to_be_printed_activated
+
     @property
     def _to_print(self):
         return getattr(self.obj, 'to_print', False)
 
+    def _confidentiality_activated(self, category):
+        category_group = category.get_category_group()
+        return category_group.confidentiality_activated
+
     @property
     def _confidential(self):
         return getattr(self.obj, 'confidential', False)
+
+    def _signed_activated(self, category):
+        category_group = category.get_category_group()
+        return category_group.signed_activated
 
     @property
     def _to_sign(self):

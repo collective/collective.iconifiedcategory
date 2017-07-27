@@ -357,34 +357,46 @@ def render_filesize(size):
     return pretty_filesize
 
 
-def print_message(obj):
+def print_message(obj=None, to_print_value=None):
     """Return the print status message for the given object"""
     messages = {
         True: u'Must be printed',
         False: u'Should not be printed',
         None: u'Not convertible to a printable format',
     }
-    return messages.get(obj.to_print, getattr(obj, 'to_print_message', ''))
+    if obj:
+        return messages.get(obj.to_print, getattr(obj, 'to_print_message', ''))
+    else:
+        return messages[to_print_value]
 
 
-def confidential_message(obj):
+def confidential_message(obj=None, confidential_value=None):
     """Return the confidential status message for the given object"""
     messages = {
         True: u'Element is confidential',
         False: u'Element is not confidential',
     }
-    return messages.get(getattr(obj, 'confidential', None), '')
+    if obj:
+        return messages.get(getattr(obj, 'confidential', None), '')
+    else:
+        return messages[confidential_value]
 
 
-def signed_message(obj):
+def signed_message(obj=None, to_sign_value=None, signed_value=None):
     """Return the signed message for the given object"""
     messages = {
         False: u'Element must be signed but is still not',
         True: u'Element is signed',
     }
-    if getattr(obj, 'to_sign', False) is False:
-        return u'Element should not be signed'
-    return messages.get(getattr(obj, 'signed', False), '')
+    not_to_sign_msg = u'Element should not be signed'
+    if obj:
+        if getattr(obj, 'to_sign', False) is False:
+            return not_to_sign_msg
+        return messages.get(getattr(obj, 'signed', False), '')
+    elif to_sign_value is False:
+        return not_to_sign_msg
+    else:
+        return messages[signed_value]
 
 
 @ram.cache(lambda f, p: (p, time() // (60 * 60)))

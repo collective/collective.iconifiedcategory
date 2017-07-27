@@ -13,8 +13,11 @@ from plone.formwidget.namedfile.widget import Download as fnw_Download
 
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
+from collective.iconifiedcategory.utils import confidential_message
 from collective.iconifiedcategory.utils import get_categorized_elements
+from collective.iconifiedcategory.utils import print_message
 from collective.iconifiedcategory.utils import render_filesize
+from collective.iconifiedcategory.utils import signed_message
 
 
 class CategorizedChildView(BrowserView):
@@ -113,6 +116,51 @@ class CategorizedChildInfosView(BrowserView):
         )
         columns_treshold = float(columns_treshold)
         return round(len(elements) / columns_treshold)
+
+    def show_to_print(self, element):
+        """ """
+        return element['to_be_printed_activated']
+
+    def show_confidential(self, element):
+        """ """
+        return element['confidentiality_activated']
+
+    def show_signed(self, element):
+        """ """
+        return element['signed_activated']
+
+    def get_css_classses_for(self, functionnality, element):
+        """ """
+        css_classes = []
+        if functionnality == "to_print":
+            css_classes.append("iconified-print")
+            if element['to_print'] is None:
+                css_classes.append('deactivated')
+            elif element['to_print'] is True:
+                css_classes.append('active')
+        elif functionnality == "confidential":
+            css_classes.append("iconified-confidential")
+            if element['confidential'] is True:
+                css_classes.append('active')
+        elif functionnality == "signed":
+            css_classes.append("iconified-signed")
+            if element['to_sign'] is False:
+                css_classes.append('deactivated')
+            elif element['signed'] is True:
+                css_classes.append('active')
+        return " ".join(css_classes)
+
+    def get_tag_title_for(self, functionnality, element):
+        """ """
+        msg = ''
+        if functionnality == "to_print":
+            msg = print_message(to_print_value=element['to_print'])
+        elif functionnality == "confidential":
+            msg = confidential_message(confidential_value=element['confidential'])
+        elif functionnality == "signed":
+            msg = signed_message(to_sign_value=element['to_sign'],
+                                 signed_value=element['signed'])
+        return msg
 
 
 def check_can_view(obj, request):

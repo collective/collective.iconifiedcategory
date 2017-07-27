@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-07-13 12:29+0000\n"
+"POT-Creation-Date: 2017-07-27 12:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,20 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.iconifiedcategory\n"
 
+#: ../content/base.py:66
+msgid "'Signed' can not be True when 'To sign?' is False!"
+msgstr ""
+
 #: ../content/categorygroup.py:25
 msgid "Activate the \"confidential\" option"
 msgstr ""
 
-#: ../content/categorygroup.py:39
-msgid "Activate the \"signed\" option"
-msgstr ""
-
 #: ../content/categorygroup.py:32
 msgid "Activate the \"to be printed\" option"
+msgstr ""
+
+#: ../content/categorygroup.py:39
+msgid "Activate the \"to_sign and signed\" options"
 msgstr ""
 
 #: ../browser/tabview.py:148
@@ -42,7 +46,7 @@ msgstr ""
 msgid "Categorized elements"
 msgstr ""
 
-#: ../behaviors/iconifiedcategorization.py:34
+#: ../behaviors/iconifiedcategorization.py:33
 #: ../browser/tabview.py:135
 msgid "Category"
 msgstr ""
@@ -51,7 +55,7 @@ msgstr ""
 msgid "Confidential"
 msgstr ""
 
-#: ../content/base.py:27
+#: ../content/base.py:29
 msgid "Confidential default"
 msgstr ""
 
@@ -75,7 +79,7 @@ msgstr ""
 msgid "Creation date"
 msgstr ""
 
-#: ../behaviors/iconifiedcategorization.py:45
+#: ../behaviors/iconifiedcategorization.py:44
 msgid "Default title"
 msgstr ""
 
@@ -106,11 +110,11 @@ msgstr ""
 msgid "Elements updated!"
 msgstr ""
 
-#: ../content/base.py:41
+#: ../content/base.py:57
 msgid "Enabled?"
 msgstr ""
 
-#: ../browser/actionview.py:54
+#: ../browser/actionview.py:61
 msgid "Error during process"
 msgstr ""
 
@@ -146,14 +150,18 @@ msgstr ""
 msgid "Maximum number of elements to display by columns when displaying categorized elements of same category in the tooltipster widget"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:54
+#: ../browser/templates/categorized-childs-infos.pt:87
 msgid "More infos"
+msgstr ""
+
+#: ../browser/templates/categorized-childs-infos.pt:79
+msgid "More/less details"
 msgstr ""
 
 msgid "Must be printed"
 msgstr ""
 
-#: ../browser/actionview.py:73
+#: ../browser/actionview.py:80
 msgid "No values to set"
 msgstr ""
 
@@ -161,12 +169,12 @@ msgstr ""
 msgid "Not convertible to a printable format"
 msgstr ""
 
-#: ../content/base.py:21
+#: ../content/base.py:23
 msgid "Predefined title"
 msgstr ""
 
 #: ../browser/tabview.py:316
-#: ../browser/templates/categorized-childs-infos.pt:20
+#: ../browser/templates/categorized-childs-infos.pt:46
 msgid "Preview"
 msgstr ""
 
@@ -177,27 +185,31 @@ msgstr ""
 msgid "Signed"
 msgstr ""
 
+#: ../content/base.py:50
+msgid "Signed default"
+msgstr ""
+
 #: ../interfaces.py:68
 msgid "Sort categorized elements on categorized tab"
 msgstr ""
 
-#: ../content/events.py:48
+#: ../content/events.py:71
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:36
+#: ../browser/templates/categorized-childs-infos.pt:62
 msgid "The document conversion failed"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:29
+#: ../browser/templates/categorized-childs-infos.pt:55
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr ""
 
-#: ../content/events.py:122
+#: ../content/events.py:145
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:136
+#: ../content/events.py:159
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
@@ -217,8 +229,12 @@ msgstr ""
 msgid "To be printed"
 msgstr ""
 
-#: ../content/base.py:34
+#: ../content/base.py:36
 msgid "To be printed default"
+msgstr ""
+
+#: ../content/base.py:43
+msgid "To sign default"
 msgstr ""
 
 #: ../profiles/default/actions.xml
@@ -229,7 +245,7 @@ msgstr ""
 msgid "Update categorized elements"
 msgstr ""
 
-#: ../browser/actionview.py:77
+#: ../browser/actionview.py:84
 msgid "Values have been set"
 msgstr ""
 

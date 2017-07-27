@@ -17,11 +17,6 @@
     directory="static"
     />
 
-  <browser:resource
-    name="collective.iconifiedcategory.more_infos.png"
-    file="static/more_infos.png"
-    />
-
   <!-- views -->
   <browser:view
     name="collective-iconifiedcategory.css"
