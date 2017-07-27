@@ -15,6 +15,9 @@ Changelog
   `confidential` are simple attributes where `to_sign/signed` can come from the
   `Scan metadata` behavior of `collective.dms.scanbehavior`.
   [gbastien]
+- Added possibility to show/hide details about `to_print`, `confidential`,
+  `to_sign/signed` in the categorized elements tooltipster.
+  [gbastien]
 
 0.21 (2017-07-18)
 -----------------
