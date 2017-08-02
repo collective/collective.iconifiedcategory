@@ -2,8 +2,8 @@
 from plone import api
 from plone.dexterity.fti import DexterityFTI
 from Products.CMFPlone.utils import base_hasattr
-from collective.iconifiedcategory.utils import get_category_object
-from collective.iconifiedcategory.utils import update_categorized_elements
+from collective.iconifiedcategory import logger
+from collective.iconifiedcategory.utils import update_all_categorized_elements
 
 behavior_id = 'collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorization'
 
@@ -21,6 +21,8 @@ def upgrade_to_2000(context):
     # query objects
     catalog = api.portal.get_tool('portal_catalog')
     brains = catalog(portal_type=portal_types)
+
+    parents_to_update = []
     for brain in brains:
         obj = brain.getObject()
         # this can be useless if using behavior 'Scan metadata' collective.dms.scanbehavior
@@ -31,12 +33,17 @@ def upgrade_to_2000(context):
 
         parent = obj.aq_parent
         if 'to_sign' not in parent.categorized_elements.get(obj.UID(), {}):
-            category = get_category_object(obj, obj.content_category)
-            update_categorized_elements(parent=obj.aq_parent,
-                                        obj=obj,
-                                        category=category,
-                                        sort=False,
-                                        logging=True)
+            if not parent in parents_to_update:
+                parents_to_update.append(parent)
         else:
             # already migrated
             return
+
+    # finally update parents that contains categorized elements
+    nb_of_parents_to_update = len(parents_to_update)
+    i = 1
+    for parent_to_update in parents_to_update:
+        logger.info('Running update_all_categorized_elements for element {0}/{1} ({2})'.format(
+            i, nb_of_parents_to_update, '/'.join(parent_to_update.getPhysicalPath())))
+        i = i + 1
+        update_all_categorized_elements(parent_to_update, limited=True, sort=False)
