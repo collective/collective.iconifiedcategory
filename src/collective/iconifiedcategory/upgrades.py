@@ -33,7 +33,7 @@ def upgrade_to_2000(context):
 
         parent = obj.aq_parent
         if 'to_sign' not in parent.categorized_elements.get(obj.UID(), {}):
-            if not parent in parents_to_update:
+            if parent not in parents_to_update:
                 parents_to_update.append(parent)
         else:
             # already migrated
