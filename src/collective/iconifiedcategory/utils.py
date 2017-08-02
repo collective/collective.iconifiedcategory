@@ -167,7 +167,9 @@ def update_categorized_elements(parent,
 
 
 def update_all_categorized_elements(container, limited=False, sort=True):
-    container.categorized_elements = OrderedDict()
+    # recompute everything if limited=False
+    if not limited:
+        container.categorized_elements = OrderedDict()
     for obj in container.objectValues():
         if hasattr(obj, 'content_category'):
             try:
