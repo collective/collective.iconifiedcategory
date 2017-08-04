@@ -72,6 +72,7 @@
     </ul>
     <br />
     <a href="#"
+       tal:condition="view/show_details_action"
        tal:attributes="onclick string:event.preventDefault();;$$('div.categorized_elements_details').toggle(200);">
       <img class="categorized_elements_details_icon"
            src="details.png"

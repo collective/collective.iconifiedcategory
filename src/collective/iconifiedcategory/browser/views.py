@@ -64,6 +64,7 @@ class CategorizedChildInfosView(BrowserView):
         """ """
         super(CategorizedChildInfosView, self).__init__(context, request)
         self.portal_url = api.portal.get().absolute_url()
+        self.have_details_to_show = False
 
     def update(self):
         uids = self._find_uids()
@@ -119,15 +120,28 @@ class CategorizedChildInfosView(BrowserView):
 
     def show_to_print(self, element):
         """ """
-        return element['to_be_printed_activated']
+        show = element['to_be_printed_activated']
+        if show:
+            self.have_details_to_show = True
+        return show
 
     def show_confidential(self, element):
         """ """
-        return element['confidentiality_activated']
+        show = element['confidentiality_activated']
+        if show:
+            self.have_details_to_show = True
+        return show
 
     def show_signed(self, element):
         """ """
-        return element['signed_activated']
+        show = element['signed_activated']
+        if show:
+            self.have_details_to_show = True
+        return show
+
+    def show_details_action(self):
+        """ """
+        return self.have_details_to_show
 
     def get_css_classses_for(self, functionnality, element):
         """ """
