@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.22 (unreleased)
+0.23 (unreleased)
 -----------------
 
 - Added management of `to_sign` and `signed` attributes like it is the case for
@@ -17,6 +17,11 @@ Changelog
   [gbastien]
 - Added possibility to show/hide details about `to_print`, `confidential`,
   `to_sign/signed` in the categorized elements tooltipster.
+
+0.22 (2017-08-04)
+-----------------
+
+- Make portal available on the tabview instance.
   [gbastien]
 
 0.21 (2017-07-18)
