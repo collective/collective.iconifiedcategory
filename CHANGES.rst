@@ -4,8 +4,8 @@ Changelog
 0.22 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Make portal available on the tabview instance.
+  [gbastien]
 
 0.21 (2017-07-18)
 -----------------

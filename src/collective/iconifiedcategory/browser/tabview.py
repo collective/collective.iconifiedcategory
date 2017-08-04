@@ -75,6 +75,7 @@ class CategorizedTable(Table):
         """If received, this let's filter table for a given portal_type."""
         self.portal_type = portal_type
         super(CategorizedTable, self).__init__(context, request)
+        self.portal = api.portal.get()
 
     @property
     def values(self):
