@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-05-17 12:32+0000\n"
+"POT-Creation-Date: 2017-07-27 12:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.iconifiedcategory\n"
 
+#: ../content/base.py:66
+msgid "'Signed' can not be True when 'To sign?' is False!"
+msgstr ""
+
 #: ../content/categorygroup.py:25
 msgid "Activate the \"confidential\" option"
 msgstr ""
@@ -25,7 +29,11 @@ msgstr ""
 msgid "Activate the \"to be printed\" option"
 msgstr ""
 
-#: ../browser/tabview.py:146
+#: ../content/categorygroup.py:39
+msgid "Activate the \"to_sign and signed\" options"
+msgstr ""
+
+#: ../browser/tabview.py:148
 msgid "Author"
 msgstr ""
 
@@ -38,16 +46,16 @@ msgstr ""
 msgid "Categorized elements"
 msgstr ""
 
-#: ../behaviors/iconifiedcategorization.py:34
-#: ../browser/tabview.py:133
+#: ../behaviors/iconifiedcategorization.py:33
+#: ../browser/tabview.py:135
 msgid "Category"
 msgstr ""
 
-#: ../browser/tabview.py:245
+#: ../browser/tabview.py:257
 msgid "Confidential"
 msgstr ""
 
-#: ../content/base.py:27
+#: ../content/base.py:29
 msgid "Confidential default"
 msgstr ""
 
@@ -67,19 +75,19 @@ msgstr ""
 msgid "ContentSubcategory"
 msgstr ""
 
-#: ../browser/tabview.py:154
+#: ../browser/tabview.py:156
 msgid "Creation date"
 msgstr ""
 
-#: ../behaviors/iconifiedcategorization.py:45
+#: ../behaviors/iconifiedcategorization.py:44
 msgid "Default title"
 msgstr ""
 
-#: ../browser/tabview.py:276
+#: ../browser/tabview.py:310
 msgid "Download"
 msgstr ""
 
-#: ../browser/tabview.py:270
+#: ../browser/tabview.py:304
 msgid "Edit"
 msgstr ""
 
@@ -89,23 +97,32 @@ msgstr ""
 msgid "Element is not confidential"
 msgstr ""
 
+msgid "Element is signed"
+msgstr ""
+
+msgid "Element must be signed but is still not"
+msgstr ""
+
+msgid "Element should not be signed"
+msgstr ""
+
 #. Default: "Elements updated!"
 msgid "Elements updated!"
 msgstr ""
 
-#: ../content/base.py:41
+#: ../content/base.py:57
 msgid "Enabled?"
 msgstr ""
 
-#: ../browser/actionview.py:53
+#: ../browser/actionview.py:61
 msgid "Error during process"
 msgstr ""
 
-#: ../browser/tabview.py:178
+#: ../browser/tabview.py:180
 msgid "Filesize"
 msgstr ""
 
-#: ../interfaces.py:76
+#: ../interfaces.py:80
 msgid "Filesize limit in bytes enabling a warning"
 msgstr ""
 
@@ -121,26 +138,30 @@ msgstr ""
 msgid "Iconified Category Settings"
 msgstr ""
 
-#: ../interfaces.py:77
+#: ../interfaces.py:81
 msgid "If the categorized element is a file, the user will get a warning whenever the filesize is bigger than defined value. <span style=\"color: red\">Take care that if you change this value, you will have to update the categoized elements stored informations.</span> "
 msgstr ""
 
-#: ../browser/tabview.py:165
+#: ../browser/tabview.py:167
 msgid "Last modification"
 msgstr ""
 
-#: ../interfaces.py:69
+#: ../interfaces.py:73
 msgid "Maximum number of elements to display by columns when displaying categorized elements of same category in the tooltipster widget"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:54
+#: ../browser/templates/categorized-childs-infos.pt:87
 msgid "More infos"
+msgstr ""
+
+#: ../browser/templates/categorized-childs-infos.pt:79
+msgid "More/less details"
 msgstr ""
 
 msgid "Must be printed"
 msgstr ""
 
-#: ../browser/actionview.py:72
+#: ../browser/actionview.py:80
 msgid "No values to set"
 msgstr ""
 
@@ -148,39 +169,47 @@ msgstr ""
 msgid "Not convertible to a printable format"
 msgstr ""
 
-#: ../content/base.py:21
+#: ../content/base.py:23
 msgid "Predefined title"
 msgstr ""
 
-#: ../browser/tabview.py:282
-#: ../browser/templates/categorized-childs-infos.pt:20
+#: ../browser/tabview.py:316
+#: ../browser/templates/categorized-childs-infos.pt:46
 msgid "Preview"
 msgstr ""
 
 msgid "Should not be printed"
 msgstr ""
 
-#: ../interfaces.py:64
+#: ../browser/tabview.py:272
+msgid "Signed"
+msgstr ""
+
+#: ../content/base.py:50
+msgid "Signed default"
+msgstr ""
+
+#: ../interfaces.py:68
 msgid "Sort categorized elements on categorized tab"
 msgstr ""
 
-#: ../content/events.py:49
+#: ../content/events.py:71
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:36
+#: ../browser/templates/categorized-childs-infos.pt:62
 msgid "The document conversion failed"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:29
+#: ../browser/templates/categorized-childs-infos.pt:55
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr ""
 
-#: ../content/events.py:123
+#: ../content/events.py:145
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:137
+#: ../content/events.py:159
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
@@ -192,16 +221,20 @@ msgstr ""
 msgid "This will update title and url of elements using categories defined here."
 msgstr ""
 
-#: ../browser/tabview.py:107
+#: ../browser/tabview.py:109
 msgid "Title"
 msgstr ""
 
-#: ../browser/tabview.py:230
+#: ../browser/tabview.py:242
 msgid "To be printed"
 msgstr ""
 
-#: ../content/base.py:34
+#: ../content/base.py:36
 msgid "To be printed default"
+msgstr ""
+
+#: ../content/base.py:43
+msgid "To sign default"
 msgstr ""
 
 #: ../profiles/default/actions.xml
@@ -212,7 +245,7 @@ msgstr ""
 msgid "Update categorized elements"
 msgstr ""
 
-#: ../browser/actionview.py:76
+#: ../browser/actionview.py:84
 msgid "Values have been set"
 msgstr ""
 
@@ -221,7 +254,7 @@ msgid "help_warn_filesize"
 msgstr ""
 
 #. Default: "<span class='discreet iconified_category_no_element'>No element to display.</span>"
-#: ../browser/tabview.py:100
+#: ../browser/tabview.py:102
 msgid "no_element_to_display"
 msgstr ""
 

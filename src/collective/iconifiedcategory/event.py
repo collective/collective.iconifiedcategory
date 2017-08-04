@@ -10,21 +10,19 @@ Created by mpeeters
 from zope.component.interfaces import ObjectEvent
 from zope.interface import implements
 
-from collective.iconifiedcategory.interfaces import \
-    IIconifiedPrintChangedEvent
-from collective.iconifiedcategory.interfaces import \
-    IIconifiedConfidentialChangedEvent
-from collective.iconifiedcategory.interfaces import \
-    IIconifiedCategoryChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedPrintChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedSignedChangedEvent
 
 
 class IconifiedChangedEvent(ObjectEvent):
 
-    def __init__(self, object, old_value, new_value):
+    def __init__(self, object, old_values, new_values):
         super(IconifiedChangedEvent, self).__init__(object)
-        self.old_value = old_value
-        self.new_value = new_value
+        self.old_values = old_values
+        self.new_values = new_values
 
 
 class IconifiedModifiedEvent(ObjectEvent):
@@ -45,3 +43,7 @@ class IconifiedPrintChangedEvent(IconifiedChangedEvent):
 
 class IconifiedConfidentialChangedEvent(IconifiedChangedEvent):
     implements(IIconifiedConfidentialChangedEvent)
+
+
+class IconifiedSignedChangedEvent(IconifiedChangedEvent):
+    implements(IIconifiedSignedChangedEvent)

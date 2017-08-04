@@ -18,16 +18,18 @@ from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.behaviors.iconifiedcategorization import IconifiedCategorization
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.utils import calculate_category_id
 from collective.iconifiedcategory.utils import get_category_object
 
 
 class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
-    def test_content_category_setter_not_set_if_not_activated(self):
+    def test_content_category_not_set_if_not_activated(self):
         """ """
         category_group = self.portal.config['group-1']
         category = self.portal.config['group-1']['category-1-1']
+        content_category_id = calculate_category_id(category)
         category_group.to_be_printed_activated = False
         category_group.confidentiality_activated = False
         category.to_print = True
@@ -37,17 +39,15 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             type='File',
             file=self.file,
             container=self.portal,
-        )
-        # call setter
-        adapted_context = IconifiedCategorization(obj)
-        setattr(adapted_context, 'content_category', 'config_-_group-1_-_category-1-1')
+            content_category=content_category_id)
         self.assertFalse(obj.to_print)
         self.assertFalse(obj.confidential)
 
-    def test_content_category_setter_confidential(self):
+    def test_content_category_confidential_on_creation(self):
         """ """
         category_group = self.portal.config['group-1']
         category = self.portal.config['group-1']['category-1-1']
+        content_category_id = calculate_category_id(category)
         category_group.confidentiality_activated = True
 
         # set to False
@@ -57,9 +57,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             type='File',
             file=self.file,
             container=self.portal,
-        )
-        adapted_file2 = IconifiedCategorization(file2)
-        setattr(adapted_file2, 'content_category', 'config_-_group-1_-_category-1-1')
+            content_category=content_category_id)
         self.assertFalse(file2.confidential)
 
         # set to True
@@ -69,16 +67,18 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             type='File',
             file=self.file,
             container=self.portal,
-        )
-        adapted_file3 = IconifiedCategorization(file3)
-        setattr(adapted_file3, 'content_category', 'config_-_group-1_-_category-1-1')
+            content_category=content_category_id)
         self.assertTrue(file3.confidential)
 
-    def test_content_category_setter_to_print(self):
+    def test_content_category_to_print_on_creation(self):
         """ """
         category_group = self.portal.config['group-1']
         category = self.portal.config['group-1']['category-1-1']
+        content_category_id = calculate_category_id(category)
         category_group.to_be_printed_activated = True
+        # enable conversion
+        gsettings = GlobalSettings(self.portal)
+        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
 
         # set to False
         category.to_print = False
@@ -87,9 +87,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             type='File',
             file=self.file,
             container=self.portal,
-        )
-        adapted_file2 = IconifiedCategorization(file2)
-        setattr(adapted_file2, 'content_category', 'config_-_group-1_-_category-1-1')
+            content_category=content_category_id)
         self.assertFalse(file2.to_print)
 
         # set to True
@@ -99,15 +97,57 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             type='File',
             file=self.file,
             container=self.portal,
-        )
-        adapted_file3 = IconifiedCategorization(file3)
-        setattr(adapted_file3, 'content_category', 'config_-_group-1_-_category-1-1')
+            content_category=content_category_id)
         self.assertTrue(file3.to_print)
 
-    def test_content_category_setter_to_print_only_set_if_convertible_when_conversion_enabled(self):
+    def test_content_category_to_sign_signed_on_creation(self):
         """ """
         category_group = self.portal.config['group-1']
         category = self.portal.config['group-1']['category-1-1']
+        content_category_id = calculate_category_id(category)
+        category_group.signed_activated = True
+
+        # set to False both attributes
+        category.to_sign = False
+        category.signed = False
+        file2 = api.content.create(
+            id='file2',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category=content_category_id)
+        self.assertFalse(file2.to_sign)
+        self.assertFalse(file2.signed)
+
+        # set True for to_sign, False for signed
+        category.to_sign = True
+        category.signed = False
+        file3 = api.content.create(
+            id='file3',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category=content_category_id)
+        self.assertTrue(file3.to_sign)
+        self.assertFalse(file3.signed)
+
+        # set True for both attributes
+        category.to_sign = True
+        category.signed = True
+        file4 = api.content.create(
+            id='file4',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category=content_category_id)
+        self.assertTrue(file4.to_sign)
+        self.assertTrue(file4.signed)
+
+    def test_content_category_to_print_only_set_if_convertible_when_conversion_enabled(self):
+        """ """
+        category_group = self.portal.config['group-1']
+        category = self.portal.config['group-1']['category-1-1']
+        content_category_id = calculate_category_id(category)
         category_group.to_be_printed_activated = True
 
         # set to True
@@ -117,14 +157,12 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             type='File',
             file=self.file,
             container=self.portal,
-        )
+            content_category=content_category_id)
         # enable conversion
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
         file2.file.contentType = 'text/unknown'
 
-        adapted_file2 = IconifiedCategorization(file2)
-        setattr(adapted_file2, 'content_category', 'config_-_group-1_-_category-1-1')
         notify(ObjectModifiedEvent(file2))
         self.assertIsNone(file2.to_print)
 

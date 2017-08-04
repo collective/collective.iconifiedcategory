@@ -93,7 +93,11 @@ div.tooltipster-content li {
 }
 
 #content .iconified-listing td.iconified-print a,
-#content .iconified-listing td.iconified-confidential a {
+#content .iconified-listing td.iconified-signed a,
+#content .iconified-listing td.iconified-confidential a,
+div.tooltipster-categorized-elements span.iconified-print,
+div.tooltipster-categorized-elements span.iconified-confidential,
+div.tooltipster-categorized-elements span.iconified-signed {
     font-family: 'FontAwesome';
     font-size: 120%;
     cursor: help;
@@ -101,6 +105,7 @@ div.tooltipster-content li {
 
 /* need to use !important to have a border-bottom because it is removed using !important in base.css... */
 #content .iconified-listing td.iconified-print a.editable,
+#content .iconified-listing td.iconified-signed a.editable,
 #content .iconified-listing td.iconified-confidential a.editable {
     border-bottom: 1px dotted !important;
     padding-bottom: 2px;
@@ -108,36 +113,52 @@ div.tooltipster-content li {
 }
 
 #content .iconified-listing td.iconified-print a,
-#content .iconified-listing td.iconified-confidential a.active {
+#content .iconified-listing td.iconified-signed a,
+#content .iconified-listing td.iconified-confidential a.active,
+div.tooltipster-categorized-elements span.iconified-print,
+div.tooltipster-categorized-elements span.iconified-confidential,
+div.tooltipster-categorized-elements span.iconified-signed {
     color: #EA0000;
 }
 
 #content .iconified-listing td.iconified-print a.active,
-#content .iconified-listing td.iconified-confidential a {
+#content .iconified-listing td.iconified-signed a.active,
+#content .iconified-listing td.iconified-confidential a,
+div.tooltipster-categorized-elements span.iconified-print.active,
+div.tooltipster-categorized-elements span.iconified-signed.active,
+div.tooltipster-categorized-elements span.iconified-confidential {
     color: #75ad0a;
 }
 
 #content .iconified-listing td.iconified-print a.active:hover,
+#content .iconified-listing td.iconified-signed a.active:hover,
 #content .iconified-listing td.iconified-confidential a:hover {
     color: #0B8400!important;
 }
 
 #content .iconified-listing td.iconified-print a:hover,
+#content .iconified-listing td.iconified-signed a:hover,
 #content .iconified-listing td.iconified-confidential a.active:hover {
     color: #B50000!important;
 }
 
 #content .iconified-listing td.iconified-print a.deactivated,
-#content .iconified-listing td.iconified-confidential a.deactivated {
+#content .iconified-listing td.iconified-signed a.deactivated,
+#content .iconified-listing td.iconified-confidential a.deactivated,
+div.tooltipster-categorized-elements span.iconified-print.deactivated,
+div.tooltipster-categorized-elements span.iconified-signed.deactivated,
+div.tooltipster-categorized-elements span.iconified-confidential.deactivated {
     color: #999;
 }
 
 #content .iconified-listing td.iconified-print a.deactivated:hover,
+#content .iconified-listing td.iconified-signed a.deactivated:hover,
 #content .iconified-listing td.iconified-confidential a.deactivated:hover {
     color: #666!important;
 }
 
 #content .iconified-listing td.iconified-print a.error,
+#content .iconified-listing td.iconified-signed a.error,
 #content .iconified-listing td.iconified-confidential a.error {
     color: #E58200;
 }
@@ -147,18 +168,37 @@ div.tooltipster-content li {
     color: #C97200!important;
 }
 
-#content .iconified-listing td.iconified-print a:before {
+#content .iconified-listing td.iconified-print a:before,
+div.tooltipster-categorized-elements span.iconified-print:before {
     content: "\f02f";
 }
 
-#content .iconified-listing td.iconified-confidential a:before {
+#content .iconified-listing td.iconified-confidential a:before,
+div.tooltipster-categorized-elements span.iconified-confidential:before {
     content: "\f09c";
 }
 
-#content .iconified-listing td.iconified-confidential a.active:before {
+#content .iconified-listing td.iconified-confidential a.active:before,
+div.tooltipster-categorized-elements span.iconified-confidential.active:before {
     content: "\f023";
 }
 
+#content .iconified-listing td.iconified-signed a:before,
+div.tooltipster-categorized-elements span.iconified-signed:before {
+    content: "\f044";
+}
+
+div.tooltipster-categorized-elements div.categorized_elements_details {
+    display: inline-block;
+    text-align: right;
+    float: right;
+    display: none;
+}
+div.tooltipster-categorized-elements div.categorized_elements_details span {
+    float: left;
+    width: 20px;
+    text-align: center;
+}
 /* reduce select2 font-size */
 .select2-container, .select2-results {
     font-size: 90%;

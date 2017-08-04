@@ -44,6 +44,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'category_title': category.category_title,
              'category_uid': category.category_uid,
              'confidential': False,
+             'confidentiality_activated': False,
              'description': obj.Description(),
              'download_url': u'file/@@download',
              'filesize': 3017,
@@ -52,11 +53,15 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
              'relative_url': 'file',
+             'signed': False,
+             'signed_activated': False,
              'subcategory_id': None,
              'subcategory_title': None,
              'subcategory_uid': None,
              'title': obj.Title(),
+             'to_be_printed_activated': True,
              'to_print': None,
+             'to_sign': False,
              'warn_filesize': False})
 
     def test_get_infos_for_image(self):
@@ -72,6 +77,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'category_title': subcategory.category_title,
              'category_uid': subcategory.category_uid,
              'confidential': False,
+             'confidentiality_activated': False,
              'description': obj.Description(),
              'download_url': u'image/@@download',
              'filesize': 3742,
@@ -80,11 +86,15 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
              'relative_url': 'image',
+             'signed': False,
+             'signed_activated': False,
              'subcategory_id': subcategory.id,
              'subcategory_title': subcategory.Title(),
              'subcategory_uid': subcategory.UID(),
              'title': obj.Title(),
+             'to_be_printed_activated': True,
              'to_print': False,
+             'to_sign': False,
              'warn_filesize': False})
 
     def test_get_infos_with_subcategory(self):
@@ -100,6 +110,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'category_title': subcategory.category_title,
              'category_uid': subcategory.category_uid,
              'confidential': False,
+             'confidentiality_activated': False,
              'description': obj.Description(),
              'download_url': u'file/@@download',
              'filesize': 3017,
@@ -108,11 +119,15 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
              'relative_url': 'file',
+             'signed': False,
+             'signed_activated': False,
              'subcategory_id': subcategory.getId(),
              'subcategory_title': subcategory.Title(),
              'subcategory_uid': subcategory.UID(),
              'title': obj.Title(),
+             'to_be_printed_activated': True,
              'to_print': None,
+             'to_sign': False,
              'warn_filesize': False})
 
     def test_category(self):

@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.iconifiedcategory">
+
+    <include package="Products.GenericSetup" file="meta.zcml" />
+
+    <genericsetup:upgradeStep
+        title="Add 'signed' attribute to elements using IIconifiedCategorization behavior"
+        description=""
+        source="1000"
+        destination="2000"
+        handler="collective.iconifiedcategory.upgrades.upgrade_to_2000"
+        profile="collective.iconifiedcategory:default" />
+
+</configure>

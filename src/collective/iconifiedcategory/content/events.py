@@ -18,31 +18,53 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
-from collective.iconifiedcategory.event import \
-    IconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
-def categorized_content_created(event):
+def categorized_content_created(obj, event):
 
-    if hasattr(event.object, 'content_category'):
+    if hasattr(obj, 'content_category'):
         # if 'to_print' and 'confidential' are managed manually,
         # we may defer events if relevant value found in the REQUEST
-        if event.object.REQUEST.get('defer_categorized_content_created_event', False):
+        if obj.REQUEST.get('defer_categorized_content_created_event', False):
             return
 
-        if hasattr(event.object, 'confidential'):
-            notify(IconifiedConfidentialChangedEvent(
-                event.object,
-                None,
-                event.object.confidential,
-            ))
+        # set default values for to_print, confidential and to_sign/signed
+        category = utils.get_category_object(obj, obj.content_category)
+        # left False if to_print/confidential/to_sign
+        # not enabled on ContentCategoryGroup
+        category_group = category.get_category_group(category)
+
+        if category_group.to_be_printed_activated:
+            obj.to_print = category.to_print
+        else:
+            obj.to_print = False
+
+        if category_group.confidentiality_activated:
+            obj.confidential = category.confidential
+        else:
+            obj.confidential = False
+        notify(IconifiedConfidentialChangedEvent(
+            obj,
+            old_values={},
+            new_values={'confidential': obj.confidential},
+        ))
+
+        if category_group.signed_activated:
+            obj.to_sign = category.to_sign
+            obj.signed = category.signed
+        else:
+            obj.to_sign = False
+            obj.signed = False
+
+        # to_print changed event is managed in categorized_content_updated
         categorized_content_updated(event)
 
-        if utils.is_file_type(event.object.portal_type):
-            file_field_name = IPrimaryFieldInfo(event.object).fieldname
-            size = getattr(event.object, file_field_name).size
+        if utils.is_file_type(obj.portal_type):
+            file_field_name = IPrimaryFieldInfo(obj).fieldname
+            size = getattr(obj, file_field_name).size
             if utils.warn_filesize(size):
                 plone_utils = api.portal.get_tool('plone_utils')
                 plone_utils.addPortalMessage(
@@ -51,14 +73,14 @@ def categorized_content_created(event):
                       "view it!"), type='warning')
 
 
-def content_updated(event):
-    if hasattr(event.object, 'content_category'):
+def content_updated(obj, event):
+    if hasattr(obj, 'content_category'):
         categorized_content_updated(event)
 
 
 def categorized_content_updated(event):
-    if hasattr(event.object, 'content_category'):
-        obj = event.object
+    obj = event.object
+    if hasattr(obj, 'content_category'):
         target = utils.get_category_object(obj, obj.content_category)
 
         if hasattr(obj, 'to_print'):
@@ -71,18 +93,18 @@ def categorized_content_updated(event):
                 if category_group.to_be_printed_activated:
                     obj.to_print = category.to_print
 
-            adapter = getAdapter(event.object, IIconifiedPrintable)
+            adapter = getAdapter(obj, IIconifiedPrintable)
             adapter.update_object()
             notify(IconifiedPrintChangedEvent(
                 obj,
-                obj.to_print,
-                obj.to_print,
+                old_values={'to_print': obj.to_print},
+                new_values={'to_print': obj.to_print},
             ))
         # we may defer call to utils.update_categorized_elements
         # if relevant value found in the REQUEST
         # this is useful when adding several categorized elements without
         # calling update_categorized_elements between every added element
-        if event.object.REQUEST.get('defer_update_categorized_elements', False):
+        if obj.REQUEST.get('defer_update_categorized_elements', False):
             return
 
         utils.update_categorized_elements(obj.aq_parent, obj, target)

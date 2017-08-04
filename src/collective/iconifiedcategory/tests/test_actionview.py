@@ -22,7 +22,7 @@ class TestBaseView(BaseTestCase):
 
         # when attribute_mapping is not set, it does not work
         result = reader.read(view())
-        self.assertEqual(result[u'status'], 1)
+        self.assertEqual(result[u'status'], 2)
         self.assertEqual(result[u'msg'], u'No values to set')
 
         # only doable if user has Modify portal content on obj
@@ -30,14 +30,14 @@ class TestBaseView(BaseTestCase):
         self.portal.REQUEST.set('action-value-title', 'My new title')
         obj.manage_permission(ModifyPortalContent, roles=[])
         result = reader.read(view())
-        self.assertEqual(result[u'status'], 1)
+        self.assertEqual(result[u'status'], 2)
         self.assertEqual(result[u'msg'], u'Error during process')
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
 
         # change title
         self.assertEqual(obj.title, u'file.txt')
         result = reader.read(view())
-        self.assertEqual(result[u'status'], 0)
+        self.assertEqual(result[u'status'], -1)
         self.assertEqual(result[u'msg'], u'Values have been set')
         self.assertEqual(obj.title, 'My new title')
 

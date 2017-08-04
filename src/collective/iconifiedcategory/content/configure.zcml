@@ -23,12 +23,14 @@
     />
 
   <subscriber
-    for="zope.lifecycleevent.interfaces.IObjectAddedEvent"
+    for="plone.dexterity.interfaces.IDexterityContent
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
     handler=".events.categorized_content_created"
     />
 
   <subscriber
-    for="zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    for="plone.dexterity.interfaces.IDexterityContent
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".events.content_updated"
     />
 

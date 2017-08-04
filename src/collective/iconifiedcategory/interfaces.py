@@ -50,6 +50,10 @@ class ICategorizedConfidential(ICategorizedTable):
     pass
 
 
+class ICategorizedSigned(ICategorizedTable):
+    pass
+
+
 class IIconifiedCategorySubtyper(Interface):
 
     have_categorized_elements = schema.Bool(
@@ -87,8 +91,8 @@ class IIconifiedCategorySettings(Interface):
 
 class IIconifiedChangedEvent(IObjectEvent):
 
-    old_value = Attribute("The old value")
-    new_value = Attribute("The new value")
+    old_values = Attribute("The old values")
+    new_values = Attribute("The new values")
 
 
 class IIconifiedPrintChangedEvent(IIconifiedChangedEvent):
@@ -104,4 +108,8 @@ class IIconifiedModifiedEvent(IObjectEvent):
 
 
 class IIconifiedCategoryChangedEvent(IObjectEvent):
+    pass
+
+
+class IIconifiedSignedChangedEvent(IObjectEvent):
     pass

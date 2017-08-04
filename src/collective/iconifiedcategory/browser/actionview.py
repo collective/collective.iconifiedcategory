@@ -21,8 +21,9 @@ from plone import api
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
-from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
 from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
+from collective.iconifiedcategory.event import IconifiedSignedChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
@@ -37,8 +38,15 @@ class BaseView(BrowserView):
         )
 
     def __call__(self):
+        """Do the work :
+           - status :
+               -1 --> deactivate;
+               0 --> set to False;
+               1 --> set to True;
+               2 --> error;
+           """
         writer = getUtility(IJSONWriter)
-        values = {'status': 0, 'msg': 'success'}
+        values = {'msg': 'success'}
         try:
             self.request.response.setHeader('content-type',
                                             'application/json')
@@ -46,10 +54,10 @@ class BaseView(BrowserView):
             values['status'] = status
             if msg:
                 values['msg'] = self._translate(msg)
-            if not status == 1:
+            if not status == 2:
                 notify(ObjectModifiedEvent(self.context))
         except Exception:
-            values['status'] = 1
+            values['status'] = 2
             values['msg'] = self._translate(_('Error during process'))
         return writer.write(values)
 
@@ -69,11 +77,20 @@ class BaseView(BrowserView):
             raise Unauthorized
 
         if not values:
-            return 1, self._translate(_('No values to set'))
+            return 2, self._translate(_('No values to set'))
 
         for key, value in values.items():
             self.set_value(key, value)
-        return 0, self._translate(_('Values have been set'))
+        return self._get_status(values), self._translate(_('Values have been set'))
+
+    def _get_status(self, values):
+        value = values.get(self.attribute_mapping.keys()[0], None)
+        if value is False:
+            return 0
+        elif value is True:
+            return 1
+        else:
+            return -1
 
     def set_value(self, attrname, value):
         setattr(self.context, attrname, value)
@@ -112,7 +129,7 @@ class ToPrintChangeView(BaseView):
             old_values,
             values,
         ))
-        return 0, utils.print_message(self.context)
+        return self._get_status(values), utils.print_message(self.context)
 
 
 class ConfidentialChangeView(BaseView):
@@ -138,4 +155,55 @@ class ConfidentialChangeView(BaseView):
             old_values,
             values,
         ))
-        return 0, utils.confidential_message(self.context)
+        return self._get_status(values), utils.confidential_message(self.context)
+
+
+class SignedChangeView(BaseView):
+    attribute_mapping = {
+        'signed': 'iconified-value',
+        'to_sign': 'iconified-value',
+    }
+
+    def _may_set_values(self, values):
+        res = super(SignedChangeView, self)._may_set_values(values)
+        if res:
+            # is this functionnality enabled?
+            category = utils.get_category_object(self.context, self.context.content_category)
+            category_group = category.get_category_group()
+            res = category_group.signed_activated
+        return res
+
+    def _get_next_values(self, old_values):
+        """ """
+        values = {}
+        if old_values['to_sign'] is False:
+            values['to_sign'] = True
+            values['signed'] = False
+            status = 0
+        elif old_values['to_sign'] is True and old_values['signed'] is False:
+            values['to_sign'] = True
+            values['signed'] = True
+            status = 1
+        else:
+            # old_values['to_sign'] is True and old_values['signed'] is True
+            # disable to_sign and signed
+            values['to_sign'] = False
+            values['signed'] = False
+            status = -1
+        return status, values
+
+    def set_values(self, values):
+        """Value are setting 'to_print' and 'signed' attributes with following
+           possibility depending on allowed ones :
+           - False/False;
+           - True/False;
+           - True/True."""
+        old_values = self.get_current_values()
+        status, values = self._get_next_values(old_values)
+        super(SignedChangeView, self).set_values(values)
+        notify(IconifiedSignedChangedEvent(
+            self.context,
+            old_values,
+            values,
+        ))
+        return status, utils.signed_message(self.context)
