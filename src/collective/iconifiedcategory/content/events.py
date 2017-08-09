@@ -37,14 +37,16 @@ def categorized_content_created(obj, event):
         # not enabled on ContentCategoryGroup
         category_group = category.get_category_group(category)
 
-        if category_group.to_be_printed_activated:
+        # only set default value if obj was not created with a to_print=True
+        if category_group.to_be_printed_activated and not getattr(obj, 'to_print', False):
             obj.to_print = category.to_print
-        else:
+        elif not category_group.to_be_printed_activated:
             obj.to_print = False
 
-        if category_group.confidentiality_activated:
+        # only set default value if obj was not created with a confidential=True
+        if category_group.confidentiality_activated and not getattr(obj, 'confidential', False):
             obj.confidential = category.confidential
-        else:
+        elif not category_group.confidentiality_activated:
             obj.confidential = False
         notify(IconifiedConfidentialChangedEvent(
             obj,
@@ -52,10 +54,11 @@ def categorized_content_created(obj, event):
             new_values={'confidential': obj.confidential},
         ))
 
-        if category_group.signed_activated:
+        # only set default value if obj was not created with a to_sign=True or signed=True
+        if category_group.signed_activated and not (getattr(obj, 'to_sign', False) or getattr(obj, 'signed', False)):
             obj.to_sign = category.to_sign
             obj.signed = category.signed
-        else:
+        elif not category_group.signed_activated:
             obj.to_sign = False
             obj.signed = False
 
