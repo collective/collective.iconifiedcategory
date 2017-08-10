@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.23 (unreleased)
+0.23 (2017-08-10)
 -----------------
 
 - Added management of `to_sign` and `signed` attributes like it is the case for
