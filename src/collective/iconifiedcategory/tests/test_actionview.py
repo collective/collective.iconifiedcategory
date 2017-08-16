@@ -164,12 +164,16 @@ class TestSignedChangeView(BaseTestCase):
         group = category.get_category_group()
         group.signed_activated = True
         # loop between possibilities
-        self.assertEqual(view._get_next_values({'to_sign': False, 'signed': False}),
-                        (0, {'to_sign': True, 'signed': False}))
-        self.assertEqual(view._get_next_values({'to_sign': True, 'signed': False}),
-                        (1, {'to_sign': True, 'signed': True}))
-        self.assertEqual(view._get_next_values({'to_sign': True, 'signed': True}),
-                        (-1, {'to_sign': False, 'signed': False}))
+        self.assertEqual(
+            view._get_next_values({'to_sign': False, 'signed': False}),
+            (0, {'to_sign': True, 'signed': False}))
+        self.assertEqual(
+            view._get_next_values({'to_sign': True, 'signed': False}),
+            (1, {'to_sign': True, 'signed': True}))
+        self.assertEqual(
+            view._get_next_values({'to_sign': True, 'signed': True}),
+            (-1, {'to_sign': False, 'signed': False}))
         # not possible values, back to 'to_sign'
-        self.assertEqual(view._get_next_values({'to_sign': False, 'signed': True}),
-                        (0, {'to_sign': True, 'signed': False}))
+        self.assertEqual(
+            view._get_next_values({'to_sign': False, 'signed': True}),
+            (0, {'to_sign': True, 'signed': False}))
