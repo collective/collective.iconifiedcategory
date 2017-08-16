@@ -4,8 +4,11 @@ Changelog
 0.24 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed migration that adds `to_sign/signed` relevant data to the
+  `categorized_elements` of the parent containing categorized contents.
+  Execute the update with `limited=False` and do not care about already
+  migrated content, do the update on every found elements.
+  [gbastien]
 
 0.23 (2017-08-10)
 -----------------

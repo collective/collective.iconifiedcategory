@@ -32,12 +32,8 @@ def upgrade_to_2000(context):
             setattr(obj, 'signed', False)
 
         parent = obj.aq_parent
-        if 'to_sign' not in parent.categorized_elements.get(obj.UID(), {}):
-            if parent not in parents_to_update:
-                parents_to_update.append(parent)
-        else:
-            # already migrated
-            return
+        if parent not in parents_to_update:
+            parents_to_update.append(parent)
 
     # finally update parents that contains categorized elements
     nb_of_parents_to_update = len(parents_to_update)
@@ -46,4 +42,4 @@ def upgrade_to_2000(context):
         logger.info('Running update_all_categorized_elements for element {0}/{1} ({2})'.format(
             i, nb_of_parents_to_update, '/'.join(parent_to_update.getPhysicalPath())))
         i = i + 1
-        update_all_categorized_elements(parent_to_update, limited=True, sort=False)
+        update_all_categorized_elements(parent_to_update, limited=False, sort=False)
