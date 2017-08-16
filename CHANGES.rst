@@ -9,6 +9,9 @@ Changelog
   Execute the update with `limited=False` and do not care about already
   migrated content, do the update on every found elements.
   [gbastien]
+- Added tests for the `SignedChangeView` view especially the `loop` among
+  possible `to_sign/signed` combination values.
+  [gbastien]
 
 0.23 (2017-08-10)
 -----------------

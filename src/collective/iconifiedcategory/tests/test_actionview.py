@@ -110,3 +110,66 @@ class TestConfidentialChangeView(BaseTestCase):
         self.assertTrue(obj.confidential)
         view.set_values({'confidential': False})
         self.assertFalse(obj.confidential)
+
+
+class TestSignedChangeView(BaseTestCase):
+
+    def test_set_values(self):
+        obj = self.portal['file']
+        view = obj.restrictedTraverse('@@iconified-signed')
+
+        # works only if functionnality enabled and user have Modify portal content
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+
+        # fails if one of 2 conditions is not fullfilled
+        self.assertTrue(api.user.has_permission(ModifyPortalContent, obj=obj))
+        group.signed_activated = False
+        self.assertRaises(Unauthorized, view.set_values, {'to_sign': True})
+        group.signed_activated = True
+
+        obj.manage_permission(ModifyPortalContent, roles=[])
+        self.assertRaises(Unauthorized, view.set_values, {'to_sign': True})
+        obj.manage_permission(ModifyPortalContent, roles=['Manager'])
+
+        # functionnality enabled and user have Modify portal content
+        self.assertFalse(obj.to_sign)
+        self.assertFalse(obj.signed)
+        view.set_values({'to_sign': True})
+        self.assertTrue(obj.to_sign)
+        view.set_values({'signed': True})
+        self.assertTrue(obj.signed)
+
+        # multiple attributes may be set at the same time
+        view.set_values({'to_sign': False, 'signed': False})
+        self.assertFalse(obj.to_sign)
+        self.assertFalse(obj.signed)
+        view.set_values({'to_sign': True, 'signed': False})
+        self.assertTrue(obj.to_sign)
+        self.assertFalse(obj.signed)
+        view.set_values({'to_sign': True, 'signed': True})
+        self.assertTrue(obj.to_sign)
+        self.assertTrue(obj.signed)
+
+    def test_get_next_values(self):
+        """to_sign/signed are logically linked and the action in the UI
+           will loop among possible values :
+           - to_sign False, signed False;
+           - to_sign True, signed False,
+           - to_sign True, signed True.
+           to_sign False, signed True is not possible."""
+        obj = self.portal['file']
+        view = obj.restrictedTraverse('@@iconified-signed')
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+        group.signed_activated = True
+        # loop between possibilities
+        self.assertEqual(view._get_next_values({'to_sign': False, 'signed': False}),
+                        (0, {'to_sign': True, 'signed': False}))
+        self.assertEqual(view._get_next_values({'to_sign': True, 'signed': False}),
+                        (1, {'to_sign': True, 'signed': True}))
+        self.assertEqual(view._get_next_values({'to_sign': True, 'signed': True}),
+                        (-1, {'to_sign': False, 'signed': False}))
+        # not possible values, back to 'to_sign'
+        self.assertEqual(view._get_next_values({'to_sign': False, 'signed': True}),
+                        (0, {'to_sign': True, 'signed': False}))
