@@ -223,7 +223,7 @@ def sort_categorized_elements(context):
 
 
 def remove_categorized_element(parent, obj):
-    if obj.UID() in parent.categorized_elements:
+    if obj.UID() in getattr(parent, 'categorized_elements', OrderedDict()):
         del parent.categorized_elements[obj.UID()]
 
 
