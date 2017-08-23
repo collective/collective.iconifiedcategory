@@ -12,6 +12,9 @@ Changelog
 - Added tests for the `SignedChangeView` view especially the `loop` among
   possible `to_sign/signed` combination values.
   [gbastien]
+- Do not break when deleting an element having a `content_category` if container
+  does not have the `categorized_elements` dict.
+  [gbastien]
 
 0.23 (2017-08-10)
 -----------------

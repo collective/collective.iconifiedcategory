@@ -252,3 +252,35 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertEqual(len(new_container.categorized_elements), 2)
         # tear down
         self.portal.REQUEST.set('defer_update_categorized_elements', False)
+
+    def test_delete_categorized_element(self):
+        """When an element having a content_category is deleted, the parent's
+           categorized_elements are update accordingly."""
+        file_UID = self.portal.file.UID()
+        image_UID = self.portal.image.UID()
+        self.assertTrue(file_UID in self.portal.categorized_elements)
+        self.assertTrue(image_UID in self.portal.categorized_elements)
+
+        # remove self.portal.file, will be removed from parent's categorized_elements
+        api.content.delete(self.portal.file)
+        self.assertFalse(file_UID in self.portal.categorized_elements)
+
+        # remove self.portal.image
+        # does not break if was not in parent's categorized_elements
+        self.portal.categorized_elements.clear()
+        self.assertFalse(image_UID in self.portal.categorized_elements)
+        api.content.delete(self.portal.image)
+        self.assertFalse(image_UID in self.portal.categorized_elements)
+
+        # does not break if parent does not have a categorized_elements attribute
+        file2 = api.content.create(
+            id='file2',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        delattr(self.portal, 'categorized_elements')
+        api.content.delete(file2)
