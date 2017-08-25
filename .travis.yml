@@ -17,7 +17,7 @@ before_install:
   - echo "[buildout]" > $HOME/.buildout/default.cfg
   - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
   - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-  - sudo apt-get install rubygems
+  - sudo apt-get install rubygems-integration
   - sudo apt-get install graphicsmagick
   - sudo apt-get install poppler-utils
   - sudo gem install docsplit
