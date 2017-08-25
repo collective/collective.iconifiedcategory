@@ -1,37 +1,11 @@
 Changelog
 =========
 
-0.24 (unreleased)
------------------
-
-- Fixed migration that adds `to_sign/signed` relevant data to the
-  `categorized_elements` of the parent containing categorized contents.
-  Execute the update with `limited=False` and do not care about already
-  migrated content, do the update on every found elements.
-  [gbastien]
-- Added tests for the `SignedChangeView` view especially the `loop` among
-  possible `to_sign/signed` combination values.
-  [gbastien]
+0.22.1 (unreleased)
+-------------------
 - Do not break when deleting an element having a `content_category` if container
   does not have the `categorized_elements` dict.
   [gbastien]
-
-0.23 (2017-08-10)
------------------
-
-- Added management of `to_sign` and `signed` attributes like it is the case for
-  `to_print` and `confidential` attributes.  Both attributes are used behind a
-  single action `signed` that have 3 options : `not to sign`, `to sign` and
-  `signed`.
-  [gbastien]
-- Default values for `to_print`, `confidential` and `to_sign/signed` are now
-  managed in the `IObjectAddedEvent` no more in the `content_category setter`,
-  this way every attribtues are managed the same way because `to_print` and
-  `confidential` are simple attributes where `to_sign/signed` can come from the
-  `Scan metadata` behavior of `collective.dms.scanbehavior`.
-  [gbastien]
-- Added possibility to show/hide details about `to_print`, `confidential`,
-  `to_sign/signed` in the categorized elements tooltipster.
 
 0.22 (2017-08-04)
 -----------------
