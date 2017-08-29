@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.22.1 (unreleased)
+0.22.1 (2017-08-29)
 -------------------
 - Do not break when deleting an element having a `content_category` if container
   does not have the `categorized_elements` dict.
