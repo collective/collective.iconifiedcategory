@@ -65,7 +65,9 @@ class IIconifiedCategorySubtyper(Interface):
 class IIconifiedCategorySettings(Interface):
 
     sort_categorized_tab = schema.Bool(
-        title=_(u'Sort categorized elements on categorized tab'),
+        title=_(
+            u'Sort categorized elements on categorized tab alphabetically '
+            u'automatically. Uncheck to sort elements manually'),
         default=True,
     )
 
