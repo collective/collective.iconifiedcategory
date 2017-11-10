@@ -15,9 +15,14 @@ from collective.iconifiedcategory import utils
 
 class CategoryVocabulary(object):
 
+    def _get_categories(self, context):
+        """Return categories to display in the vocabulary."""
+        categories = utils.get_categories(context, the_objects=True)
+        return categories
+
     def __call__(self, context):
         terms = []
-        categories = utils.get_categories(context, the_objects=True)
+        categories = self._get_categories(context)
         for category in categories:
             category_id = utils.calculate_category_id(category)
             terms.append(SimpleVocabulary.createTerm(
@@ -40,12 +45,11 @@ class CategoryVocabulary(object):
         return SimpleVocabulary(terms)
 
 
-class CategoryTitleVocabulary(object):
+class CategoryTitleVocabulary(CategoryVocabulary):
 
     def __call__(self, context):
         terms = []
-        terms = []
-        categories = utils.get_categories(context, the_objects=True)
+        categories = self._get_categories(context)
         for category in categories:
             category_id = utils.calculate_category_id(category)
             if category.predefined_title:

@@ -17,6 +17,11 @@ Changelog
   [gbastien]
 - Improved some translations.
   [gbastien]
+- Factorized the way categories are get for the `content_category` vocabularies
+  `collective.iconifiedcategory.categories` and
+  `collective.iconifiedcategory.category_titles` so it is easy to override and
+  we rely on same method for both vocabularies that needs same source.
+  [gbastien]
 
 0.23 (2017-08-10)
 -----------------
