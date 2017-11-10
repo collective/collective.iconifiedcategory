@@ -16,9 +16,20 @@ from collective.iconifiedcategory import utils
 class CategoryVocabulary(object):
 
     def _get_categories(self, context):
-        """Return categories to display in the vocabulary."""
+        """Return categories to display in the vocabulary.
+           This needs to return a list of category objects."""
         categories = utils.get_categories(context, the_objects=True)
         return categories
+
+    def _get_subcategories(self, context, category):
+        """Return subcategories for given category.
+           This needs to return a list of subcategory brains."""
+        subcategories = api.content.find(
+            context=category,
+            object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
+            enabled=True,
+        )
+        return subcategories
 
     def __call__(self, context):
         terms = []
@@ -30,11 +41,7 @@ class CategoryVocabulary(object):
                 category_id,
                 category.Title(),
             ))
-            subcategories = api.content.find(
-                context=category,
-                object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
-                enabled=True,
-            )
+            subcategories = self._get_subcategories(context, category)
             for subcategory in subcategories:
                 subcategory_id = utils.calculate_category_id(subcategory.getObject())
                 terms.append(SimpleVocabulary.createTerm(
@@ -58,11 +65,7 @@ class CategoryTitleVocabulary(CategoryVocabulary):
                     category_id,
                     category.predefined_title,
                 ))
-            subcategories = api.content.find(
-                context=category,
-                object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
-                enabled=True,
-            )
+            subcategories = self._get_subcategories(context, category)
             for subcategory in subcategories:
                 subcategory = subcategory.getObject()
                 subcategory_id = utils.calculate_category_id(subcategory)
