@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.24 (unreleased)
+0.24 (2017-11-27)
 -----------------
 
 - Fixed migration that adds `to_sign/signed` relevant data to the
