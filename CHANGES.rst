@@ -4,8 +4,9 @@ Changelog
 0.25 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Call `actionview._may_set_values` in `IconClickableColumn.is_editable`
+  to avoid double logic.
+  [gbastien]
 
 0.24 (2017-11-27)
 -----------------

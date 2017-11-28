@@ -14,6 +14,7 @@ from Products.CMFPlone.utils import safe_unicode
 from plone import api
 from z3c.table.table import Table
 from z3c.table import column
+from zope.component import getMultiAdapter
 from zope.i18n import translate
 from zope.interface import implements
 from zope.interface import alsoProvides
@@ -212,8 +213,8 @@ class IconClickableColumn(column.GetAttrColumn):
         return getattr(obj, self.attrName, False) is None
 
     def is_editable(self, obj):
-        return _checkPermission(ModifyPortalContent,
-                                obj.real_object())
+        view = getMultiAdapter((obj.real_object(), self.request), name=self.action_view)
+        return view._may_set_values({})
 
     def is_active(self, obj):
         return getattr(obj, self.attrName, False)
