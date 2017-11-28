@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.25 (unreleased)
+0.25 (2017-11-28)
 -----------------
 
 - Call `actionview._may_set_values` in `IconClickableColumn.is_editable`
