@@ -76,7 +76,7 @@
        tal:attributes="onclick string:event.preventDefault();;$$('div.categorized_elements_details').toggle(200);">
       <img class="categorized_elements_details_icon"
            src="details.png"
-           tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory/./details.png" />
+           tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory.images/details.png" />
       <span i18n:translate="">More/less details</span>
     </a>&nbsp;
     <a href="#"
@@ -84,7 +84,7 @@
        tal:attributes="href view/categorized_elements_more_infos_url">
       <img class="categorized_elements_more_infos_icon"
            src="more_infos.png"
-           tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory/more_infos.png" />
+           tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory.images/more_infos.png" />
       <span i18n:translate="">More infos</span>
     </a>
   </div>

@@ -4,8 +4,8 @@ Changelog
 0.26 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Use a specific static resourceDirectory for images.
+  [gbastien]
 
 0.25 (2017-11-28)
 -----------------
