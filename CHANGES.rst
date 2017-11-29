@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.26 (unreleased)
+0.26 (2017-11-29)
 -----------------
 
 - Use a specific static resourceDirectory for images.
