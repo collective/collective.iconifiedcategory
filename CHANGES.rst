@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.27 (unreleased)
+0.27 (2017-12-07)
 -----------------
 
 - In `actionview.BaseView`, moved the `ObjectModifiedEvent` from the `__call__`
