@@ -4,8 +4,10 @@ Changelog
 0.27 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- In `actionview.BaseView`, moved the `ObjectModifiedEvent` from the `__call__`
+  to the `set_values` method so using it directly updates the
+  `categorized_elements` of the parent.
+  [gbastien]
 
 0.26 (2017-11-29)
 -----------------

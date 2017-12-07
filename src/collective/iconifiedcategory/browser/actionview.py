@@ -54,8 +54,6 @@ class BaseView(BrowserView):
             values['status'] = status
             if msg:
                 values['msg'] = self._translate(msg)
-            if not status == 2:
-                notify(ObjectModifiedEvent(self.context))
         except Exception:
             values['status'] = 2
             values['msg'] = self._translate(_('Error during process'))
@@ -81,7 +79,10 @@ class BaseView(BrowserView):
 
         for key, value in values.items():
             self.set_value(key, value)
-        return self._get_status(values), self._translate(_('Values have been set'))
+        status, msg = self._get_status(values), 'Values have been set'
+        if not status == 2:
+            notify(ObjectModifiedEvent(self.context))
+        return status, msg
 
     def _get_status(self, values):
         value = values.get(self.attribute_mapping.keys()[0], None)

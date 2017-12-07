@@ -71,17 +71,17 @@ class TestToPrintChangeView(BaseTestCase):
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
 
         # set to None when format not managed by collective.documentviewer
-        self.assertFalse(obj.to_print)
+        self.assertFalse(obj.to_print, obj.aq_parent.categorized_elements[obj.UID()]['to_print'])
         view.set_values({'to_print': True})
-        self.assertIsNone(obj.to_print)
+        self.assertIsNone(obj.to_print, obj.aq_parent.categorized_elements[obj.UID()]['to_print'])
 
         # will be correctly set if format is managed
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
         view.set_values({'to_print': True})
-        self.assertTrue(obj.to_print)
+        self.assertTrue(obj.to_print, obj.aq_parent.categorized_elements[obj.UID()]['to_print'])
         view.set_values({'to_print': False})
-        self.assertFalse(obj.to_print)
+        self.assertFalse(obj.to_print, obj.aq_parent.categorized_elements[obj.UID()]['to_print'])
 
 
 class TestConfidentialChangeView(BaseTestCase):
@@ -107,9 +107,9 @@ class TestConfidentialChangeView(BaseTestCase):
         # functionnality enabled and user have Modify portal content
         self.assertFalse(obj.confidential)
         view.set_values({'confidential': True})
-        self.assertTrue(obj.confidential)
+        self.assertTrue(obj.confidential, obj.aq_parent.categorized_elements[obj.UID()]['confidential'])
         view.set_values({'confidential': False})
-        self.assertFalse(obj.confidential)
+        self.assertFalse(obj.confidential, obj.aq_parent.categorized_elements[obj.UID()]['confidential'])
 
 
 class TestSignedChangeView(BaseTestCase):
@@ -133,23 +133,24 @@ class TestSignedChangeView(BaseTestCase):
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
 
         # functionnality enabled and user have Modify portal content
-        self.assertFalse(obj.to_sign)
-        self.assertFalse(obj.signed)
+        self.assertFalse(obj.to_sign, obj.aq_parent.categorized_elements[obj.UID()]['to_sign'])
+        self.assertFalse(obj.signed, obj.aq_parent.categorized_elements[obj.UID()]['signed'])
+
         view.set_values({'to_sign': True})
-        self.assertTrue(obj.to_sign)
+        self.assertTrue(obj.to_sign, obj.aq_parent.categorized_elements[obj.UID()]['to_sign'])
         view.set_values({'signed': True})
-        self.assertTrue(obj.signed)
+        self.assertTrue(obj.signed, obj.aq_parent.categorized_elements[obj.UID()]['signed'])
 
         # multiple attributes may be set at the same time
         view.set_values({'to_sign': False, 'signed': False})
-        self.assertFalse(obj.to_sign)
-        self.assertFalse(obj.signed)
+        self.assertFalse(obj.to_sign, obj.aq_parent.categorized_elements[obj.UID()]['to_sign'])
+        self.assertFalse(obj.signed, obj.aq_parent.categorized_elements[obj.UID()]['signed'])
         view.set_values({'to_sign': True, 'signed': False})
-        self.assertTrue(obj.to_sign)
-        self.assertFalse(obj.signed)
+        self.assertTrue(obj.to_sign, obj.aq_parent.categorized_elements[obj.UID()]['to_sign'])
+        self.assertFalse(obj.signed, obj.aq_parent.categorized_elements[obj.UID()]['signed'])
         view.set_values({'to_sign': True, 'signed': True})
-        self.assertTrue(obj.to_sign)
-        self.assertTrue(obj.signed)
+        self.assertTrue(obj.to_sign, obj.aq_parent.categorized_elements[obj.UID()]['to_sign'])
+        self.assertTrue(obj.signed, obj.aq_parent.categorized_elements[obj.UID()]['signed'])
 
     def test_get_next_values(self):
         """to_sign/signed are logically linked and the action in the UI
