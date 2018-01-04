@@ -233,6 +233,8 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         category11.to_print = True
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        # set to_print to False, aka the default value of category12
+        obj.to_print = False
         setattr(adapted_obj, 'content_category', category11_id)
         notify(ObjectModifiedEvent(obj))
         self.assertTrue(obj.to_print)

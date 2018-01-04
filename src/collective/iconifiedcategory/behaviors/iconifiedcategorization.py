@@ -61,10 +61,16 @@ class IconifiedCategorization(object):
 
     def _content_category_changed_default_values(self, new_value):
         """When changing content_category, change default values if original default was not yet changed."""
-        current_category = get_category_object(
-            self.context, self.context.content_category)
-        new_category = get_category_object(
-            self.context, new_value)
+        try:
+            current_category = get_category_object(
+                self.context, self.context.content_category)
+            new_category = get_category_object(
+                self.context, new_value)
+        except KeyError:
+            # in case we can not get the category, we return
+            # this can be the case when changing category of an element
+            # and old category does not exist in the content_category_grouyp context
+            return
         category_group = current_category.get_category_group(current_category)
         # to_print
         if category_group.to_be_printed_activated and \
