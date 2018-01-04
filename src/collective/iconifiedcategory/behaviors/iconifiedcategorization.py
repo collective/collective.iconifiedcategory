@@ -18,6 +18,7 @@ from zope.interface import implementer
 from zope.interface import provider
 
 from collective.iconifiedcategory import _
+from collective.iconifiedcategory.utils import get_category_object
 from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
 from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 
@@ -58,8 +59,35 @@ class IconifiedCategorization(object):
     def content_category(self):
         return getattr(self.context, 'content_category', None)
 
+    def _content_category_changed_default_values(self, new_value):
+        """When changing content_category, change default values if original default was not yet changed."""
+        current_category = get_category_object(
+            self.context, self.context.content_category)
+        new_category = get_category_object(
+            self.context, new_value)
+        category_group = current_category.get_category_group(current_category)
+        # to_print
+        if category_group.to_be_printed_activated and \
+           self.context.to_print == current_category.to_print:
+            self.context.to_print = new_category.to_print
+        # confidential
+        if category_group.confidentiality_activated and \
+           self.context.confidential == current_category.confidential:
+            self.context.confidential = new_category.confidential
+        # to_sign/signed
+        if category_group.signed_activated and \
+           self.context.to_sign == current_category.to_sign and \
+           self.context.signed == current_category.signed:
+            self.context.to_sign = new_category.to_sign
+            self.context.signed = new_category.signed
+
     @content_category.setter
     def content_category(self, value):
+        # if content_category changed, we check also if default values
+        # need to be updated.  We will update values that were not modified
+        # since last default values
+        if getattr(self.context, 'content_category', None) and self.context.content_category != value:
+            self._content_category_changed_default_values(value)
         self.context.content_category = value
         self.context.reindexObject(idxs=['content_category_uid'])
 

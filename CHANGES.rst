@@ -4,8 +4,11 @@ Changelog
 0.28 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- When changing an element's `content_category`, reapply the default values for
+  fields `to_print`, `confidential`, `to_sign` and `signed` if it was still the
+  original default value defined on original `content_category`.  Default values
+  are linked to the `content_category`.
+  [gbastien]
 
 0.27 (2017-12-07)
 -----------------
