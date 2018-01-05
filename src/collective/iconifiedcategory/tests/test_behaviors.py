@@ -239,3 +239,10 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         notify(ObjectModifiedEvent(obj))
         self.assertTrue(obj.to_print)
         self.assertTrue(parent_cat_elements['to_print'])
+
+        # if original content_category does not exist, it does not fail
+        # but default values are not reapplied
+        obj.content_category = 'unkown_content_category'
+        setattr(adapted_obj, 'content_category', category12_id)
+        notify(ObjectModifiedEvent(obj))
+        self.assertEqual(obj.content_category, category12_id)
