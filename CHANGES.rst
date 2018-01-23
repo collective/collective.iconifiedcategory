@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.28 (unreleased)
+0.28 (2018-01-23)
 -----------------
 
 - When changing an element's `content_category`, reapply the default values for
