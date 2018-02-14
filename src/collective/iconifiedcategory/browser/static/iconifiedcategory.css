@@ -82,8 +82,10 @@ div.tooltipster-content ul.many_elements_6_columns {
     -moz-columns: 6;
 }
 
-div.tooltipster-content li {
+div.tooltipster-content {
     font-size: 0.9em;
+}
+div.tooltipster-content li {
     display: block;
     margin: 0.2em 0;
 }

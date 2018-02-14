@@ -10,7 +10,7 @@ IconifiedCategory.defineDefaultTitle = function(select, init_time=false) {
      so we get the id beginning with 'form-widgets-' and ending with '-title' */
   var field = container.find('input#[id^=form-widgets-][id$=-title]');
   if (init_time && field.val()) {
-    return
+    return;
   }
   field.val(obj.val());
 };
@@ -20,7 +20,7 @@ IconifiedCategory.initializeCategoryWidget = function(obj) {
     IconifiedCategory.defineDefaultTitle($(this));
   });
   IconifiedCategory.defineDefaultTitle(obj, init_time=true);
-}
+};
 
 initializeIconifiedCategoryWidget = function () {
 
@@ -64,23 +64,23 @@ jQuery(function($) {
       obj.attr('href'),
       values,
       function(data) {
-        if (data['status'] == 0) {
+        if (data.status == 0) {
           obj.removeClass('active');
           obj.removeClass('deactivated');
           obj.removeClass('error');
-        } else if (data['status'] == 1) {
+        } else if (data.status == 1) {
           obj.addClass('active');
           obj.removeClass('deactivated');
           obj.removeClass('error');
-        } else if (data['status'] == -1) {
+        } else if (data.status == -1) {
           obj.removeClass('active');
           obj.addClass('deactivated');
           obj.removeClass('error');
         } else {
           obj.addClass('error');
           }
-        obj.attr('alt', data['msg']);
-        obj.attr('title', data['msg']);
+        obj.attr('alt', data.msg);
+        obj.attr('title', data.msg);
       }
     );
     return false;
@@ -91,42 +91,11 @@ jQuery(function($) {
 };
 
 function categorizedChildsInfos() {
-    jQuery(function($){
+    tooltipster_helper(selector='.tooltipster-childs-infos',
+                       view_name='@@categorized-childs-infos',
+                       data_parameters=['category_uid']);
 
-    $('.tooltipster-childs-infos').tooltipster({
-
-        contentAsHTML: true,
-        interactive: true,
-        theme: 'tooltipster-shadow',
-        position: 'bottom',
-        speed: 100,
-        delay: 50,
-        animation: 'fade',
-        trigger: 'hover',
-
-        functionBefore: function (origin, helper) {
-            helper();
-            if (origin.data('loaded') !== true) {
-                var category_uid = $(origin).attr('data-category_uid');
-                var base_url = $(origin).attr('data-base_url');
-                $.ajax({
-                    type: 'GET',
-                    url: base_url + '/@@categorized-childs-infos',
-                    data: {
-                        category_uid: category_uid,
-                        ajax_load: new Date().getTime(),
-                    },
-                    success: function (data) {
-                        origin.tooltipster('update', data).data('ajax ', 'cached');
-                        origin.data('loaded', true);
-                        helper();
-                    }
-                });
-            }
-        }
-    });
-})
-};
+}
 
 jQuery(document).ready(initializeIconifiedCategoryWidget);
 jQuery(document).ready(initializeIconifiedActions);

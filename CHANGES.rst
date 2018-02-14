@@ -4,7 +4,9 @@ Changelog
 0.29 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Adapted JS call to `tooltipster` as `collective.js.tooltipster` now uses
+  `tooltipster` 4.2.6.  Require `collective.js.tooltipster` > 0.1
+  [gbastien]
 
 
 0.28 (2018-01-23)
