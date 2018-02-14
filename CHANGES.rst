@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.29 (unreleased)
+0.29 (2018-02-14)
 -----------------
 
 - Adapted JS call to `tooltipster` as `collective.js.tooltipster` now uses
