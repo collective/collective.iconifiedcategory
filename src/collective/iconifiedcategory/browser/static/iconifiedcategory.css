@@ -20,7 +20,7 @@
 }
 
 /* display number of elements smaller */
-div.categorized-elements a.deactivated.tooltipstered > span {
+div.categorized-elements a.deactivated > span {
     font-size: 90%;
 }
 

@@ -4,8 +4,8 @@ Changelog
 0.30 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Make sure number of elements applied CSS is done when tooltipstered or not.
+  [gbastien]
 
 0.29 (2018-02-14)
 -----------------
@@ -13,7 +13,6 @@ Changelog
 - Adapted JS call to `tooltipster` as `collective.js.tooltipster` now uses
   `tooltipster` 4.2.6.  Require `collective.js.tooltipster` > 0.1
   [gbastien]
-
 
 0.28 (2018-01-23)
 -----------------
