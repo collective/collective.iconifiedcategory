@@ -6,6 +6,9 @@ Changelog
 
 - Make sure number of elements applied CSS is done when tooltipstered or not.
   [gbastien]
+- Added possibility to pass a CSS selector to `categorizedChildsInfos`, the JS
+  method that initialize `tooltipster` for categorized elements.
+  [gbastien]
 
 0.29 (2018-02-14)
 -----------------
