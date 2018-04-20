@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.30 (unreleased)
+0.30 (2018-04-20)
 -----------------
 
 - Make sure number of elements applied CSS is done when tooltipstered or not.
