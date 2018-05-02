@@ -118,7 +118,7 @@ div.tooltipster-categorized-elements span.iconified-signed {
 #content .iconified-listing td.iconified-signed a,
 #content .iconified-listing td.iconified-confidential a.active,
 div.tooltipster-categorized-elements span.iconified-print,
-div.tooltipster-categorized-elements span.iconified-confidential,
+div.tooltipster-categorized-elements span.iconified-confidential.active,
 div.tooltipster-categorized-elements span.iconified-signed {
     color: #EA0000;
 }

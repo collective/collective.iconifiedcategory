@@ -4,8 +4,8 @@ Changelog
 0.31 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fix CSS applied in tooltipster popup for active confidential.
+  [gbastien]
 
 0.30 (2018-04-20)
 -----------------
