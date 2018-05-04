@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.32 (unreleased)
+0.32 (2018-05-04)
 -----------------
 
 - Added `many_elements_7_columns` and `many_elements_8_columns` styles necessary
