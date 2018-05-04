@@ -6,11 +6,17 @@
     <ul tal:attributes="class python: 'many_elements_%d_columns' % view.number_of_columns(infos[view.category_uid])">
       <li tal:repeat="element python: infos[view.category_uid]">
         <tal:block define="element_url python:element['download_url'] and element['download_url'] or element['relative_url']">
-        <a href="" tal:attributes="href string:${portal_url}/${element_url}">
-          <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
-                                             alt element/category_title;
-                                             title element/category_title" />
-          <span tal:content="element/title"
+        <a href="" tal:attributes="href string:${portal_url}/${element_url}"
+                   tal:define="title_first_part python: element['title'].strip().split(' ')[0];
+                               title_rest_part python: ' '.join(element['title'].strip().split(' ')[1:]);">
+          <span style="white-space: nowrap">
+            <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
+                                               alt element/category_title;
+                                               title element/category_title" />
+            <span tal:content="title_first_part"
+                  tal:attributes="title element/description"></span>
+          </span>
+          <span tal:content="title_rest_part"
                 tal:attributes="title element/description"></span>
           <tal:filesize tal:condition="element/warn_filesize">
             (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)

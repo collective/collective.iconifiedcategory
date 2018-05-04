@@ -4,8 +4,13 @@ Changelog
 0.32 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added `many_elements_7_columns` and `many_elements_8_columns` styles necessary
+  when displaying really many elements on several columns.
+  [gbastien]
+- Make sure the icon sticks to the text first word in the tooltipster popup
+  by wrapping the icon and categorized element title first word in a `<span>`
+  that uses a `style="white-space: nowrap"`.
+  [gbastien]
 
 0.31 (2018-05-03)
 -----------------

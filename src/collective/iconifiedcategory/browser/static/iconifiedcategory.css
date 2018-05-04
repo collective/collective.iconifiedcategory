@@ -81,6 +81,16 @@ div.tooltipster-content ul.many_elements_6_columns {
     -webkit-columns: 6;
     -moz-columns: 6;
 }
+div.tooltipster-content ul.many_elements_7_columns {
+    columns: 7;
+    -webkit-columns: 7;
+    -moz-columns: 7;
+}
+div.tooltipster-content ul.many_elements_8_columns {
+    columns: 8;
+    -webkit-columns: 8;
+    -moz-columns: 8;
+}
 
 div.tooltipster-content {
     font-size: 0.9em;
@@ -92,6 +102,13 @@ div.tooltipster-content li {
 
 #content table.iconified-listing {
     width: 100%;
+}
+
+/* avoid occcasionnally scroll bars */
+div.tooltipster-categorized-elements {
+    min-width: 350px;
+    max-width: 750px;
+    padding: 0.25em;
 }
 
 #content .iconified-listing td.iconified-print a,
