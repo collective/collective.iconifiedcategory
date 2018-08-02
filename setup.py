@@ -44,7 +44,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'collective.documentviewer < 5',
-        'collective.fontawesome',
+        'collective.fontawesome>=1.1',
         'collective.js.tooltipster > 0.1',
         'collective.z3cform.select2',
         'plone.api>=1.4.11',

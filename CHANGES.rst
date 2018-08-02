@@ -4,8 +4,10 @@ Changelog
 0.33 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Adapted CSS regarding `FontAwesome` where font name changed in version 5+
+  from `FontAwesome` to `Font Awesome 5 Free`.
+  Require `collective.fontawesome >= 1.1`.
+  [gbastien]
 
 0.32 (2018-05-04)
 -----------------

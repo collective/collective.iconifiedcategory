@@ -117,9 +117,10 @@ div.tooltipster-categorized-elements {
 div.tooltipster-categorized-elements span.iconified-print,
 div.tooltipster-categorized-elements span.iconified-confidential,
 div.tooltipster-categorized-elements span.iconified-signed {
-    font-family: 'FontAwesome';
-    font-size: 120%;
+    font-family: 'Font Awesome 5 Free';
+    font-size: 110%;
     cursor: help;
+    font-weight: bold;
 }
 
 /* need to use !important to have a border-bottom because it is removed using !important in base.css... */
@@ -194,7 +195,7 @@ div.tooltipster-categorized-elements span.iconified-print:before {
 
 #content .iconified-listing td.iconified-confidential a:before,
 div.tooltipster-categorized-elements span.iconified-confidential:before {
-    content: "\f09c";
+    content: "\f3c1";
 }
 
 #content .iconified-listing td.iconified-confidential a.active:before,
