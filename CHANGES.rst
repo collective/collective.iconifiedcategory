@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.33 (unreleased)
+0.33 (2018-08-03)
 -----------------
 
 - Adapted CSS regarding `FontAwesome` where font name changed in version 5+
