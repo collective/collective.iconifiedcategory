@@ -4,8 +4,9 @@ Changelog
 0.34 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Display `content_category` title at the top of `@@categorized-childs-infos`
+  tooltipster view.
+  [gbastien]
 
 0.33 (2018-08-03)
 -----------------

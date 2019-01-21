@@ -3,6 +3,9 @@
              condition="infos"
              i18n:domain="collective.iconifiedcategory">
   <div class="tooltipster-categorized-elements">
+    <label class="content-category">
+      <span i18n:translate="ContentCategory">Content category</span> : <span tal:content="python: infos[view.category_uid][0]['category_title']" />
+    </label>
     <ul tal:attributes="class python: 'many_elements_%d_columns' % view.number_of_columns(infos[view.category_uid])">
       <li tal:repeat="element python: infos[view.category_uid]">
         <tal:block define="element_url python:element['download_url'] and element['download_url'] or element['relative_url']">

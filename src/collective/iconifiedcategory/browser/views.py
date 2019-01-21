@@ -110,7 +110,8 @@ class CategorizedChildInfosView(BrowserView):
         return "{0}/{1}".format(self.context.absolute_url(), "@@iconifiedcategory")
 
     def number_of_columns(self, elements):
-        """Return a number to """
+        """Return number of columns to display categorized_elements on
+           when displaying many elements."""
         columns_treshold = api.portal.get_registry_record(
             'categorized_childs_infos_columns_threshold',
             interface=IIconifiedCategorySettings,

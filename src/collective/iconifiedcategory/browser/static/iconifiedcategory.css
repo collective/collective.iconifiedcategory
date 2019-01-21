@@ -110,6 +110,10 @@ div.tooltipster-categorized-elements {
     max-width: 750px;
     padding: 0.25em;
 }
+div.tooltipster-categorized-elements label {
+    margin-bottom: 1em;
+    display: block;
+}
 
 #content .iconified-listing td.iconified-print a,
 #content .iconified-listing td.iconified-signed a,
