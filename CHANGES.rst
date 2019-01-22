@@ -7,7 +7,7 @@ Changelog
 - Display `content_category` title at the top of `@@categorized-childs-infos`
   tooltipster view.
   [gbastien]
-- Rely on natsort to sort categorized elements.
+- Use `natsort.realsorted` to sort categorized elements.
   [gbastien]
 
 0.33 (2018-08-03)
