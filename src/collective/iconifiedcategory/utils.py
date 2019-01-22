@@ -159,9 +159,9 @@ def update_categorized_elements(parent,
     infos = parent.categorized_elements.get(uid, {})
     infos.update(new_infos)
     parent.categorized_elements[uid] = infos
+    parent._p_changed = True
     if sort:
         sort_categorized_elements(parent)
-    parent._p_changed = True
     if logging:
         logger.info('Updated categorized elements of {0}'.format(
             obj.absolute_url_path()))
@@ -187,7 +187,6 @@ def update_all_categorized_elements(container, limited=False, sort=True):
             container.categorized_elements[uid] = infos
     if container.categorized_elements and sort:
         sort_categorized_elements(container)
-        container._p_changed = True
 
 
 def get_ordered_categories(context):
@@ -215,14 +214,16 @@ def sort_categorized_elements(context):
     """Sort the categorized elements on an object"""
     ordered_categories = get_ordered_categories(context)
     try:
+        # use realsorted on a lowered title so it mixes uppercase and lowercase titles
         elements = realsorted(
             context.categorized_elements.items(),
             key=lambda x: (ordered_categories[x[1]['category_uid']],
-                           safe_unicode(x[1]['title']),),
+                           safe_unicode(x[1]['title'].lower()),),
         )
     except KeyError:
         return
     context.categorized_elements = OrderedDict([(k, v) for k, v in elements])
+    context._p_changed = True
 
 
 def remove_categorized_element(parent, obj):

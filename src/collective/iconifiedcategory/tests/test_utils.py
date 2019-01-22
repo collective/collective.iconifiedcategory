@@ -424,7 +424,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         document4 = createContentInContainer(
             container=self.portal,
             portal_type='Document',
-            title='doc4',
+            title='Doc4',
             content_category='config_-_group-1_-_category-1-1',
             to_print=False,
             confidential=False,
@@ -437,7 +437,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
         )
 
         # order is respected, by category
-        result = ['doc3', 'doc2', 'doc1', 'doc4', 'doc10']
+        result = ['doc3', 'doc2', 'doc1', 'Doc4', 'doc10']
         self.assertEqual(
             result,
             [e['title'] for e in self.portal.categorized_elements.values()],
