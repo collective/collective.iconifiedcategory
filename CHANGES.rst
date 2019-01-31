@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.34 (unreleased)
+0.34 (2019-01-31)
 -----------------
 
 - Display `content_category` title at the top of `@@categorized-childs-infos`
