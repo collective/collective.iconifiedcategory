@@ -134,7 +134,7 @@ def get_category_icon_url(category):
     else:
         obj = category.aq_parent
 
-    scale = obj.restrictedTraverse("@@images").scale(scale='mini')
+    scale = obj.restrictedTraverse("@@images").scale(scale='listing')
 
     return u'{0}/@@images/{1}'.format(
         portal_url.getRelativeContentURL(obj),
