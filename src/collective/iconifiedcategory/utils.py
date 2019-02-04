@@ -134,8 +134,11 @@ def get_category_icon_url(category):
     else:
         obj = category.aq_parent
 
-    return u'{0}/@@download'.format(
-        portal_url.getRelativeContentURL(obj))
+    scale = obj.restrictedTraverse("@@images").scale(scale='mini')
+
+    return u'{0}/@@images/{1}'.format(
+        portal_url.getRelativeContentURL(obj),
+        scale.__name__)
 
 
 def update_categorized_elements(parent,

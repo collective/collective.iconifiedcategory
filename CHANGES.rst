@@ -4,8 +4,8 @@ Changelog
 0.35 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Use generated url for `scale mini` as icon url so it can be cached.
+  [gbastien]
 
 0.34 (2019-01-31)
 -----------------
