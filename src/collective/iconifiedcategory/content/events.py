@@ -199,4 +199,6 @@ def _cookCssResources():
 
 
 def category_created(category, event):
+    # make sure the 'listing' scale image is created
+    category.restrictedTraverse('@@images').scale(scale='listing')
     _cookCssResources()
