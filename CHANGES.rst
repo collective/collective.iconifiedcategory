@@ -6,6 +6,13 @@ Changelog
 
 - Use generated url for `scale mini` as icon url so it can be cached.
   [gbastien]
+- Use ram.cache for utils.get_ordered_categories to cache during a REQUEST.
+  [gbastien]
+- Added parameter `only_enabled (True by default)` when
+  `using utils.get_ordered_categories` and
+  `IconifiedCategoryGroupAdapter.get_every_categories` to be able to have every
+  categories in utils.sort_categorized_elements.
+  [gbastien]
 
 0.34 (2019-01-31)
 -----------------

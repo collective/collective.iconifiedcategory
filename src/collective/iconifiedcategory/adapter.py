@@ -224,5 +224,5 @@ class IconifiedCategoryGroupAdapter(object):
     def get_group(self):
         return self.config
 
-    def get_every_categories(self):
-        return utils.get_categories(self.context)
+    def get_every_categories(self, only_enabled=True):
+        return utils.get_categories(self.context, only_enabled=only_enabled)

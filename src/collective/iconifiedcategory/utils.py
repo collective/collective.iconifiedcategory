@@ -87,8 +87,9 @@ def get_categories(context,
         'object_provides': 'collective.iconifiedcategory.content.category.ICategory',
         'sort_on': sort_on,
         'path': '/'.join(config_group.getPhysicalPath()),
-        'enabled': only_enabled
     }
+    if only_enabled:
+        query['enabled'] = True
     res = catalog.unrestrictedSearchResults(query)
     if the_objects:
         res = [brain.getObject() for brain in res]
@@ -192,21 +193,26 @@ def update_all_categorized_elements(container, limited=False, sort=True):
         sort_categorized_elements(container)
 
 
-def get_ordered_categories(context):
+def get_ordered_categories_cachekey(method, context, only_enabled=True):
+    """ """
+    return str(context.REQUEST._debug), get_config_root(context), only_enabled
+
+
+@ram.cache(get_ordered_categories_cachekey)
+def get_ordered_categories(context, only_enabled=True):
     """Return an ordered dict for categories (id and uids)"""
     elements = {}
     config_root = get_config_root(context)
     adapter = getMultiAdapter((config_root, context), IIconifiedCategoryGroup)
-    categories = adapter.get_every_categories()
+    categories = adapter.get_every_categories(only_enabled=only_enabled)
+    query = {}
+    query['object_provides'] = 'collective.iconifiedcategory.content.subcategory.ISubcategory'
+    if only_enabled:
+        query['enabled'] = True
     for idx, category in enumerate(categories):
         elements[category.UID] = idx
         elements[calculate_category_id(category.getObject())] = idx
-
-        subcategories = api.content.find(
-            context=category,
-            object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
-            enabled=True,
-        )
+        subcategories = api.content.find(context=category, **query)
         for subcategory in subcategories:
             elements[subcategory.UID] = idx
             elements[calculate_category_id(subcategory.getObject())] = idx
@@ -215,9 +221,9 @@ def get_ordered_categories(context):
 
 def sort_categorized_elements(context):
     """Sort the categorized elements on an object"""
-    ordered_categories = get_ordered_categories(context)
+    ordered_categories = get_ordered_categories(context, only_enabled=False)
+    # use realsorted on a lowered title so it mixes uppercase and lowercase titles
     try:
-        # use realsorted on a lowered title so it mixes uppercase and lowercase titles
         elements = realsorted(
             context.categorized_elements.items(),
             key=lambda x: (ordered_categories[x[1]['category_uid']],
