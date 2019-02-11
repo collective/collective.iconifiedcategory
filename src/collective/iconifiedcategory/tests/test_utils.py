@@ -8,20 +8,16 @@ Created by mpeeters
 """
 
 from collections import OrderedDict
-from plone import api
-from plone.dexterity.utils import createContentInContainer
-from zExceptions import Redirect
-
-import unittest
-
-from collective.iconifiedcategory import testing
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from plone import api
+from plone.dexterity.utils import createContentInContainer
+from zExceptions import Redirect
+import transaction
 
 
-class TestUtils(BaseTestCase, unittest.TestCase):
-    layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
+class TestUtils(BaseTestCase):
 
     def setUp(self):
         super(TestUtils, self).setUp()
@@ -295,6 +291,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             icon=self.icon,
             container=self.config['group-1'],
         )
+        transaction.commit()
         document = createContentInContainer(
             container=self.portal,
             portal_type='Document',
@@ -304,6 +301,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             to_print=False,
             confidential=False,
         )
+        scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         result = utils.get_categorized_elements(self.portal)
         self.assertEqual(
             result,
@@ -316,7 +314,7 @@ class TestUtils(BaseTestCase, unittest.TestCase):
               'description': 'Document description',
               'download_url': None,
               'filesize': None,
-              'icon_url': u'config/group-1/category-x/@@download',
+              'icon_url': u'config/group-1/category-x/@@images/{0}'.format(scale),
               'id': 'doc-subcategory-move',
               'portal_type': 'Document',
               'preview_status': 'not_convertable',
@@ -465,14 +463,12 @@ class TestUtils(BaseTestCase, unittest.TestCase):
             icon=self.icon,
             container=self.config['group-1'],
         )
-        # need to commit for icon Blob to be available
-        import transaction
-        transaction.commit()
         subcategory = api.content.create(
             type='ContentSubcategory',
             title='Subcategory X',
             container=category,
         )
+        transaction.commit()
         document = api.content.create(
             type='Document',
             title='doc-subcategory-remove',
@@ -484,7 +480,6 @@ class TestUtils(BaseTestCase, unittest.TestCase):
 
         subcategory = utils.get_category_object(document, document.content_category)
         doc_icon_url = utils.get_category_icon_url(subcategory)
-        self.assertEqual(doc_icon_url, u'config/group-1/category-x/@@download')
-        # element is really downloadable as icon is a primary field
-        download_view = self.portal.restrictedTraverse(str(doc_icon_url))
-        self.assertTrue(isinstance(download_view(), file))
+        category = subcategory.get_category()
+        scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
+        self.assertEqual(doc_icon_url, u'config/group-1/category-x/@@images/{0}'.format(scale))

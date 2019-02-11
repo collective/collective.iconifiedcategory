@@ -38,6 +38,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
             obj)
         category = get_category_object(obj, obj.content_category)
         infos = file_adapter.get_infos(category)
+        scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         self.assertEqual(
             infos,
             {'category_id': category.category_id,
@@ -48,7 +49,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'description': obj.Description(),
              'download_url': u'file/@@download',
              'filesize': 3017,
-             'icon_url': u'config/group-1/category-1-1/@@download',
+             'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -71,6 +72,8 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         # image use a subcategory
         subcategory = get_category_object(obj, obj.content_category)
         infos = image_adapter.get_infos(subcategory)
+        category = subcategory.get_category()
+        scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         self.assertEqual(
             infos,
             {'category_id': subcategory.category_id,
@@ -81,7 +84,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'description': obj.Description(),
              'download_url': u'image/@@download',
              'filesize': 3742,
-             'icon_url': u'config/group-1/category-1-1/@@download',
+             'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -104,6 +107,8 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         subcategory = self.portal.restrictedTraverse('config/group-1/category-1-1/subcategory-1-1-1')
         self.assertTrue(ISubcategory.providedBy(subcategory))
         infos = file_adapter.get_infos(subcategory)
+        category = subcategory.get_category()
+        scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         self.assertEqual(
             infos,
             {'category_id': subcategory.category_id,
@@ -114,7 +119,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'description': obj.Description(),
              'download_url': u'file/@@download',
              'filesize': 3017,
-             'icon_url': u'config/group-1/category-1-1/@@download',
+             'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',

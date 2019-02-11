@@ -5,6 +5,7 @@ from Products.Five import zcml
 from plone import api
 from collective import iconifiedcategory as collective_iconifiedcategory
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.utils import get_category_object
 
 
 class TestCategorizedChildView(BaseTestCase):
@@ -40,10 +41,13 @@ class TestCategorizedChildView(BaseTestCase):
                 api.content.delete(self.portal[element])
 
     def test__call__(self):
+        category = get_category_object(self.portal.file,
+                                       self.portal.file.content_category)
+        scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         # the category and elements of category is displayed
         result = self.view()
         self.assertTrue(
-            u'<img src="http://nohost/plone/config/group-1/category-1-1/@@download"'
+            u'<img src="http://nohost/plone/config/group-1/category-1-1/@@images/{0}"'.format(scale)
             in result)
 
         # remove the categorized elements

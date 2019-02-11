@@ -34,6 +34,9 @@ class Subcategory(Item):
     def category_title(self):
         return self.aq_parent.Title()
 
+    def get_category(self):
+        return self.aq_parent
+
     def get_category_group(self, context=None):
         if context is None:
             context = self
