@@ -8,20 +8,6 @@ Created by mpeeters
 """
 
 from collections import OrderedDict
-from plone import api
-from plone.app.contenttypes.interfaces import IFile
-from plone.app.contenttypes.interfaces import IImage
-from plone.memoize import ram
-from time import time
-from zope.component import getAdapter
-from zope.component import getMultiAdapter
-from zope.component import queryAdapter
-from zope.globalrequest import getRequest
-from zope.i18n import translate
-
-import copy
-import types
-
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory import logger
@@ -33,6 +19,21 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
+from plone import api
+from plone.app.contenttypes.interfaces import IFile
+from plone.app.contenttypes.interfaces import IImage
+from plone.memoize import ram
+from Products.CMFPlone.utils import safe_unicode
+from natsort import realsorted
+from time import time
+from zope.component import getAdapter
+from zope.component import getMultiAdapter
+from zope.component import queryAdapter
+from zope.globalrequest import getRequest
+from zope.i18n import translate
+
+import copy
+import types
 
 
 def format_id_css(id):
@@ -161,9 +162,9 @@ def update_categorized_elements(parent,
     infos = parent.categorized_elements.get(uid, {})
     infos.update(new_infos)
     parent.categorized_elements[uid] = infos
+    parent._p_changed = True
     if sort:
         sort_categorized_elements(parent)
-    parent._p_changed = True
     if logging:
         logger.info('Updated categorized elements of {0}'.format(
             obj.absolute_url_path()))
@@ -189,7 +190,6 @@ def update_all_categorized_elements(container, limited=False, sort=True):
             container.categorized_elements[uid] = infos
     if container.categorized_elements and sort:
         sort_categorized_elements(container)
-        container._p_changed = True
 
 
 def get_ordered_categories(context):
@@ -217,14 +217,16 @@ def sort_categorized_elements(context):
     """Sort the categorized elements on an object"""
     ordered_categories = get_ordered_categories(context)
     try:
-        elements = sorted(
+        # use realsorted on a lowered title so it mixes uppercase and lowercase titles
+        elements = realsorted(
             context.categorized_elements.items(),
             key=lambda x: (ordered_categories[x[1]['category_uid']],
-                           x[1]['title'].lower(),),
+                           safe_unicode(x[1]['title'].lower()),),
         )
     except KeyError:
         return
     context.categorized_elements = OrderedDict([(k, v) for k, v in elements])
+    context._p_changed = True
 
 
 def remove_categorized_element(parent, obj):
