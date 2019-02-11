@@ -403,6 +403,14 @@ class TestUtils(BaseTestCase):
             to_print=False,
             confidential=False,
         )
+        document10 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='doc10',
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
         document1 = createContentInContainer(
             container=self.portal,
             portal_type='Document',
@@ -411,8 +419,23 @@ class TestUtils(BaseTestCase):
             to_print=False,
             confidential=False,
         )
-        result = ['doc3', 'doc2', 'doc1']
+        document4 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='Doc4',
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+
+        self.assertEqual(
+            [cat.id for cat in utils.get_categories(document1, the_objects=True)],
+            ['category-1-3', 'category-2-3', 'category-1-2',
+             'category-2-2', 'category-1-1', 'category-2-1']
+        )
+
         # order is respected, by category
+        result = ['doc3', 'doc2', 'doc1', 'Doc4', 'doc10']
         self.assertEqual(
             result,
             [e['title'] for e in self.portal.categorized_elements.values()],
@@ -420,6 +443,8 @@ class TestUtils(BaseTestCase):
         api.content.delete(document1)
         api.content.delete(document2)
         api.content.delete(document3)
+        api.content.delete(document10)
+        api.content.delete(document4)
 
     def test_update_all_categorized_elements(self):
         document1 = createContentInContainer(

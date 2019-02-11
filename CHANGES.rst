@@ -4,6 +4,13 @@ Changelog
 0.35 (unreleased)
 -----------------
 
+- Use ram.cache for utils.get_ordered_categories to cache during a REQUEST.
+  [gbastien]
+- Added parameter `only_enabled (True by default)` when
+  `using utils.get_ordered_categories` and
+  `IconifiedCategoryGroupAdapter.get_every_categories` to be able to have every
+  categories in utils.sort_categorized_elements.
+  [gbastien]
 - Use generated url for `scale mini` as icon url so it can be cached.
   [gbastien]
 
@@ -12,6 +19,12 @@ Changelog
 
 - Display `content_category` title at the top of `@@categorized-childs-infos`
   tooltipster view.
+  [gbastien]
+- Use `natsort.realsorted` to sort categorized elements on their title,
+  elements are sorted regardless of uppercase or lowercase title.
+  [gbastien]
+- Moved `context._p_changed = True` to the `utils.sort_categorized_elements`
+  method so we are sure that calling it will correctly manage `_p_changed`.
   [gbastien]
 
 0.33 (2018-08-03)

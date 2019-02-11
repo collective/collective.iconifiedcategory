@@ -8,20 +8,6 @@ Created by mpeeters
 """
 
 from collections import OrderedDict
-from plone import api
-from plone.app.contenttypes.interfaces import IFile
-from plone.app.contenttypes.interfaces import IImage
-from plone.memoize import ram
-from time import time
-from zope.component import getAdapter
-from zope.component import getMultiAdapter
-from zope.component import queryAdapter
-from zope.globalrequest import getRequest
-from zope.i18n import translate
-
-import copy
-import types
-
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory import logger
@@ -33,6 +19,21 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
+from plone import api
+from plone.app.contenttypes.interfaces import IFile
+from plone.app.contenttypes.interfaces import IImage
+from plone.memoize import ram
+from Products.CMFPlone.utils import safe_unicode
+from natsort import realsorted
+from time import time
+from zope.component import getAdapter
+from zope.component import getMultiAdapter
+from zope.component import queryAdapter
+from zope.globalrequest import getRequest
+from zope.i18n import translate
+
+import copy
+import types
 
 
 def format_id_css(id):
@@ -86,8 +87,9 @@ def get_categories(context,
         'object_provides': 'collective.iconifiedcategory.content.category.ICategory',
         'sort_on': sort_on,
         'path': '/'.join(config_group.getPhysicalPath()),
-        'enabled': only_enabled
     }
+    if only_enabled:
+        query['enabled'] = True
     res = catalog.unrestrictedSearchResults(query)
     if the_objects:
         res = [brain.getObject() for brain in res]
@@ -161,9 +163,9 @@ def update_categorized_elements(parent,
     infos = parent.categorized_elements.get(uid, {})
     infos.update(new_infos)
     parent.categorized_elements[uid] = infos
+    parent._p_changed = True
     if sort:
         sort_categorized_elements(parent)
-    parent._p_changed = True
     if logging:
         logger.info('Updated categorized elements of {0}'.format(
             obj.absolute_url_path()))
@@ -189,24 +191,28 @@ def update_all_categorized_elements(container, limited=False, sort=True):
             container.categorized_elements[uid] = infos
     if container.categorized_elements and sort:
         sort_categorized_elements(container)
-        container._p_changed = True
 
 
-def get_ordered_categories(context):
+def get_ordered_categories_cachekey(method, context, only_enabled=True):
+    """ """
+    return str(context.REQUEST._debug), get_config_root(context), only_enabled
+
+
+@ram.cache(get_ordered_categories_cachekey)
+def get_ordered_categories(context, only_enabled=True):
     """Return an ordered dict for categories (id and uids)"""
     elements = {}
     config_root = get_config_root(context)
     adapter = getMultiAdapter((config_root, context), IIconifiedCategoryGroup)
-    categories = adapter.get_every_categories()
+    categories = adapter.get_every_categories(only_enabled=only_enabled)
+    query = {}
+    query['object_provides'] = 'collective.iconifiedcategory.content.subcategory.ISubcategory'
+    if only_enabled:
+        query['enabled'] = True
     for idx, category in enumerate(categories):
         elements[category.UID] = idx
         elements[calculate_category_id(category.getObject())] = idx
-
-        subcategories = api.content.find(
-            context=category,
-            object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
-            enabled=True,
-        )
+        subcategories = api.content.find(context=category, **query)
         for subcategory in subcategories:
             elements[subcategory.UID] = idx
             elements[calculate_category_id(subcategory.getObject())] = idx
@@ -215,16 +221,18 @@ def get_ordered_categories(context):
 
 def sort_categorized_elements(context):
     """Sort the categorized elements on an object"""
-    ordered_categories = get_ordered_categories(context)
+    ordered_categories = get_ordered_categories(context, only_enabled=False)
+    # use realsorted on a lowered title so it mixes uppercase and lowercase titles
     try:
-        elements = sorted(
+        elements = realsorted(
             context.categorized_elements.items(),
             key=lambda x: (ordered_categories[x[1]['category_uid']],
-                           x[1]['title'].lower(),),
+                           safe_unicode(x[1]['title'].lower()),),
         )
     except KeyError:
         return
     context.categorized_elements = OrderedDict([(k, v) for k, v in elements])
+    context._p_changed = True
 
 
 def remove_categorized_element(parent, obj):
