@@ -43,3 +43,13 @@ def upgrade_to_2000(context):
             i, nb_of_parents_to_update, '/'.join(parent_to_update.getPhysicalPath())))
         i = i + 1
         update_all_categorized_elements(parent_to_update, limited=False, sort=False)
+
+
+def upgrade_to_2100(context):
+    '''
+    '''
+    # get every categories and generate scales for it or it is generated at first access
+    brains = api.content.find(object_provides='collective.iconifiedcategory.content.category.ICategory')
+    for brain in brains:
+        category = brain.getObject()
+        category.restrictedTraverse('@@images').scale(scale='listing')
