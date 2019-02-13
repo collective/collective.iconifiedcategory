@@ -91,6 +91,10 @@ class IIconifiedCategorySettings(Interface):
 
 # Events
 
+class ICategorizedElementsUpdatedEvent(IObjectEvent):
+    pass
+
+
 class IIconifiedChangedEvent(IObjectEvent):
 
     old_values = Attribute("The old values")

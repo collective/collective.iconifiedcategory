@@ -7,14 +7,14 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from Products.Five import BrowserView
-from plone import api
-from zope.event import notify
-from zope.i18n import translate
-
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.event import IconifiedCategoryChangedEvent
+from collective.iconifiedcategory.event import CategorizedElementsUpdatedEvent
+from plone import api
+from Products.Five import BrowserView
+from zope.event import notify
+from zope.i18n import translate
 
 
 class UpdateCategorizedElementsBase(BrowserView):
@@ -44,6 +44,7 @@ class UpdateCategorizedElementsBase(BrowserView):
         msg = translate('Elements updated!',
                         domain='collective.iconifiedcategory',
                         context=self.request)
+        notify(CategorizedElementsUpdatedEvent(self.context))
         api.portal.show_message(msg, request=self.request)
         self.request.RESPONSE.redirect(self.context.absolute_url())
 

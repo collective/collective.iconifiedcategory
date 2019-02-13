@@ -7,14 +7,14 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from zope.component.interfaces import ObjectEvent
-from zope.interface import implements
-
+from collective.iconifiedcategory.interfaces import ICategorizedElementsUpdatedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedSignedChangedEvent
+from zope.component.interfaces import ObjectEvent
+from zope.interface import implements
 
 
 class IconifiedChangedEvent(ObjectEvent):
@@ -47,3 +47,7 @@ class IconifiedConfidentialChangedEvent(IconifiedChangedEvent):
 
 class IconifiedSignedChangedEvent(IconifiedChangedEvent):
     implements(IIconifiedSignedChangedEvent)
+
+
+class CategorizedElementsUpdatedEvent(ObjectEvent):
+    implements(ICategorizedElementsUpdatedEvent)

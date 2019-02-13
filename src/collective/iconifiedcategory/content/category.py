@@ -7,17 +7,16 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.iconifiedcategory import _
+from collective.iconifiedcategory.content.base import ICategorize
 from plone.app.contenttypes.interfaces import IFolder
+from plone.autoform import directives as form
 from plone.dexterity.content import Container
 from plone.dexterity.schema import DexteritySchemaPolicy
-from plone.autoform import directives as form
 from plone.namedfile.field import NamedBlobImage
 from plone.rfc822.interfaces import IPrimaryField
 from zope.interface import alsoProvides
 from zope.interface import implements
-
-from collective.iconifiedcategory import _
-from collective.iconifiedcategory.content.base import ICategorize
 
 
 class ICategory(IFolder, ICategorize):

@@ -13,6 +13,9 @@ Changelog
   [gbastien]
 - Use generated url for `scale mini` as icon url so it can be cached.
   [gbastien]
+- Trigger `CategorizedElementsUpdatedEvent` after elements using a
+  ContentCategory have been updated.
+  [gbastien]
 
 0.34 (2019-01-31)
 -----------------
