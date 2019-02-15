@@ -390,16 +390,16 @@ class TestUtils(BaseTestCase):
         document2 = createContentInContainer(
             container=self.portal,
             portal_type='Document',
-            title='doc2',
-            content_category='config_-_group-1_-_category-1-2',
+            title='CV Info N\xc2\xb02016-2',
+            content_category='config_-_group-1_-_category-1-1',
             to_print=False,
             confidential=False,
         )
         document3 = createContentInContainer(
             container=self.portal,
             portal_type='Document',
-            title='doc3',
-            content_category='config_-_group-1_-_category-1-3',
+            title='CV Info N\xc2\xb02016-1',
+            content_category='config_-_group-1_-_category-1-1',
             to_print=False,
             confidential=False,
         )
@@ -407,7 +407,7 @@ class TestUtils(BaseTestCase):
             container=self.portal,
             portal_type='Document',
             title='doc10',
-            content_category='config_-_group-1_-_category-1-1',
+            content_category='config_-_group-1_-_category-1-2',
             to_print=False,
             confidential=False,
         )
@@ -415,7 +415,7 @@ class TestUtils(BaseTestCase):
             container=self.portal,
             portal_type='Document',
             title='doc1',
-            content_category='config_-_group-1_-_category-1-1',
+            content_category='config_-_group-1_-_category-1-2',
             to_print=False,
             confidential=False,
         )
@@ -423,7 +423,7 @@ class TestUtils(BaseTestCase):
             container=self.portal,
             portal_type='Document',
             title='Doc4',
-            content_category='config_-_group-1_-_category-1-1',
+            content_category='config_-_group-1_-_category-1-2',
             to_print=False,
             confidential=False,
         )
@@ -435,7 +435,7 @@ class TestUtils(BaseTestCase):
         )
 
         # order is respected, by category
-        result = ['doc3', 'doc2', 'doc1', 'Doc4', 'doc10']
+        result = ['doc1', 'Doc4', 'doc10', 'CV Info N\xc2\xb02016-1', 'CV Info N\xc2\xb02016-2']
         self.assertEqual(
             result,
             [e['title'] for e in self.portal.categorized_elements.values()],

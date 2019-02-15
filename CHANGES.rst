@@ -16,6 +16,8 @@ Changelog
 - Trigger `CategorizedElementsUpdatedEvent` after elements using a
   ContentCategory have been updated.
   [gbastien]
+- Use `natsorted` instead `realsorted` to sort annexes by title.
+  [gbastien]
 
 0.34 (2019-01-31)
 -----------------

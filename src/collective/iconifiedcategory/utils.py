@@ -24,7 +24,7 @@ from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.memoize import ram
 from Products.CMFPlone.utils import safe_unicode
-from natsort import realsorted
+from natsort import natsorted
 from time import time
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
@@ -224,7 +224,7 @@ def sort_categorized_elements(context):
     ordered_categories = get_ordered_categories(context, only_enabled=False)
     # use realsorted on a lowered title so it mixes uppercase and lowercase titles
     try:
-        elements = realsorted(
+        elements = natsorted(
             context.categorized_elements.items(),
             key=lambda x: (ordered_categories[x[1]['category_uid']],
                            safe_unicode(x[1]['title'].lower()),),
