@@ -19,12 +19,12 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
+from natsort import natsorted
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.memoize import ram
 from Products.CMFPlone.utils import safe_unicode
-from natsort import natsorted
 from time import time
 from zope.component import getAdapter
 from zope.component import getMultiAdapter

@@ -18,6 +18,10 @@ Changelog
   [gbastien]
 - Use `natsorted` instead `realsorted` to sort annexes by title.
   [gbastien]
+- Updated upgrade step as step to 2100 should be done before step to 2000...
+  Removed step to 2000 and integrated it into step to 2100 so we first compute
+  ContentCategory icon listing scale then update every categorized elements.
+  [gbastien]
 
 0.34 (2019-01-31)
 -----------------

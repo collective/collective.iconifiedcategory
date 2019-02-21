@@ -1,16 +1,27 @@
 # -*- coding: utf-8 -*-
+from collective.iconifiedcategory import logger
+from collective.iconifiedcategory.utils import update_all_categorized_elements
 from plone import api
 from plone.dexterity.fti import DexterityFTI
 from Products.CMFPlone.utils import base_hasattr
-from collective.iconifiedcategory import logger
-from collective.iconifiedcategory.utils import update_all_categorized_elements
+
+import transaction
+
 
 behavior_id = 'collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorization'
 
 
-def upgrade_to_2000(context):
+def upgrade_to_2100(context):
     '''
     '''
+    # get every categories and generate scales for it or it is generated at first access
+    brains = api.content.find(object_provides='collective.iconifiedcategory.content.category.ICategory')
+    for brain in brains:
+        category = brain.getObject()
+        category.restrictedTraverse('@@images').scale(scale='listing')
+    # commit so scales are really available when updating categorized elements here under
+    transaction.commit()
+
     # get portal_types using IIconifiedCategorization behavior
     types_tool = api.portal.get_tool('portal_types')
     portal_types = []
@@ -42,14 +53,5 @@ def upgrade_to_2000(context):
         logger.info('Running update_all_categorized_elements for element {0}/{1} ({2})'.format(
             i, nb_of_parents_to_update, '/'.join(parent_to_update.getPhysicalPath())))
         i = i + 1
-        update_all_categorized_elements(parent_to_update, limited=False, sort=False)
-
-
-def upgrade_to_2100(context):
-    '''
-    '''
-    # get every categories and generate scales for it or it is generated at first access
-    brains = api.content.find(object_provides='collective.iconifiedcategory.content.category.ICategory')
-    for brain in brains:
-        category = brain.getObject()
-        category.restrictedTraverse('@@images').scale(scale='listing')
+        # recompute everything including sorting
+        update_all_categorized_elements(parent_to_update)
