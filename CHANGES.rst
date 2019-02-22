@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.35 (unreleased)
+0.35 (2019-02-22)
 -----------------
 
 - Use ram.cache for utils.get_ordered_categories to cache during a REQUEST.
