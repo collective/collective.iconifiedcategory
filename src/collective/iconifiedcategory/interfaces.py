@@ -6,7 +6,7 @@ from zope.component.interfaces import IObjectEvent
 from zope.interface import Attribute
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-
+from plone.namedfile.interfaces import IImageScaleTraversable
 from collective.iconifiedcategory import _
 
 
@@ -51,6 +51,10 @@ class ICategorizedConfidential(ICategorizedTable):
 
 
 class ICategorizedSigned(ICategorizedTable):
+    pass
+
+
+class IICImageScaleTraversable(IImageScaleTraversable):
     pass
 
 

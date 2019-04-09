@@ -308,4 +308,12 @@
     permission="cmf.ManagePortal"
     />
 
+  <browser:page
+      name="images"
+      for="collective.iconifiedcategory.interfaces.IICImageScaleTraversable"
+      class=".views.ImageDataModifiedImageScaling"
+      allowed_attributes="scale"
+      permission="zope2.View"
+      />
+
 </configure>

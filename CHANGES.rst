@@ -4,8 +4,12 @@ Changelog
 0.36 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Overrided `ImageScaling.modified` to take into account real stored icon file
+  `_p_mtime` instead category `_p_mtime` because the category's `_p_mtime` can
+  be modified for several reasons and that breaks existing content using the
+  icon. Moreover, it is now necessary to update elements using a category only
+  when icon file changed.
+  [gbastien]
 
 0.35 (2019-02-22)
 -----------------

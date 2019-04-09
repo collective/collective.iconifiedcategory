@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import Unauthorized
+from Acquisition import aq_base
 from Acquisition import aq_inner
-from zope.component import getMultiAdapter
-
-from Products.Five import BrowserView
 from collections import OrderedDict
-from plone import api
-from plone.namedfile.browser import DisplayFile
-from plone.namedfile.browser import Download
-from plone.formwidget.namedfile.widget import Download as fnw_Download
-
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.utils import confidential_message
@@ -18,6 +11,15 @@ from collective.iconifiedcategory.utils import get_categorized_elements
 from collective.iconifiedcategory.utils import print_message
 from collective.iconifiedcategory.utils import render_filesize
 from collective.iconifiedcategory.utils import signed_message
+from DateTime import DateTime
+from plone import api
+from plone.formwidget.namedfile.widget import Download as fnw_Download
+from plone.namedfile.browser import DisplayFile
+from plone.namedfile.browser import Download
+from plone.namedfile.scaling import ImageScaling
+from plone.rfc822.interfaces import IPrimaryFieldInfo
+from Products.Five import BrowserView
+from zope.component import getMultiAdapter
 
 
 class CategorizedChildView(BrowserView):
@@ -206,3 +208,14 @@ class CanViewAwareFNWDownload(fnw_Download):
         if not check_can_view(aq_inner(self.context.context), self.request):
             raise Unauthorized
         return super(CanViewAwareFNWDownload, self).__call__()
+
+
+class ImageDataModifiedImageScaling(ImageScaling):
+    """ """
+
+    def modified(self):
+        """Returns the stored file _p_mtime instead content _p_mtime."""
+        context = aq_base(self.context)
+        value = IPrimaryFieldInfo(context).value
+        date = DateTime(value._p_mtime)
+        return date.millis()

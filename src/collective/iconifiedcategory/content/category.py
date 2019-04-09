@@ -9,6 +9,7 @@ Created by mpeeters
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory.content.base import ICategorize
+from collective.iconifiedcategory.interfaces import IICImageScaleTraversable
 from plone.app.contenttypes.interfaces import IFolder
 from plone.autoform import directives as form
 from plone.dexterity.content import Container
@@ -19,7 +20,7 @@ from zope.interface import alsoProvides
 from zope.interface import implements
 
 
-class ICategory(IFolder, ICategorize):
+class ICategory(IFolder, ICategorize, IICImageScaleTraversable):
 
     form.order_before(icon='predefined_title')
     icon = NamedBlobImage(
