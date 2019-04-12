@@ -18,7 +18,8 @@ class IconifiedCategory(BrowserView):
         self.request.response.setHeader('Content-Type', 'text/css')
         content = []
         css = (u".{0} {{ padding-left: 1.4em; background: "
-               u"transparent url('{1}') no-repeat top left; }}")
+               u"transparent url('{1}') no-repeat top left; "
+               u"background-size: contain; }}")
         if utils.has_config_root(self.context) is False:
             return ''
         categories = utils.get_categories(self.context)

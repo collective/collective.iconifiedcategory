@@ -25,6 +25,9 @@ class ICategory(IFolder, ICategorize, IICImageScaleTraversable):
     form.order_before(icon='predefined_title')
     icon = NamedBlobImage(
         title=_(u'Icon'),
+        description=_(u'Please use an image with size of 16x16, if different, '
+                      u'the image will be reduced when displayed but this '
+                      u'could be not optimal.'),
         required=True,
     )
 alsoProvides(ICategory['icon'], IPrimaryField)

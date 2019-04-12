@@ -79,7 +79,7 @@ class BaseView(BrowserView):
 
         for key, value in values.items():
             self.set_value(key, value)
-        status, msg = self._get_status(values), 'Values have been set'
+        status, msg = self._get_status(values), _('Values have been set')
         if not status == 2:
             notify(ObjectModifiedEvent(self.context))
         return status, msg

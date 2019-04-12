@@ -10,6 +10,10 @@ Changelog
   icon. Moreover, it is now necessary to update elements using a category only
   when icon file changed.
   [gbastien]
+- Force display small icon in select2 droprown so it fits the available space,
+  this is the case when a large icon was uploaded.  Added description on field
+  `ContentCategory.icon` explaining to use a 16x16 image icon.
+  [gbastien]
 
 0.35 (2019-02-22)
 -----------------
