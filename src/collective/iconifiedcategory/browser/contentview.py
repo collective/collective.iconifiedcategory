@@ -7,16 +7,15 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from plone.dexterity.browser.edit import DefaultEditForm
+from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from plone.dexterity.browser.add import DefaultAddForm
 from plone.dexterity.browser.add import DefaultAddView
+from plone.dexterity.browser.edit import DefaultEditForm
 from plone.dexterity.browser.view import DefaultView
 from plone.dexterity.interfaces import IDexterityEditForm
 from plone.z3cform import layout
 from z3c.form.interfaces import HIDDEN_MODE
 from zope.interface import classImplements
-
-from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 
 
 class FormMixin(object):
