@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.36 (unreleased)
+0.36 (2019-04-23)
 -----------------
 
 - Overrided `ImageScaling.modified` to take into account real stored icon file
