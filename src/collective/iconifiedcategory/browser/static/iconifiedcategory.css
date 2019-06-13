@@ -115,6 +115,11 @@ div.tooltipster-categorized-elements label {
     display: block;
 }
 
+/* avoid scroll in tooltipster popup when categorized element title is displayed on 2 lines */
+div.tooltipster-categorized-elements span.title-first-part {
+    white-space: nowrap;
+}
+
 #content .iconified-listing td.iconified-print a,
 #content .iconified-listing td.iconified-signed a,
 #content .iconified-listing td.iconified-confidential a,

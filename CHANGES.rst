@@ -4,8 +4,9 @@ Changelog
 0.37 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Avoid vertical scroll in tooltipster popup when categorized content title
+  is displayed on several lines.
+  [gbastien]
 
 0.36 (2019-04-23)
 -----------------
