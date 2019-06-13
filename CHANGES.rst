@@ -7,6 +7,8 @@ Changelog
 - Avoid vertical scroll in tooltipster popup when categorized content title
   is displayed on several lines.
   [gbastien]
+- Force use distribution trusty in Travis.
+  [gbastien]
 
 0.36 (2019-04-23)
 -----------------
