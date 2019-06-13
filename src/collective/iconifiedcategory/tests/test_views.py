@@ -76,9 +76,9 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         # the category and elements of category is displayed
         self.viewinfos.update()
         result = self.viewinfos.index()
-        self.assertTrue('<a href="http://nohost/plone/file/@@download">' in result)
+        self.assertTrue('<a class="categorized-element-title" href="http://nohost/plone/image/@@download">' in result)
         self.assertTrue('<span title="File description">file.txt</span>' in result)
-        self.assertTrue(u'<a href="http://nohost/plone/image/@@download">' in result)
+        self.assertTrue(u'<a class="categorized-element-title" href="http://nohost/plone/image/@@download">' in result)
         self.assertTrue(u'<span title="Image description">ic\xf4ne1.png</span>' in result)
 
         # in case a file is too large, a warning is displayed
