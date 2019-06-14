@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.37 (unreleased)
+0.37 (2019-06-14)
 -----------------
 
 - Avoid vertical scroll in tooltipster popup when categorized content title
