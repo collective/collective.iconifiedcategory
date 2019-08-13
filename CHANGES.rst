@@ -9,6 +9,9 @@ Changelog
   `ImageDataModifiedImageScaling` class, this could be a problem if it is
   overrided by a subpackage.
   [gbastien]
+- Tried to fix again tooltipster popup when categorized element title is
+  displayed on several lines...
+  [gbastien]
 
 0.37 (2019-06-14)
 -----------------
