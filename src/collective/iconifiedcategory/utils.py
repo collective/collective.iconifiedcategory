@@ -136,7 +136,11 @@ def get_category_icon_url(category):
     else:
         obj = category.aq_parent
 
-    scale = obj.restrictedTraverse("@@images").scale(scale='listing')
+    # do not use restrictedTraverse or getMultiAdapter to get the "@@images" view
+    # because when used with plone.app.async, as there is no REQUEST, it fails.
+    from collective.iconifiedcategory.browser.views import ImageDataModifiedImageScaling
+    images = ImageDataModifiedImageScaling(category, getattr(category, 'REQUEST', {}))
+    scale = images.scale(scale='listing')
 
     return u'{0}/@@images/{1}'.format(
         portal_url.getRelativeContentURL(obj),
@@ -195,7 +199,11 @@ def update_all_categorized_elements(container, limited=False, sort=True):
 
 def get_ordered_categories_cachekey(method, context, only_enabled=True):
     """ """
-    return str(context.REQUEST._debug), get_config_root(context), only_enabled
+    # while using plone.app.async, there is not REQUEST
+    debug = 'no_request'
+    if hasattr(context, 'REQUEST'):
+        debug = str(context.REQUEST._debug)
+    return debug, get_config_root(context), only_enabled
 
 
 @ram.cache(get_ordered_categories_cachekey)
