@@ -139,7 +139,7 @@ def get_category_icon_url(category):
     # do not use restrictedTraverse or getMultiAdapter to get the "@@images" view
     # because when used with plone.app.async, as there is no REQUEST, it fails.
     from collective.iconifiedcategory.browser.views import ImageDataModifiedImageScaling
-    images = ImageDataModifiedImageScaling(category, getattr(category, 'REQUEST', {}))
+    images = ImageDataModifiedImageScaling(obj, getattr(obj, 'REQUEST', {}))
     scale = images.scale(scale='listing')
 
     return u'{0}/@@images/{1}'.format(
