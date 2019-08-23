@@ -5,7 +5,7 @@ Changelog
 -----------------
 
 - Fixed code to work with `plone.app.async` as in this case, there is no
- `REQUEST`.  To do this, needed to get the `@@images` view by instantiating the
+  `REQUEST`.  To do this, needed to get the `@@images` view by instantiating the
   `ImageDataModifiedImageScaling` class, this could be a problem if it is
   overrided by a subpackage.
   [gbastien]
