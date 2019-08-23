@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.38 (unreleased)
+0.38 (2019-08-23)
 -----------------
 
 - Fixed code to work with `plone.app.async` as in this case, there is no
