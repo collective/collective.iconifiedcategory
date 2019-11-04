@@ -113,6 +113,10 @@ class IIconifiedConfidentialChangedEvent(IIconifiedChangedEvent):
     pass
 
 
+class IIconifiedPublishableChangedEvent(IIconifiedChangedEvent):
+    pass
+
+
 class IIconifiedModifiedEvent(IObjectEvent):
     pass
 
