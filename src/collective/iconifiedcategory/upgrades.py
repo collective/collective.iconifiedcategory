@@ -55,3 +55,39 @@ def upgrade_to_2100(context):
         i = i + 1
         # recompute everything including sorting
         update_all_categorized_elements(parent_to_update)
+
+
+def _portal_types_using_behavior():
+    ''' '''
+    types_tool = api.portal.get_tool('portal_types')
+    portal_types = []
+    for type_info in types_tool.listTypeInfo():
+        if isinstance(type_info, DexterityFTI) and behavior_id in type_info.behaviors:
+            portal_types.append(type_info.id)
+
+
+def upgrade_to_2101(context):
+    ''' '''
+    portal_types = _portal_types_using_behavior()
+    catalog = api.portal.get_tool('portal_catalog')
+    brains = catalog(portal_type=portal_types)
+
+    parents_to_update = []
+    for brain in brains:
+        obj = brain.getObject()
+        if not(base_hasattr(obj, 'publishable')):
+            setattr(obj, 'publishable', False)
+
+        parent = obj.aq_parent
+        if parent not in parents_to_update:
+            parents_to_update.append(parent)
+
+    # finally update parents that contains categorized elements
+    nb_of_parents_to_update = len(parents_to_update)
+    i = 1
+    for parent_to_update in parents_to_update:
+        logger.info('Running update_all_categorized_elements for element {0}/{1} ({2})'.format(
+            i, nb_of_parents_to_update, '/'.join(parent_to_update.getPhysicalPath())))
+        i = i + 1
+        # recompute everything including sorting
+        update_all_categorized_elements(parent_to_update)

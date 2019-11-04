@@ -40,7 +40,8 @@ class CategorizedObjectInfoAdapter(object):
             'icon_url': utils.get_category_icon_url(category),
             'to_be_printed_activated': self._to_be_printed_activated(category),
             'confidentiality_activated': self._confidentiality_activated(category),
-            'signed_activated': self._signed_activated(category)
+            'signed_activated': self._signed_activated(category),
+            'publishable_activated': self._publishable_activated(category),
         }
         # update subcategory infos if any
         if ISubcategory.providedBy(category):
@@ -68,6 +69,7 @@ class CategorizedObjectInfoAdapter(object):
             'confidential': self._confidential,
             'to_sign': self._to_sign,
             'signed': self._signed,
+            'publishable': self._publishable,
             'preview_status': self._preview_status,
         }
         infos.update(base_infos)
@@ -125,6 +127,14 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _signed(self):
         return getattr(self.obj, 'signed', False)
+
+    def _publishable_activated(self, category):
+        category_group = category.get_category_group()
+        return category_group.publishable_activated
+
+    @property
+    def _publishable(self):
+        return getattr(self.obj, 'publishable', False)
 
     @property
     def _preview_status(self):

@@ -420,6 +420,18 @@ def signed_message(obj=None, to_sign_value=None, signed_value=None):
         return messages[signed_value]
 
 
+def publishable_message(obj=None, publishable_value=None):
+    """Return the publishable status message for the given object"""
+    messages = {
+        True: u'Element is publishable',
+        False: u'Element is not publishable',
+    }
+    if obj:
+        return messages.get(getattr(obj, 'publishable', None), '')
+    else:
+        return messages[publishable_value]
+
+
 @ram.cache(lambda f, p: (p, time() // (60 * 60)))
 def is_file_type(portal_type):
     """Verify if the given portal type provides IFile or IImage"""

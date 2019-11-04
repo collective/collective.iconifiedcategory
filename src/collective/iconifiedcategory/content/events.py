@@ -62,6 +62,12 @@ def categorized_content_created(obj, event):
             obj.to_sign = False
             obj.signed = False
 
+        # only set default value if obj was not created with a publishable=True
+        if category_group.publishable_activated and not getattr(obj, 'publishable', False):
+            obj.publishable = category.publishable
+        elif not category_group.publishable_activated:
+            obj.publishable = False
+
         # to_print changed event is managed in categorized_content_updated
         categorized_content_updated(event)
 
