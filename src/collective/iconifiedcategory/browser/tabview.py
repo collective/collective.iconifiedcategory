@@ -292,6 +292,21 @@ class SignedColumn(IconClickableColumn):
         return not getattr(obj, 'to_sign', True)
 
 
+class PublishableColumn(IconClickableColumn):
+    header = _(u'Publishable')
+    cssClasses = {'td': 'iconified-publishable'}
+    weight = 98
+    attrName = 'publishable'
+    action_view = 'iconified-publishable'
+
+    def alt(self, obj):
+        return translate(
+            utils.publishable_message(obj),
+            domain='collective.iconifiedcategory',
+            context=self.table.request,
+        )
+
+
 class ActionColumn(column.GetAttrColumn):
     header = u''
     weight = 100
