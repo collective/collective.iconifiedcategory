@@ -237,7 +237,7 @@
     name="publishable-column"
     for="zope.interface.Interface
          zope.interface.Interface
-         collective.iconifiedcategory.interfaces.ICategorizedSigned"
+         collective.iconifiedcategory.interfaces.ICategorizedPublishable"
     provides="z3c.table.interfaces.IColumn"
     factory=".tabview.PublishableColumn"
     />

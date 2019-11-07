@@ -50,6 +50,10 @@ class ICategorizedConfidential(ICategorizedTable):
     pass
 
 
+class ICategorizedPublishable(ICategorizedTable):
+    pass
+
+
 class ICategorizedSigned(ICategorizedTable):
     pass
 

@@ -23,6 +23,7 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
+from collective.iconifiedcategory.interfaces import ICategorizedPublishable
 from collective.iconifiedcategory.interfaces import ICategorizedSigned
 from collective.iconifiedcategory.interfaces import ICategorizedTable
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
@@ -39,6 +40,7 @@ class CategorizedTabView(BrowserView):
     def _prepare_table_render(self, table, portal_type):
         alsoProvides(table, ICategorizedConfidential)
         alsoProvides(table, ICategorizedPrint)
+        alsoProvides(table, ICategorizedPublishable)
         alsoProvides(table, ICategorizedSigned)
 
 
