@@ -266,7 +266,7 @@ class ConfidentialColumn(IconClickableColumn):
 
     def alt(self, obj):
         return translate(
-            utils.confidential_message(obj),
+            utils.boolean_message(obj, attr_name='confidential'),
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
@@ -303,7 +303,7 @@ class PublishableColumn(IconClickableColumn):
 
     def alt(self, obj):
         return translate(
-            utils.publishable_message(obj),
+            utils.boolean_message(obj, attr_name='publishable'),
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )

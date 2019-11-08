@@ -148,7 +148,8 @@ class ConfidentialChangeView(BaseView):
             old_values,
             values,
         ))
-        return self._get_status(values), utils.confidential_message(self.context)
+        return self._get_status(values), utils.boolean_message(
+            self.context, attr_name='confidential')
 
 
 class SignedChangeView(BaseView):
@@ -209,4 +210,5 @@ class PublishableChangeView(BaseView):
             old_values,
             values,
         ))
-        return self._get_status(values), utils.confidential_message(self.context)
+        return self._get_status(values), utils.boolean_message(
+            self.context, attr_name='publishable')

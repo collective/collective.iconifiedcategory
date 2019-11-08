@@ -6,7 +6,7 @@ from Acquisition import aq_inner
 from collections import OrderedDict
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
-from collective.iconifiedcategory.utils import confidential_message
+from collective.iconifiedcategory.utils import boolean_message
 from collective.iconifiedcategory.utils import get_categorized_elements
 from collective.iconifiedcategory.utils import print_message
 from collective.iconifiedcategory.utils import render_filesize
@@ -121,23 +121,9 @@ class CategorizedChildInfosView(BrowserView):
         columns_treshold = float(columns_treshold)
         return round(len(elements) / columns_treshold)
 
-    def show_to_print(self, element):
+    def show(self, element, attr_prefix):
         """ """
-        show = element['to_be_printed_activated']
-        if show:
-            self.have_details_to_show = True
-        return show
-
-    def show_confidential(self, element):
-        """ """
-        show = element['confidentiality_activated']
-        if show:
-            self.have_details_to_show = True
-        return show
-
-    def show_signed(self, element):
-        """ """
-        show = element['signed_activated']
+        show = element['{0}_activated'.format(attr_prefix)]
         if show:
             self.have_details_to_show = True
         return show
@@ -155,15 +141,16 @@ class CategorizedChildInfosView(BrowserView):
                 css_classes.append('deactivated')
             elif element['to_print'] is True:
                 css_classes.append('active')
-        elif functionnality == "confidential":
-            css_classes.append("iconified-confidential")
-            if element['confidential'] is True:
-                css_classes.append('active')
         elif functionnality == "signed":
             css_classes.append("iconified-signed")
             if element['to_sign'] is False:
                 css_classes.append('deactivated')
             elif element['signed'] is True:
+                css_classes.append('active')
+        else:
+            # default behavior
+            css_classes.append("iconified-{0}".format(functionnality))
+            if element[functionnality] is True:
                 css_classes.append('active')
         return " ".join(css_classes)
 
@@ -172,11 +159,13 @@ class CategorizedChildInfosView(BrowserView):
         msg = ''
         if functionnality == "to_print":
             msg = print_message(to_print_value=element['to_print'])
-        elif functionnality == "confidential":
-            msg = confidential_message(confidential_value=element['confidential'])
         elif functionnality == "signed":
             msg = signed_message(to_sign_value=element['to_sign'],
                                  signed_value=element['signed'])
+        else:
+            # default behavior, a boolean message
+            msg = boolean_message(attr_name=functionnality,
+                                  value=element[functionnality])
         return msg
 
 
