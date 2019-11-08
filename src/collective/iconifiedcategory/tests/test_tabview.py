@@ -76,6 +76,7 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertTrue(document2.title in result)
 
     def test_table_render_when_preview_enabled(self):
+        self.portal.portal_properties.site_properties.typesUseViewActionInListings = ()
         # enable collective.documentviewer so document is convertible
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()

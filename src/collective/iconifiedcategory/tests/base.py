@@ -55,6 +55,7 @@ class BaseTestCase(unittest.TestCase):
             content_category='config_-_group-1_-_category-1-1',
             to_print=False,
             confidential=False,
+            publishable=False,
         )
         cat_id = 'config_-_group-1_-_category-1-1_-_subcategory-1-1-1'
         api.content.create(
@@ -66,6 +67,7 @@ class BaseTestCase(unittest.TestCase):
             content_category=cat_id,
             to_print=False,
             confidential=False,
+            publishable=False,
         )
 
     def tearDown(self):

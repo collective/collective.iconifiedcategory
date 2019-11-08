@@ -30,8 +30,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 class BaseView(BrowserView):
     attribute_mapping = {}
-    category_attr_name = None
-    category_group_attr_name = None
+    category_group_attr_name = ''
 
     def _translate(self, msgid):
         return translate(
@@ -76,7 +75,7 @@ class BaseView(BrowserView):
             # is this functionnality enabled?
             category = utils.get_category_object(self.context, self.context.content_category)
             category_group = category.get_category_group()
-            res = getattr(category_group, self.category_group_attr_name)
+            res = getattr(category_group, self.category_group_attr_name, True)
         return res
 
     def set_values(self, values):

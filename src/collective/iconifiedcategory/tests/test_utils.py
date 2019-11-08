@@ -318,6 +318,8 @@ class TestUtils(BaseTestCase):
               'id': 'doc-subcategory-move',
               'portal_type': 'Document',
               'preview_status': 'not_convertable',
+              'publishable': False,
+              'publishable_activated': False,
               'relative_url': 'doc-subcategory-move',
               'signed': False,
               'signed_activated': False,
