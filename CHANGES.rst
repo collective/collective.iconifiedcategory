@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.39 (unreleased)
+0.39 (2019-11-26)
 -----------------
 
 - Added management of `publishable` attribute like it is the case for `to_print`
