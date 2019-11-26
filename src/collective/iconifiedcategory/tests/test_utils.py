@@ -221,15 +221,27 @@ class TestUtils(BaseTestCase):
         self.assertEqual(u'Not convertible to a printable format',
                          utils.print_message(obj))
 
-    def test_confidential_message(self):
+    def test_boolean_message(self):
         obj = type('obj', (object, ), OrderedDict())()
-        self.assertEqual(u'', utils.confidential_message(obj))
+        self.assertEqual(u'', utils.boolean_message(obj))
 
         obj.confidential = True
-        self.assertEqual(u'Element is confidential', utils.confidential_message(obj))
+        self.assertEqual(
+            u'Element is confidential',
+            utils.boolean_message(obj, attr_name='confidential'))
+        obj.publishable = True
+        self.assertEqual(
+            u'Element is publishable',
+            utils.boolean_message(obj, attr_name='publishable'))
 
         obj.confidential = False
-        self.assertEqual(u'Element is not confidential', utils.confidential_message(obj))
+        self.assertEqual(
+            u'Element is not confidential',
+            utils.boolean_message(obj, attr_name='confidential'))
+        obj.publishable = False
+        self.assertEqual(
+            u'Element is not publishable',
+            utils.boolean_message(obj, attr_name='publishable'))
 
     def test_warn_filesize(self):
         # default warning is for files > 5Mb
@@ -318,6 +330,8 @@ class TestUtils(BaseTestCase):
               'id': 'doc-subcategory-move',
               'portal_type': 'Document',
               'preview_status': 'not_convertable',
+              'publishable': False,
+              'publishable_activated': False,
               'relative_url': 'doc-subcategory-move',
               'signed': False,
               'signed_activated': False,

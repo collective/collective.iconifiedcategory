@@ -178,3 +178,31 @@ class TestSignedChangeView(BaseTestCase):
         self.assertEqual(
             view._get_next_values({'to_sign': False, 'signed': True}),
             (0, {'to_sign': True, 'signed': False}))
+
+
+class TestPublishableChangeView(BaseTestCase):
+
+    def test_set_values(self):
+        obj = self.portal['file']
+        view = obj.restrictedTraverse('@@iconified-publishable')
+
+        # works only if functionnality enabled and user have Modify portal content
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+
+        # fails if one of 2 conditions is not fullfilled
+        self.assertTrue(api.user.has_permission(ModifyPortalContent, obj=obj))
+        group.publishable_activated = False
+        self.assertRaises(Unauthorized, view.set_values, {'publishable': True})
+        group.publishable_activated = True
+
+        obj.manage_permission(ModifyPortalContent, roles=[])
+        self.assertRaises(Unauthorized, view.set_values, {'publishable': True})
+        obj.manage_permission(ModifyPortalContent, roles=['Manager'])
+
+        # functionnality enabled and user have Modify portal content
+        self.assertFalse(obj.publishable)
+        view.set_values({'publishable': True})
+        self.assertTrue(obj.publishable, obj.aq_parent.categorized_elements[obj.UID()]['publishable'])
+        view.set_values({'publishable': False})
+        self.assertFalse(obj.publishable, obj.aq_parent.categorized_elements[obj.UID()]['publishable'])

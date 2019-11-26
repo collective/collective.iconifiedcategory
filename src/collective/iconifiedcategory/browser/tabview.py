@@ -23,6 +23,7 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
+from collective.iconifiedcategory.interfaces import ICategorizedPublishable
 from collective.iconifiedcategory.interfaces import ICategorizedSigned
 from collective.iconifiedcategory.interfaces import ICategorizedTable
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
@@ -39,6 +40,7 @@ class CategorizedTabView(BrowserView):
     def _prepare_table_render(self, table, portal_type):
         alsoProvides(table, ICategorizedConfidential)
         alsoProvides(table, ICategorizedPrint)
+        alsoProvides(table, ICategorizedPublishable)
         alsoProvides(table, ICategorizedSigned)
 
 
@@ -264,7 +266,7 @@ class ConfidentialColumn(IconClickableColumn):
 
     def alt(self, obj):
         return translate(
-            utils.confidential_message(obj),
+            utils.boolean_message(obj, attr_name='confidential'),
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
@@ -290,6 +292,21 @@ class SignedColumn(IconClickableColumn):
 
     def is_deactivated(self, obj):
         return not getattr(obj, 'to_sign', True)
+
+
+class PublishableColumn(IconClickableColumn):
+    header = _(u'Publishable')
+    cssClasses = {'td': 'iconified-publishable'}
+    weight = 98
+    attrName = 'publishable'
+    action_view = 'iconified-publishable'
+
+    def alt(self, obj):
+        return translate(
+            utils.boolean_message(obj, attr_name='publishable'),
+            domain='collective.iconifiedcategory',
+            context=self.table.request,
+        )
 
 
 class ActionColumn(column.GetAttrColumn):

@@ -41,6 +41,13 @@ class ICategoryGroup(IFolder):
         default=False,
     )
 
+    form.widget('publishable_activated', RadioFieldWidget)
+    publishable_activated = schema.Bool(
+        title=_(u'Activate the "publishable" option'),
+        required=False,
+        default=False,
+    )
+
 
 class CategoryGroup(Container):
     implements(ICategoryGroup)

@@ -4,8 +4,9 @@ Changelog
 0.39 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added management of `publishable` attribute like it is the case for `to_print`
+  or `confidential` attributes.  Factorized when possible.
+  [gbastien]
 
 0.38 (2019-08-23)
 -----------------

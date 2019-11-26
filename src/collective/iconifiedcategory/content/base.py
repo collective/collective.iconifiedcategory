@@ -52,6 +52,13 @@ class ICategorize(Interface):
         default=False,
     )
 
+    form.widget('publishable', RadioFieldWidget)
+    publishable = schema.Bool(
+        title=_(u'Publishable default'),
+        required=False,
+        default=False,
+    )
+
     form.widget('enabled', RadioFieldWidget)
     enabled = schema.Bool(
         title=_(u'Enabled?'),

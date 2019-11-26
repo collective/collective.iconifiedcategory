@@ -134,6 +134,14 @@
     permission="zope2.View"
     />
 
+  <browser:page
+    name="iconified-publishable"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".actionview.PublishableChangeView"
+    permission="zope2.View"
+    />
+
   <!-- Tab view -->
   <browser:page
     for="*"
@@ -223,6 +231,15 @@
          collective.iconifiedcategory.interfaces.ICategorizedSigned"
     provides="z3c.table.interfaces.IColumn"
     factory=".tabview.SignedColumn"
+    />
+
+  <adapter
+    name="publishable-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedPublishable"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.PublishableColumn"
     />
 
   <adapter

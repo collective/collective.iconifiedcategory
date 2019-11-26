@@ -23,12 +23,14 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
+from collective.iconifiedcategory.event import IconifiedPublishableChangedEvent
 from collective.iconifiedcategory.event import IconifiedSignedChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
 class BaseView(BrowserView):
     attribute_mapping = {}
+    category_group_attr_name = ''
 
     def _translate(self, msgid):
         return translate(
@@ -67,8 +69,14 @@ class BaseView(BrowserView):
         return {k: self.request.get(v)
                 for k, v in self.attribute_mapping.items()}
 
-    def _may_set_values(self, values):
-        return bool(api.user.has_permission(ModifyPortalContent, obj=self.context))
+    def _may_set_values(self, values, ):
+        res = bool(api.user.has_permission(ModifyPortalContent, obj=self.context))
+        if res:
+            # is this functionnality enabled?
+            category = utils.get_category_object(self.context, self.context.content_category)
+            category_group = category.get_category_group()
+            res = getattr(category_group, self.category_group_attr_name, True)
+        return res
 
     def set_values(self, values):
         if not self._may_set_values(values):
@@ -109,15 +117,7 @@ class ToPrintChangeView(BaseView):
     attribute_mapping = {
         'to_print': 'iconified-value',
     }
-
-    def _may_set_values(self, values):
-        res = super(ToPrintChangeView, self)._may_set_values(values)
-        if res:
-            # is this functionnality enabled?
-            category = utils.get_category_object(self.context, self.context.content_category)
-            category_group = category.get_category_group()
-            res = category_group.to_be_printed_activated
-        return res
+    category_group_attr_name = 'to_be_printed_activated'
 
     def set_values(self, values):
         old_values = self.get_current_values()
@@ -137,15 +137,7 @@ class ConfidentialChangeView(BaseView):
     attribute_mapping = {
         'confidential': 'iconified-value',
     }
-
-    def _may_set_values(self, values):
-        res = super(ConfidentialChangeView, self)._may_set_values(values)
-        if res:
-            # is this functionnality enabled?
-            category = utils.get_category_object(self.context, self.context.content_category)
-            category_group = category.get_category_group()
-            res = category_group.confidentiality_activated
-        return res
+    category_group_attr_name = 'confidentiality_activated'
 
     def set_values(self, values):
         old_values = self.get_current_values()
@@ -156,7 +148,8 @@ class ConfidentialChangeView(BaseView):
             old_values,
             values,
         ))
-        return self._get_status(values), utils.confidential_message(self.context)
+        return self._get_status(values), utils.boolean_message(
+            self.context, attr_name='confidential')
 
 
 class SignedChangeView(BaseView):
@@ -164,15 +157,7 @@ class SignedChangeView(BaseView):
         'signed': 'iconified-value',
         'to_sign': 'iconified-value',
     }
-
-    def _may_set_values(self, values):
-        res = super(SignedChangeView, self)._may_set_values(values)
-        if res:
-            # is this functionnality enabled?
-            category = utils.get_category_object(self.context, self.context.content_category)
-            category_group = category.get_category_group()
-            res = category_group.signed_activated
-        return res
+    category_group_attr_name = 'signed_activated'
 
     def _get_next_values(self, old_values):
         """ """
@@ -208,3 +193,22 @@ class SignedChangeView(BaseView):
             values,
         ))
         return status, utils.signed_message(self.context)
+
+
+class PublishableChangeView(BaseView):
+    attribute_mapping = {
+        'publishable': 'iconified-value',
+    }
+    category_group_attr_name = 'publishable_activated'
+
+    def set_values(self, values):
+        old_values = self.get_current_values()
+        values['publishable'] = self.convert_boolean(values['publishable'])
+        super(PublishableChangeView, self).set_values(values)
+        notify(IconifiedPublishableChangedEvent(
+            self.context,
+            old_values,
+            values,
+        ))
+        return self._get_status(values), utils.boolean_message(
+            self.context, attr_name='publishable')

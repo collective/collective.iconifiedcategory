@@ -60,7 +60,8 @@ class IconifiedCategorization(object):
         return getattr(self.context, 'content_category', None)
 
     def _content_category_changed_default_values(self, new_value):
-        """When changing content_category, change default values if original default was not yet changed."""
+        """When changing content_category, change default values
+           if original default was not yet changed."""
         try:
             current_category = get_category_object(
                 self.context, self.context.content_category)
@@ -86,6 +87,10 @@ class IconifiedCategorization(object):
            self.context.signed == current_category.signed:
             self.context.to_sign = new_category.to_sign
             self.context.signed = new_category.signed
+        # publishable
+        if category_group.publishable_activated and \
+           self.context.publishable == current_category.publishable:
+            self.context.publishable = new_category.publishable
 
     @content_category.setter
     def content_category(self, value):
@@ -112,3 +117,7 @@ class IconifiedCategorization(object):
     @property
     def signed(self):
         return getattr(aq_base(self.context), 'signed', False)
+
+    @property
+    def publishable(self):
+        return getattr(aq_base(self.context), 'publishable', False)

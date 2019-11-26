@@ -391,18 +391,6 @@ def print_message(obj=None, to_print_value=None):
         return messages[to_print_value]
 
 
-def confidential_message(obj=None, confidential_value=None):
-    """Return the confidential status message for the given object"""
-    messages = {
-        True: u'Element is confidential',
-        False: u'Element is not confidential',
-    }
-    if obj:
-        return messages.get(getattr(obj, 'confidential', None), '')
-    else:
-        return messages[confidential_value]
-
-
 def signed_message(obj=None, to_sign_value=None, signed_value=None):
     """Return the signed message for the given object"""
     messages = {
@@ -418,6 +406,18 @@ def signed_message(obj=None, to_sign_value=None, signed_value=None):
         return not_to_sign_msg
     else:
         return messages[signed_value]
+
+
+def boolean_message(obj=None, attr_name='', value=None):
+    """Return the default boolean status message for the given object"""
+    messages = {
+        True: u'Element is {0}'.format(attr_name),
+        False: u'Element is not {0}'.format(attr_name),
+    }
+    if obj:
+        return messages.get(getattr(obj, attr_name, None), '')
+    else:
+        return messages[value]
 
 
 @ram.cache(lambda f, p: (p, time() // (60 * 60)))

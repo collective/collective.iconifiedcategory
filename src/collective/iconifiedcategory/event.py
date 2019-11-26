@@ -12,6 +12,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEve
 from collective.iconifiedcategory.interfaces import IIconifiedConfidentialChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedPublishableChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedSignedChangedEvent
 from zope.component.interfaces import ObjectEvent
 from zope.interface import implements
@@ -47,6 +48,10 @@ class IconifiedConfidentialChangedEvent(IconifiedChangedEvent):
 
 class IconifiedSignedChangedEvent(IconifiedChangedEvent):
     implements(IIconifiedSignedChangedEvent)
+
+
+class IconifiedPublishableChangedEvent(IconifiedChangedEvent):
+    implements(IIconifiedPublishableChangedEvent)
 
 
 class CategorizedElementsUpdatedEvent(ObjectEvent):

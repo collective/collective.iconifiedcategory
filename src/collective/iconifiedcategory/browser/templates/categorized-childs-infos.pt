@@ -23,7 +23,7 @@
           </tal:filesize>
         </a>
         <div class="categorized_elements_details">
-          <tal:show_to_print_icon condition="python: view.show_to_print(element)">
+          <tal:show_to_print_icon condition="python: view.show(element, 'to_be_printed')">
              <span class=""
                    title=""
                    i18n:attributes="title"
@@ -31,7 +31,7 @@
                                    title python: view.get_tag_title_for('to_print', element)">
              </span>
            </tal:show_to_print_icon>
-          <tal:show_confidential_icon condition="python: view.show_confidential(element)">
+          <tal:show_confidential_icon condition="python: view.show(element, 'confidentiality')">
              <span class=""
                    title=""
                    i18n:attributes="title"
@@ -39,7 +39,7 @@
                                    title python: view.get_tag_title_for('confidential', element)">
              </span>
            </tal:show_confidential_icon>
-          <tal:show_signed_icon condition="python: view.show_signed(element)">
+          <tal:show_signed_icon condition="python: view.show(element, 'signed')">
              <span class=""
                    title=""
                    i18n:attributes="title"
@@ -47,6 +47,14 @@
                                    title python: view.get_tag_title_for('signed', element)">
              </span>
           </tal:show_signed_icon>
+          <tal:show_publishable_icon condition="python: view.show(element, 'publishable')">
+             <span class=""
+                   title=""
+                   i18n:attributes="title"
+                   tal:attributes="class python: view.get_css_classses_for('publishable', element);
+                                   title python: view.get_tag_title_for('publishable', element)">
+             </span>
+          </tal:show_publishable_icon>
         </div>
         <tal:show_preview_link condition="view/show_preview_link">
         <a href=""

@@ -50,6 +50,10 @@ class ICategorizedConfidential(ICategorizedTable):
     pass
 
 
+class ICategorizedPublishable(ICategorizedTable):
+    pass
+
+
 class ICategorizedSigned(ICategorizedTable):
     pass
 
@@ -110,6 +114,10 @@ class IIconifiedPrintChangedEvent(IIconifiedChangedEvent):
 
 
 class IIconifiedConfidentialChangedEvent(IIconifiedChangedEvent):
+    pass
+
+
+class IIconifiedPublishableChangedEvent(IIconifiedChangedEvent):
     pass
 
 

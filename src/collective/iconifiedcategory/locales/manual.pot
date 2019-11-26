@@ -32,6 +32,12 @@ msgstr ""
 msgid "Element is not confidential"
 msgstr ""
 
+msgid "Element is publishable"
+msgstr ""
+
+msgid "Element is not publishable"
+msgstr ""
+
 msgid "Element must be signed but is still not"
 msgstr ""
 
