@@ -54,6 +54,8 @@ class CategorizedTabView(BrowserView):
     def show(self, action_type):
         """ """
         config = self._config()
+        if config.portal_type == 'ContentCategoryConfiguration':
+            return True
         attr_config = '{0}_activated'.format(action_type)
         show = getattr(config, attr_config) and self._show_column(action_type)
         return show
