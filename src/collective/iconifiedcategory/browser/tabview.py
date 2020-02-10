@@ -37,7 +37,7 @@ class CategorizedTabView(BrowserView):
         table.update()
         return table.render()
 
-    def _prepare_table_render(self, table):
+    def _prepare_table_render(self, table, **kwargs):
         if self.show('confidentiality'):
             alsoProvides(table, ICategorizedConfidential)
         if self.show('to_be_printed'):
