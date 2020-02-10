@@ -33,7 +33,7 @@ class CategorizedTabView(BrowserView):
     def table_render(self, portal_type=None):
         self.portal_type = portal_type
         table = CategorizedTable(self.context, self.request, portal_type=portal_type)
-        self._prepare_table_render(table, portal_type)
+        self._prepare_table_render(table)
         table.update()
         return table.render()
 
