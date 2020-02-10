@@ -7,18 +7,6 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from Products.Five import BrowserView
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.CMFCore.utils import _checkPermission
-from Products.CMFPlone.utils import safe_unicode
-from plone import api
-from z3c.table.table import Table
-from z3c.table import column
-from zope.component import getMultiAdapter
-from zope.i18n import translate
-from zope.interface import implements
-from zope.interface import alsoProvides
-
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
@@ -27,27 +15,52 @@ from collective.iconifiedcategory.interfaces import ICategorizedPublishable
 from collective.iconifiedcategory.interfaces import ICategorizedSigned
 from collective.iconifiedcategory.interfaces import ICategorizedTable
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
+from plone import api
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five import BrowserView
+from z3c.table import column
+from z3c.table.table import Table
+from zope.component import getMultiAdapter
+from zope.i18n import translate
+from zope.interface import alsoProvides
+from zope.interface import implements
 
 
 class CategorizedTabView(BrowserView):
 
     def table_render(self, portal_type=None):
+        self.portal_type = portal_type
         table = CategorizedTable(self.context, self.request, portal_type=portal_type)
-        self.categorized_child_infos = self.context.restrictedTraverse(
-            '@@categorized-childs-infos')
         self._prepare_table_render(table, portal_type)
         table.update()
         return table.render()
 
-    def _prepare_table_render(self, table, portal_type):
-        if self.categorized_child_infos.show('confidential'):
+    def _prepare_table_render(self, table):
+        if self.show('confidentiality'):
             alsoProvides(table, ICategorizedConfidential)
-        if self.categorized_child_infos.show('to_be_printed'):
+        if self.show('to_be_printed'):
             alsoProvides(table, ICategorizedPrint)
-        if self.categorized_child_infos.show('publishable'):
+        if self.show('publishable'):
             alsoProvides(table, ICategorizedPublishable)
-        if self.categorized_child_infos.show('signed'):
+        if self.show('signed'):
             alsoProvides(table, ICategorizedSigned)
+
+    def _config(self):
+        """ """
+        return utils.get_config_root(self.context)
+
+    def show(self, action_type):
+        """ """
+        config = self._config()
+        attr_config = '{0}_activated'.format(action_type)
+        show = getattr(config, attr_config) and self._show_column(action_type)
+        return show
+
+    def _show_column(self, action_type):
+        """Made to be overrided."""
+        return True
 
 
 class CategorizedContent(object):

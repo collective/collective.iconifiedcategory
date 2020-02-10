@@ -67,7 +67,6 @@ class CategorizedChildInfosView(BrowserView):
         super(CategorizedChildInfosView, self).__init__(context, request)
         self.portal_url = api.portal.get().absolute_url()
         self.have_details_to_show = False
-        self.tabview = self.context.restrictedTraverse('iconifiedcategory')
 
     def update(self):
         uids = self._find_uids()
