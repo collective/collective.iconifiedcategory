@@ -33,15 +33,21 @@ class CategorizedTabView(BrowserView):
 
     def table_render(self, portal_type=None):
         table = CategorizedTable(self.context, self.request, portal_type=portal_type)
+        self.categorized_child_infos = self.context.restrictedTraverse(
+            '@@categorized-childs-infos')
         self._prepare_table_render(table, portal_type)
         table.update()
         return table.render()
 
     def _prepare_table_render(self, table, portal_type):
-        alsoProvides(table, ICategorizedConfidential)
-        alsoProvides(table, ICategorizedPrint)
-        alsoProvides(table, ICategorizedPublishable)
-        alsoProvides(table, ICategorizedSigned)
+        if self.categorized_child_infos.show('confidential'):
+            alsoProvides(table, ICategorizedConfidential)
+        if self.categorized_child_infos.show('to_be_printed'):
+            alsoProvides(table, ICategorizedPrint)
+        if self.categorized_child_infos.show('publishable'):
+            alsoProvides(table, ICategorizedPublishable)
+        if self.categorized_child_infos.show('signed'):
+            alsoProvides(table, ICategorizedSigned)
 
 
 class CategorizedContent(object):

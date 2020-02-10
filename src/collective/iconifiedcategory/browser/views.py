@@ -67,6 +67,7 @@ class CategorizedChildInfosView(BrowserView):
         super(CategorizedChildInfosView, self).__init__(context, request)
         self.portal_url = api.portal.get().absolute_url()
         self.have_details_to_show = False
+        self.tabview = self.context.restrictedTraverse('iconifiedcategory')
 
     def update(self):
         uids = self._find_uids()
@@ -123,10 +124,14 @@ class CategorizedChildInfosView(BrowserView):
 
     def show(self, element, attr_prefix):
         """ """
-        show = element['{0}_activated'.format(attr_prefix)]
+        show = element['{0}_activated'.format(attr_prefix)] and self._show_detail(attr_prefix)
         if show:
             self.have_details_to_show = True
         return show
+
+    def _show_detail(self, detail_type):
+        """Made to be overrided."""
+        return True
 
     def show_details_action(self):
         """ """

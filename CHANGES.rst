@@ -4,8 +4,10 @@ Changelog
 0.40 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Make appearance of column in `CategorizedTabView` coherent with appearance of
+  detail icon in `@@categorized-childs-infos` view,
+  rely in both case on `CategorizedChildInfosView.show`
+  [gbastien]
 
 0.39 (2019-11-26)
 -----------------
