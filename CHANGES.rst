@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.40 (unreleased)
+0.40 (2020-02-18)
 -----------------
 
 - Make appearance of column in `CategorizedTabView` coherent with appearance of
