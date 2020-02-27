@@ -7,20 +7,18 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from Products.statusmessages.interfaces import IStatusMessage
-from plone import api
-from plone.rfc822.interfaces import IPrimaryFieldInfo
-from zExceptions import Redirect
-from zope.component import getAdapter
-from zope.event import notify
-
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
-from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
-from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
+from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
+from plone import api
+from plone.rfc822.interfaces import IPrimaryFieldInfo
+from Products.statusmessages.interfaces import IStatusMessage
+from zExceptions import Redirect
+from zope.component import getAdapter
+from zope.event import notify
 
 
 def categorized_content_created(obj, event):
@@ -48,8 +46,9 @@ def categorized_content_created(obj, event):
             obj.confidential = category.confidential
         elif not category_group.confidentiality_activated:
             obj.confidential = False
-        notify(IconifiedConfidentialChangedEvent(
+        notify(IconifiedAttrChangedEvent(
             obj,
+            'confidential',
             old_values={},
             new_values={'confidential': obj.confidential},
         ))
@@ -89,6 +88,7 @@ def content_updated(obj, event):
 
 def categorized_content_updated(event):
     obj = event.object
+
     if hasattr(obj, 'content_category'):
         target = utils.get_category_object(obj, obj.content_category)
 
@@ -104,8 +104,9 @@ def categorized_content_updated(event):
 
             adapter = getAdapter(obj, IIconifiedPrintable)
             adapter.update_object()
-            notify(IconifiedPrintChangedEvent(
+            notify(IconifiedAttrChangedEvent(
                 obj,
+                'to_print',
                 old_values={'to_print': obj.to_print},
                 new_values={'to_print': obj.to_print},
             ))

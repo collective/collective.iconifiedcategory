@@ -4,8 +4,10 @@ Changelog
 0.41 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Factorized events triggered when a categorized element attribute is changed
+  (`to_print`, `confidential`, ...).  Now a single `IIconifiedAttrChangedEvent`
+  event is triggered.
+  [gbastien]
 
 0.40 (2020-02-18)
 -----------------

@@ -9,21 +9,10 @@ Created by mpeeters
 
 from collective.iconifiedcategory.interfaces import ICategorizedElementsUpdatedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
-from collective.iconifiedcategory.interfaces import IIconifiedConfidentialChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
-from collective.iconifiedcategory.interfaces import IIconifiedPrintChangedEvent
-from collective.iconifiedcategory.interfaces import IIconifiedPublishableChangedEvent
-from collective.iconifiedcategory.interfaces import IIconifiedSignedChangedEvent
 from zope.component.interfaces import ObjectEvent
 from zope.interface import implements
-
-
-class IconifiedChangedEvent(ObjectEvent):
-
-    def __init__(self, object, old_values, new_values):
-        super(IconifiedChangedEvent, self).__init__(object)
-        self.old_values = old_values
-        self.new_values = new_values
 
 
 class IconifiedModifiedEvent(ObjectEvent):
@@ -38,20 +27,14 @@ class IconifiedCategoryChangedEvent(ObjectEvent):
         self.sort = sort
 
 
-class IconifiedPrintChangedEvent(IconifiedChangedEvent):
-    implements(IIconifiedPrintChangedEvent)
+class IconifiedAttrChangedEvent(ObjectEvent):
+    implements(IIconifiedAttrChangedEvent)
 
-
-class IconifiedConfidentialChangedEvent(IconifiedChangedEvent):
-    implements(IIconifiedConfidentialChangedEvent)
-
-
-class IconifiedSignedChangedEvent(IconifiedChangedEvent):
-    implements(IIconifiedSignedChangedEvent)
-
-
-class IconifiedPublishableChangedEvent(IconifiedChangedEvent):
-    implements(IIconifiedPublishableChangedEvent)
+    def __init__(self, object, attr_name, old_values, new_values):
+        super(IconifiedAttrChangedEvent, self).__init__(object)
+        self.attr_name = attr_name
+        self.old_values = old_values
+        self.new_values = new_values
 
 
 class CategorizedElementsUpdatedEvent(ObjectEvent):

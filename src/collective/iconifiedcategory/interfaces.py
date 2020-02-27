@@ -103,22 +103,11 @@ class ICategorizedElementsUpdatedEvent(IObjectEvent):
     pass
 
 
-class IIconifiedChangedEvent(IObjectEvent):
+class IIconifiedAttrChangedEvent(IObjectEvent):
 
+    attr_name = Attribute("The attribute name")
     old_values = Attribute("The old values")
     new_values = Attribute("The new values")
-
-
-class IIconifiedPrintChangedEvent(IIconifiedChangedEvent):
-    pass
-
-
-class IIconifiedConfidentialChangedEvent(IIconifiedChangedEvent):
-    pass
-
-
-class IIconifiedPublishableChangedEvent(IIconifiedChangedEvent):
-    pass
 
 
 class IIconifiedModifiedEvent(IObjectEvent):
@@ -126,8 +115,4 @@ class IIconifiedModifiedEvent(IObjectEvent):
 
 
 class IIconifiedCategoryChangedEvent(IObjectEvent):
-    pass
-
-
-class IIconifiedSignedChangedEvent(IObjectEvent):
     pass

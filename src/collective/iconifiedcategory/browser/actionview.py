@@ -8,29 +8,24 @@ Created by mpeeters
 """
 
 from AccessControl import Unauthorized
-from Products.Five import BrowserView
+from collective.iconifiedcategory import _
+from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
+from collective.iconifiedcategory.interfaces import IIconifiedPrintable
+from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
+from Products.Five import BrowserView
 from z3c.json.interfaces import IJSONWriter
 from zope.component import getAdapter
 from zope.component import getUtility
 from zope.event import notify
 from zope.i18n import translate
-from zope.lifecycleevent import ObjectModifiedEvent
-
-from plone import api
-
-from collective.iconifiedcategory import _
-from collective.iconifiedcategory import utils
-from collective.iconifiedcategory.event import IconifiedConfidentialChangedEvent
-from collective.iconifiedcategory.event import IconifiedPrintChangedEvent
-from collective.iconifiedcategory.event import IconifiedPublishableChangedEvent
-from collective.iconifiedcategory.event import IconifiedSignedChangedEvent
-from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 
 
 class BaseView(BrowserView):
     attribute_mapping = {}
     category_group_attr_name = ''
+    attr_name = ''
 
     def _translate(self, msgid):
         return translate(
@@ -66,15 +61,15 @@ class BaseView(BrowserView):
                 for k in self.attribute_mapping.keys()}
 
     def get_values(self):
-        return {k: self.request.get(v)
+        return {k: self.convert_boolean(self.request.get(v))
                 for k, v in self.attribute_mapping.items()}
 
     def _may_set_values(self, values, ):
         res = bool(api.user.has_permission(ModifyPortalContent, obj=self.context))
         if res:
             # is this functionnality enabled?
-            category = utils.get_category_object(self.context, self.context.content_category)
-            category_group = category.get_category_group()
+            self.category = utils.get_category_object(self.context, self.context.content_category)
+            category_group = self.category.get_category_group()
             res = getattr(category_group, self.category_group_attr_name, True)
         return res
 
@@ -85,11 +80,20 @@ class BaseView(BrowserView):
         if not values:
             return 2, self._translate(_('No values to set'))
 
+        old_values = self.get_current_values()
+
         for key, value in values.items():
-            self.set_value(key, value)
-        status, msg = self._get_status(values), _('Values have been set')
+            self._set_value(key, value)
+        status, msg = self._get_status(values), utils.boolean_message(
+            self.context, attr_name=self.attr_name)
         if not status == 2:
-            notify(ObjectModifiedEvent(self.context))
+            utils.update_categorized_elements(self.context.aq_parent, self.context, self.category)
+            notify(IconifiedAttrChangedEvent(
+                self.context,
+                self.attr_name,
+                old_values,
+                values,
+            ))
         return status, msg
 
     def _get_status(self, values):
@@ -101,7 +105,7 @@ class BaseView(BrowserView):
         else:
             return -1
 
-    def set_value(self, attrname, value):
+    def _set_value(self, attrname, value):
         setattr(self.context, attrname, value)
 
     @staticmethod
@@ -118,19 +122,13 @@ class ToPrintChangeView(BaseView):
         'to_print': 'iconified-value',
     }
     category_group_attr_name = 'to_be_printed_activated'
+    attr_name = 'to_print'
 
     def set_values(self, values):
-        old_values = self.get_current_values()
-        values['to_print'] = self.convert_boolean(values['to_print'])
-        super(ToPrintChangeView, self).set_values(values)
+        status, msg = super(ToPrintChangeView, self).set_values(values)
         adapter = getAdapter(self.context, IIconifiedPrintable)
         adapter.update_object()
-        notify(IconifiedPrintChangedEvent(
-            self.context,
-            old_values,
-            values,
-        ))
-        return self._get_status(values), utils.print_message(self.context)
+        return status, msg
 
 
 class ConfidentialChangeView(BaseView):
@@ -138,18 +136,7 @@ class ConfidentialChangeView(BaseView):
         'confidential': 'iconified-value',
     }
     category_group_attr_name = 'confidentiality_activated'
-
-    def set_values(self, values):
-        old_values = self.get_current_values()
-        values['confidential'] = self.convert_boolean(values['confidential'])
-        super(ConfidentialChangeView, self).set_values(values)
-        notify(IconifiedConfidentialChangedEvent(
-            self.context,
-            old_values,
-            values,
-        ))
-        return self._get_status(values), utils.boolean_message(
-            self.context, attr_name='confidential')
+    attr_name = 'confidential'
 
 
 class SignedChangeView(BaseView):
@@ -158,6 +145,7 @@ class SignedChangeView(BaseView):
         'to_sign': 'iconified-value',
     }
     category_group_attr_name = 'signed_activated'
+    attr_name = 'to_sign'
 
     def _get_next_values(self, old_values):
         """ """
@@ -187,11 +175,6 @@ class SignedChangeView(BaseView):
         old_values = self.get_current_values()
         status, values = self._get_next_values(old_values)
         super(SignedChangeView, self).set_values(values)
-        notify(IconifiedSignedChangedEvent(
-            self.context,
-            old_values,
-            values,
-        ))
         return status, utils.signed_message(self.context)
 
 
@@ -200,15 +183,4 @@ class PublishableChangeView(BaseView):
         'publishable': 'iconified-value',
     }
     category_group_attr_name = 'publishable_activated'
-
-    def set_values(self, values):
-        old_values = self.get_current_values()
-        values['publishable'] = self.convert_boolean(values['publishable'])
-        super(PublishableChangeView, self).set_values(values)
-        notify(IconifiedPublishableChangedEvent(
-            self.context,
-            old_values,
-            values,
-        ))
-        return self._get_status(values), utils.boolean_message(
-            self.context, attr_name='publishable')
+    attr_name = 'publishable'
