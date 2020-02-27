@@ -8,6 +8,9 @@ Changelog
   (`to_print`, `confidential`, ...).  Now a single `IIconifiedAttrChangedEvent`
   event is triggered.
   [gbastien]
+- Removed specific call to `IconifiedAttrChangedEvent('confidential')`
+  when creating a new categorized element.
+  [gbastien]
 
 0.40 (2020-02-18)
 -----------------

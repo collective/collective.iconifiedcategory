@@ -38,25 +38,36 @@ def categorized_content_created(obj, event):
         # only set default value if obj was not created with a to_print=True
         if category_group.to_be_printed_activated and not getattr(obj, 'to_print', False):
             obj.to_print = category.to_print
+            # notifying IconifiedAttrChangedEvent for 'to_print' is done in categorized_content_updated
         elif not category_group.to_be_printed_activated:
             obj.to_print = False
 
         # only set default value if obj was not created with a confidential=True
         if category_group.confidentiality_activated and not getattr(obj, 'confidential', False):
             obj.confidential = category.confidential
+            notify(IconifiedAttrChangedEvent(
+                obj,
+                'confidential',
+                old_values={},
+                new_values={'confidential': obj.confidential},
+                is_created=True
+            ))
         elif not category_group.confidentiality_activated:
             obj.confidential = False
-        notify(IconifiedAttrChangedEvent(
-            obj,
-            'confidential',
-            old_values={},
-            new_values={'confidential': obj.confidential},
-        ))
 
         # only set default value if obj was not created with a to_sign=True or signed=True
         if category_group.signed_activated and not (getattr(obj, 'to_sign', False) or getattr(obj, 'signed', False)):
             obj.to_sign = category.to_sign
             obj.signed = category.signed
+            notify(IconifiedAttrChangedEvent(
+                obj,
+                'to_sign',
+                old_values={},
+                new_values={'to_sign': obj.to_sign,
+                            'signed': obj.signed},
+                is_created=True
+            ))
+
         elif not category_group.signed_activated:
             obj.to_sign = False
             obj.signed = False
@@ -64,11 +75,18 @@ def categorized_content_created(obj, event):
         # only set default value if obj was not created with a publishable=True
         if category_group.publishable_activated and not getattr(obj, 'publishable', False):
             obj.publishable = category.publishable
+            notify(IconifiedAttrChangedEvent(
+                obj,
+                'publishable',
+                old_values={},
+                new_values={'publishable': obj.publishable},
+                is_created=True
+            ))
         elif not category_group.publishable_activated:
             obj.publishable = False
 
         # to_print changed event is managed in categorized_content_updated
-        categorized_content_updated(event)
+        categorized_content_updated(event, is_created=True)
 
         if utils.is_file_type(obj.portal_type):
             file_field_name = IPrimaryFieldInfo(obj).fieldname
@@ -86,7 +104,7 @@ def content_updated(obj, event):
         categorized_content_updated(event)
 
 
-def categorized_content_updated(event):
+def categorized_content_updated(event, is_created=False):
     obj = event.object
 
     if hasattr(obj, 'content_category'):
@@ -109,6 +127,7 @@ def categorized_content_updated(event):
                 'to_print',
                 old_values={'to_print': obj.to_print},
                 new_values={'to_print': obj.to_print},
+                is_created=is_created
             ))
         # we may defer call to utils.update_categorized_elements
         # if relevant value found in the REQUEST

@@ -30,11 +30,12 @@ class IconifiedCategoryChangedEvent(ObjectEvent):
 class IconifiedAttrChangedEvent(ObjectEvent):
     implements(IIconifiedAttrChangedEvent)
 
-    def __init__(self, object, attr_name, old_values, new_values):
+    def __init__(self, object, attr_name, old_values, new_values, is_created=False):
         super(IconifiedAttrChangedEvent, self).__init__(object)
         self.attr_name = attr_name
         self.old_values = old_values
         self.new_values = new_values
+        self.is_created = is_created
 
 
 class CategorizedElementsUpdatedEvent(ObjectEvent):
