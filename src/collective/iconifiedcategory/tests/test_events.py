@@ -13,7 +13,7 @@ from plone import api
 from Products.CMFPlone.utils import base_hasattr
 
 from collective.iconifiedcategory import testing
-from collective.iconifiedcategory.event import IconifiedChangedEvent
+from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory import utils
 
@@ -34,11 +34,11 @@ class TestIconifiedChangedEvent(unittest.TestCase):
         from zope.event import notify
         notify(event)
 
-    def test_iconifiedchangedevent(self):
+    def test_iconifiedattrchangedevent(self):
         from zope.event import subscribers
         dummy = []
         subscribers.append(dummy.append)
-        event = IconifiedChangedEvent(object(), 'old', 'new')
+        event = IconifiedAttrChangedEvent(object(), '', 'old', 'new')
         self._notify(event)
         self.assertEqual(dummy, [event])
 

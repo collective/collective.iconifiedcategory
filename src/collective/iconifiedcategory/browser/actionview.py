@@ -43,7 +43,7 @@ class BaseView(BrowserView):
                2 --> error;
            """
         writer = getUtility(IJSONWriter)
-        values = {'msg': 'success'}
+        values = {'msg': u'Values have been set'}
         try:
             self.request.response.setHeader('content-type',
                                             'application/json')
