@@ -178,8 +178,6 @@ def update_categorized_elements(parent,
 
 def update_all_categorized_elements(container, limited=False, sort=True):
     # recompute everything if limited=False
-    from DateTime import DateTime
-    logger.info(DateTime())
     if not limited:
         container.categorized_elements = OrderedDict()
     adapter = None
@@ -200,7 +198,6 @@ def update_all_categorized_elements(container, limited=False, sort=True):
             container.categorized_elements[uid] = infos
     if container.categorized_elements and sort:
         sort_categorized_elements(container)
-    logger.info(DateTime())
 
 
 def get_ordered_categories_cachekey(method, context, only_enabled=True):
