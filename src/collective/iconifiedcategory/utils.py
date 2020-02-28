@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from Acquisition import aq_base
 from collections import OrderedDict
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
@@ -177,24 +178,29 @@ def update_categorized_elements(parent,
 
 def update_all_categorized_elements(container, limited=False, sort=True):
     # recompute everything if limited=False
+    from DateTime import DateTime
+    logger.info(DateTime())
     if not limited:
         container.categorized_elements = OrderedDict()
+    adapter = None
     for obj in container.objectValues():
         if hasattr(obj, 'content_category'):
             try:
                 category = get_category_object(obj, obj.content_category)
             except KeyError:
                 continue
-            uid, new_infos = get_categorized_infos(
-                obj,
-                category,
-                limited=limited,
-            )
+            if adapter is None:
+                adapter = getAdapter(obj, IIconifiedInfos)
+            else:
+                adapter.context = obj
+                adapter.obj = aq_base(obj)
+            uid, new_infos = obj.UID(), adapter.get_infos(category, limited=limited)
             infos = container.categorized_elements.get(uid, {})
             infos.update(new_infos)
             container.categorized_elements[uid] = infos
     if container.categorized_elements and sort:
         sort_categorized_elements(container)
+    logger.info(DateTime())
 
 
 def get_ordered_categories_cachekey(method, context, only_enabled=True):
