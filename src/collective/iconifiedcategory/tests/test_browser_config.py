@@ -63,8 +63,8 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         view()
         element = self.portal.categorized_elements[plone_file.UID()]
         self.assertEqual('Category 1-1 Modified', element['category_title'])
-        # Title must remain the same
-        self.assertEqual('file.txt', element['title'])
+        # Title must be updated as well as limited=False
+        self.assertEqual('foo.txt', element['title'])
 
 
 class TestUpdateCategorizedElementsCategory(BaseTestCase):
