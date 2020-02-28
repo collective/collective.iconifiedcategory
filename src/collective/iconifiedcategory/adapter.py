@@ -42,6 +42,11 @@ class CategorizedObjectInfoAdapter(object):
             'confidentiality_activated': self._confidentiality_activated(category),
             'signed_activated': self._signed_activated(category),
             'publishable_activated': self._publishable_activated(category),
+            'to_print': self._to_print,
+            'confidential': self._confidential,
+            'to_sign': self._to_sign,
+            'signed': self._signed,
+            'publishable': self._publishable,
         }
         # update subcategory infos if any
         if ISubcategory.providedBy(category):
@@ -65,11 +70,6 @@ class CategorizedObjectInfoAdapter(object):
             'portal_type': self.obj.portal_type,
             'filesize': filesize,
             'warn_filesize': utils.warn_filesize(filesize),
-            'to_print': self._to_print,
-            'confidential': self._confidential,
-            'to_sign': self._to_sign,
-            'signed': self._signed,
-            'publishable': self._publishable,
             'preview_status': self._preview_status,
         }
         infos.update(base_infos)

@@ -39,7 +39,7 @@ msgid "Author"
 msgstr "Auteur"
 
 msgid "Can not be printed"
-msgstr "Ne peut pas être imprimer"
+msgstr "Ne peut pas être imprimé"
 
 #: ../browser/templates/categorized-child-viewlet.pt:7
 #: ../browser/templates/categorized-tab-view.pt:5
@@ -184,7 +184,7 @@ msgid "More/less details"
 msgstr "Afficher / masquer les détails"
 
 msgid "Must be printed"
-msgstr "Doit être imprimé"
+msgstr "Cet élément doit être imprimé"
 
 #: ../browser/actionview.py:86
 msgid "No values to set"
@@ -192,7 +192,7 @@ msgstr "Aucune valeur à définir"
 
 #. Default: "Not convertible to a printable format"
 msgid "Not convertible to a printable format"
-msgstr "Ce fichier ne peut pas être converti dans un format imprimable"
+msgstr "Cet élément ne peut pas être converti dans un format imprimable"
 
 #: ../content/category.py:28
 msgid "Please use an image with size of 16x16, if different, the image will be reduced when displayed but this could be not optimal."
@@ -216,7 +216,7 @@ msgid "Publishable default"
 msgstr "Publiable par défaut?"
 
 msgid "Should not be printed"
-msgstr "Ne doit pas être imprimé"
+msgstr "Cet élément ne doit pas être imprimé"
 
 #: ../browser/tabview.py:276
 msgid "Signed"

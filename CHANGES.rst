@@ -6,7 +6,7 @@ Changelog
 
 - Factorized events triggered when a categorized element attribute is changed
   (`to_print`, `confidential`, ...).  Now a single `IIconifiedAttrChangedEvent`
-  event is triggered.
+  event is triggered.  Moreover it is optimized to avoid too much process.
   [gbastien]
 - Removed specific call to `IconifiedAttrChangedEvent('confidential')`
   when creating a new categorized element.

@@ -97,6 +97,12 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
+msgid "Element is to_print"
+msgstr ""
+
+msgid "Element is not to_print"
+msgstr ""
+
 msgid "Element is confidential"
 msgstr ""
 

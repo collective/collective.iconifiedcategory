@@ -147,7 +147,7 @@ def content_category_updated(event):
             obj.aq_parent,
             obj,
             target,
-            limited=True,
+            limited=False,
             sort=event.sort,
             logging=True
         )

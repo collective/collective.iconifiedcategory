@@ -26,6 +26,8 @@ class BaseView(BrowserView):
     attribute_mapping = {}
     category_group_attr_name = ''
     attr_name = ''
+    # when updating element, do that limited?
+    limited = True
 
     def _translate(self, msgid):
         return translate(
@@ -87,7 +89,12 @@ class BaseView(BrowserView):
         status, msg = self._get_status(values), utils.boolean_message(
             self.context, attr_name=self.attr_name)
         if not status == 2:
-            utils.update_categorized_elements(self.context.aq_parent, self.context, self.category)
+            utils.update_categorized_elements(
+                self.context.aq_parent,
+                self.context,
+                self.category,
+                limited=self.limited,
+                sort=False)
             notify(IconifiedAttrChangedEvent(
                 self.context,
                 self.attr_name,
@@ -128,7 +135,7 @@ class ToPrintChangeView(BaseView):
         status, msg = super(ToPrintChangeView, self).set_values(values)
         adapter = getAdapter(self.context, IIconifiedPrintable)
         adapter.update_object()
-        return status, msg
+        return status, utils.print_message(self.context)
 
 
 class ConfidentialChangeView(BaseView):
@@ -137,6 +144,7 @@ class ConfidentialChangeView(BaseView):
     }
     category_group_attr_name = 'confidentiality_activated'
     attr_name = 'confidential'
+    limited = False
 
 
 class SignedChangeView(BaseView):
