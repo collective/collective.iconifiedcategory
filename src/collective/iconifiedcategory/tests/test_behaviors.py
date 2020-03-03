@@ -7,19 +7,22 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
-from plone import api
-
-import unittest
-
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.behaviors.iconifiedcategorization import IconifiedCategorization
+from collective.iconifiedcategory.behaviors.iconifiedcategorization import IIconifiedCategorization
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import calculate_category_id
 from collective.iconifiedcategory.utils import get_category_object
+from plone import api
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
+from z3c.form import validator
+from ZPublisher.HTTPRequest import FileUpload
+
+import cgi
+import unittest
 
 
 class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
@@ -246,3 +249,49 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         setattr(adapted_obj, 'content_category', category12_id)
         notify(ObjectModifiedEvent(obj))
         self.assertEqual(obj.content_category, category12_id)
+
+    def test_only_pdf_invariant(self):
+        """ """
+        category = self.portal.config['group-1']['category-1-1']
+        category.only_pdf = False
+        content_category_id = calculate_category_id(category)
+        invariants = validator.InvariantsValidator(
+            None, None, None, IIconifiedCategorization, None)
+        # form and data in request
+        fieldstorage = cgi.FieldStorage()
+        fieldstorage.file = self.file.data
+        fieldstorage.filename = self.file.filename
+        data = {}
+        data['content_category'] = content_category_id
+        request = self.portal.REQUEST
+        request.form['form.widgets.file'] = FileUpload(fieldstorage)
+        view = self.portal.restrictedTraverse('folder_contents')
+        request['PUBLISHED'] = view
+        self.assertFalse(invariants.validate(data))
+        request.set('already_validateFileIsPDF', False)
+        # PDF needed
+        category.only_pdf = True
+        errors = invariants.validate(data)
+        request.set('already_validateFileIsPDF', False)
+        self.assertEqual(errors[0].message, u'You must select a PDF file!')
+        request.form['form.widgets.file'].headers['content-type'] = 'application/pdf'
+        # editing a stored element
+        request.form = {}
+        category.only_pdf = False
+        obj = api.content.create(
+            id='file2',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category=content_category_id)
+        view = obj.restrictedTraverse('view')
+        request['PUBLISHED'] = view
+        self.assertFalse(invariants.validate(data))
+        request.set('already_validateFileIsPDF', False)
+        # PDF needed
+        category.only_pdf = True
+        errors = invariants.validate(data)
+        request.set('already_validateFileIsPDF', False)
+        self.assertEqual(errors[0].message, u'You must select a PDF file!')
+        obj.file = self.file_pdf
+        self.assertFalse(invariants.validate(data))

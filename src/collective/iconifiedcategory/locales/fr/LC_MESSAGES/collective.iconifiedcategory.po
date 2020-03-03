@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-11-08 14:35+0000\n"
+"POT-Creation-Date: 2020-03-03 09:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ../content/base.py:73
+#: ../content/base.py:79
 msgid "'Signed' can not be True when 'To sign?' is False!"
 msgstr "\"Signé?\" ne peut être coché lorsque \"A signer?\" ne l'est pas!"
 
@@ -34,7 +34,7 @@ msgstr "Activer l'option \"à imprimer\""
 msgid "Activate the \"to_sign and signed\" options"
 msgstr "Activer les options \"A signer?/Signé?\""
 
-#: ../browser/tabview.py:152
+#: ../browser/tabview.py:173
 msgid "Author"
 msgstr "Auteur"
 
@@ -48,15 +48,15 @@ msgid "Categorized elements"
 msgstr "Eléments catégorisés"
 
 #: ../behaviors/iconifiedcategorization.py:34
-#: ../browser/tabview.py:139
+#: ../browser/tabview.py:160
 msgid "Category"
 msgstr "Catégorie"
 
-#: ../browser/tabview.py:261
+#: ../browser/tabview.py:282
 msgid "Confidential"
 msgstr "Confidentiel?"
 
-#: ../content/base.py:29
+#: ../content/base.py:28
 msgid "Confidential default"
 msgstr "Confidentiel par défaut?"
 
@@ -82,7 +82,7 @@ msgstr "Groupe de catégories"
 msgid "ContentSubcategory"
 msgstr "Sous-catégorie"
 
-#: ../browser/tabview.py:160
+#: ../browser/tabview.py:181
 msgid "Creation date"
 msgstr "Date de création"
 
@@ -90,11 +90,11 @@ msgstr "Date de création"
 msgid "Default title"
 msgstr "Titre par défaut"
 
-#: ../browser/tabview.py:329
+#: ../browser/tabview.py:350
 msgid "Download"
 msgstr "Télécharger"
 
-#: ../browser/tabview.py:323
+#: ../browser/tabview.py:344
 msgid "Edit"
 msgstr "Éditer"
 
@@ -123,15 +123,15 @@ msgstr "Cet élément ne doit pas être signé"
 msgid "Elements updated!"
 msgstr "Les éléments ont été mis à jour!"
 
-#: ../content/base.py:64
+#: ../content/base.py:63
 msgid "Enabled?"
 msgstr "Activé?"
 
-#: ../browser/actionview.py:61
+#: ../browser/actionview.py:58
 msgid "Error during process"
 msgstr "Une erreur est survenue"
 
-#: ../browser/tabview.py:184
+#: ../browser/tabview.py:205
 msgid "Filesize"
 msgstr "Taille du fichier"
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Installs the collective.iconifiedcategory testing profile."
 msgstr ""
 
-#: ../browser/tabview.py:171
+#: ../browser/tabview.py:192
 msgid "Last modification"
 msgstr "Dernière modification"
 
@@ -186,7 +186,7 @@ msgstr "Afficher / masquer les détails"
 msgid "Must be printed"
 msgstr "Cet élément doit être imprimé"
 
-#: ../browser/actionview.py:86
+#: ../browser/actionview.py:83
 msgid "No values to set"
 msgstr "Aucune valeur à définir"
 
@@ -194,35 +194,39 @@ msgstr "Aucune valeur à définir"
 msgid "Not convertible to a printable format"
 msgstr "Cet élément ne peut pas être converti dans un format imprimable"
 
+#: ../content/base.py:70
+msgid "Only PDF?"
+msgstr "Format PDF requis?"
+
 #: ../content/category.py:28
 msgid "Please use an image with size of 16x16, if different, the image will be reduced when displayed but this could be not optimal."
 msgstr "Idéalement, utilisez une image ayant une taille de 16x16, si différente, l'image sera réduite lors de l'affichage ce qui pourrait ne pas être optimal."
 
-#: ../content/base.py:23
+#: ../content/base.py:22
 msgid "Predefined title"
 msgstr "Titre prédéfini"
 
-#: ../browser/tabview.py:335
+#: ../browser/tabview.py:356
 #: ../browser/templates/categorized-childs-infos.pt:60
 msgid "Preview"
 msgstr "Prévisualisation"
 
-#: ../browser/tabview.py:298
+#: ../browser/tabview.py:319
 msgid "Publishable"
 msgstr "Publiable?"
 
-#: ../content/base.py:57
+#: ../content/base.py:56
 msgid "Publishable default"
 msgstr "Publiable par défaut?"
 
 msgid "Should not be printed"
 msgstr "Cet élément ne doit pas être imprimé"
 
-#: ../browser/tabview.py:276
+#: ../browser/tabview.py:297
 msgid "Signed"
 msgstr "Signé?"
 
-#: ../content/base.py:50
+#: ../content/base.py:49
 msgid "Signed default"
 msgstr "Signé par défaut?"
 
@@ -230,7 +234,7 @@ msgstr "Signé par défaut?"
 msgid "Sort categorized elements on categorized tab alphabetically automatically. Uncheck to sort elements manually"
 msgstr "Ordonner les éléments catégorisés dans l'onglet 'Eléments catégorisés' automatiquement par ordre alphabétique (décochez pour pouvoir ordonner les éléments manuellement)"
 
-#: ../content/events.py:80
+#: ../content/events.py:97
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr "L'annexe que vous venez d'ajouter pourrait poser des problèmes aux utilisateurs souhaitant la consulter à cause de sa grande taille."
 
@@ -242,11 +246,11 @@ msgstr "La conversion a échoué"
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr "L'élément est en cours de conversion, veuillez actualiser la page dans quelques minutes"
 
-#: ../content/events.py:154
+#: ../content/events.py:174
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr "Cette catégorie ou l'une des sous-catégorie est utilisée par un autre objet et ne peut dès lors être supprimée"
 
-#: ../content/events.py:168
+#: ../content/events.py:188
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr "Cette catégorie est utilisée par un autre objet et ne peut dès lors être supprimée"
 
@@ -258,19 +262,19 @@ msgstr "Cette action mettra à jour le titre et l'URL des éléments utilisant l
 msgid "This will update title and url of elements using categories defined here."
 msgstr "Cette action mettra à jour le titre et l'URL des éléments utilisant les catégories définies ici."
 
-#: ../browser/tabview.py:113
+#: ../browser/tabview.py:134
 msgid "Title"
 msgstr "Titre"
 
-#: ../browser/tabview.py:246
+#: ../browser/tabview.py:267
 msgid "To be printed"
 msgstr "À imprimer?"
 
-#: ../content/base.py:36
+#: ../content/base.py:35
 msgid "To be printed default"
 msgstr "À imprimer par défaut?"
 
-#: ../content/base.py:43
+#: ../content/base.py:42
 msgid "To sign default"
 msgstr "À signer par défaut?"
 
@@ -282,9 +286,9 @@ msgstr "Mise à jour et tri des éléments catégorisés"
 msgid "Update categorized elements"
 msgstr "Mise à jour des éléments catégorisés"
 
-#: ../browser/actionview.py:90
-msgid "Values have been set"
-msgstr "Les valeurs ont été définies"
+#: ../utils.py:461
+msgid "You must select a PDF file!"
+msgstr "La catégorie sélectionnée requiert l'utilisation d'un fichier au format PDF uniquement!"
 
 #: ../configure.zcml:33
 msgid "collective.iconifiedcategory"
@@ -299,6 +303,6 @@ msgid "help_warn_filesize"
 msgstr "Attention, cet élément pourrait prendre du temps à être téléchargé en raison de sa taille élevée!"
 
 #. Default: "<span class='discreet iconified_category_no_element'>No element to display.</span>"
-#: ../browser/tabview.py:106
+#: ../browser/tabview.py:127
 msgid "no_element_to_display"
 msgstr "<span class='discreet iconified_category_no_element'>Aucun élément à afficher.</span>"

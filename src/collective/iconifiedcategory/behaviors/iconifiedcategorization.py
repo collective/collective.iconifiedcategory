@@ -8,19 +8,20 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
+from collective.iconifiedcategory import _
+from collective.iconifiedcategory.utils import get_category_object
+from collective.iconifiedcategory.utils import validateFileIsPDF
+from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
+from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityContent
 from zope import schema
 from zope.component import adapter
-from zope.interface import Interface
 from zope.interface import implementer
+from zope.interface import Interface
+from zope.interface import invariant
 from zope.interface import provider
-
-from collective.iconifiedcategory import _
-from collective.iconifiedcategory.utils import get_category_object
-from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
-from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 
 
 @provider(IFormFieldProvider)
@@ -46,6 +47,10 @@ class IIconifiedCategorization(Interface):
         vocabulary='collective.iconifiedcategory.category_titles',
         required=False,
     )
+
+    @invariant
+    def validateFileIsPDFInvariant(data):
+        validateFileIsPDF(data)
 
 
 @implementer(IIconifiedCategorization)

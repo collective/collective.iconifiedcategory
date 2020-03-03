@@ -7,14 +7,13 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from zope import schema
-from zope.interface import Interface
-from zope.interface import invariant
-from zope.interface import Invalid
-
 from collective.iconifiedcategory import _
 from plone.autoform import directives as form
 from z3c.form.browser.radio import RadioFieldWidget
+from zope import schema
+from zope.interface import Interface
+from zope.interface import Invalid
+from zope.interface import invariant
 
 
 class ICategorize(Interface):
@@ -63,6 +62,13 @@ class ICategorize(Interface):
     enabled = schema.Bool(
         title=_(u'Enabled?'),
         default=True,
+        required=False,
+    )
+
+    form.widget('only_pdf', RadioFieldWidget)
+    only_pdf = schema.Bool(
+        title=_(u'Only PDF?'),
+        default=False,
         required=False,
     )
 

@@ -27,6 +27,12 @@ class BaseTestCase(unittest.TestCase):
         return namedfile.NamedBlobFile(f.read(), filename=u'file.txt')
 
     @property
+    def file_pdf(self):
+        current_path = os.path.dirname(__file__)
+        f = open(os.path.join(current_path, 'file.pdf'), 'r')
+        return namedfile.NamedBlobFile(f.read(), filename=u'file.pdf')
+
+    @property
     def icon(self):
         current_path = os.path.dirname(__file__)
         f = open(os.path.join(current_path, 'icône1.png'), 'r')

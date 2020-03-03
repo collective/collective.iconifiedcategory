@@ -11,6 +11,6 @@
     provides=".iconifiedcategorization.IIconifiedCategorization"
     factory=".iconifiedcategorization.IconifiedCategorization"
     for="plone.dexterity.interfaces.IDexterityContent"
-    />
+    marker=".iconifiedcategorization.IIconifiedCategorization" />
 
 </configure>

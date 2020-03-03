@@ -9,6 +9,7 @@ Created by mpeeters
 
 from Acquisition import aq_base
 from collections import OrderedDict
+from collective.iconifiedcategory import _
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory import logger
@@ -32,6 +33,7 @@ from zope.component import getMultiAdapter
 from zope.component import queryAdapter
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+from zope.interface import Invalid
 
 import copy
 import types
@@ -439,3 +441,22 @@ def is_file_type(portal_type):
         if cls.__implemented__(interface):
             return True
     return False
+
+
+def validateFileIsPDF(data):
+    """May be used as helper in a invariant validator"""
+    # check if file contentType is PDF only if used content_category requires it
+    request = getRequest()
+    # avoid double validation
+    if request.get('already_validateFileIsPDF', False):
+        return
+    request.set('already_validateFileIsPDF', True)
+    context = data.__context__ or request.get('PUBLISHED').context
+    file = request.form.get('form.widgets.file') or context.file
+    # get contentType
+    if file:
+        contentType = getattr(file, 'contentType', None) or file.headers.get('content-type')
+        if contentType != 'application/pdf':
+            category = get_category_object(context, data.content_category)
+            if category.only_pdf:
+                raise Invalid(_(u"You must select a PDF file!"))

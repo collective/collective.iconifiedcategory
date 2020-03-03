@@ -36,18 +36,25 @@ class CategoryVocabulary(object):
         categories = self._get_categories(context)
         for category in categories:
             category_id = utils.calculate_category_id(category)
+            category_title = category.Title()
+            if category.only_pdf:
+                category_title = category_title + ' [PDF!]'
             terms.append(SimpleVocabulary.createTerm(
                 category_id,
                 category_id,
-                category.Title(),
+                category_title,
             ))
             subcategories = self._get_subcategories(context, category)
             for subcategory in subcategories:
-                subcategory_id = utils.calculate_category_id(subcategory.getObject())
+                subcategory = subcategory.getObject()
+                subcategory_id = utils.calculate_category_id(subcategory)
+                subcategory_title = subcategory.Title()
+                if subcategory.only_pdf:
+                    subcategory_title = subcategory_title + ' [PDF!]'
                 terms.append(SimpleVocabulary.createTerm(
                     subcategory_id,
                     subcategory_id,
-                    subcategory.Title,
+                    subcategory_title,
                 ))
         return SimpleVocabulary(terms)
 

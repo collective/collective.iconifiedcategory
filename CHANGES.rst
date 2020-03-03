@@ -11,6 +11,11 @@ Changelog
 - Removed specific call to `IconifiedAttrChangedEvent('confidential')`
   when creating a new categorized element.
   [gbastien]
+- Added `ICategorize.only_pdf` parameter making it possible to define if the
+  categorized element is a file, that it can only be PDF.  Added also invariant
+  on `IIconifiedCategorization` checking if file is a PDF when categorized
+  element has a file field and used content_category has `only_pdf=True`.
+  [gbastien]
 
 0.40 (2020-02-18)
 -----------------
