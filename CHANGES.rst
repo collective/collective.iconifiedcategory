@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.41 (unreleased)
+0.41 (2020-03-12)
 -----------------
 
 - Factorized events triggered when a categorized element attribute is changed
