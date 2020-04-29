@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.42 (unreleased)
+0.42 (2020-04-29)
 -----------------
 
 - Added parameter `use_category_uid_as_token=False` to
