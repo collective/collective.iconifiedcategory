@@ -23,12 +23,8 @@ class TestVocabularies(unittest.TestCase):
     def setUp(self):
         self.portal = self.layer['portal']
 
-    def test_category_vocabulary(self):
-        vocabulary = getUtility(
-            IVocabularyFactory,
-            name='collective.iconifiedcategory.categories',
-        )
-        vocabulary = vocabulary(self.portal)
+    def _check_category_vocabulary(self, vocabulary):
+        """ """
         terms = [t.title for t in vocabulary]
         self.assertEqual(2 * 3 * 3, len(terms))
         categories = [
@@ -55,6 +51,22 @@ class TestVocabularies(unittest.TestCase):
             [t for t in terms if t.startswith('Subcategory')],
             subcategories,
         )
+
+    def test_category_vocabulary(self):
+        vocabulary = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.categories',
+        )
+        vocabulary = vocabulary(self.portal)
+        self._check_category_vocabulary(vocabulary)
+
+    def test_category_vocabulary_use_category_uid_as_token(self):
+        vocabulary = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.categories',
+        )
+        vocabulary = vocabulary(self.portal, use_category_uid_as_token=True)
+        self._check_category_vocabulary(vocabulary)
 
     def test_category_title_vocabulary(self):
         vocabulary = getUtility(

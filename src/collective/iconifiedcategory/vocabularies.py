@@ -31,11 +31,14 @@ class CategoryVocabulary(object):
         )
         return subcategories
 
-    def __call__(self, context):
+    def __call__(self, context, use_category_uid_as_token=False):
         terms = []
         categories = self._get_categories(context)
         for category in categories:
-            category_id = utils.calculate_category_id(category)
+            if use_category_uid_as_token:
+                category_id = category.UID()
+            else:
+                category_id = utils.calculate_category_id(category)
             category_title = category.Title()
             if category.only_pdf:
                 category_title = category_title + ' [PDF!]'
@@ -47,7 +50,10 @@ class CategoryVocabulary(object):
             subcategories = self._get_subcategories(context, category)
             for subcategory in subcategories:
                 subcategory = subcategory.getObject()
-                subcategory_id = utils.calculate_category_id(subcategory)
+                if use_category_uid_as_token:
+                    subcategory_id = subcategory.UID()
+                else:
+                    subcategory_id = utils.calculate_category_id(subcategory)
                 subcategory_title = subcategory.Title()
                 if subcategory.only_pdf:
                     subcategory_title = subcategory_title + ' [PDF!]'

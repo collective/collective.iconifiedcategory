@@ -4,7 +4,10 @@ Changelog
 0.42 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added parameter `use_category_uid_as_token=False` to
+  `CategoryVocabulary.__call__` method to be able to use category/subcategory
+  as term token instead the calculated content_id (default).
+  [gbastien]
 
 
 0.41 (2020-03-12)
