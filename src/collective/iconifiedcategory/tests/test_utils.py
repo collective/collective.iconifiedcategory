@@ -21,7 +21,7 @@ class TestUtils(BaseTestCase):
 
     def setUp(self):
         super(TestUtils, self).setUp()
-        elements = ('file', 'image')
+        elements = ('file_txt', 'image')
         for element in elements:
             if element in self.portal:
                 api.content.delete(self.portal[element])

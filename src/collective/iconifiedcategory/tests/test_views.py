@@ -41,8 +41,8 @@ class TestCategorizedChildView(BaseTestCase):
                 api.content.delete(self.portal[element])
 
     def test__call__(self):
-        category = get_category_object(self.portal.file,
-                                       self.portal.file.content_category)
+        category = get_category_object(self.portal.file_txt,
+                                       self.portal.file_txt.content_category)
         scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         # the category and elements of category is displayed
         result = self.view()
@@ -51,7 +51,7 @@ class TestCategorizedChildView(BaseTestCase):
             in result)
 
         # remove the categorized elements
-        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['file_txt'])
         api.content.delete(self.portal['image'])
         api.content.delete(self.portal['docB'])
         api.content.delete(self.portal['docA'])
@@ -83,14 +83,14 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
 
         # in case a file is too large, a warning is displayed
         # manipulate stored categorized_elements
-        self.portal.categorized_elements[self.portal['file'].UID()]['warn_filesize'] = True
-        self.portal.categorized_elements[self.portal['file'].UID()]['filesize'] = 7000000
+        self.portal.categorized_elements[self.portal['file_txt'].UID()]['warn_filesize'] = True
+        self.portal.categorized_elements[self.portal['file_txt'].UID()]['filesize'] = 7000000
         self.viewinfos.update()
         self.assertTrue("(<span class=\'warn_filesize\' title=\'Annex size is huge, "
                         "it could be difficult to be downloaded!\'>6.7 MB</span>)" in self.viewinfos.index())
 
         # remove the categorized elements
-        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['file_txt'])
         api.content.delete(self.portal['image'])
         api.content.delete(self.portal['docB'])
         api.content.delete(self.portal['docA'])
@@ -134,7 +134,7 @@ class TestCanViewAwareDownload(BaseTestCase):
     def test_default(self):
         # by default @@download returns the file, here
         # it is also the case as IIconifiedContent.can_view adapter returns True by default
-        file_obj = self.portal['file']
+        file_obj = self.portal['file_txt']
         img_obj = self.portal['image']
         self.assertTrue(file_obj.restrictedTraverse('@@download')())
         self.assertTrue(file_obj.restrictedTraverse('@@display-file')())
@@ -146,7 +146,7 @@ class TestCanViewAwareDownload(BaseTestCase):
     def test_can_not_view(self):
         # register an adapter that will return False
         zcml.load_config('testing-adapters.zcml', collective_iconifiedcategory)
-        file_obj = self.portal['file']
+        file_obj = self.portal['file_txt']
         img_obj = self.portal['image']
         # downloadable when element is not confidential
         self.assertFalse(file_obj.confidential)

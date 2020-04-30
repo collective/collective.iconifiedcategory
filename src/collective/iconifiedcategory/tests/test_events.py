@@ -46,7 +46,7 @@ class TestIconifiedChangedEvent(unittest.TestCase):
 class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
 
     def test_categorized_elements_correct_after_copy_paste_categorized_content(self):
-        file_obj = self.portal['file']
+        file_obj = self.portal['file_txt']
         file_obj_UID = file_obj.UID()
         img_obj = self.portal['image']
         img_obj_UID = img_obj.UID()
@@ -256,13 +256,13 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
     def test_delete_categorized_element(self):
         """When an element having a content_category is deleted, the parent's
            categorized_elements are update accordingly."""
-        file_UID = self.portal.file.UID()
+        file_UID = self.portal.file_txt.UID()
         image_UID = self.portal.image.UID()
         self.assertTrue(file_UID in self.portal.categorized_elements)
         self.assertTrue(image_UID in self.portal.categorized_elements)
 
         # remove self.portal.file, will be removed from parent's categorized_elements
-        api.content.delete(self.portal.file)
+        api.content.delete(self.portal.file_txt)
         self.assertFalse(file_UID in self.portal.categorized_elements)
 
         # remove self.portal.image

@@ -19,7 +19,7 @@ class TestCategorizedTabView(BaseTestCase):
     def test_table_render(self):
         view = self.portal.restrictedTraverse('@@iconifiedcategory')
         result = view()
-        self.assertTrue('<a href="http://nohost/plone/file" ' in result)
+        self.assertTrue('<a href="http://nohost/plone/file_txt" ' in result)
         self.assertTrue('File description' in result)
         self.assertTrue('<a href="http://nohost/plone/image" ' in result)
         self.assertTrue('Image description' in result)
@@ -30,7 +30,7 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertTrue('<th>Confidential</th>' in result)
 
         # when nothing to display
-        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['file_txt'])
         api.content.delete(self.portal['image'])
         self.assertEqual(self.portal.categorized_elements, OrderedDict())
         self.assertTrue('No element to display.' in view())
@@ -81,7 +81,7 @@ class TestCategorizedTabView(BaseTestCase):
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
         # initialize collective.documentviewer annotations on file
-        file_obj = self.portal['file']
+        file_obj = self.portal['file_txt']
         image_obj = self.portal['image']
         notify(ObjectModifiedEvent(file_obj))
         notify(ObjectModifiedEvent(image_obj))
@@ -90,11 +90,11 @@ class TestCategorizedTabView(BaseTestCase):
         result = view()
         # by default, images are not handled by collective.documentviewer
         self.assertTrue('<a href="http://nohost/plone/image" ' in result)
-        self.assertTrue('<a href="http://nohost/plone/file/documentviewer#document/p1" ' in result)
+        self.assertTrue('<a href="http://nohost/plone/file_txt/documentviewer#document/p1" ' in result)
 
     def test_PrintColumn(self):
         table = self.portal.restrictedTraverse('@@iconifiedcategory')
-        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file'].UID())[0],
+        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0],
                                    self.portal)
         obj = brain.real_object()
         column = PrintColumn(self.portal, self.portal.REQUEST, table)
@@ -117,13 +117,13 @@ class TestCategorizedTabView(BaseTestCase):
         category_group.to_be_printed_activated = True
         category.to_print = False
         notify(ObjectModifiedEvent(obj))
-        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file'].UID())[0],
+        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0],
                                    self.portal)
         self.assertEqual(brain.to_print, False)
         self.assertFalse(obj.to_print)
         self.assertEqual(
             column.renderCell(brain),
-            u'<a href="http://nohost/plone/file/@@iconified-print" '
+            u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
             u'class="iconified-action editable" '
             u'alt="Should not be printed" '
             u'title="Should not be printed"></a>')
@@ -131,13 +131,13 @@ class TestCategorizedTabView(BaseTestCase):
         # set to_print to True
         obj.to_print = True
         notify(ObjectModifiedEvent(obj))
-        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file'].UID())[0],
+        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0],
                                    self.portal)
         self.assertTrue(brain.to_print, False)
         self.assertTrue(obj.to_print)
         self.assertEqual(
             column.renderCell(brain),
-            u'<a href="http://nohost/plone/file/@@iconified-print" '
+            u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
             u'class="iconified-action active editable" '
             u'alt="Must be printed" '
             u'title="Must be printed"></a>')
@@ -146,6 +146,6 @@ class TestCategorizedTabView(BaseTestCase):
         obj.manage_permission(ModifyPortalContent, roles=[])
         notify(ObjectModifiedEvent(obj))
         self.assertEqual(column.renderCell(brain),
-                         u'<a href="http://nohost/plone/file/@@iconified-print" '
+                         u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
                          u'class="iconified-action active" '
                          u'alt="Must be printed" title="Must be printed"></a>')

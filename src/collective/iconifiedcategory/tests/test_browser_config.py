@@ -45,7 +45,7 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         config = self.portal['config']
         view = config.restrictedTraverse('@@update-categorized-elements')
         view()
-        self.assertListEqual(['file', 'image'], SUBSCRIBED_ELEMENTS)
+        self.assertListEqual(['file_txt', 'image'], SUBSCRIBED_ELEMENTS)
 
     def test_result(self):
         """
@@ -53,7 +53,7 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         """
         config = self.portal['config']
         category = config['group-1']['category-1-1']
-        plone_file = self.portal['file']
+        plone_file = self.portal['file_txt']
         plone_file.title = 'foo.txt'
         element = self.portal.categorized_elements[plone_file.UID()]
         self.assertEqual('Category 1-1', element['category_title'])
@@ -98,7 +98,7 @@ class TestUpdateCategorizedElementsCategory(BaseTestCase):
         """
         config = self.portal['config']
         category = config['group-1']['category-1-1']
-        plone_file = self.portal['file']
+        plone_file = self.portal['file_txt']
         element = self.portal.categorized_elements[plone_file.UID()]
         self.assertEqual('Category 1-1', element['category_title'])
         category.title = 'Category 1-1 Modified'

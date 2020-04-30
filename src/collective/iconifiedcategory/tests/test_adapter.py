@@ -33,7 +33,7 @@ from collective.iconifiedcategory.utils import get_category_object
 class TestCategorizedObjectInfoAdapter(BaseTestCase):
 
     def test_get_infos_for_file(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         file_adapter = adapter.CategorizedObjectInfoAdapter(
             obj)
         category = get_category_object(obj, obj.content_category)
@@ -47,7 +47,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'confidential': False,
              'confidentiality_activated': False,
              'description': obj.Description(),
-             'download_url': u'file/@@download',
+             'download_url': u'file_txt/@@download',
              'filesize': 3017,
              'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
@@ -55,7 +55,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'preview_status': 'not_convertable',
              'publishable': False,
              'publishable_activated': False,
-             'relative_url': 'file',
+             'relative_url': 'file_txt',
              'signed': False,
              'signed_activated': False,
              'subcategory_id': None,
@@ -105,7 +105,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'warn_filesize': False})
 
     def test_get_infos_with_subcategory(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         file_adapter = adapter.CategorizedObjectInfoAdapter(
             obj)
         subcategory = self.portal.restrictedTraverse('config/group-1/category-1-1/subcategory-1-1-1')
@@ -121,7 +121,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'confidential': False,
              'confidentiality_activated': False,
              'description': obj.Description(),
-             'download_url': u'file/@@download',
+             'download_url': u'file_txt/@@download',
              'filesize': 3017,
              'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
@@ -129,7 +129,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'preview_status': 'not_convertable',
              'publishable': False,
              'publishable_activated': False,
-             'relative_url': 'file',
+             'relative_url': 'file_txt',
              'signed': False,
              'signed_activated': False,
              'subcategory_id': subcategory.getId(),
@@ -143,7 +143,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
 
     def test_category(self):
         file_adapter = adapter.CategorizedObjectInfoAdapter(
-            self.portal['file'])
+            self.portal['file_txt'])
         self.assertEqual('config_-_group-1_-_category-1-1',
                          file_adapter._category)
 
@@ -158,7 +158,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         self.assertEqual(3742, image_adapter._filesize)
 
         file_adapter = adapter.CategorizedObjectInfoAdapter(
-            self.portal['file'])
+            self.portal['file_txt'])
         self.assertEqual(3017, file_adapter._filesize)
 
     def test_download_url(self):
@@ -170,10 +170,10 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         download_view = self.portal.restrictedTraverse(str(image_download_url))
         self.assertEqual(stream_data(image.image), download_view())
 
-        file_obj = self.portal['file']
+        file_obj = self.portal['file_txt']
         file_adapter = adapter.CategorizedObjectInfoAdapter(file_obj)
         file_download_url = file_adapter._download_url
-        self.assertEqual(file_download_url, u'file/@@download')
+        self.assertEqual(file_download_url, u'file_txt/@@download')
         # element is really downloadable
         download_view = self.portal.restrictedTraverse(str(file_download_url))
         self.assertEqual(stream_data(file_obj.file), download_view())
@@ -185,12 +185,12 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
                          image_adapter._preview_status)
 
         file_adapter = adapter.CategorizedObjectInfoAdapter(
-            self.portal['file'])
+            self.portal['file_txt'])
         self.assertEqual('not_convertable',
                          file_adapter._preview_status)
 
     def test_uri_are_relative_to_portal(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         file_adapter = adapter.CategorizedObjectInfoAdapter(
             obj)
         category = get_category_object(obj, obj.content_category)
@@ -204,7 +204,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
 class TestCategorizedObjectAdapter(BaseTestCase):
 
     def test_can_view(self):
-        brain = self.portal.portal_catalog(UID=self.portal['file'].UID())[0]
+        brain = self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0]
         cat_adapter = getMultiAdapter((self.portal, self.portal.REQUEST, brain),
                                       IIconifiedContent)
 
@@ -219,30 +219,30 @@ class TestCategorizedObjectPrintableAdapter(BaseTestCase):
         gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
 
     def test_is_printable_default(self):
-        obj = self.portal.file
+        obj = self.portal.file_txt
         print_adapter = adapter.CategorizedObjectPrintableAdapter(obj)
         self.assertTrue(print_adapter.is_printable)
 
     def test_is_printable_link(self):
-        obj = self.portal.file
+        obj = self.portal.file_txt
         alsoProvides(obj, ILink)
         print_adapter = adapter.CategorizedObjectPrintableAdapter(obj)
         self.assertFalse(print_adapter.is_printable)
 
     def test_is_printable_image(self):
-        obj = self.portal.file
+        obj = self.portal.file_txt
         alsoProvides(obj, IImage)
         print_adapter = adapter.CategorizedObjectPrintableAdapter(obj)
         self.assertTrue(print_adapter.is_printable)
 
     def test_is_printable_file(self):
-        obj = self.portal.file
+        obj = self.portal.file_txt
         alsoProvides(obj, IFile)
         print_adapter = adapter.CategorizedObjectPrintableAdapter(obj)
         self.assertTrue(print_adapter.is_printable)
 
     def test_update_object(self):
-        obj = self.portal.file
+        obj = self.portal.file_txt
         alsoProvides(obj, IFile)
         # will be converted with collective.documentviewer
         obj.to_print = True
@@ -260,7 +260,7 @@ class TestCategorizedObjectPrintableAdapter(BaseTestCase):
 class TestCategorizedObjectPreviewAdapter(BaseTestCase):
 
     def test_is_convertible(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
 
         preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
 
@@ -301,7 +301,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
             self.assertFalse(preview_adapter.is_convertible())
 
     def test_status(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
 
         preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
 

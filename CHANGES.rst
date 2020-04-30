@@ -4,8 +4,10 @@ Changelog
 0.43 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Adapted tests to use `file_txt` instead `file` as id for default `File`
+  as `file` is also the name of the field, `portal.file` returns the `File`
+  instance instead breaking because it does not have a `file` field.
+  [gbastien]
 
 0.42 (2020-04-29)
 -----------------

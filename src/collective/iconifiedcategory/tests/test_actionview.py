@@ -16,7 +16,7 @@ from collective.iconifiedcategory.tests.base import BaseTestCase
 class TestBaseView(BaseTestCase):
 
     def test__call__(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         view = BaseView(obj, self.portal.REQUEST)
         reader = getUtility(IJSONReader)
 
@@ -42,7 +42,7 @@ class TestBaseView(BaseTestCase):
         self.assertEqual(obj.title, 'My new title')
 
     def test_get_current_values(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         view = BaseView(obj, self.portal.REQUEST)
 
         self.assertEqual(view.get_current_values(), {})
@@ -53,7 +53,7 @@ class TestBaseView(BaseTestCase):
 class TestToPrintChangeView(BaseTestCase):
 
     def test_set_values(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         view = obj.restrictedTraverse('@@iconified-print')
 
         # works only if functionnality enabled and user have Modify portal content
@@ -87,7 +87,7 @@ class TestToPrintChangeView(BaseTestCase):
 class TestConfidentialChangeView(BaseTestCase):
 
     def test_set_values(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         view = obj.restrictedTraverse('@@iconified-confidential')
 
         # works only if functionnality enabled and user have Modify portal content
@@ -115,7 +115,7 @@ class TestConfidentialChangeView(BaseTestCase):
 class TestSignedChangeView(BaseTestCase):
 
     def test_set_values(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         view = obj.restrictedTraverse('@@iconified-signed')
 
         # works only if functionnality enabled and user have Modify portal content
@@ -159,7 +159,7 @@ class TestSignedChangeView(BaseTestCase):
            - to_sign True, signed False,
            - to_sign True, signed True.
            to_sign False, signed True is not possible."""
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         view = obj.restrictedTraverse('@@iconified-signed')
         category = utils.get_category_object(obj, obj.content_category)
         group = category.get_category_group()
@@ -183,7 +183,7 @@ class TestSignedChangeView(BaseTestCase):
 class TestPublishableChangeView(BaseTestCase):
 
     def test_set_values(self):
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         view = obj.restrictedTraverse('@@iconified-publishable')
 
         # works only if functionnality enabled and user have Modify portal content

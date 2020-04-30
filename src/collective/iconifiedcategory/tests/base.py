@@ -53,7 +53,7 @@ class BaseTestCase(unittest.TestCase):
         )
         login(self.portal, 'adminuser')
         api.content.create(
-            id='file',
+            id='file_txt',
             type='File',
             file=self.file,
             container=self.portal,
@@ -77,7 +77,7 @@ class BaseTestCase(unittest.TestCase):
         )
 
     def tearDown(self):
-        elements = ('file', 'image')
+        elements = ('file_txt', 'image')
         for element in elements:
             if element in self.portal:
                 api.content.delete(self.portal[element])

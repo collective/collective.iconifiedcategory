@@ -23,7 +23,7 @@ class TestIconifiedCategoryCSS(BaseTestCase):
                         in css)
 
         # delete the config
-        api.content.delete(self.portal['file'])
+        api.content.delete(self.portal['file_txt'])
         api.content.delete(self.portal['image'])
         api.content.delete(self.portal['config'])
         self.assertEqual(view(), '')

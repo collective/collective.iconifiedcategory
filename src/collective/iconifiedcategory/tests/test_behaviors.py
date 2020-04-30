@@ -172,7 +172,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
     def test_content_category_setter_reindex_content_category_uid(self):
         """ """
         catalog = api.portal.get_tool('portal_catalog')
-        obj = self.portal['file']
+        obj = self.portal['file_txt']
         category = get_category_object(obj, obj.content_category)
         # correctly indexed on creation
         category_brain = catalog(content_category_uid=category.UID())[0]
