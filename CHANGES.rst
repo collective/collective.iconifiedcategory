@@ -8,6 +8,9 @@ Changelog
   as `file` is also the name of the field, `portal.file` returns the `File`
   instance instead breaking because it does not have a `file` field.
   [gbastien]
+- Do not break in `utils.validateFileIsPDF` while creating a new element and
+  no file has been selected.
+  [gbastien]
 
 0.42 (2020-04-29)
 -----------------

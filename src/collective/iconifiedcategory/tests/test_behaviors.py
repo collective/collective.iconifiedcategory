@@ -275,8 +275,11 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         request.set('already_validateFileIsPDF', False)
         self.assertEqual(errors[0].message, u'You must select a PDF file!')
         request.form['form.widgets.file'].headers['content-type'] = 'application/pdf'
-        # editing a stored element
+        # no file in request
         request.form = {}
+        self.assertFalse(invariants.validate(data))
+        request.set('already_validateFileIsPDF', False)
+        # editing a stored element
         category.only_pdf = False
         obj = api.content.create(
             id='file2',

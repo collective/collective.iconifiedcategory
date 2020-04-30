@@ -452,7 +452,7 @@ def validateFileIsPDF(data):
         return
     request.set('already_validateFileIsPDF', True)
     context = data.__context__ or request.get('PUBLISHED').context
-    file = request.form.get('form.widgets.file') or context.file
+    file = request.form.get('form.widgets.file') or getattr(aq_base(context), 'file', None)
     # get contentType
     if file:
         contentType = getattr(file, 'contentType', None) or file.headers.get('content-type')
