@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.43 (unreleased)
+0.43 (2020-04-30)
 -----------------
 
 - Adapted tests to use `file_txt` instead `file` as id for default `File`
