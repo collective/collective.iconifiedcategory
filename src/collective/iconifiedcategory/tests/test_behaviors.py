@@ -10,7 +10,6 @@ Created by mpeeters
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory import testing
-from collective.iconifiedcategory.behaviors.iconifiedcategorization import IconifiedCategorization
 from collective.iconifiedcategory.behaviors.iconifiedcategorization import IIconifiedCategorization
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import calculate_category_id
@@ -182,7 +181,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         # correctly reindexed when content_category changed thru setter
         category2 = self.portal.config['group-1']['category-1-2']
         self.assertNotEqual(category, category2)
-        adapted_obj = IconifiedCategorization(obj)
+        adapted_obj = IIconifiedCategorization(obj)
         setattr(adapted_obj, 'content_category', 'config_-_group-1_-_category-1-2')
         category2_brain = catalog(content_category_uid=category2.UID())[0]
         self.assertEqual(category2_brain.UID, obj.UID())
@@ -192,7 +191,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
     def test_content_category_changed_default_values(self):
         """While content_category is changed on an element, the default values for fields
            to_print/confidential/to_sign/signed are reapplied with new content_category
-           default values if it was still the default vlue of the original content_category."""
+           default values if it was still the default value of the original content_category."""
         category_group = self.portal.config['group-1']
         category_group.to_be_printed_activated = True
         category_group.confidentiality_activated = True
@@ -216,7 +215,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         category12.to_sign = True
         category12.signed = True
         category12_id = calculate_category_id(category12)
-        adapted_obj = IconifiedCategorization(obj)
+        adapted_obj = IIconifiedCategorization(obj)
         setattr(adapted_obj, 'content_category', category12_id)
         notify(ObjectModifiedEvent(obj))
 

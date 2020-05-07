@@ -4,8 +4,10 @@ Changelog
 0.44 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Do no more make the elements using behavior marked with
+  `IIconifiedCategorization` or `content_category.setter` is not working
+  anymore.
+  [gbastien]
 
 0.43 (2020-04-30)
 -----------------
