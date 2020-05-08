@@ -4,8 +4,9 @@ Changelog
 0.45 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- When using `collective.solr`, brains are not `ICatalogBrain` but `PloneFlare`
+  so register `IIconifiedContent` adapter for it when installed.
+  [gbastien]
 
 0.44 (2020-05-08)
 -----------------
