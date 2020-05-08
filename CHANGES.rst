@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.44 (unreleased)
+0.44 (2020-05-08)
 -----------------
 
 - Do no more make the elements using behavior marked with
