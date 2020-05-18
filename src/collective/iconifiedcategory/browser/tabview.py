@@ -174,7 +174,7 @@ class TitleColumn(column.GetAttrColumn):
     attrName = 'title'
 
     def renderCell(self, content):
-        content = (
+        pattern = (
             u'<a href="{link}" alt="{title}" title="{title}" target="{target}">'
             u'<img src="{icon}" alt="{category}" title="{category}" />'
             u' {title}</a><p class="discreet">{description}</p>'
@@ -184,7 +184,7 @@ class TitleColumn(column.GetAttrColumn):
         if content.preview_status == 'converted':
             url = u'{0}/documentviewer#document/p1'.format(url)
             target = '_blank'
-        return content.format(
+        return pattern.format(
             link=url,
             title=getattr(content, self.attrName).decode('utf-8'),
             target=target,
