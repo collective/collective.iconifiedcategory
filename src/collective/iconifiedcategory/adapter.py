@@ -11,15 +11,16 @@ from Acquisition import aq_base
 from collective.documentviewer.settings import GlobalSettings
 from collective.documentviewer.settings import Settings
 from collective.documentviewer.utils import allowedDocumentType
+from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.content.subcategory import ISubcategory
+from collective.iconifiedcategory.interfaces import IIconifiedPreview
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
+from plone.indexer.interfaces import IIndexableObject
 from zope.annotation import IAnnotations
-
-from collective.iconifiedcategory import utils
-from collective.iconifiedcategory.interfaces import IIconifiedPreview
-from collective.iconifiedcategory.content.subcategory import ISubcategory
+from zope.component import queryMultiAdapter
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -71,6 +72,7 @@ class CategorizedObjectInfoAdapter(object):
             'filesize': filesize,
             'warn_filesize': utils.warn_filesize(filesize),
             'preview_status': self._preview_status,
+            'allowedRolesAndUsers': self._allowedRolesAndUsers,
         }
         infos.update(base_infos)
         return infos
@@ -139,6 +141,13 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _preview_status(self):
         return IIconifiedPreview(self.obj).status
+
+    @property
+    def _allowedRolesAndUsers(self):
+        catalog = api.portal.get_tool('portal_catalog')
+        # use self.context that is acquisition wrapped, need this to get every local_roles
+        wrapper = queryMultiAdapter((self.context, catalog, ), IIndexableObject)
+        return wrapper.allowedRolesAndUsers
 
 
 class CategorizedObjectPrintableAdapter(object):

@@ -25,7 +25,7 @@
   <adapter
     for="zope.interface.Interface
          zope.publisher.interfaces.browser.IBrowserRequest
-         Products.ZCatalog.interfaces.ICatalogBrain"
+         zope.interface.Interface"
     provides=".interfaces.IIconifiedContent"
     factory=".adapter.CategorizedObjectAdapter"
     />

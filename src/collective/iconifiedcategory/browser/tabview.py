@@ -67,22 +67,57 @@ class CategorizedTabView(BrowserView):
 
 class CategorizedContent(object):
 
-    def __init__(self, brain, context):
-        self._obj = brain
-        self._metadata = context.categorized_elements.get(brain.UID, {})
+    def __init__(self, context, content):
+        self.context = context
+        self.UID = content['UID']
+        self._metadata = context.categorized_elements.get(content['UID'], {})
 
     def __getattr__(self, key):
         if key in self._metadata:
             return self._metadata.get(key)
-        try:
-            return getattr(self._obj, key)
-        except AttributeError:
-            return self.__getattribute__(key)
+        return getattr(self.context, key)
 
-    def real_object(self):
-        if not hasattr(self, '_real_object'):
-            self._real_object = self._obj.getObject()
-        return self._real_object
+    def getObject(self):
+        obj = getattr(self, 'obj', None)
+        if not obj:
+            obj = self.context.get(self._metadata['id'])
+            self.obj = obj
+        return obj
+
+    @property
+    def Description(self):
+        return self.getObject().Description()
+
+    @property
+    def Creator(self):
+        return self.getObject().Creator()
+
+    @property
+    def CreationDate(self):
+        return self.created
+
+    @property
+    def created(self):
+        return self.getObject().created()
+
+    @property
+    def ModificationDate(self):
+        return self.modified
+
+    @property
+    def modified(self):
+        return self.getObject().modified()
+
+    def getPath(self):
+        portal_id = api.portal.get().getId()
+        path = '/{0}/{1}'.format(portal_id, self._metadata['relative_url'])
+        return path
+
+    def getURL(self, suffix=None):
+        """ """
+        portal_url = api.portal.get().absolute_url()
+        suffix = suffix or self.relative_url
+        return portal_url + '/' + suffix
 
 
 class CategorizedTable(Table):
@@ -105,22 +140,25 @@ class CategorizedTable(Table):
 
     @property
     def values(self):
-        sort_on = 'getObjPositionInParent'
-        sort_categorized_tab = api.portal.get_registry_record(
-            'sort_categorized_tab',
-            interface=IIconifiedCategorySettings,
-        )
-        if sort_categorized_tab is True:
-            sort_on = None
-        return [
-            CategorizedContent(content, self.context) for content in
-            utils.get_categorized_elements(
-                self.context,
-                result_type='brains',
-                portal_type=self.portal_type,
-                sort_on=sort_on,
+        if not getattr(self, '_v_stored_values', []):
+            sort_on = 'getObjPositionInParent'
+            sort_categorized_tab = api.portal.get_registry_record(
+                'sort_categorized_tab',
+                interface=IIconifiedCategorySettings,
             )
-        ]
+            if sort_categorized_tab is True:
+                sort_on = None
+            data = [
+                CategorizedContent(self.context, content) for content in
+                utils.get_categorized_elements(
+                    self.context,
+                    result_type='dict',
+                    portal_type=self.portal_type,
+                    sort_on=sort_on,
+                )
+            ]
+            self._v_stored_values = data
+        return self._v_stored_values
 
     def render(self):
         if not len(self.rows):
@@ -135,24 +173,24 @@ class TitleColumn(column.GetAttrColumn):
     weight = 20
     attrName = 'title'
 
-    def renderCell(self, obj):
+    def renderCell(self, content):
         content = (
             u'<a href="{link}" alt="{title}" title="{title}" target="{target}">'
             u'<img src="{icon}" alt="{category}" title="{category}" />'
             u' {title}</a><p class="discreet">{description}</p>'
         )
-        url = obj.getURL()
+        url = content.getURL()
         target = ''
-        if obj.preview_status == 'converted':
+        if content.preview_status == 'converted':
             url = u'{0}/documentviewer#document/p1'.format(url)
             target = '_blank'
         return content.format(
             link=url,
-            title=getattr(obj, self.attrName).decode('utf-8'),
+            title=getattr(content, self.attrName).decode('utf-8'),
             target=target,
-            icon=obj.icon_url,
-            category=safe_unicode(obj.category_title),
-            description=safe_unicode(obj.Description),
+            icon=content.icon_url,
+            category=safe_unicode(content.category_title),
+            description=safe_unicode(content.Description),
         )
 
 
@@ -161,11 +199,11 @@ class CategoryColumn(column.GetAttrColumn):
     weight = 30
     attrName = 'category_title'
 
-    def renderCell(self, obj):
-        category_title = safe_unicode(obj.category_title)
-        if obj.subcategory_title:
+    def renderCell(self, content):
+        category_title = safe_unicode(content.category_title)
+        if content.subcategory_title:
             category_title = u"{0} / {1}".format(category_title,
-                                                 safe_unicode(obj.subcategory_title))
+                                                 safe_unicode(content.subcategory_title))
         return category_title
 
 
@@ -173,17 +211,17 @@ class AuthorColumn(column.GetAttrColumn):
     header = _(u'Author')
     weight = 40
 
-    def renderCell(self, obj):
-        return obj.Creator
+    def renderCell(self, content):
+        return content.Creator
 
 
 class CreationDateColumn(column.GetAttrColumn):
     header = _(u'Creation date')
     weight = 50
 
-    def renderCell(self, obj):
+    def renderCell(self, content):
         return api.portal.get_localized_time(
-            datetime=obj.created,
+            datetime=content.created,
             long_format=True,
         )
 
@@ -192,11 +230,11 @@ class LastModificationColumn(column.GetAttrColumn):
     header = _(u'Last modification')
     weight = 60
 
-    def renderCell(self, obj):
-        if obj.created == obj.modified:
+    def renderCell(self, content):
+        if content.created == content.modified:
             return ''
         return api.portal.get_localized_time(
-            datetime=obj.modified,
+            datetime=content.modified,
             long_format=True,
         )
 
@@ -205,10 +243,10 @@ class FilesizeColumn(column.GetAttrColumn):
     header = _(u'Filesize')
     weight = 70
 
-    def renderCell(self, obj):
-        if getattr(obj, 'filesize', None) is None:
+    def renderCell(self, content):
+        if getattr(content, 'filesize', None) is None:
             return ''
-        return utils.render_filesize(obj.filesize)
+        return utils.render_filesize(content.filesize)
 
 
 class IconClickableColumn(column.GetAttrColumn):
@@ -218,48 +256,48 @@ class IconClickableColumn(column.GetAttrColumn):
         '''Is deactivated value a useable one?'''
         return False
 
-    def get_url(self, obj):
-        if not self._deactivated_is_useable() and self.is_deactivated(obj):
+    def get_url(self, content):
+        if not self._deactivated_is_useable() and self.is_deactivated(content):
             return '#'
         return '{url}/@@{action}'.format(
-            url=obj.getURL(),
-            action=self.get_action_view(obj),
+            url=content.getURL(),
+            action=self.get_action_view(content),
         )
 
-    def get_action_view(self, obj):
+    def get_action_view(self, content):
         return self.action_view
 
-    def alt(self, obj):
+    def alt(self, content):
         return self.header
 
-    def is_deactivated(self, obj):
-        return getattr(obj, self.attrName, False) is None
+    def is_deactivated(self, content):
+        return getattr(content, self.attrName, False) is None
 
-    def is_editable(self, obj):
-        view = getMultiAdapter((obj.real_object(), self.request), name=self.action_view)
+    def is_editable(self, content):
+        view = getMultiAdapter((content.getObject(), self.request), name=self.action_view)
         return view._may_set_values({})
 
-    def is_active(self, obj):
-        return getattr(obj, self.attrName, False)
+    def is_active(self, content):
+        return getattr(content, self.attrName, False)
 
-    def css_class(self, obj):
-        is_deactivated = self.is_deactivated(obj)
+    def css_class(self, content):
+        is_deactivated = self.is_deactivated(content)
         if not self._deactivated_is_useable() and is_deactivated:
             return ' deactivated'
-        base_css = self.is_active(obj) and ' active' or ''
+        base_css = self.is_active(content) and ' active' or ''
         if is_deactivated:
             base_css = ' deactivated' + base_css
-        if self.is_editable(obj):
+        if self.is_editable(content):
             return '{0} editable'.format(base_css)
         return base_css
 
-    def renderCell(self, obj):
+    def renderCell(self, content):
         link = (u'<a href="{0}" class="iconified-action{1}" alt="{2}" '
                 u'title="{2}"></a>')
         return link.format(
-            self.get_url(obj),
-            self.css_class(obj),
-            self.alt(obj),
+            self.get_url(content),
+            self.css_class(content),
+            self.alt(content),
         )
 
 
@@ -270,9 +308,9 @@ class PrintColumn(IconClickableColumn):
     attrName = 'to_print'
     action_view = 'iconified-print'
 
-    def alt(self, obj):
+    def alt(self, content):
         return translate(
-            utils.print_message(obj),
+            utils.print_message(content),
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
@@ -285,9 +323,9 @@ class ConfidentialColumn(IconClickableColumn):
     attrName = 'confidential'
     action_view = 'iconified-confidential'
 
-    def alt(self, obj):
+    def alt(self, content):
         return translate(
-            utils.boolean_message(obj, attr_name='confidential'),
+            utils.boolean_message(content, attr_name='confidential'),
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
@@ -300,9 +338,9 @@ class SignedColumn(IconClickableColumn):
     attrName = 'signed'
     action_view = 'iconified-signed'
 
-    def alt(self, obj):
+    def alt(self, content):
         return translate(
-            utils.signed_message(obj),
+            utils.signed_message(content),
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
@@ -311,8 +349,8 @@ class SignedColumn(IconClickableColumn):
         '''Is deactivated value a useable one?'''
         return True
 
-    def is_deactivated(self, obj):
-        return not getattr(obj, 'to_sign', True)
+    def is_deactivated(self, content):
+        return not getattr(content, 'to_sign', True)
 
 
 class PublishableColumn(IconClickableColumn):
@@ -322,9 +360,9 @@ class PublishableColumn(IconClickableColumn):
     attrName = 'publishable'
     action_view = 'iconified-publishable'
 
-    def alt(self, obj):
+    def alt(self, content):
         return translate(
-            utils.boolean_message(obj, attr_name='publishable'),
+            utils.boolean_message(content, attr_name='publishable'),
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
@@ -334,25 +372,26 @@ class ActionColumn(column.GetAttrColumn):
     header = u''
     weight = 100
 
-    def renderCell(self, obj):
+    def renderCell(self, content):
         link = u'<a href="{href}"><img src="{src}" title="{title}" /></a>'
         render = []
-        if _checkPermission(ModifyPortalContent, obj):
+        import ipdb; ipdb.set_trace()
+        if _checkPermission(ModifyPortalContent, content):
             render.append(link.format(
-                href=u'{0}/edit'.format(obj.getURL()),
-                src=u'{0}/edit.gif'.format(obj.getURL()),
+                href=u'{0}/edit'.format(content.getURL()),
+                src=u'{0}/edit.gif'.format(content.getURL()),
                 title=_('Edit'),
             ))
-        if obj.download_url:
+        if content.download_url:
             render.append(link.format(
-                href=obj.download_url,
-                src=u'{0}/download_icon.png'.format(obj.getURL()),
+                href=content.download_url,
+                src=u'{0}/download_icon.png'.format(content.getURL()),
                 title=_('Download'),
             ))
-        if obj.preview_status == 'converted':
+        if content.preview_status == 'converted':
             render.append(link.format(
-                href=u'{0}/documentviewer#document/p1'.format(obj.getURL()),
-                src=u'{0}/file_icon.png'.format(obj.getURL()),
+                href=u'{0}/documentviewer#document/p1'.format(content.getURL()),
+                src=u'{0}/file_icon.png'.format(content.getURL()),
                 title=_('Preview'),
             ))
         return u''.join(render)
