@@ -13,6 +13,7 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
 from collective.iconifiedcategory import logger
+from collective.iconifiedcategory.config import CATALOG_IDS
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.content.subcategory import ISubcategory
@@ -318,8 +319,15 @@ def get_UID(obj):
 
 
 def get_back_references(obj):
-    portal = api.portal.get()
-    return api.content.find(context=portal, content_category_uid=obj.UID())
+    res = []
+    for catalog_id in CATALOG_IDS:
+        catalog = api.portal.get_tool(catalog_id)
+        if 'content_category_uid' in catalog.Indexes:
+            brains = catalog(content_category_uid=obj.UID())
+            if brains:
+                res = brains
+                break
+    return res
 
 
 def has_relations(obj):

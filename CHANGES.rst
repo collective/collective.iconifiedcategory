@@ -11,6 +11,9 @@ Changelog
   to be sure we get the one on context.
   Indeed the parent could have this attribute too...
   [gbastien]
+- Added `config.CATALOG_IDS` used by `utils.get_back_references`
+  so it can query several different catalogs.
+  [gbastien]
 
 0.44 (2020-05-08)
 -----------------
