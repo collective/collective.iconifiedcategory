@@ -10,6 +10,7 @@
     description=""
     provides=".iconifiedcategorization.IIconifiedCategorization"
     factory=".iconifiedcategorization.IconifiedCategorization"
-    for="plone.dexterity.interfaces.IDexterityContent" />
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".iconifiedcategorization.IIconifiedCategorizationMarker" />
 
 </configure>

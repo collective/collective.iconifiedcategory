@@ -15,7 +15,6 @@ from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
 from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
-from plone.dexterity.interfaces import IDexterityContent
 from zope import schema
 from zope.component import adapter
 from zope.interface import implementer
@@ -53,8 +52,12 @@ class IIconifiedCategorization(Interface):
         validateFileIsPDF(data)
 
 
+class IIconifiedCategorizationMarker(Interface):
+    """ """
+
+
 @implementer(IIconifiedCategorization)
-@adapter(IDexterityContent)
+@adapter(IIconifiedCategorizationMarker)
 class IconifiedCategorization(object):
 
     def __init__(self, context):

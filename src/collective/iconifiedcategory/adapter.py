@@ -179,10 +179,10 @@ class CategorizedObjectPrintableAdapter(object):
 
 class CategorizedObjectAdapter(object):
 
-    def __init__(self, context, request, brain):
+    def __init__(self, context, request, categorized_obj):
         self.context = context
         self.request = request
-        self.brain = brain
+        self.categorized_obj = categorized_obj
 
     def can_view(self):
         return True
