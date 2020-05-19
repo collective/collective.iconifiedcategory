@@ -7,6 +7,10 @@ Changelog
 - When using `collective.solr`, brains are not `ICatalogBrain` but `PloneFlare`
   so register `IIconifiedContent` adapter for it when installed.
   [gbastien]
+- In `utils._categorized_elements`, use `aq_base` to get `categorized_elements`
+  to be sure we get the one on context.
+  Indeed the parent could have this attribute too...
+  [gbastien]
 
 0.44 (2020-05-08)
 -----------------
