@@ -175,10 +175,7 @@ class CategorizedChildInfosView(BrowserView):
 
 def check_can_view(obj, request):
     """ """
-    catalog = api.portal.get_tool('portal_catalog')
-    brains = catalog(UID=obj.UID())
-    brain = brains[0]
-    adapter = getMultiAdapter((obj.aq_parent, request, brain),
+    adapter = getMultiAdapter((obj.aq_parent, request, obj),
                               IIconifiedContent)
     return adapter.can_view()
 
