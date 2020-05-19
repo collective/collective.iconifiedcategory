@@ -24,6 +24,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 from natsort import natsorted
 from plone import api
+from plone.api.exc import InvalidParameterError
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.memoize import ram
@@ -321,7 +322,11 @@ def get_UID(obj):
 def get_back_references(obj):
     res = []
     for catalog_id in CATALOG_IDS:
-        catalog = api.portal.get_tool(catalog_id)
+        try:
+            catalog = api.portal.get_tool(catalog_id)
+        except InvalidParameterError:
+            continue
+
         if 'content_category_uid' in catalog.Indexes:
             brains = catalog(content_category_uid=obj.UID())
             if brains:
