@@ -109,8 +109,8 @@ class CategorizedContent(object):
         return self.getObject().modified()
 
     def getPath(self):
-        portal_id = api.portal.get().getId()
-        path = '/{0}/{1}'.format(portal_id, self._metadata['relative_url'])
+        portal_path = api.portal.get().absolute_url_path()
+        path = '{0}/{1}'.format(portal_path, self.relative_url)
         return path
 
     def getURL(self, suffix=None):
@@ -375,7 +375,6 @@ class ActionColumn(column.GetAttrColumn):
     def renderCell(self, content):
         link = u'<a href="{href}"><img src="{src}" title="{title}" /></a>'
         render = []
-        import ipdb; ipdb.set_trace()
         if _checkPermission(ModifyPortalContent, content):
             render.append(link.format(
                 href=u'{0}/edit'.format(content.getURL()),
