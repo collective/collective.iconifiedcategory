@@ -272,7 +272,7 @@
   <!-- overrides for @@download and @@display-file views -->
   <browser:page
     name="download"
-    for="*"
+    for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     class=".views.CanViewAwareDownload"
     permission="zope2.View"
@@ -280,7 +280,7 @@
 
   <browser:page
     name="display-file"
-    for="*"
+    for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     class=".views.CanViewAwareDisplayFile"
     permission="zope2.View"
