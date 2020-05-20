@@ -109,7 +109,7 @@ class CategorizedContent(object):
         return self.getObject().modified()
 
     def getPath(self):
-        portal_path = api.portal.get().absolute_url_path()
+        portal_path = '/'.join(api.portal.get().getPhysicalPath())
         path = '{0}/{1}'.format(portal_path, self.relative_url)
         return path
 
