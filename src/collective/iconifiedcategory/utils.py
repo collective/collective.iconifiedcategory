@@ -304,11 +304,21 @@ def get_categorized_elements(context,
                 tmp['UID'] = obj_uid
                 elements.append(tmp)
 
-    if sort_on:
+    if elements and sort_on:
         if result_type == 'dict':
-            elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
+            if sort_on in elements[0]:
+                elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
+            elif sort_on == 'getObjPositionInParent':
+                elements = sorted(
+                    elements,
+                    key=lambda x, object_ids=context.objectIds(): object_ids.index(x['id']))
         else:
-            elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
+            if getattr(elements[0], sort_on):
+                elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
+            elif sort_on == 'getObjPositionInParent':
+                elements = sorted(
+                    elements,
+                    key=lambda x, object_ids=context.objectIds(): object_ids.index(x.id))
     return elements
 
 
