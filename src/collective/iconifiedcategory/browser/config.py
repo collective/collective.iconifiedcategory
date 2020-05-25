@@ -29,7 +29,7 @@ class UpdateCategorizedElementsBase(BrowserView):
         if brain.UID in self._notified:
             return
         self._notified.append(brain.UID)
-        event = IconifiedCategoryChangedEvent(brain.getObject(), sort=self.sort)
+        event = IconifiedCategoryChangedEvent(brain.getObject(), self.context, sort=self.sort)
         notify(event)
 
     def notify_category_updated(self, obj):

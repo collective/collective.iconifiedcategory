@@ -9,10 +9,12 @@ Created by mpeeters
 
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.behaviors.iconifiedcategorization import IIconifiedCategorizationMarker
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
+from imio.helpers.content import _contained_objects
 from plone import api
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.statusmessages.interfaces import IStatusMessage
@@ -140,7 +142,7 @@ def categorized_content_updated(event, is_created=False):
 
 
 def content_category_updated(event):
-    if hasattr(event.object, 'content_category'):
+    if IIconifiedCategorizationMarker.providedBy(event.object):
         obj = event.object
         target = utils.get_category_object(obj, obj.content_category)
         utils.update_categorized_elements(
@@ -151,6 +153,20 @@ def content_category_updated(event):
             sort=event.sort,
             logging=True
         )
+    else:
+        # in case categorized element is not indexed
+        # event.object is the parent, so check contained objects
+        for contained_obj in _contained_objects(event.object):
+            if IIconifiedCategorizationMarker.providedBy(contained_obj):
+                target = utils.get_category_object(contained_obj, contained_obj.content_category)
+                utils.update_categorized_elements(
+                    contained_obj.aq_parent,
+                    contained_obj,
+                    target,
+                    limited=False,
+                    sort=event.sort,
+                    logging=True
+                )
 
 
 def categorized_content_removed(event):
