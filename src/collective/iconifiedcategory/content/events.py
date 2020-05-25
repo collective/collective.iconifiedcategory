@@ -156,7 +156,7 @@ def content_category_updated(event):
     else:
         # in case categorized element is not indexed
         # event.object is the parent, so check contained objects
-        for contained_obj in _contained_objects(event.object):
+        for contained_obj in _contained_objects(event.object, only_unindexed=True):
             if IIconifiedCategorizationMarker.providedBy(contained_obj):
                 target = utils.get_category_object(contained_obj, contained_obj.content_category)
                 utils.update_categorized_elements(
