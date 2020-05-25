@@ -318,6 +318,7 @@ class TestUtils(BaseTestCase):
         self.assertEqual(
             result,
             [{'UID': document.UID(),
+              'allowedRolesAndUsers': ['Anonymous'],
               'category_id': 'category-x',
               'category_title': 'Category X',
               'category_uid': category.UID(),

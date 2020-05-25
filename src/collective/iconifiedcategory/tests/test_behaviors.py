@@ -177,7 +177,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         category_brain = catalog(content_category_uid=category.UID())[0]
         self.assertEqual(category_brain.UID, obj.UID())
         obj_brain = catalog(UID=obj.UID())[0]
-        self.assertEqual(obj_brain.content_category_uid, category.UID())
+        self.assertEqual(obj_brain.content_category_uid, [category.UID()])
         # correctly reindexed when content_category changed thru setter
         category2 = self.portal.config['group-1']['category-1-2']
         self.assertNotEqual(category, category2)
@@ -186,7 +186,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         category2_brain = catalog(content_category_uid=category2.UID())[0]
         self.assertEqual(category2_brain.UID, obj.UID())
         obj_brain = catalog(UID=obj.UID())[0]
-        self.assertEqual(obj_brain.content_category_uid, category2.UID())
+        self.assertEqual(obj_brain.content_category_uid, [category2.UID()])
 
     def test_content_category_changed_default_values(self):
         """While content_category is changed on an element, the default values for fields

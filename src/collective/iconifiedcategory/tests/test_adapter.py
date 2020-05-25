@@ -41,7 +41,8 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         self.assertEqual(
             infos,
-            {'category_id': category.category_id,
+            {'allowedRolesAndUsers': ['Anonymous'],
+             'category_id': category.category_id,
              'category_title': category.category_title,
              'category_uid': category.category_uid,
              'confidential': False,
@@ -78,7 +79,8 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         self.assertEqual(
             infos,
-            {'category_id': subcategory.category_id,
+            {'allowedRolesAndUsers': ['Anonymous'],
+             'category_id': subcategory.category_id,
              'category_title': subcategory.category_title,
              'category_uid': subcategory.category_uid,
              'confidential': False,
@@ -115,7 +117,8 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
         scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         self.assertEqual(
             infos,
-            {'category_id': subcategory.category_id,
+            {'allowedRolesAndUsers': ['Anonymous'],
+             'category_id': subcategory.category_id,
              'category_title': subcategory.category_title,
              'category_uid': subcategory.category_uid,
              'confidential': False,
@@ -204,10 +207,8 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
 class TestCategorizedObjectAdapter(BaseTestCase):
 
     def test_can_view(self):
-        brain = self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0]
-        cat_adapter = getMultiAdapter((self.portal, self.portal.REQUEST, brain),
+        cat_adapter = getMultiAdapter((self.portal, self.portal.REQUEST, self.portal['file_txt']),
                                       IIconifiedContent)
-
         self.assertTrue(cat_adapter.can_view())
 
 
