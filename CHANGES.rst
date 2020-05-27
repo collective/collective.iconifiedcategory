@@ -1,7 +1,13 @@
 Changelog
 =========
 
-0.45 (unreleased)
+0.46 (unreleased)
+-----------------
+
+- Nothing changed yet.
+
+
+0.45 (2020-05-26)
 -----------------
 
 - When using `collective.solr`, brains are not `ICatalogBrain` but `PloneFlare`
