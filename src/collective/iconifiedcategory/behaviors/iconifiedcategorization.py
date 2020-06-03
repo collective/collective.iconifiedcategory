@@ -61,6 +61,10 @@ class IconifiedCategorization(object):
         self.context = context
 
     @property
+    def default_titles(self):
+        return None
+
+    @property
     def content_category(self):
         return getattr(self.context, 'content_category', None)
 

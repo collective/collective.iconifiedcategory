@@ -4,8 +4,10 @@ Changelog
 0.46 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Make `plone.restapi` validation happy by defining default value for
+  `IIconifiedCategorization.default_titles` that is not stored on the
+  adapted context.
+  [gbastien]
 
 0.45 (2020-05-26)
 -----------------
