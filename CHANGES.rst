@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.46 (unreleased)
+0.46 (2020-06-24)
 -----------------
 
 - Make `plone.restapi` validation happy by defining default value for
