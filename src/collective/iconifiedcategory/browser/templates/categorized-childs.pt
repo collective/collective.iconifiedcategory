@@ -19,5 +19,5 @@
   <div style="clear: both;"></div>
 </div>
 <tal:nothing condition="python: not view.has_elements_to_show() and view.show_nothing">
-<span class="discreet" i18n:translate="">Nothing.</span>
+<span class="discreet" i18n:domain="collective.iconifiedcategory" i18n:translate="">Nothing.</span>
 </tal:nothing>

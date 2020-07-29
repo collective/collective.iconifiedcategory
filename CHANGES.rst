@@ -4,8 +4,8 @@ Changelog
 0.47 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added missing translation for `Nothing.`.
+  [gbastien]
 
 0.46 (2020-06-24)
 -----------------
