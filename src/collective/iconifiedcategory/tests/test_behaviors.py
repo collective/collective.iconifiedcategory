@@ -250,7 +250,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         self.assertEqual(obj.content_category, category12_id)
 
     def test_only_pdf_invariant(self):
-        """ """
+        """When category.only_pdf is True, categorized file may only be a PDF file."""
         category = self.portal.config['group-1']['category-1-1']
         category.only_pdf = False
         content_category_id = calculate_category_id(category)

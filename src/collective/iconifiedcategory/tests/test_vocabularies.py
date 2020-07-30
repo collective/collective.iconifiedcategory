@@ -94,3 +94,24 @@ class TestVocabularies(unittest.TestCase):
             'Category 2-1', 'Category 2-2', 'Category 2-3',
         ]
         self.assertListEqual(sorted(expected), sorted(terms))
+
+    def test_category_title_only_pdf_vocabulary(self):
+        vocabulary = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.categories',
+        )
+        # change only_pdf to True for a category and a subcategory
+        cat = self.portal.config['group-1']['category-1-1']
+        cat.only_pdf = True
+        subcat = self.portal.config['group-1']['category-1-1']['subcategory-1-1-1']
+        subcat.only_pdf = True
+
+        terms = [t.title for t in vocabulary(self.portal)]
+        self.assertEqual(
+            terms,
+            ['Category 1-3', 'Subcategory 1-3-2', 'Subcategory 1-3-1',
+             'Category 2-3', 'Subcategory 2-3-2', 'Subcategory 2-3-1',
+             'Category 1-2', 'Subcategory 1-2-2', 'Subcategory 1-2-1',
+             'Category 2-2', 'Subcategory 2-2-2', 'Subcategory 2-2-1',
+             'Category 1-1 [PDF!]', 'Subcategory 1-1-2', 'Subcategory 1-1-1 [PDF!]',
+             'Category 2-1', 'Subcategory 2-1-2', 'Subcategory 2-1-1'])
