@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-03-03 09:47+0000\n"
+"POT-Creation-Date: 2020-07-29 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr "Ne peut pas être imprimé"
 msgid "Categorized elements"
 msgstr "Eléments catégorisés"
 
-#: ../behaviors/iconifiedcategorization.py:34
+#: ../behaviors/iconifiedcategorization.py:35
 #: ../browser/tabview.py:160
 msgid "Category"
 msgstr "Catégorie"
@@ -86,7 +86,7 @@ msgstr "Sous-catégorie"
 msgid "Creation date"
 msgstr "Date de création"
 
-#: ../behaviors/iconifiedcategorization.py:45
+#: ../behaviors/iconifiedcategorization.py:46
 msgid "Default title"
 msgstr "Titre par défaut"
 
@@ -151,7 +151,7 @@ msgstr "Catégorisation par icône"
 msgid "Iconified Category Settings"
 msgstr "Paramètres pour la catégorisation par icône"
 
-#: ../behaviors/configure.zcml:14
+#: ../behaviors/configure.zcml:13
 msgid "Iconified Content Categorization"
 msgstr "Catégorisation par icône"
 
@@ -193,6 +193,10 @@ msgstr "Aucune valeur à définir"
 #. Default: "Not convertible to a printable format"
 msgid "Not convertible to a printable format"
 msgstr "Cet élément ne peut pas être converti dans un format imprimable"
+
+#: ../browser/templates/categorized-childs.pt:22
+msgid "Nothing."
+msgstr "Aucun élément."
 
 #: ../content/base.py:70
 msgid "Only PDF?"
@@ -286,7 +290,7 @@ msgstr "Mise à jour et tri des éléments catégorisés"
 msgid "Update categorized elements"
 msgstr "Mise à jour des éléments catégorisés"
 
-#: ../utils.py:461
+#: ../utils.py:462
 msgid "You must select a PDF file!"
 msgstr "La catégorie sélectionnée requiert l'utilisation d'un fichier au format PDF uniquement!"
 

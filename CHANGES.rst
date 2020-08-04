@@ -1,11 +1,19 @@
 Changelog
 =========
 
-0.46 (unreleased)
+0.47 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added missing translation for `Nothing.`.
+  [gbastien]
 
+0.46 (2020-06-24)
+-----------------
+
+- Make `plone.restapi` validation happy by defining default value for
+  `IIconifiedCategorization.default_titles` that is not stored on the
+  adapted context.
+  [gbastien]
 
 0.45 (2020-05-26)
 -----------------
