@@ -6,6 +6,14 @@ Changelog
 
 - Added missing translation for `Nothing.`.
   [gbastien]
+- In `utils._categorized_elements`, use `aq_base` to get `categorized_elements`
+  to be sure we get the one on context.
+  Indeed the parent could have this attribute too...
+  [gbastien]
+- Do not use `portal_catalog` to get `categorized_elements`, instead, store
+  `allowedRolesAndUsers` in the `categorized_elements` data and rely on it to
+  get the content directly stored in the parent.  This for performance reasons.
+  [gbastien]
 
 0.46 (2020-06-24)
 -----------------

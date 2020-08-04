@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from Products.CMFCore.permissions import ModifyPortalContent
 from collections import OrderedDict
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.browser.tabview import CategorizedContent
+from collective.iconifiedcategory.browser.tabview import PrintColumn
+from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
+from Products.CMFCore.permissions import ModifyPortalContent
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
-
-from collective.iconifiedcategory.browser.tabview import PrintColumn
-from collective.iconifiedcategory.browser.tabview import CategorizedContent
-from collective.iconifiedcategory.tests.base import BaseTestCase
-from collective.iconifiedcategory import utils
 
 
 class TestCategorizedTabView(BaseTestCase):
@@ -68,6 +67,9 @@ class TestCategorizedTabView(BaseTestCase):
             to_print=False,
             confidential=False,
         )
+        # make sure every elements are correctly registered in categorized_elements
+        # it seems that registration is made before element's id is renamed...
+        utils.update_all_categorized_elements(self.portal)
         view = self.portal.restrictedTraverse('@@iconifiedcategory')
         result = view()
         self.assertTrue(category.title in result)
@@ -94,18 +96,19 @@ class TestCategorizedTabView(BaseTestCase):
 
     def test_PrintColumn(self):
         table = self.portal.restrictedTraverse('@@iconifiedcategory')
-        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0],
-                                   self.portal)
-        obj = brain.real_object()
+        file_infos = utils.get_categorized_elements(
+            self.portal, uids=[self.portal['file_txt'].UID()])
+        categorized_content = CategorizedContent(self.portal, file_infos[0])
+        obj = categorized_content.getObject()
         column = PrintColumn(self.portal, self.portal.REQUEST, table)
         # not convertible by default as c.documentviewer not enabled
         self.assertEqual(
-            column.renderCell(brain),
+            column.renderCell(categorized_content),
             u'<a href="#" '
             u'class="iconified-action deactivated" '
             u'alt="Not convertible to a printable format" '
             u'title="Not convertible to a printable format"></a>')
-        self.assertIsNone(brain.to_print)
+        self.assertIsNone(categorized_content.to_print)
         self.assertIsNone(obj.to_print)
 
         # enable collective.documentviewer so document is convertible
@@ -117,12 +120,13 @@ class TestCategorizedTabView(BaseTestCase):
         category_group.to_be_printed_activated = True
         category.to_print = False
         notify(ObjectModifiedEvent(obj))
-        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0],
-                                   self.portal)
-        self.assertEqual(brain.to_print, False)
+        file_infos = utils.get_categorized_elements(
+            self.portal, uids=[self.portal['file_txt'].UID()])
+        categorized_content = CategorizedContent(self.portal, file_infos[0])
+        self.assertFalse(categorized_content.to_print)
         self.assertFalse(obj.to_print)
         self.assertEqual(
-            column.renderCell(brain),
+            column.renderCell(categorized_content),
             u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
             u'class="iconified-action editable" '
             u'alt="Should not be printed" '
@@ -131,12 +135,13 @@ class TestCategorizedTabView(BaseTestCase):
         # set to_print to True
         obj.to_print = True
         notify(ObjectModifiedEvent(obj))
-        brain = CategorizedContent(self.portal.portal_catalog(UID=self.portal['file_txt'].UID())[0],
-                                   self.portal)
-        self.assertTrue(brain.to_print, False)
+        file_infos = utils.get_categorized_elements(
+            self.portal, uids=[self.portal['file_txt'].UID()])
+        categorized_content = CategorizedContent(self.portal, file_infos[0])
+        self.assertTrue(categorized_content.to_print)
         self.assertTrue(obj.to_print)
         self.assertEqual(
-            column.renderCell(brain),
+            column.renderCell(categorized_content),
             u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
             u'class="iconified-action active editable" '
             u'alt="Must be printed" '
@@ -145,7 +150,7 @@ class TestCategorizedTabView(BaseTestCase):
         # if element is not editable, the 'editable' CSS class is not there
         obj.manage_permission(ModifyPortalContent, roles=[])
         notify(ObjectModifiedEvent(obj))
-        self.assertEqual(column.renderCell(brain),
+        self.assertEqual(column.renderCell(categorized_content),
                          u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
                          u'class="iconified-action active" '
                          u'alt="Must be printed" title="Must be printed"></a>')

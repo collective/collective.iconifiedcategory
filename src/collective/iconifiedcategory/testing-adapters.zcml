@@ -10,7 +10,7 @@
   <adapter
     for="OFS.interfaces.IItem
          zope.publisher.interfaces.browser.IBrowserRequest
-         Products.ZCatalog.interfaces.ICatalogBrain"
+         .behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
     provides=".interfaces.IIconifiedContent"
     factory=".tests.adapters.TestingCategorizedObjectAdapter"
     />

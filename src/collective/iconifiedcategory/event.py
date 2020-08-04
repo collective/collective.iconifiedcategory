@@ -22,8 +22,9 @@ class IconifiedModifiedEvent(ObjectEvent):
 class IconifiedCategoryChangedEvent(ObjectEvent):
     implements(IIconifiedCategoryChangedEvent)
 
-    def __init__(self, object, sort=False):
+    def __init__(self, object, category, sort=False):
         super(IconifiedCategoryChangedEvent, self).__init__(object)
+        self.category = category
         self.sort = sort
 
 
