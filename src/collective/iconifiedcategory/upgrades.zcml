@@ -22,7 +22,7 @@
         profile="collective.iconifiedcategory:default" />
 
     <genericsetup:upgradeStep
-        title="Go to version 2102"
+        title="Reindex object_provides for IIconifiedCategorizationMarker and compute allowedRolesAndUsers in categorized_elements"
         description=""
         source="2101"
         destination="2102"
