@@ -20,6 +20,7 @@ from plone.namedfile.scaling import ImageScaling
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
+from zope.component.interfaces import ComponentLookupError
 
 
 class CategorizedChildView(BrowserView):
@@ -175,12 +176,12 @@ class CategorizedChildInfosView(BrowserView):
 
 def check_can_view(obj, request):
     """ """
-    catalog = api.portal.get_tool('portal_catalog')
-    brains = catalog(UID=obj.UID())
-    brain = brains[0]
-    adapter = getMultiAdapter((obj.aq_parent, request, brain),
-                              IIconifiedContent)
-    return adapter.can_view()
+    try:
+        adapter = getMultiAdapter((obj.aq_parent, request, obj),
+                                  IIconifiedContent)
+        return adapter.can_view()
+    except ComponentLookupError:
+        return True
 
 
 class CanViewAwareDownload(Download):

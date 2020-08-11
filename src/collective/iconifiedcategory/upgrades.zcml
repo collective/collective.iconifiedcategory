@@ -21,4 +21,12 @@
         handler="collective.iconifiedcategory.upgrades.upgrade_to_2101"
         profile="collective.iconifiedcategory:default" />
 
+    <genericsetup:upgradeStep
+        title="Reindex object_provides for IIconifiedCategorizationMarker and compute allowedRolesAndUsers in categorized_elements"
+        description=""
+        source="2101"
+        destination="2102"
+        handler="collective.iconifiedcategory.upgrades.upgrade_to_2102"
+        profile="collective.iconifiedcategory:default" />
+
 </configure>

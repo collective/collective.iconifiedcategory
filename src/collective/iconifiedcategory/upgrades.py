@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from collective.iconifiedcategory import logger
+from collective.iconifiedcategory.interfaces import IIconifiedInfos
 from collective.iconifiedcategory.utils import update_all_categorized_elements
 from plone import api
 from plone.dexterity.fti import DexterityFTI
 from Products.CMFPlone.utils import base_hasattr
+from Products.ZCatalog.ProgressHandler import ZLogHandler
+from zope.component import getAdapter
 
 import transaction
 
@@ -90,3 +93,34 @@ def upgrade_to_2101(context):
             i, nb_of_parents_to_update, '/'.join(parent_to_update.getPhysicalPath())))
         i = i + 1
         update_all_categorized_elements(parent_to_update)
+
+
+def upgrade_to_2102(context):
+    '''Now that elements using the behavior are marked with IIconifiedCategorizationMarker,
+       reindex object_provides to get elements to update.
+       Then compute "allowedRolesAndUsers" for categorized elements.
+     '''
+    catalog = api.portal.get_tool('portal_catalog')
+    # update object_provides index
+    pghandler = ZLogHandler(steps=1000)
+    catalog.reindexIndex('object_provides', context.REQUEST, pghandler=pghandler)
+
+    # compute allowedRolesAndUsers for categorized elements
+    brains = catalog(
+        object_provides='collective.iconifiedcategory.'
+        'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
+    i = 0
+    pghandler = ZLogHandler(steps=1000)
+    pghandler.info('Computing "allowedRolesAndUsers" for categorized elements...')
+    pghandler.init('ComputeAllowedRolesAndUsers', len(brains))
+
+    for brain in brains:
+        i += 1
+        pghandler.report(i)
+        obj = brain.getObject()
+        adapter = getAdapter(obj, IIconifiedInfos)
+        allowedRolesAndUsers = adapter._allowedRolesAndUsers
+        parent = obj.aq_inner.aq_parent
+        parent.categorized_elements[obj.UID()]['allowedRolesAndUsers'] = allowedRolesAndUsers
+        parent._p_changed = True
+    pghandler.finish()

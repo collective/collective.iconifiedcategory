@@ -25,15 +25,7 @@
   <adapter
     for="zope.interface.Interface
          zope.publisher.interfaces.browser.IBrowserRequest
-         Products.ZCatalog.interfaces.ICatalogBrain"
-    provides=".interfaces.IIconifiedContent"
-    factory=".adapter.CategorizedObjectAdapter"
-    />
-
-  <adapter zcml:condition="installed collective.solr"
-    for="zope.interface.Interface
-         zope.publisher.interfaces.browser.IBrowserRequest
-         collective.solr.flare.PloneFlare"
+         .behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
     provides=".interfaces.IIconifiedContent"
     factory=".adapter.CategorizedObjectAdapter"
     />

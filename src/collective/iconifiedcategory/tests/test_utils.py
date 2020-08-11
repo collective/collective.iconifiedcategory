@@ -318,6 +318,7 @@ class TestUtils(BaseTestCase):
         self.assertEqual(
             result,
             [{'UID': document.UID(),
+              'allowedRolesAndUsers': ['Anonymous'],
               'category_id': 'category-x',
               'category_title': 'Category X',
               'category_uid': category.UID(),
@@ -355,12 +356,6 @@ class TestUtils(BaseTestCase):
             utils.get_categorized_elements(self.portal,
                                            result_type='objects'),
             [document])
-        # ask brains
-        self.assertEqual(
-            [brain.UID for brain in
-             utils.get_categorized_elements(self.portal,
-                                            result_type='brains')],
-            [document.UID()])
 
         # sort_on
         document2 = createContentInContainer(
@@ -386,12 +381,21 @@ class TestUtils(BaseTestCase):
                                            result_type='objects',
                                            sort_on='title'),
             [document2, document])
-        # result_type='brains'
+        # sort_on='getObjPositionInParent'
         self.assertEqual(
-            [brain.UID for brain in
+            [elt['UID'] for elt in
              utils.get_categorized_elements(self.portal,
-                                            result_type='brains',
-                                            sort_on='sortable_title')],
+                                            result_type='dict',
+                                            sort_on='getObjPositionInParent')],
+            [document.UID(), document2.UID()])
+        # change document position
+        self.portal.folder_position(position='up', id=document2.getId())
+        # sort_on='getObjPositionInParent'
+        self.assertEqual(
+            [elt['UID'] for elt in
+             utils.get_categorized_elements(self.portal,
+                                            result_type='dict',
+                                            sort_on='getObjPositionInParent')],
             [document2.UID(), document.UID()])
 
         # teardown

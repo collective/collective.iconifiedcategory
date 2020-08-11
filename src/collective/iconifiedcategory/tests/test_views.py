@@ -157,7 +157,7 @@ class TestCanViewAwareDownload(BaseTestCase):
         self.assertTrue(img_obj.restrictedTraverse('@@download')())
         self.assertTrue(img_obj.restrictedTraverse('@@display-file')())
         self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
-        # when confidential, check is to can_view is done
+        # when confidential, check can_view is done
         file_obj.confidential = True
         img_obj.confidential = True
         self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))

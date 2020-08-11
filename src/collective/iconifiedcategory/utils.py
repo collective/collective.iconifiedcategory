@@ -261,7 +261,7 @@ def get_categorized_infos(obj, category, limited=False):
 def _categorized_elements(context):
     """Return a deepcopy of the categorized elements of the given context"""
     return copy.deepcopy(
-        getattr(context, 'categorized_elements', OrderedDict())
+        getattr(aq_base(context), 'categorized_elements', OrderedDict())
     )
 
 
@@ -273,47 +273,50 @@ def get_categorized_elements(context,
     """Return categorized elements.
        p_result_type may be :
        - 'dict': default, essential metadata are returned as a dict;
-       - 'objects': categorized objects are returned;
-       - 'brains': categorized brains are returned."""
+       - 'objects': categorized objects are returned."""
     elements = []
     categorized_elements = _categorized_elements(context)
     if not categorized_elements:
         return elements
 
     uids = uids or categorized_elements.keys()
-    query = {'UID': uids}
-    # sort in the catalog query if we want brains
-    if sort_on and result_type == 'brains':
-        query['sort_on'] = sort_on
-    if portal_type:
-        query['portal_type'] = portal_type
-    order = categorized_elements.keys()
-    for brain in api.content.find(context=context, **query):
-        obj = brain._unrestrictedGetObject()
+    catalog = api.portal.get_tool('portal_catalog')
+    current_user_allowedRolesAndUsers = catalog._listAllowedRolesAndUsers(api.user.get_current())
+    for uid, infos in categorized_elements.items():
+        if uids and uid not in uids or \
+           portal_type and infos['portal_type'] != portal_type or \
+           (infos['confidential'] and
+                not set(infos['allowedRolesAndUsers']).intersection(current_user_allowedRolesAndUsers)):
+            continue
+        obj = context.get(infos['id'])
+        obj_uid = obj.UID()
         adapter = getMultiAdapter(
-            (obj.aq_parent, obj.REQUEST, brain),
+            (obj.aq_parent, obj.REQUEST, obj),
             IIconifiedContent)
         if adapter.can_view():
             if result_type == 'objects':
-                elements.append(brain._unrestrictedGetObject())
-            elif result_type == 'brains':
-                elements.append(brain)
+                elements.append(obj)
             else:
                 # add 'UID' to the available infos
-                tmp = categorized_elements[brain.UID].copy()
-                tmp['UID'] = brain.UID
+                tmp = categorized_elements[obj_uid].copy()
+                tmp['UID'] = obj_uid
                 elements.append(tmp)
-    if not sort_on:
-        elements = sorted(
-            elements,
-            key=lambda x: order.index(get_UID(x)),
-        )
 
-    if sort_on and not result_type == 'brains':
+    if elements and sort_on:
         if result_type == 'dict':
-            elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
+            if sort_on in elements[0]:
+                elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
+            elif sort_on == 'getObjPositionInParent':
+                elements = sorted(
+                    elements,
+                    key=lambda x, object_ids=context.objectIds(): object_ids.index(x['id']))
         else:
-            elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
+            if getattr(elements[0], sort_on):
+                elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
+            elif sort_on == 'getObjPositionInParent':
+                elements = sorted(
+                    elements,
+                    key=lambda x, object_ids=context.objectIds(): object_ids.index(x.id))
     return elements
 
 
@@ -325,8 +328,9 @@ def get_UID(obj):
 
 
 def get_back_references(obj):
-    portal = api.portal.get()
-    return api.content.find(context=portal, content_category_uid=obj.UID())
+    catalog = api.portal.get_tool('portal_catalog')
+    brains = catalog(content_category_uid=obj.UID())
+    return brains
 
 
 def has_relations(obj):
