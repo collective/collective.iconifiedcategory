@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.47 (unreleased)
+0.47 (2020-08-18)
 -----------------
 
 - Added missing translation for `Nothing.`.
