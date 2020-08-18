@@ -36,7 +36,6 @@ from zope.i18n import translate
 from zope.interface import Invalid
 
 import copy
-import types
 
 
 def format_id_css(id):
