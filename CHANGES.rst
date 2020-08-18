@@ -16,6 +16,9 @@ Changelog
   [gbastien]
 - Remove unused `utils.get_UID` function.
   [gbastien]
+- Make sure a content created with an unexisting `content_category`
+  does not break anything.
+  [gbastien]
 
 0.46 (2020-06-24)
 -----------------

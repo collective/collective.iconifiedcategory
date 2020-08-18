@@ -249,6 +249,16 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         notify(ObjectModifiedEvent(obj))
         self.assertEqual(obj.content_category, category12_id)
 
+    def test_unexisting_content_category(self):
+        """Storing an unexisting content_category does not break anything."""
+        obj = api.content.create(
+            id='my-file',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category='unexisting_content_category_uid')
+        self.assertTrue(obj)
+
     def test_only_pdf_invariant(self):
         """When category.only_pdf is True, categorized file may only be a PDF file."""
         category = self.portal.config['group-1']['category-1-1']

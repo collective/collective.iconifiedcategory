@@ -30,7 +30,10 @@ def categorized_content_created(obj, event):
             return
 
         # set default values for to_print, confidential and to_sign/signed
-        category = utils.get_category_object(obj, obj.content_category)
+        try:
+            category = utils.get_category_object(obj, obj.content_category)
+        except KeyError:
+            return
         # left False if to_print/confidential/to_sign
         # not enabled on ContentCategoryGroup
         category_group = category.get_category_group(category)
