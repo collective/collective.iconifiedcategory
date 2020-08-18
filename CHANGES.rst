@@ -14,6 +14,8 @@ Changelog
   `allowedRolesAndUsers` in the `categorized_elements` data and rely on it to
   get the content directly stored in the parent.  This for performance reasons.
   [gbastien]
+- Remove unused `utils.get_UID` function.
+  [gbastien]
 
 0.46 (2020-06-24)
 -----------------

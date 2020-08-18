@@ -320,13 +320,6 @@ def get_categorized_elements(context,
     return elements
 
 
-def get_UID(obj):
-    uid = getattr(obj, 'UID', None) or obj['UID']
-    if isinstance(uid, types.MethodType):
-        uid = uid()
-    return uid
-
-
 def get_back_references(obj):
     catalog = api.portal.get_tool('portal_catalog')
     brains = catalog(content_category_uid=obj.UID())
