@@ -4,8 +4,11 @@ Changelog
 0.48 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Rely on `CategorizedObjectAdapter.can_view` to manage access to a categorized
+  element, this way, we may manage usecases where current user does not have
+  the `View` permission on the element but access is managed by the `can_view`
+  adapter method.
+  [gbastien]
 
 0.47 (2020-08-18)
 -----------------

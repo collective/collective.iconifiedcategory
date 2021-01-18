@@ -18,6 +18,8 @@ from plone.namedfile.browser import DisplayFile
 from plone.namedfile.browser import Download
 from plone.namedfile.scaling import ImageScaling
 from plone.rfc822.interfaces import IPrimaryFieldInfo
+from Products.CMFCore.permissions import View
+from Products.CMFCore.utils import _checkPermission
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.component.interfaces import ComponentLookupError
@@ -108,6 +110,14 @@ class CategorizedChildInfosView(BrowserView):
         """ """
         return render_filesize(size)
 
+    def show_more_infos_url(self):
+        """
+        In some case we show categorized content but user does not have
+        access to the context, in the case do not show the more infos link.
+        """
+        if _checkPermission(View, self.context):
+            return True
+
     def categorized_elements_more_infos_url(self):
         """ """
         return "{0}/{1}".format(self.context.absolute_url(), "@@iconifiedcategory")
@@ -189,7 +199,9 @@ class CanViewAwareDownload(Download):
     def __call__(self):
         if not check_can_view(self.context, self.request):
             raise Unauthorized
-        return super(CanViewAwareDownload, self).__call__()
+        # access is managed by can_view
+        with api.env.adopt_roles(['Manager']):
+            return super(CanViewAwareDownload, self).__call__()
 
 
 class CanViewAwareDisplayFile(DisplayFile, CanViewAwareDownload):
@@ -201,7 +213,9 @@ class CanViewAwareFNWDownload(fnw_Download):
     def __call__(self):
         if not check_can_view(aq_inner(self.context.context), self.request):
             raise Unauthorized
-        return super(CanViewAwareFNWDownload, self).__call__()
+        # access is managed by can_view
+        with api.env.adopt_roles(['Manager']):
+            return super(CanViewAwareFNWDownload, self).__call__()
 
 
 class ImageDataModifiedImageScaling(ImageScaling):

@@ -269,13 +269,14 @@
     allowed_interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySubtyper"
     />
 
-  <!-- overrides for @@download and @@display-file views -->
+  <!-- overrides for @@download and @@display-file views, permission is Public,
+       everything is managed by can_view -->
   <browser:page
     name="download"
     for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     class=".views.CanViewAwareDownload"
-    permission="zope2.View"
+    permission="zope2.Public"
     />
 
   <browser:page
@@ -283,16 +284,17 @@
     for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     class=".views.CanViewAwareDisplayFile"
-    permission="zope2.View"
+    permission="zope2.Public"
     />
 
-  <!-- overrides for @@download of formwidget.namedfile -->
+  <!-- overrides for @@download of formwidget.namedfile, permission is Public,
+       everything is managed by can_view -->
   <browser:page
     name="download"
     for="plone.formwidget.namedfile.interfaces.INamedFileWidget"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     class=".views.CanViewAwareFNWDownload"
-    permission="zope2.View"
+    permission="zope2.Public"
     />
 
   <!-- Config views -->
