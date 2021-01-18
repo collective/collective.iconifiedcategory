@@ -19,6 +19,8 @@ from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
 from plone.app.contenttypes.interfaces import ILink
 from plone.indexer.interfaces import IIndexableObject
+from Products.CMFCore.permissions import View
+from Products.CMFCore.utils import _checkPermission
 from zope.annotation import IAnnotations
 from zope.component import queryMultiAdapter
 
@@ -185,7 +187,11 @@ class CategorizedObjectAdapter(object):
         self.categorized_obj = categorized_obj
 
     def can_view(self):
-        return True
+        """By default, check that current user may View the context.
+           Indeed for some advanced management (@@download), views are
+           declared permission="zope2.Public"."""
+        if _checkPermission(View, self.context):
+            return True
 
 
 class CategorizedObjectPreviewAdapter(object):

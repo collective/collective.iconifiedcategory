@@ -95,6 +95,7 @@
     </a>&nbsp;
     <a href="#"
        target="_parent"
+       tal:condition="view/show_more_infos_url"
        tal:attributes="href view/categorized_elements_more_infos_url">
       <img class="categorized_elements_more_infos_icon"
            src="more_infos.png"
