@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.48 (unreleased)
+0.48 (2021-01-19)
 -----------------
 
 - Rely on `CategorizedObjectAdapter.can_view` to manage access to a categorized
