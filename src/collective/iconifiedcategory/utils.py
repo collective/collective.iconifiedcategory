@@ -268,11 +268,23 @@ def get_categorized_elements(context,
                              result_type='dict',
                              portal_type=None,
                              sort_on=None,
-                             uids=[]):
+                             uids=[],
+                             boolean_filters={}):
     """Return categorized elements.
        p_result_type may be :
        - 'dict': default, essential metadata are returned as a dict;
-       - 'objects': categorized objects are returned."""
+       - 'objects': categorized objects are returned.
+       If some p_boolean_filters are given, the values will be filtered,
+       available filters are to_print, confidential, publishable, to_sign/signed."""
+    def _check_boolean_filters(infos):
+        """ """
+        keep = True
+        for k, v in boolean_filters.items():
+            if infos[k] != v:
+                keep = False
+                break
+        return keep
+
     elements = []
     categorized_elements = _categorized_elements(context)
     if not categorized_elements:
@@ -284,6 +296,7 @@ def get_categorized_elements(context,
     for uid, infos in categorized_elements.items():
         if uids and uid not in uids or \
            portal_type and infos['portal_type'] != portal_type or \
+           not _check_boolean_filters(infos) or \
            (infos['confidential'] and
                 not set(infos['allowedRolesAndUsers']).intersection(current_user_allowedRolesAndUsers)):
             continue

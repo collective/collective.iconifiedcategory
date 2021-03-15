@@ -24,6 +24,8 @@ from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.component.interfaces import ComponentLookupError
 
+import json
+
 
 class CategorizedChildView(BrowserView):
     """ """
@@ -32,10 +34,20 @@ class CategorizedChildView(BrowserView):
         super(CategorizedChildView, self).__init__(context, request)
         self.portal_url = api.portal.get().absolute_url()
 
+    @property
+    def _boolean_filters(self):
+        """Overridable method to define custom filters."""
+        return {}
+
+    def _boolean_filters_json(self):
+        """Filters are stored in template as json."""
+        return json.dumps(self._boolean_filters)
+
     def update(self):
         self.categorized_elements = get_categorized_elements(
             self.context,
             portal_type=self.portal_type,
+            boolean_filters=self._boolean_filters
         )
 
     def __call__(self, portal_type=None, show_nothing=True):
@@ -73,8 +85,10 @@ class CategorizedChildInfosView(BrowserView):
 
     def update(self):
         uids = self._find_uids()
-        self.categorized_elements = get_categorized_elements(self.context,
-                                                             uids=uids)
+        self.categorized_elements = get_categorized_elements(
+            self.context,
+            uids=uids,
+            boolean_filters=self.boolean_filters)
 
     def _find_uids(self):
         """ """
@@ -84,9 +98,11 @@ class CategorizedChildInfosView(BrowserView):
                 uids.append(k)
         return uids
 
-    def __call__(self, category_uid):
+    def __call__(self, category_uid, boolean_filters):
         """ """
         self.category_uid = category_uid
+        import ipdb; ipdb.set_trace()
+        self.boolean_filters = json.loads(boolean_filters)
         self.update()
         return super(CategorizedChildInfosView, self).__call__()
 

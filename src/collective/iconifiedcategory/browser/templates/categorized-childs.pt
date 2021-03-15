@@ -7,7 +7,8 @@
        tal:attributes="href string:#${element/id}_${context/UID|context/getId};
                        title element/title;
                        data-category_uid string:${element/uid};
-                       data-base_url string:${context/absolute_url};">
+                       data-base_url string:${context/absolute_url};
+                       data-boolean_filters string:${view/_boolean_filters_json};">
       <span tal:content="element/counts"></span>
       <img src=""
            alt=""
