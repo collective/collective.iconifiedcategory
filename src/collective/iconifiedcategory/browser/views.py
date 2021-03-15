@@ -101,7 +101,6 @@ class CategorizedChildInfosView(BrowserView):
     def __call__(self, category_uid, boolean_filters):
         """ """
         self.category_uid = category_uid
-        import ipdb; ipdb.set_trace()
         self.boolean_filters = json.loads(boolean_filters)
         self.update()
         return super(CategorizedChildInfosView, self).__call__()
