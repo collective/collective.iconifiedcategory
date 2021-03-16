@@ -74,7 +74,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.viewinfos = self.portal.restrictedTraverse('@@categorized-childs-infos')
         category_uid = self.config['group-1']['category-1-1'].UID()
         # filter format is json
-        filters = "{}"
+        filters = json.dumps({})
         self.viewinfos(category_uid, filters)
 
     def test__call__(self):
@@ -142,9 +142,10 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.assertEqual(self.viewinfos.categorized_elements[0]['id'], 'file_txt')
         # filters are passed to viewinfos as json
         self.viewinfos(category_uid=self.viewinfos.category_uid,
-                       filters=json.loads('{"id": "image"}'))
+                       filters=json.dumps({"id": "image"}))
         self.assertEqual(len(self.viewinfos.categorized_elements), 1)
         self.assertEqual(self.viewinfos.categorized_elements[0]['id'], 'image')
+
 
 class TestCanViewAwareDownload(BaseTestCase):
 
