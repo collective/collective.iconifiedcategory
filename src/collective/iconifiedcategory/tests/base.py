@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import os
-import unittest
-
+from collective.iconifiedcategory import testing
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
 
-from collective.iconifiedcategory import testing
+import os
+import unittest
 
 
 class BaseTestCase(unittest.TestCase):

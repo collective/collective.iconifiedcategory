@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import Unauthorized
+from collective.documentviewer.config import CONVERTABLE_TYPES
+from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.browser.actionview import BaseView
+from collective.iconifiedcategory.tests.base import BaseTestCase
+from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 from z3c.json.interfaces import IJSONReader
 from zope.component import getUtility
-
-from plone import api
-from collective.documentviewer.config import CONVERTABLE_TYPES
-from collective.documentviewer.settings import GlobalSettings
-from collective.iconifiedcategory.browser.actionview import BaseView
-from collective.iconifiedcategory import utils
-from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
 class TestBaseView(BaseTestCase):

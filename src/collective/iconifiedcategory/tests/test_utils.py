@@ -14,6 +14,7 @@ from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
 from plone.dexterity.utils import createContentInContainer
 from zExceptions import Redirect
+
 import transaction
 
 

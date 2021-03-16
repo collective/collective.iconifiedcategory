@@ -7,14 +7,13 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.iconifiedcategory import testing
 from zope.component import getUtility
-from zope.lifecycleevent import ObjectModifiedEvent
 from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
 
 import unittest
-
-from collective.iconifiedcategory import testing
 
 
 class TestVocabularies(unittest.TestCase):

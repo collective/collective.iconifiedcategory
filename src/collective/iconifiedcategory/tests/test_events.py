@@ -7,15 +7,14 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-import unittest
-
+from collective.iconifiedcategory import testing
+from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
+from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
 from Products.CMFPlone.utils import base_hasattr
 
-from collective.iconifiedcategory import testing
-from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
-from collective.iconifiedcategory.tests.base import BaseTestCase
-from collective.iconifiedcategory import utils
+import unittest
 
 
 class TestIconifiedChangedEvent(unittest.TestCase):

@@ -7,10 +7,9 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from plone.app.registry.browser import controlpanel
-
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
+from plone.app.registry.browser import controlpanel
 
 
 class IconifiedCategorySettingsEditForm(controlpanel.RegistryEditForm):

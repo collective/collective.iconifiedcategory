@@ -7,12 +7,11 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.iconifiedcategory.content.base import ICategorize
 from plone.app.contenttypes.interfaces import IFolder
 from plone.dexterity.content import Item
 from plone.dexterity.schema import DexteritySchemaPolicy
 from zope.interface import implements
-
-from collective.iconifiedcategory.content.base import ICategorize
 
 
 class ISubcategory(IFolder, ICategorize):

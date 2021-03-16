@@ -7,19 +7,6 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from time import sleep
-
-from zope.annotation import IAnnotations
-from zope.component import getMultiAdapter
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
-
-from plone.app.contenttypes.interfaces import IFile
-from plone.app.contenttypes.interfaces import IImage
-from plone.app.contenttypes.interfaces import ILink
-from plone.namedfile.utils import stream_data
-from zope.interface import alsoProvides
-
 from collective.documentviewer.async import queueJob
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
@@ -28,6 +15,16 @@ from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
+from plone.app.contenttypes.interfaces import IFile
+from plone.app.contenttypes.interfaces import IImage
+from plone.app.contenttypes.interfaces import ILink
+from plone.namedfile.utils import stream_data
+from time import sleep
+from zope.annotation import IAnnotations
+from zope.component import getMultiAdapter
+from zope.event import notify
+from zope.interface import alsoProvides
+from zope.lifecycleevent import ObjectModifiedEvent
 
 
 class TestCategorizedObjectInfoAdapter(BaseTestCase):

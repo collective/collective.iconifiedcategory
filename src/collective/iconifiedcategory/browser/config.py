@@ -9,8 +9,8 @@ Created by mpeeters
 
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
-from collective.iconifiedcategory.event import IconifiedCategoryChangedEvent
 from collective.iconifiedcategory.event import CategorizedElementsUpdatedEvent
+from collective.iconifiedcategory.event import IconifiedCategoryChangedEvent
 from plone import api
 from Products.Five import BrowserView
 from zope.event import notify
