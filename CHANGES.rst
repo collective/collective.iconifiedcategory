@@ -7,6 +7,8 @@ Changelog
 - Added possibility to filter displayed categorized elements on any attribute
   of the categorized element.
   [gbastien]
+- Added a ZPublisher `:json` suffix type converter.
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------

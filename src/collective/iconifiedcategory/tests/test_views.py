@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import Unauthorized
-from Products.Five import zcml
-from plone import api
 from collective import iconifiedcategory as collective_iconifiedcategory
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
-
-import json
+from plone import api
+from Products.Five import zcml
+from ZPublisher.tests.testHTTPRequest import HTTPRequestTests
 
 
 class TestCategorizedChildView(BaseTestCase):
@@ -73,9 +72,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         super(TestCategorizedChildInfosView, self).setUp()
         self.viewinfos = self.portal.restrictedTraverse('@@categorized-childs-infos')
         category_uid = self.config['group-1']['category-1-1'].UID()
-        # filter format is json
-        filters = json.dumps({})
-        self.viewinfos(category_uid, filters)
+        self.viewinfos(category_uid, filters={})
 
     def test__call__(self):
         # the category and elements of category is displayed
@@ -142,7 +139,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.assertEqual(self.viewinfos.categorized_elements[0]['id'], 'file_txt')
         # filters are passed to viewinfos as json
         self.viewinfos(category_uid=self.viewinfos.category_uid,
-                       filters=json.dumps({"id": "image"}))
+                       filters={"id": "image"})
         self.assertEqual(len(self.viewinfos.categorized_elements), 1)
         self.assertEqual(self.viewinfos.categorized_elements[0]['id'], 'image')
 
@@ -186,3 +183,15 @@ class TestCanViewAwareDownload(BaseTestCase):
         self.assertRaises(Unauthorized, img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download'))
         # cleanUp zmcl.load_config because it impact other tests
         zcml.cleanUp()
+
+
+class TestConverters(BaseTestCase, HTTPRequestTests):
+
+    def test_json_converter(self):
+        inputs = (
+            ('data:json', '{"key1": "value1", "key2": "value2"}'),
+            ('data2:json', '{"key3": "value3", "key4": "value4"}'), )
+        req = self._processInputs(inputs)
+        self.assertEqual(req.form,
+                         {'data': {u'key2': u'value2', u'key1': u'value1'},
+                          'data2': {u'key3': u'value3', u'key4': u'value4'}})

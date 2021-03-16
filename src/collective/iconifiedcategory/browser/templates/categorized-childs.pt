@@ -8,7 +8,7 @@
                        title element/title;
                        data-category_uid string:${element/uid};
                        data-base_url string:${context/absolute_url};
-                       data-filters string:${view/_filters_json};">
+                       data-filters:json string:${view/_filters_json};">
       <span tal:content="element/counts"></span>
       <img src=""
            alt=""

@@ -93,7 +93,7 @@ class CategorizedChildInfosView(BrowserView):
     def __call__(self, category_uid, filters):
         """ """
         self.category_uid = category_uid
-        self.filters = json.loads(filters)
+        self.filters = filters
         self.update()
         return super(CategorizedChildInfosView, self).__call__()
 
