@@ -94,7 +94,7 @@ function categorizedChildsInfos(options={}) {
     selector = options.selector || '.tooltipster-childs-infos';
     tooltipster_helper(selector=selector,
                        view_name='@@categorized-childs-infos',
-                       data_parameters=['category_uid', 'boolean_filters']);
+                       data_parameters=['category_uid', 'filters']);
 
 }
 

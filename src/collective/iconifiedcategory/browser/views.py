@@ -35,19 +35,19 @@ class CategorizedChildView(BrowserView):
         self.portal_url = api.portal.get().absolute_url()
 
     @property
-    def _boolean_filters(self):
+    def _filters(self):
         """Overridable method to define custom filters."""
         return {}
 
-    def _boolean_filters_json(self):
+    def _filters_json(self):
         """Filters are stored in template as json."""
-        return json.dumps(self._boolean_filters)
+        return json.dumps(self._filters)
 
     def update(self):
         self.categorized_elements = get_categorized_elements(
             self.context,
             portal_type=self.portal_type,
-            boolean_filters=self._boolean_filters
+            filters=self._filters
         )
 
     def __call__(self, portal_type=None, show_nothing=True):
@@ -84,24 +84,16 @@ class CategorizedChildInfosView(BrowserView):
         self.have_details_to_show = False
 
     def update(self):
-        uids = self._find_uids()
+        filters = self.filters
+        filters['category_uid'] = self.category_uid
         self.categorized_elements = get_categorized_elements(
             self.context,
-            uids=uids,
-            boolean_filters=self.boolean_filters)
+            filters=self.filters)
 
-    def _find_uids(self):
-        """ """
-        uids = []
-        for k, v in getattr(self.context, 'categorized_elements', {}).items():
-            if v['category_uid'] == self.category_uid:
-                uids.append(k)
-        return uids
-
-    def __call__(self, category_uid, boolean_filters):
+    def __call__(self, category_uid, filters):
         """ """
         self.category_uid = category_uid
-        self.boolean_filters = json.loads(boolean_filters)
+        self.filters = json.loads(filters)
         self.update()
         return super(CategorizedChildInfosView, self).__call__()
 
