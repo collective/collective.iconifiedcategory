@@ -71,6 +71,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         super(TestCategorizedChildInfosView, self).setUp()
         self.viewinfos = self.portal.restrictedTraverse('@@categorized-childs-infos')
         self.viewinfos.category_uid = self.config['group-1']['category-1-1'].UID()
+        self.viewinfos.filters = {}
 
     def test__call__(self):
         # the category and elements of category is displayed
