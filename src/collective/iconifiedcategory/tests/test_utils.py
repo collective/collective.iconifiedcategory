@@ -404,6 +404,23 @@ class TestUtils(BaseTestCase):
         api.content.delete(document2)
         api.content.delete(category)
 
+    def test_get_categorized_elements_filters(self):
+        self.config.get('group-1').confidentiality_activated = True
+        createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='Doc1',
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=True,
+        )
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'confidential': True})),
+            1)
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'confidential': False})),
+            0)
+
     def test_update_categorized_elements(self):
         document2 = createContentInContainer(
             container=self.portal,

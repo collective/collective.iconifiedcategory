@@ -129,6 +129,13 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
             [e['title'] for e in infos[self.viewinfos.category_uid]],
         )
 
+    def test_filters(self):
+        self.viewinfos.update()
+        self.assertEqual(len(self.viewinfos.categorized_elements), 2)
+        self.viewinfos.filters['id'] = 'file_txt'
+        self.viewinfos.update()
+        self.assertEqual(len(self.viewinfos.categorized_elements), 1)
+
 
 class TestCanViewAwareDownload(BaseTestCase):
 
