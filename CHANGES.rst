@@ -4,8 +4,8 @@ Changelog
 0.49 (unreleased)
 -----------------
 
-- Added possibility to filter displayed categorized elements on boolean attributes
-  (to_print, publishable, confidential, to_sign/signed).
+- Added possibility to filter displayed categorized elements on any attribute
+  of the categorized element.
   [gbastien]
 
 0.48 (2021-01-19)
