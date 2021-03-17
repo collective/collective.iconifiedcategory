@@ -47,6 +47,7 @@ setup(
         'collective.fontawesome>=1.1',
         'collective.js.tooltipster > 0.1',
         'collective.z3cform.select2',
+        'imio.helpers',
         'natsort',
         'plone.api>=1.4.11',
         'plone.app.contenttypes',
