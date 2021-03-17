@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Init and utils."""
-import logging
+
 from zope.i18nmessageid import MessageFactory
+
+# enable :json type converter
+import imio.helpers.converters  # noqa
+import logging
+
 
 logger = logging.getLogger('collective.iconifiedcategory')
 

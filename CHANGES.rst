@@ -4,8 +4,11 @@ Changelog
 0.49 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added possibility to filter displayed categorized elements on any attribute
+  of the categorized element.
+  [gbastien]
+- Rely on imio.helpers because we need the `:json` suffix type converter.
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------

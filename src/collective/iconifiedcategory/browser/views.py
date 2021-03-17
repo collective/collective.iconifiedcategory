@@ -24,6 +24,8 @@ from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.component.interfaces import ComponentLookupError
 
+import json
+
 
 class CategorizedChildView(BrowserView):
     """ """
@@ -32,10 +34,20 @@ class CategorizedChildView(BrowserView):
         super(CategorizedChildView, self).__init__(context, request)
         self.portal_url = api.portal.get().absolute_url()
 
+    @property
+    def _filters(self):
+        """Overridable method to define custom filters."""
+        return {}
+
+    def _filters_json(self):
+        """Filters are stored in template as json."""
+        return json.dumps(self._filters)
+
     def update(self):
         self.categorized_elements = get_categorized_elements(
             self.context,
             portal_type=self.portal_type,
+            filters=self._filters
         )
 
     def __call__(self, portal_type=None, show_nothing=True):
@@ -72,21 +84,16 @@ class CategorizedChildInfosView(BrowserView):
         self.have_details_to_show = False
 
     def update(self):
-        uids = self._find_uids()
-        self.categorized_elements = get_categorized_elements(self.context,
-                                                             uids=uids)
+        filters = self.filters
+        filters['category_uid'] = self.category_uid
+        self.categorized_elements = get_categorized_elements(
+            self.context,
+            filters=self.filters)
 
-    def _find_uids(self):
-        """ """
-        uids = []
-        for k, v in getattr(self.context, 'categorized_elements', {}).items():
-            if v['category_uid'] == self.category_uid:
-                uids.append(k)
-        return uids
-
-    def __call__(self, category_uid):
+    def __call__(self, category_uid, filters):
         """ """
         self.category_uid = category_uid
+        self.filters = filters
         self.update()
         return super(CategorizedChildInfosView, self).__call__()
 

@@ -15,9 +15,9 @@ from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import calculate_category_id
 from collective.iconifiedcategory.utils import get_category_object
 from plone import api
+from z3c.form import validator
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
-from z3c.form import validator
 from ZPublisher.HTTPRequest import FileUpload
 
 import cgi
@@ -277,8 +277,11 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         view = self.portal.restrictedTraverse('folder_contents')
         request['PUBLISHED'] = view
         self.assertFalse(invariants.validate(data))
-        request.set('already_validateFileIsPDF', False)
+        # already_validateFileIsPDF was set in REQUEST
+        self.assertTrue(request.get('already_validateFileIsPDF'))
+        self.assertFalse(invariants.validate(data))
         # PDF needed
+        request.set('already_validateFileIsPDF', False)
         category.only_pdf = True
         errors = invariants.validate(data)
         request.set('already_validateFileIsPDF', False)

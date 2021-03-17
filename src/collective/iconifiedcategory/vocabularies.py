@@ -7,10 +7,9 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.iconifiedcategory import utils
 from plone import api
 from zope.schema.vocabulary import SimpleVocabulary
-
-from collective.iconifiedcategory import utils
 
 
 class CategoryVocabulary(object):

@@ -7,12 +7,10 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
+from collective.iconifiedcategory.tests.base import BaseTestCase
 from zope.component import adapter
 from zope.component import getGlobalSiteManager
-
-from collective.iconifiedcategory.interfaces import \
-    IIconifiedCategoryChangedEvent
-from collective.iconifiedcategory.tests.base import BaseTestCase
 
 
 SUBSCRIBED_ELEMENTS = []

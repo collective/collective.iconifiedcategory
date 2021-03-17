@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from collective.iconifiedcategory.testing import \
-    COLLECTIVE_ICONIFIED_CATEGORY_INTEGRATION_TESTING
+from collective.iconifiedcategory.testing import COLLECTIVE_ICONIFIED_CATEGORY_INTEGRATION_TESTING
 from plone import api
 
 import unittest

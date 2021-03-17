@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from Products.PluginIndexes.common.UnIndex import _marker
-from plone.dexterity.interfaces import IDexterityContent
-from plone.indexer import indexer
-
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.base import ICategorize
+from plone.dexterity.interfaces import IDexterityContent
+from plone.indexer import indexer
+from Products.PluginIndexes.common.UnIndex import _marker
 
 
 @indexer(ICategorize)

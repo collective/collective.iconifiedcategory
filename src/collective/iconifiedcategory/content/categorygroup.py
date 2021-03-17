@@ -7,15 +7,14 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.iconifiedcategory import _
 from plone.app.contenttypes.interfaces import IFolder
 from plone.autoform import directives as form
 from plone.dexterity.content import Container
 from plone.dexterity.schema import DexteritySchemaPolicy
 from z3c.form.browser.radio import RadioFieldWidget
-from zope.interface import implements
 from zope import schema
-
-from collective.iconifiedcategory import _
+from zope.interface import implements
 
 
 class ICategoryGroup(IFolder):

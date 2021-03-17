@@ -7,9 +7,8 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from Products.Five import BrowserView
-
 from collective.iconifiedcategory import utils
+from Products.Five import BrowserView
 
 
 class IconifiedCategory(BrowserView):

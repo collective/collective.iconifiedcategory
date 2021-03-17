@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import Unauthorized
-from Products.Five import zcml
-from plone import api
 from collective import iconifiedcategory as collective_iconifiedcategory
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
+from plone import api
+from Products.Five import zcml
 
 
 class TestCategorizedChildView(BaseTestCase):
@@ -70,7 +70,8 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
     def setUp(self):
         super(TestCategorizedChildInfosView, self).setUp()
         self.viewinfos = self.portal.restrictedTraverse('@@categorized-childs-infos')
-        self.viewinfos.category_uid = self.config['group-1']['category-1-1'].UID()
+        category_uid = self.config['group-1']['category-1-1'].UID()
+        self.viewinfos(category_uid, filters={})
 
     def test__call__(self):
         # the category and elements of category is displayed
@@ -127,6 +128,19 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
             ['A', 'B'],
             [e['title'] for e in infos[self.viewinfos.category_uid]],
         )
+
+    def test_filters(self):
+        self.viewinfos.update()
+        self.assertEqual(len(self.viewinfos.categorized_elements), 2)
+        self.viewinfos.filters['id'] = 'file_txt'
+        self.viewinfos.update()
+        self.assertEqual(len(self.viewinfos.categorized_elements), 1)
+        self.assertEqual(self.viewinfos.categorized_elements[0]['id'], 'file_txt')
+        # filters are passed to viewinfos as json
+        self.viewinfos(category_uid=self.viewinfos.category_uid,
+                       filters={"id": "image"})
+        self.assertEqual(len(self.viewinfos.categorized_elements), 1)
+        self.assertEqual(self.viewinfos.categorized_elements[0]['id'], 'image')
 
 
 class TestCanViewAwareDownload(BaseTestCase):
