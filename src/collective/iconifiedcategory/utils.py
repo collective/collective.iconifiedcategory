@@ -298,8 +298,8 @@ def get_categorized_elements(context,
     catalog = api.portal.get_tool('portal_catalog')
     current_user_allowedRolesAndUsers = catalog._listAllowedRolesAndUsers(api.user.get_current())
     for uid, infos in categorized_elements.items():
-        if uids and uid not in uids or \
-           portal_type and infos['portal_type'] != portal_type or \
+        if (uids and uid not in uids) or \
+           (portal_type and infos['portal_type'] != portal_type) or \
            not _check_filters(infos) or \
            (infos['confidential'] and
                 not set(infos['allowedRolesAndUsers']).intersection(current_user_allowedRolesAndUsers)):

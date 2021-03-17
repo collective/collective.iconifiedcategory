@@ -277,8 +277,11 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         view = self.portal.restrictedTraverse('folder_contents')
         request['PUBLISHED'] = view
         self.assertFalse(invariants.validate(data))
-        request.set('already_validateFileIsPDF', False)
+        # already_validateFileIsPDF was set in REQUEST
+        self.assertTrue(request.get('already_validateFileIsPDF'))
+        self.assertFalse(invariants.validate(data))
         # PDF needed
+        request.set('already_validateFileIsPDF', False)
         category.only_pdf = True
         errors = invariants.validate(data)
         request.set('already_validateFileIsPDF', False)
