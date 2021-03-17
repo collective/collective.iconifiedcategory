@@ -3,7 +3,7 @@
 from zope.i18nmessageid import MessageFactory
 
 # enable :json type converter
-import imio.helpers.converters
+import imio.helpers.converters  # noqa
 import logging
 
 
