@@ -162,10 +162,10 @@ def categorized_content_removed(event):
         utils.remove_categorized_element(obj.aq_parent, obj)
 
 
-def categorized_content_container_cloned(event):
-    if event.object.REQUEST.get('defer_update_categorized_elements', False):
+def categorized_content_container_cloned(container, event):
+    if container.REQUEST.get('defer_update_categorized_elements', False):
         return
-    utils.update_all_categorized_elements(event.object)
+    utils.update_all_categorized_elements(container)
 
 
 def category_before_remove(obj, event):

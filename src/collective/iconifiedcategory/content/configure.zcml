@@ -50,7 +50,14 @@
     />
 
   <subscriber
-    for="OFS.interfaces.IObjectClonedEvent"
+    for="plone.dexterity.interfaces.IDexterityContent
+         OFS.interfaces.IObjectClonedEvent"
+    handler=".events.categorized_content_container_cloned"
+    />
+
+  <subscriber
+    for="Products.Archetypes.interfaces.base.IBaseObject
+         OFS.interfaces.IObjectClonedEvent"
     handler=".events.categorized_content_container_cloned"
     />
 

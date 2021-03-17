@@ -9,6 +9,10 @@ Changelog
   [gbastien]
 - Rely on imio.helpers because we need the `:json` suffix type converter.
   [gbastien]
+- Register the `categorized_content_container_cloned ObjectClonedEvent` handler
+  only for `AT IBaseObject` and `DX IDexterityContent` or is is applied also
+  for other elements like `portal_type` because it provides `OFS IItem`.
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------
