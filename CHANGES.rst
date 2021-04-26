@@ -13,6 +13,9 @@ Changelog
   only for `AT IBaseObject` and `DX IDexterityContent` or is is applied also
   for other elements like `portal_type` because it provides `OFS IItem`.
   [gbastien]
+- Added specific `collective.iconifiedcategory.belowcategorizedelements` viewlet
+  manager just under the categorized elements table.
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------

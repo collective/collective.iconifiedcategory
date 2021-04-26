@@ -8,6 +8,11 @@ from zope.component.interfaces import IObjectEvent
 from zope.interface import Attribute
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from zope.viewlet.interfaces import IViewletManager
+
+
+class IBelowCategorizedElementsManager(IViewletManager):
+    """A viewlet manager that sits just below categorized elements table."""
 
 
 class ICollectiveIconifiedCategoryLayer(IDefaultBrowserLayer):

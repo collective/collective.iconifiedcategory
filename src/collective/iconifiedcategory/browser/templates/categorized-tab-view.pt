@@ -4,6 +4,8 @@
     <div metal:fill-slot="main">
       <h1 i18n:translate="" class="documentFirstHeading">Categorized elements</h1>
       <div class="content" tal:content="structure view/table_render"></div>
+      <div id="viewlet-below-categorized-elements"
+         tal:content="structure provider:collective.iconifiedcategory.belowcategorizedelements" />
     </div>
   </body>
 </html>

@@ -335,4 +335,10 @@
       permission="zope2.View"
       />
 
+  <browser:viewletManager
+      name="collective.iconifiedcategory.belowcategorizedelements"
+      provides="..interfaces.IBelowCategorizedElementsManager"
+      permission="zope2.View"
+      class="plone.app.viewletmanager.manager.BaseOrderedViewletManager" />
+
 </configure>
