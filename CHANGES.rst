@@ -16,6 +16,9 @@ Changelog
 - Added specific `collective.iconifiedcategory.belowcategorizedelements` viewlet
   manager just under the categorized elements table.
   [gbastien]
+- Make the `z3c.table CategorizedTable`  easy to override by making a
+  `BrowserView` out of it.
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------

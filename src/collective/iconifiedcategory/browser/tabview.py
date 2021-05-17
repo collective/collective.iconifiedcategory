@@ -32,7 +32,8 @@ class CategorizedTabView(BrowserView):
 
     def table_render(self, portal_type=None):
         self.portal_type = portal_type
-        table = CategorizedTable(self.context, self.request, portal_type=portal_type)
+        table = self.context.restrictedTraverse('@@iconifiedcategory_table')
+        table.portal_type = portal_type
         self._prepare_table_render(table)
         table.update()
         return table.render()
@@ -120,7 +121,7 @@ class CategorizedContent(object):
         return portal_url + '/' + suffix
 
 
-class CategorizedTable(Table):
+class CategorizedTable(Table, BrowserView):
     implements(ICategorizedTable)
 
     cssClasses = {'table': 'listing iconified-listing nosort'}

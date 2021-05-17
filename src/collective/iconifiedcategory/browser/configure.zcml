@@ -143,6 +143,13 @@
     />
 
   <!-- Tab view -->
+  <browser:view
+    for="*"
+    name="iconifiedcategory_table"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".tabview.CategorizedTable"
+    permission="zope2.View" />
+
   <browser:page
     for="*"
     name="iconifiedcategory"
