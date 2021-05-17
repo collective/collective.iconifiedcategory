@@ -5,6 +5,7 @@
       <h1 i18n:translate="" class="documentFirstHeading">Categorized elements</h1>
       <div class="content" tal:content="structure view/table_render"></div>
       <div id="viewlet-below-categorized-elements"
+         tal:define="dummy python: context.REQUEST.set('categorized_tab', view)"
          tal:content="structure provider:collective.iconifiedcategory.belowcategorizedelements" />
     </div>
   </body>
