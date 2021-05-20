@@ -247,7 +247,8 @@ class FilesizeColumn(column.GetAttrColumn):
     def renderHeadCell(self):
         """ """
         header = super(FilesizeColumn, self).renderHeadCell()
-        total = sum([v.filesize for v in self.table.values])
+        total = sum([v.filesize for v in self.table.values
+                     if v.filesize is not None])
         header += u"<p>(Total: {0})</p>".format(utils.render_filesize(total))
         return header
 
