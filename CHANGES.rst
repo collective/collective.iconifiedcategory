@@ -14,9 +14,10 @@ Changelog
   for other elements like `portal_type` because it provides `OFS IItem`.
   [gbastien]
 - Added specific `collective.iconifiedcategory.belowcategorizedelements` viewlet
-  manager just under the categorized elements table.
+  manager just under the categorized elements table that will be displayed if
+  table displayed.
   [gbastien]
-- Make the `z3c.table CategorizedTable`  easy to override by making a
+- Make the `z3c.table CategorizedTable` easy to override by making a
   `BrowserView` out of it.
   [gbastien]
 - Adapted `FilesizeColumn` to display total filesize in column header.
