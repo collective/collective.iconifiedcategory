@@ -19,6 +19,8 @@ Changelog
 - Make the `z3c.table CategorizedTable`  easy to override by making a
   `BrowserView` out of it.
   [gbastien]
+- Adapted `FilesizeColumn` to display total filesize in column header.
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------
