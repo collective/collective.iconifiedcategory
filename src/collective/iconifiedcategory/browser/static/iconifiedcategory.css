@@ -41,6 +41,7 @@ div.categorized-elements a.deactivated > span {
     display: inherit;
 }
 
+p.warn_filesize,
 span.warn_filesize {
     color: red;
     cursor: help;
