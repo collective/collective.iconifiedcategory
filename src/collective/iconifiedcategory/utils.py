@@ -393,6 +393,9 @@ def render_filesize(size):
                           default='Annex size is huge, it could '
                           'be difficult to be downloaded!'),
                 pretty_filesize)
+    elif not pretty_filesize.endswith((' B', ' KB')):
+        pretty_filesize = \
+            u"<span class='soft_warn_filesize'>{0}</span>".format(pretty_filesize)
     return pretty_filesize
 
 

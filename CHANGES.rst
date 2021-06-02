@@ -22,6 +22,10 @@ Changelog
   [gbastien]
 - Adapted `FilesizeColumn` to display total filesize in column header.
   [gbastien]
+- Added `soft_warn_filesize`, a CSS class applied to files of more that `1 Mb`
+  (like it is already the case for the `warn_filesize` CSS class applied to
+  files of more than `5 Mb`).
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------

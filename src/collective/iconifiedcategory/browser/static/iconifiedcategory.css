@@ -47,6 +47,10 @@ span.warn_filesize {
     cursor: help;
     font-weight: bold;
 }
+p.soft_warn_filesize,
+span.soft_warn_filesize {
+    font-weight: bold;
+}
 
 img.categorized_elements_more_infos_icon {
     padding-right: 0.2em;
