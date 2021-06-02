@@ -288,10 +288,11 @@ class TestUtils(BaseTestCase):
                          '1 KB')
         self.assertEqual(utils.render_filesize(5000),
                          '4 KB')
+        # soft warning if filesize no more in B/KB
+        self.assertEqual(utils.render_filesize(2500000),
+                         u"<span class='soft_warn_filesize'>2.4 MB</span>")
         self.assertEqual(utils.render_filesize(5000000),
-                         '4.8 MB')
-        self.assertEqual(utils.render_filesize(5000000),
-                         '4.8 MB')
+                         u"<span class='soft_warn_filesize'>4.8 MB</span>")
         # warning if filesize > 5000000
         self.assertEqual(utils.render_filesize(5000001),
                          u"<span class='warn_filesize' title='Annex size is huge, "
