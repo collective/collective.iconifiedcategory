@@ -102,7 +102,16 @@ div.tooltipster-content {
 }
 div.tooltipster-content li {
     display: block;
-    margin: 0.2em 0;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+}
+div.tooltipster-content li:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+/* avoid categorized element title and touching details icons */
+div.tooltipster-categorized-elements li a {
+    padding-right: 1em;
 }
 
 #content table.iconified-listing {
@@ -240,7 +249,6 @@ div.tooltipster-categorized-elements div.categorized_elements_details {
     display: inline-block;
     text-align: right;
     float: right;
-    display: none;
 }
 div.tooltipster-categorized-elements div.categorized_elements_details span {
     float: left;

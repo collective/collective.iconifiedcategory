@@ -26,6 +26,8 @@ Changelog
   (like it is already the case for the `warn_filesize` CSS class applied to
   files of more than `5 Mb`).
   [gbastien]
+- Removed the `Show details` action, details are always shown now.
+  [gbastien]
 
 0.48 (2021-01-19)
 -----------------
