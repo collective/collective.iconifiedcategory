@@ -81,7 +81,6 @@ class CategorizedChildInfosView(BrowserView):
         """ """
         super(CategorizedChildInfosView, self).__init__(context, request)
         self.portal_url = api.portal.get().absolute_url()
-        self.have_details_to_show = False
 
     def update(self):
         filters = self.filters
@@ -142,17 +141,11 @@ class CategorizedChildInfosView(BrowserView):
     def show(self, element, attr_prefix):
         """ """
         show = element['{0}_activated'.format(attr_prefix)] and self._show_detail(attr_prefix)
-        if show:
-            self.have_details_to_show = True
         return show
 
     def _show_detail(self, detail_type):
         """Made to be overrided."""
         return True
-
-    def show_details_action(self):
-        """ """
-        return self.have_details_to_show
 
     def get_css_classses_for(self, functionnality, element):
         """ """

@@ -86,14 +86,6 @@
     </ul>
     <br />
     <a href="#"
-       tal:condition="view/show_details_action"
-       tal:attributes="onclick string:event.preventDefault();;$$('div.categorized_elements_details').toggle(200);">
-      <img class="categorized_elements_details_icon"
-           src="details.png"
-           tal:attributes="src string:${portal_url}/++resource++collective.iconifiedcategory.images/details.png" />
-      <span i18n:translate="">More/less details</span>
-    </a>&nbsp;
-    <a href="#"
        target="_parent"
        tal:condition="view/show_more_infos_url"
        tal:attributes="href view/categorized_elements_more_infos_url">
