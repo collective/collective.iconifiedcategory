@@ -100,12 +100,14 @@ div.tooltipster-content ul.many_elements_8_columns {
 div.tooltipster-content {
     font-size: 0.9em;
 }
-div.tooltipster-content li {
+div.tooltipster-categorized-elements li {
     display: block;
     padding-top: 0.2em;
     padding-bottom: 0.2em;
 }
-div.tooltipster-content li:hover {
+
+/* on hover highlight background to see "connect" element title and details icons */
+div.tooltipster-categorized-elements li:hover {
     background-color: #f0f0f0;
     border-radius: 5px;
 }
