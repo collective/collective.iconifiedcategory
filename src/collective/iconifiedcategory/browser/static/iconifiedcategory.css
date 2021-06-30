@@ -39,6 +39,7 @@ div.categorized-elements a.deactivated > span {
     /* force height and display for Chrome */
     height: 16px;
     display: inherit;
+    line-height: 1em;
 }
 
 p.warn_filesize,
