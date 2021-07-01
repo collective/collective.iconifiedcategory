@@ -94,7 +94,13 @@ class CategorizedChildInfosView(BrowserView):
         self.category_uid = category_uid
         self.filters = filters
         self.update()
+        self._infos = self.infos()
         return super(CategorizedChildInfosView, self).__call__()
+
+    def show_details(self, number_of_columns):
+        """Only show details if displaying at most 2 columns of elements
+           in the tooltispter popup."""
+        return bool(number_of_columns < 3)
 
     def show_preview_link(self):
         """Made to be overrided."""
@@ -110,6 +116,7 @@ class CategorizedChildInfosView(BrowserView):
         infos = OrderedDict([(e, []) for e in self.categories_uids])
         for element in self.categorized_elements:
             infos[element['category_uid']].append(element)
+        self._infos = infos
         return infos
 
     def render_filesize(self, size):

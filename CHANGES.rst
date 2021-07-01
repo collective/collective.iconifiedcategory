@@ -26,7 +26,8 @@ Changelog
   (like it is already the case for the `warn_filesize` CSS class applied to
   files of more than `5 Mb`).
   [gbastien]
-- Removed the `Show details` action, details are always shown now.
+- Removed the `Show details` action, details are always shown, except, for
+  display reasons, when more that 2 columns of elements in the popup.
   [gbastien]
 
 0.48 (2021-01-19)
@@ -288,7 +289,7 @@ Changelog
   [gbastien]
 - Improved some translations.
   [gbastien]
-- Factorized the way categories and subcategories are get for the 
+- Factorized the way categories and subcategories are get for the
   `content_category` vocabularies `collective.iconifiedcategory.categories` and
   `collective.iconifiedcategory.category_titles` so it is easy to override and
   we rely on same method for both vocabularies that needs same source.

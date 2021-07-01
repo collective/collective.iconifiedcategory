@@ -1,14 +1,15 @@
-<tal:defines define="infos view/infos;
-                     portal_url view/portal_url"
+<tal:defines define="infos python: view._infos;
+                     portal_url python: view.portal_url"
              condition="infos"
              i18n:domain="collective.iconifiedcategory">
   <div class="tooltipster-categorized-elements">
     <label class="content-category">
       <span i18n:translate="ContentCategory">Content category</span> : <span tal:content="python: infos[view.category_uid][0]['category_title']" />
     </label>
-    <ul tal:attributes="class python: 'many_elements_%d_columns' % view.number_of_columns(infos[view.category_uid])">
+    <ul tal:define="number_of_columns python: view.number_of_columns(infos[view.category_uid])"
+        tal:attributes="class python: 'many_elements_%d_columns' % view.number_of_columns(infos[view.category_uid])">
       <li tal:repeat="element python: infos[view.category_uid]">
-        <tal:block define="element_url python:element['download_url'] and element['download_url'] or element['relative_url']">
+        <tal:block define="element_url python: element['download_url'] and element['download_url'] or element['relative_url']">
         <a class="categorized-element-title"
            tal:attributes="href string:${portal_url}/${element_url}">
           <span>
@@ -22,7 +23,7 @@
             (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
           </tal:filesize>
         </a>
-        <div class="categorized_elements_details">
+        <div class="categorized_elements_details" tal:condition="python: view.show_details(number_of_columns)">
           <tal:show_to_print_icon condition="python: view.show(element, 'to_be_printed')">
              <span class=""
                    title=""
