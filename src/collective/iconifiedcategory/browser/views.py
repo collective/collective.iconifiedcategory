@@ -83,18 +83,17 @@ class CategorizedChildInfosView(BrowserView):
         self.portal_url = api.portal.get().absolute_url()
 
     def update(self):
-        filters = self.filters
-        filters['category_uid'] = self.category_uid
+        self.filters['category_uid'] = self.category_uid
         self.categorized_elements = get_categorized_elements(
             self.context,
             filters=self.filters)
+        self._infos = self.infos()
 
     def __call__(self, category_uid, filters):
         """ """
         self.category_uid = category_uid
         self.filters = filters
         self.update()
-        self._infos = self.infos()
         return super(CategorizedChildInfosView, self).__call__()
 
     def show_details(self, number_of_columns):
