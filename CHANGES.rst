@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.49 (unreleased)
+0.49 (2021-07-16)
 -----------------
 
 - Added possibility to filter displayed categorized elements on any attribute
