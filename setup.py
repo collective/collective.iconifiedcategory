@@ -43,7 +43,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'collective.documentviewer < 5',
+        'collective.documentviewer>=6.0.0',
         'collective.fontawesome>=1.1',
         'collective.js.tooltipster > 0.1',
         'collective.z3cform.select2',
