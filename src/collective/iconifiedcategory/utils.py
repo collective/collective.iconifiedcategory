@@ -21,6 +21,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
+from imio.helpers.content import find
 from natsort import natsorted
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
@@ -224,7 +225,7 @@ def get_ordered_categories(context, only_enabled=True):
     for idx, category in enumerate(categories):
         elements[category.UID] = idx
         elements[calculate_category_id(category.getObject())] = idx
-        subcategories = api.content.find(context=category, **query)
+        subcategories = find(context=category, unrestricted=True, **query)
         for subcategory in subcategories:
             elements[subcategory.UID] = idx
             elements[calculate_category_id(subcategory.getObject())] = idx

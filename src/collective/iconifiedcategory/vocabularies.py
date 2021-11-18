@@ -8,7 +8,7 @@ Created by mpeeters
 """
 
 from collective.iconifiedcategory import utils
-from plone import api
+from imio.helpers.content import find
 from zope.schema.vocabulary import SimpleVocabulary
 
 
@@ -23,8 +23,9 @@ class CategoryVocabulary(object):
     def _get_subcategories(self, context, category):
         """Return subcategories for given category.
            This needs to return a list of subcategory brains."""
-        subcategories = api.content.find(
+        subcategories = find(
             context=category,
+            unrestricted=True,
             object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
             enabled=True,
         )

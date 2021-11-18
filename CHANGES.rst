@@ -4,8 +4,8 @@ Changelog
 0.50 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Use unrestricted catalog query when possible.
+  [gbastien]
 
 0.49 (2021-07-16)
 -----------------
