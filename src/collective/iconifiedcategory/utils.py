@@ -88,11 +88,16 @@ def get_categories(context,
     catalog = api.portal.get_tool('portal_catalog')
     query = {
         'object_provides': 'collective.iconifiedcategory.content.category.ICategory',
-        'sort_on': sort_on,
-        'path': '/'.join(config_group.getPhysicalPath()),
     }
+    # query on path is context is not the Plone Site
+    # happens when computing categories to generate CSS
+    if context.portal_type != "Plone Site":
+        query['path']=  '/'.join(config_group.getPhysicalPath())
     if only_enabled:
         query['enabled'] = True
+    if sort_on:
+        query['sort_on'] =  sort_on
+
     res = catalog.unrestrictedSearchResults(**query)
     if the_objects:
         res = [brain.getObject() for brain in res]

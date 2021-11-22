@@ -6,6 +6,9 @@ Changelog
 
 - Use unrestricted catalog query when possible.
   [gbastien]
+- For the view that generated the CSS, do the catalog query that gets the categories
+  without `path` and `sort_on` as called from portal and order does not matter.
+  [gbastien]
 
 0.49 (2021-07-16)
 -----------------
