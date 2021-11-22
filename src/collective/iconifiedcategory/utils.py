@@ -52,7 +52,7 @@ def query_config_root(context):
         query = {
             'portal_type': 'ContentCategoryConfiguration',
         }
-        result = catalog.unrestrictedSearchResults(query)
+        result = catalog.unrestrictedSearchResults(**query)
         if not result:
             return
         config_root = result[0]._unrestrictedGetObject()
@@ -93,7 +93,7 @@ def get_categories(context,
     }
     if only_enabled:
         query['enabled'] = True
-    res = catalog.unrestrictedSearchResults(query)
+    res = catalog.unrestrictedSearchResults(**query)
     if the_objects:
         res = [brain.getObject() for brain in res]
     return res
