@@ -14,26 +14,28 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 class CategoryVocabulary(object):
 
-    def _get_categories(self, context):
+    def _get_categories(self, context, only_enabled=True):
         """Return categories to display in the vocabulary.
            This needs to return a list of category objects."""
-        categories = utils.get_categories(context, the_objects=True)
+        categories = utils.get_categories(context, the_objects=True, only_enabled=only_enabled)
         return categories
 
-    def _get_subcategories(self, context, category):
+    def _get_subcategories(self, context, category, only_enabled=True):
         """Return subcategories for given category.
            This needs to return a list of subcategory brains."""
+        query = {'object_provides': 'collective.iconifiedcategory.content.subcategory.ISubcategory'}
+        if only_enabled:
+            query['enabled'] = True
         subcategories = find(
             context=category,
             unrestricted=True,
-            object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
-            enabled=True,
+            **query
         )
         return subcategories
 
-    def __call__(self, context, use_category_uid_as_token=False):
+    def __call__(self, context, use_category_uid_as_token=False, only_enabled=True):
         terms = []
-        categories = self._get_categories(context)
+        categories = self._get_categories(context, only_enabled=only_enabled)
         for category in categories:
             if use_category_uid_as_token:
                 category_id = category.UID()
@@ -47,7 +49,7 @@ class CategoryVocabulary(object):
                 category_id,
                 category_title,
             ))
-            subcategories = self._get_subcategories(context, category)
+            subcategories = self._get_subcategories(context, category, only_enabled=only_enabled)
             for subcategory in subcategories:
                 subcategory = subcategory.getObject()
                 if use_category_uid_as_token:
@@ -65,11 +67,20 @@ class CategoryVocabulary(object):
         return SimpleVocabulary(terms)
 
 
+class EveryCategoryVocabulary(CategoryVocabulary):
+
+    def __call__(self, context, use_category_uid_as_token=False, only_enabled=False):
+        return super(EveryCategoryVocabulary, self).__call__(
+            context,
+            use_category_uid_as_token=use_category_uid_as_token,
+            only_enabled=only_enabled)
+
+
 class CategoryTitleVocabulary(CategoryVocabulary):
 
-    def __call__(self, context):
+    def __call__(self, context, only_enabled=True):
         terms = []
-        categories = self._get_categories(context)
+        categories = self._get_categories(context, only_enabled=only_enabled)
         for category in categories:
             category_id = utils.calculate_category_id(category)
             if category.predefined_title:
@@ -78,7 +89,7 @@ class CategoryTitleVocabulary(CategoryVocabulary):
                     category_id,
                     category.predefined_title,
                 ))
-            subcategories = self._get_subcategories(context, category)
+            subcategories = self._get_subcategories(context, category, only_enabled=only_enabled)
             for subcategory in subcategories:
                 subcategory = subcategory.getObject()
                 subcategory_id = utils.calculate_category_id(subcategory)
@@ -89,3 +100,11 @@ class CategoryTitleVocabulary(CategoryVocabulary):
                         subcategory.predefined_title,
                     ))
         return SimpleVocabulary(terms)
+
+
+class EveryCategoryTitleVocabulary(CategoryTitleVocabulary):
+
+    def __call__(self, context, only_enabled=False):
+        return super(EveryCategoryTitleVocabulary, self).__call__(
+            context,
+            only_enabled=only_enabled)
