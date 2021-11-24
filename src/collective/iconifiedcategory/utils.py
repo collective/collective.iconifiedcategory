@@ -344,7 +344,7 @@ def get_categorized_elements(context,
 
 def get_back_references(obj):
     catalog = api.portal.get_tool('portal_catalog')
-    brains = catalog(content_category_uid=obj.UID())
+    brains = catalog.unrestrictedSearchResults(content_category_uid=obj.UID())
     return brains
 
 
