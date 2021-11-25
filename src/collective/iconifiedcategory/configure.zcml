@@ -63,8 +63,20 @@
 
   <utility
     provides="zope.schema.interfaces.IVocabularyFactory"
+    name="collective.iconifiedcategory.every_categories"
+    factory=".vocabularies.EveryCategoryVocabulary"
+    />
+
+  <utility
+    provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.category_titles"
     factory=".vocabularies.CategoryTitleVocabulary"
+    />
+
+  <utility
+    provides="zope.schema.interfaces.IVocabularyFactory"
+    name="collective.iconifiedcategory.every_category_titles"
+    factory=".vocabularies.EveryCategoryTitleVocabulary"
     />
 
   <!-- indexes -->

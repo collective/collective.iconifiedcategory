@@ -4,8 +4,16 @@ Changelog
 0.50 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Use unrestricted catalog query when possible.
+  [gbastien]
+- For the view that generated the CSS, do the catalog query that gets the categories
+  without `path` and `sort_on` as called from portal and order does not matter.
+  [gbastien]
+- Added `collective.iconifiedcategory.every_categories` and
+  `collective.iconifiedcategory.every_category_titles` vocabularies returning
+  every possible categories, including not enabled ones. This will be used to
+  manage a `MissingTerms` adapter for `z3c.form`.
+  [gbastien]
 
 0.49 (2021-07-16)
 -----------------

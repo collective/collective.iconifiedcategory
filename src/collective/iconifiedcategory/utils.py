@@ -21,6 +21,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
+from imio.helpers.content import find
 from natsort import natsorted
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
@@ -51,7 +52,7 @@ def query_config_root(context):
         query = {
             'portal_type': 'ContentCategoryConfiguration',
         }
-        result = catalog.unrestrictedSearchResults(query)
+        result = catalog.unrestrictedSearchResults(**query)
         if not result:
             return
         config_root = result[0]._unrestrictedGetObject()
@@ -87,12 +88,17 @@ def get_categories(context,
     catalog = api.portal.get_tool('portal_catalog')
     query = {
         'object_provides': 'collective.iconifiedcategory.content.category.ICategory',
-        'sort_on': sort_on,
-        'path': '/'.join(config_group.getPhysicalPath()),
     }
+    # query on path is context is not the Plone Site
+    # happens when computing categories to generate CSS
+    if context.portal_type != "Plone Site":
+        query['path']=  '/'.join(config_group.getPhysicalPath())
     if only_enabled:
         query['enabled'] = True
-    res = catalog.unrestrictedSearchResults(query)
+    if sort_on:
+        query['sort_on'] =  sort_on
+
+    res = catalog.unrestrictedSearchResults(**query)
     if the_objects:
         res = [brain.getObject() for brain in res]
     return res
@@ -224,7 +230,7 @@ def get_ordered_categories(context, only_enabled=True):
     for idx, category in enumerate(categories):
         elements[category.UID] = idx
         elements[calculate_category_id(category.getObject())] = idx
-        subcategories = api.content.find(context=category, **query)
+        subcategories = find(context=category, unrestricted=True, **query)
         for subcategory in subcategories:
             elements[subcategory.UID] = idx
             elements[calculate_category_id(subcategory.getObject())] = idx
@@ -338,7 +344,7 @@ def get_categorized_elements(context,
 
 def get_back_references(obj):
     catalog = api.portal.get_tool('portal_catalog')
-    brains = catalog(content_category_uid=obj.UID())
+    brains = catalog.unrestrictedSearchResults(content_category_uid=obj.UID())
     return brains
 
 

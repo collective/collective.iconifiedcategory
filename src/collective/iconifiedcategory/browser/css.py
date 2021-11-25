@@ -21,7 +21,8 @@ class IconifiedCategory(BrowserView):
                u"background-size: contain; }}")
         if utils.has_config_root(self.context) is False:
             return ''
-        categories = utils.get_categories(self.context)
+        # sort_on=None to avoid useless sort_on="getObjPositionInParent"
+        categories = utils.get_categories(self.context, sort_on=None)
         for category in categories:
             obj = category._unrestrictedGetObject()
             category_id = utils.calculate_category_id(obj)
