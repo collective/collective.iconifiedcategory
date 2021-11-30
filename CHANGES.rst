@@ -4,7 +4,8 @@ Changelog
 0.50 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix Py3 errors
+  [fngaha]
 
 
 0.49 (2021-07-16)

@@ -8,16 +8,16 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
+from Products.Five import BrowserView
 from collective.iconifiedcategory.content.base import ICategorize
 from collective.iconifiedcategory.content.categoryconfiguration import ICategoryConfiguration
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySubtyper
-from Products.Five import BrowserView
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IIconifiedCategorySubtyper)
 class IconifiedCategoryPublicSubtyper(BrowserView):
-    implements(IIconifiedCategorySubtyper)
 
     def __init__(self, context, request):
         self.context = aq_base(context)

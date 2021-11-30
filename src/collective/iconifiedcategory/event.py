@@ -12,15 +12,16 @@ from collective.iconifiedcategory.interfaces import IIconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
 from zope.component.interfaces import ObjectEvent
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IIconifiedModifiedEvent)
 class IconifiedModifiedEvent(ObjectEvent):
-    implements(IIconifiedModifiedEvent)
+    """"""
 
 
+@implementer(IIconifiedCategoryChangedEvent)
 class IconifiedCategoryChangedEvent(ObjectEvent):
-    implements(IIconifiedCategoryChangedEvent)
 
     def __init__(self, object, category, sort=False):
         super(IconifiedCategoryChangedEvent, self).__init__(object)
@@ -28,8 +29,8 @@ class IconifiedCategoryChangedEvent(ObjectEvent):
         self.sort = sort
 
 
+@implementer(IIconifiedAttrChangedEvent)
 class IconifiedAttrChangedEvent(ObjectEvent):
-    implements(IIconifiedAttrChangedEvent)
 
     def __init__(self, object, attr_name, old_values, new_values, is_created=False):
         super(IconifiedAttrChangedEvent, self).__init__(object)
@@ -39,5 +40,6 @@ class IconifiedAttrChangedEvent(ObjectEvent):
         self.is_created = is_created
 
 
+@implementer(ICategorizedElementsUpdatedEvent)
 class CategorizedElementsUpdatedEvent(ObjectEvent):
-    implements(ICategorizedElementsUpdatedEvent)
+    """"""

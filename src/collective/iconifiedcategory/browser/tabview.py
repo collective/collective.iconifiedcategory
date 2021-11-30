@@ -7,6 +7,10 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five import BrowserView
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
@@ -16,16 +20,11 @@ from collective.iconifiedcategory.interfaces import ICategorizedSigned
 from collective.iconifiedcategory.interfaces import ICategorizedTable
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from plone import api
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.CMFCore.utils import _checkPermission
-from Products.CMFPlone.utils import safe_unicode
-from Products.Five import BrowserView
 from z3c.table import column
 from z3c.table.table import Table
 from zope.component import getMultiAdapter
 from zope.i18n import translate
-from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import alsoProvides, implementer
 
 
 class CategorizedTabView(BrowserView):
@@ -122,8 +121,8 @@ class CategorizedContent(object):
         return portal_url + '/' + suffix
 
 
+@implementer(ICategorizedTable)
 class CategorizedTable(Table, BrowserView):
-    implements(ICategorizedTable)
 
     cssClasses = {'table': 'listing iconified-listing nosort'}
 
