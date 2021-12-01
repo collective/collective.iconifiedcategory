@@ -4,6 +4,8 @@ Changelog
 0.50 (unreleased)
 -----------------
 
+- Fix ModuleNotFoundError by removing Products.Archetypes
+  [fngaha]
 - Fix Py3 errors
   [fngaha]
 
