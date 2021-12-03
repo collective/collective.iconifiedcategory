@@ -14,6 +14,9 @@ Changelog
   every possible categories, including not enabled ones. This will be used to
   manage a `MissingTerms` adapter for `z3c.form`.
   [gbastien]
+- Fixed view that generates `collective-iconifiedcategory.css`, get every
+  categories including ones that are not `enabled`.
+  [gbastien]
 
 0.49 (2021-07-16)
 -----------------
