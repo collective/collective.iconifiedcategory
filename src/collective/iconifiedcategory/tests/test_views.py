@@ -58,7 +58,7 @@ class TestCategorizedChildView(BaseTestCase):
         self.assertEqual(self.view().strip(), u'<span class="discreet">Nothing.</span>')
 
     def test_categories_infos(self):
-        self.view.update()
+        self.view()
         infos = self.view.categories_infos()
         self.assertEqual(2, len(infos))
         self.assertEqual('category-1-1', infos[1]['id'])

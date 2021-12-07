@@ -14,6 +14,8 @@ from collective.documentviewer.utils import allowedDocumentType
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
+from collective.iconifiedcategory.utils import _modified
+from datetime import datetime
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
@@ -40,6 +42,8 @@ class CategorizedObjectInfoAdapter(object):
             'subcategory_uid': None,
             'subcategory_id': None,
             'subcategory_title': None,
+            # this will be useable for caching for example
+            'last_updated': self._last_updated,
             'icon_url': utils.get_category_icon_url(category),
             'to_be_printed_activated': self._to_be_printed_activated(category),
             'confidentiality_activated': self._confidentiality_activated(category),
@@ -103,6 +107,12 @@ class CategorizedObjectInfoAdapter(object):
             return self.obj.file.size
         if IImage.providedBy(self.obj):
             return self.obj.image.size
+
+    @property
+    def _last_updated(self):
+        """When updating some attributes directly or annotation,
+           "modified" is not changed."""
+        return _modified(self.context)
 
     def _to_be_printed_activated(self, category):
         category_group = category.get_category_group()

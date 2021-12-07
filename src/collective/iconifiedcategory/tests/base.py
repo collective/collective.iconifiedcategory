@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from collective.iconifiedcategory import testing
+from collective.iconifiedcategory.utils import _modified
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
@@ -36,6 +37,9 @@ class BaseTestCase(unittest.TestCase):
         current_path = os.path.dirname(__file__)
         f = open(os.path.join(current_path, 'icône1.png'), 'r')
         return namedfile.NamedBlobFile(f.read(), filename=u'icône1.png')
+
+    def _modified(self, obj):
+        return _modified(obj)
 
     def setUp(self):
         self.maxDiff = None

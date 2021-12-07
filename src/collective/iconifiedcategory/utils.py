@@ -21,6 +21,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
+from datetime import datetime
 from imio.helpers.content import find
 from natsort import natsorted
 from plone import api
@@ -29,6 +30,7 @@ from plone.app.contenttypes.interfaces import IImage
 from plone.memoize import ram
 from Products.CMFPlone.utils import safe_unicode
 from time import time
+from zope.annotation import IAnnotations
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
@@ -92,11 +94,11 @@ def get_categories(context,
     # query on path is context is not the Plone Site
     # happens when computing categories to generate CSS
     if context.portal_type != "Plone Site":
-        query['path']=  '/'.join(config_group.getPhysicalPath())
+        query['path'] = '/'.join(config_group.getPhysicalPath())
     if only_enabled:
         query['enabled'] = True
     if sort_on:
-        query['sort_on'] =  sort_on
+        query['sort_on'] = sort_on
 
     res = catalog.unrestrictedSearchResults(**query)
     if the_objects:
@@ -275,13 +277,17 @@ def get_categorized_elements(context,
                              portal_type=None,
                              sort_on=None,
                              uids=[],
-                             filters={}):
+                             filters={},
+                             check_can_view=True,
+                             caching=True):
     """Return categorized elements.
        p_result_type may be :
        - 'dict': default, essential metadata are returned as a dict;
        - 'objects': categorized objects are returned.
        If some p_filters are given, the values will be filtered,
-       available filters are values stored in categorized_elements."""
+       available filters are values stored in categorized_elements.
+       If p_check_can_view is True, then the IIconifiedContent.can_view
+       check will be called."""
     def _check_filters(infos):
         """ """
         keep = True
@@ -295,50 +301,74 @@ def get_categorized_elements(context,
                 break
         return keep
 
-    elements = []
-    categorized_elements = _categorized_elements(context)
-    if not categorized_elements:
-        return elements
-
-    uids = uids or categorized_elements.keys()
-    catalog = api.portal.get_tool('portal_catalog')
-    current_user_allowedRolesAndUsers = catalog._listAllowedRolesAndUsers(api.user.get_current())
-    for uid, infos in categorized_elements.items():
-        if (uids and uid not in uids) or \
-           (portal_type and infos['portal_type'] != portal_type) or \
-           not _check_filters(infos) or \
-           (infos['confidential'] and
-                not set(infos['allowedRolesAndUsers']).intersection(current_user_allowedRolesAndUsers)):
-            continue
-        obj = context.get(infos['id'])
-        obj_uid = obj.UID()
-        adapter = getMultiAdapter(
-            (obj.aq_parent, obj.REQUEST, obj),
-            IIconifiedContent)
-        if adapter.can_view():
-            if result_type == 'objects':
-                elements.append(obj)
-            else:
-                # add 'UID' to the available infos
-                tmp = categorized_elements[obj_uid].copy()
-                tmp['UID'] = obj_uid
-                elements.append(tmp)
-
-    if elements and sort_on:
-        if result_type == 'dict':
-            if sort_on in elements[0]:
-                elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
-            elif sort_on == 'getObjPositionInParent':
-                elements = sorted(
-                    elements,
-                    key=lambda x, object_ids=context.objectIds(): object_ids.index(x['id']))
+    def _get_adapter(parent, obj, adapter):
+        """ """
+        if adapter is None:
+            adapter = getMultiAdapter(
+                (context, context.REQUEST, obj),
+                IIconifiedContent)
         else:
-            if getattr(elements[0], sort_on):
-                elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
-            elif sort_on == 'getObjPositionInParent':
-                elements = sorted(
-                    elements,
-                    key=lambda x, object_ids=context.objectIds(): object_ids.index(x.id))
+            adapter.categorized_obj = obj
+        return adapter
+
+    elements = None
+    if caching:
+        # in some cases like in tests, request can not be retrieved
+        key = "collective.iconifiedcategory.get_categorized_elements'" \
+            "-{0}-{1}-{2}-{3}-{4}".format(
+                repr(context),
+                result_type,
+                portal_type,
+                '_'.join(uids),
+                ['{0}_{1}'.format(k, v) for k, v in filters.items()])
+        cache = IAnnotations(context.REQUEST)
+        elements = cache.get(key, None)
+
+    if elements is None:
+        elements = []
+        categorized_elements = _categorized_elements(context)
+        if not categorized_elements:
+            return elements
+
+        uids = uids or categorized_elements.keys()
+        catalog = api.portal.get_tool('portal_catalog')
+        current_user_allowedRolesAndUsers = catalog._listAllowedRolesAndUsers(api.user.get_current())
+        adapter = None
+        for uid, infos in categorized_elements.items():
+            if (uids and uid not in uids) or \
+               (portal_type and infos['portal_type'] != portal_type) or \
+               not _check_filters(infos) or \
+               (infos['confidential'] and
+                    not set(infos['allowedRolesAndUsers']).intersection(current_user_allowedRolesAndUsers)):
+                continue
+
+            obj = context.get(infos['id'])
+            adapter = _get_adapter(context, obj, adapter)
+            if not check_can_view or adapter.can_view():
+                if result_type == 'objects':
+                    elements.append(obj)
+                else:
+                    # add 'UID' to the available infos
+                    tmp = categorized_elements[uid].copy()
+                    tmp['UID'] = uid
+                    elements.append(tmp)
+
+        if elements and sort_on:
+            if result_type == 'dict':
+                if sort_on in elements[0]:
+                    elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
+                elif sort_on == 'getObjPositionInParent':
+                    elements = sorted(
+                        elements,
+                        key=lambda x, object_ids=context.objectIds(): object_ids.index(x['id']))
+            else:
+                if getattr(elements[0], sort_on):
+                    elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
+                elif sort_on == 'getObjPositionInParent':
+                    elements = sorted(
+                        elements,
+                        key=lambda x, object_ids=context.objectIds(): object_ids.index(x.id))
+
     return elements
 
 
@@ -482,3 +512,11 @@ def validateFileIsPDF(data):
             category = get_category_object(context, data.content_category)
             if category.only_pdf:
                 raise Invalid(_(u"You must select a PDF file!"))
+
+
+def _modified(obj):
+    """Returns max value between obj.modified() and obj._p_mtime,
+       in case an annotation is changed on obj, obj._p_mtime is changed,
+       not obj.modified()."""
+    modified = max(float(obj.modified()), obj._p_mtime)
+    return datetime.fromtimestamp(modified)

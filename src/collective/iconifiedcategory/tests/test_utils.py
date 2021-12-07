@@ -316,6 +316,8 @@ class TestUtils(BaseTestCase):
             confidential=False,
         )
         scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
+        # while creating, modified is changed again after categorized_update
+        utils.update_all_categorized_elements(self.portal)
         result = utils.get_categorized_elements(self.portal)
         self.assertEqual(
             result,
@@ -331,6 +333,7 @@ class TestUtils(BaseTestCase):
               'filesize': None,
               'icon_url': u'config/group-1/category-x/@@images/{0}'.format(scale),
               'id': 'doc-subcategory-move',
+              'last_updated': self._modified(document),
               'portal_type': 'Document',
               'preview_status': 'not_convertable',
               'publishable': False,

@@ -17,6 +17,16 @@ Changelog
 - Fixed view that generates `collective-iconifiedcategory.css`, get every
   categories including ones that are not `enabled`.
   [gbastien]
+- Optimized `@@categorized-childs` view, compute everything only one time
+  (context url, context UID, ...) and use `python` or `string` in TAL expressions.
+  By default call `utils.get_categorized_elements` with `check_can_view=False`.
+  [gbastien]
+- Added `check_can_view=True` parameter to `utils.get_categorized_elements`.
+  This will do the `IIconifiedContent.can_view` check only done when necessary.
+  [gbastien]
+- Added data `last_updated` to `categorized_elements` to be used for caching.
+  Added upgrade step to version `2103`.
+  [gbastien]
 
 0.49 (2021-07-16)
 -----------------

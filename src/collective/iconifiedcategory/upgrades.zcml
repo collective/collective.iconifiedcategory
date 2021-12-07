@@ -29,4 +29,12 @@
         handler="collective.iconifiedcategory.upgrades.upgrade_to_2102"
         profile="collective.iconifiedcategory:default" />
 
+    <genericsetup:upgradeStep
+        title="Add 'modified' to categorized_elements"
+        description=""
+        source="2102"
+        destination="2103"
+        handler="collective.iconifiedcategory.upgrades.upgrade_to_2103"
+        profile="collective.iconifiedcategory:default" />
+
 </configure>

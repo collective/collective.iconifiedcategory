@@ -29,10 +29,6 @@ import json
 
 class CategorizedChildView(BrowserView):
     """ """
-    def __init__(self, context, request):
-        """ """
-        super(CategorizedChildView, self).__init__(context, request)
-        self.portal_url = api.portal.get().absolute_url()
 
     @property
     def _filters(self):
@@ -47,13 +43,16 @@ class CategorizedChildView(BrowserView):
         self.categorized_elements = get_categorized_elements(
             self.context,
             portal_type=self.portal_type,
-            filters=self._filters
+            filters=self._filters,
+            check_can_view=self.check_can_view,
         )
 
-    def __call__(self, portal_type=None, show_nothing=True):
-        """ """
+    def __call__(self, portal_type=None, show_nothing=True, check_can_view=False):
+        """We set p_check_can_view=False by default."""
+        self.portal_url = api.portal.get().absolute_url()
         self.portal_type = portal_type
         self.show_nothing = show_nothing
+        self.check_can_view = check_can_view
         self.update()
         return super(CategorizedChildView, self).__call__()
 

@@ -124,3 +124,32 @@ def upgrade_to_2102(context):
         parent.categorized_elements[obj.UID()]['allowedRolesAndUsers'] = allowedRolesAndUsers
         parent._p_changed = True
     pghandler.finish()
+
+
+def upgrade_to_2103(context):
+    '''The element "last_updated" is now in categorized_elements.'''
+    catalog = api.portal.get_tool('portal_catalog')
+
+    # compute "modified" for categorized elements
+    brains = catalog(
+        object_provides='collective.iconifiedcategory.'
+        'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
+    i = 0
+    pghandler = ZLogHandler(steps=1000)
+    pghandler.info('Computing "last_updated" for categorized elements...')
+    pghandler.init('ComputeLastUpdatedForCategorizedElements', len(brains))
+
+    for brain in brains:
+        i += 1
+        pghandler.report(i)
+        obj = brain.getObject()
+        parent = obj.aq_inner.aq_parent
+        modified = obj.modified()
+        modified._timezone_naive = True
+        if 'last_updated' in parent.categorized_elements[obj.UID()]:
+            # already upgraded
+            pghandler.info('STOPPING, already migrated...')
+            break
+        parent.categorized_elements[obj.UID()]['last_updated'] = modified.asdatetime()
+        parent._p_changed = True
+    pghandler.finish()
