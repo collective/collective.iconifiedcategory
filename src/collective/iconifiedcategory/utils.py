@@ -514,9 +514,11 @@ def validateFileIsPDF(data):
                 raise Invalid(_(u"You must select a PDF file!"))
 
 
-def _modified(obj):
+def _modified(obj, asdatetime=True):
     """Returns max value between obj.modified() and obj._p_mtime,
        in case an annotation is changed on obj, obj._p_mtime is changed,
        not obj.modified()."""
     modified = max(float(obj.modified()), obj._p_mtime)
-    return datetime.fromtimestamp(modified)
+    if asdatetime:
+        modified = datetime.fromtimestamp(modified)
+    return modified
