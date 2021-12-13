@@ -22,6 +22,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 from datetime import datetime
+from imio.helpers.cache import get_cachekey_volatile
 from imio.helpers.content import find
 from natsort import natsorted
 from plone import api
@@ -211,11 +212,7 @@ def update_all_categorized_elements(container, limited=False, sort=True):
 
 def get_ordered_categories_cachekey(method, context, only_enabled=True):
     """ """
-    # while using plone.app.async, there is not REQUEST
-    debug = 'no_request'
-    if hasattr(context, 'REQUEST'):
-        debug = str(context.REQUEST._debug)
-    return debug, get_config_root(context), only_enabled
+    return get_cachekey_volatile("collective.iconifiedcategory.utils.get_ordered_categories")
 
 
 @ram.cache(get_ordered_categories_cachekey)

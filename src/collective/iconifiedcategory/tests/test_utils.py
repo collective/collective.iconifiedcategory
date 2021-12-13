@@ -548,3 +548,23 @@ class TestUtils(BaseTestCase):
         category = subcategory.get_category()
         scale = category.restrictedTraverse('@@images').scale(scale='listing').__name__
         self.assertEqual(doc_icon_url, u'config/group-1/category-x/@@images/{0}'.format(scale))
+
+    def test_get_ordered_categories(self):
+        """Test that caching is behaving correctly."""
+        # invalidated when new category added
+        category = api.content.create(
+            type='ContentCategory',
+            title='Category X',
+            icon=self.icon,
+            container=self.config['group-1'],
+        )
+        category_uid = category.UID()
+        self.assertTrue(category_uid in utils.get_ordered_categories(self.portal))
+        # invalidated when category deleted
+        api.content.delete(category)
+        self.assertFalse(category_uid in utils.get_ordered_categories(self.portal))
+        # invalidated when a category position changed
+        res = sorted(utils.get_ordered_categories(self.portal).items())
+        self.portal.config.get('group-1').moveObjectsDown('category-1-2')
+        res_after_cat_position_changed = sorted(utils.get_ordered_categories(self.portal).items())
+        self.assertNotEqual(res, res_after_cat_position_changed)

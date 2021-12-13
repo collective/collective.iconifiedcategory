@@ -91,4 +91,10 @@
     handler=".events.category_created"
     />
 
+  <subscriber
+    for=".categorygroup.ICategoryGroup
+         zope.container.interfaces.IContainerModifiedEvent"
+    handler=".events.container_modified"
+    />
+
 </configure>

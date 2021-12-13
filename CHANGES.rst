@@ -27,6 +27,9 @@ Changelog
 - Added data `last_updated` to `categorized_elements` to be used for caching.
   Added upgrade step to version `2103`.
   [gbastien]
+- Optimized `ram.cache` key for `utils.get_ordered_categories`, cache until
+  any category added/deleted/position changed.
+  [gbastien]
 
 0.49 (2021-07-16)
 -----------------

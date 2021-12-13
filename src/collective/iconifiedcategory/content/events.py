@@ -13,6 +13,7 @@ from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
+from imio.helpers.cache import invalidate_cachekey_volatile_for
 from plone import api
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.statusmessages.interfaces import IStatusMessage
@@ -231,3 +232,11 @@ def category_created(category, event):
     # make sure the 'listing' scale image is created
     category.restrictedTraverse('@@images').scale(scale='listing')
     _cookCssResources()
+
+
+def container_modified(obj, event):
+    """When a category container (so a CategoryGroup or a Category)
+       is modified (meaning element added/removed/position changed)
+       invalidate date used for utils.get_ordered_categories caching."""
+    invalidate_cachekey_volatile_for(
+        'collective.iconifiedcategory.utils.get_ordered_categories', get_again=True)
