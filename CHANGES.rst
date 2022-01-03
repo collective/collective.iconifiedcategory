@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.50 (unreleased)
+0.50 (2022-01-03)
 -----------------
 
 - Use unrestricted catalog query when possible.
