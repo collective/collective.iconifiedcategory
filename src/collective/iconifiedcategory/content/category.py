@@ -30,6 +30,8 @@ class ICategory(IFolder, ICategorize, IICImageScaleTraversable):
                       u'could be not optimal.'),
         required=True,
     )
+
+
 alsoProvides(ICategory['icon'], IPrimaryField)
 
 

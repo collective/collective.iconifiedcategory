@@ -15,7 +15,6 @@ from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
 from collective.iconifiedcategory.utils import _modified
-from datetime import datetime
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
