@@ -269,6 +269,31 @@ def _categorized_elements(context):
     )
 
 
+def _check_filters(infos, filters):
+    """ """
+    keep = True
+    for k, v in filters.items():
+        # manage case when stored value is a list or not
+        stored_value = infos[k]
+        if not hasattr(stored_value, '__iter__'):
+            stored_value = (stored_value, )
+        if v not in stored_value:
+            keep = False
+            break
+    return keep
+
+
+def _get_adapter(context, obj, adapter):
+    """ """
+    if adapter is None:
+        adapter = getMultiAdapter(
+            (context, context.REQUEST, obj),
+            IIconifiedContent)
+    else:
+        adapter.categorized_obj = obj
+    return adapter
+
+
 def get_categorized_elements(context,
                              result_type='dict',
                              portal_type=None,
@@ -285,29 +310,6 @@ def get_categorized_elements(context,
        available filters are values stored in categorized_elements.
        If p_check_can_view is True, then the IIconifiedContent.can_view
        check will be called."""
-    def _check_filters(infos):
-        """ """
-        keep = True
-        for k, v in filters.items():
-            # manage case when stored value is a list or not
-            stored_value = infos[k]
-            if not hasattr(stored_value, '__iter__'):
-                stored_value = (stored_value, )
-            if v not in stored_value:
-                keep = False
-                break
-        return keep
-
-    def _get_adapter(parent, obj, adapter):
-        """ """
-        if adapter is None:
-            adapter = getMultiAdapter(
-                (context, context.REQUEST, obj),
-                IIconifiedContent)
-        else:
-            adapter.categorized_obj = obj
-        return adapter
-
     elements = None
     if caching:
         # in some cases like in tests, request can not be retrieved
@@ -334,9 +336,9 @@ def get_categorized_elements(context,
         for uid, infos in categorized_elements.items():
             if (uids and uid not in uids) or \
                (portal_type and infos['portal_type'] != portal_type) or \
-               not _check_filters(infos) or \
-               (infos['confidential'] and
-                    not set(infos['allowedRolesAndUsers']).intersection(current_user_allowedRolesAndUsers)):
+               not _check_filters(infos, filters) or \
+               (infos['confidential'] and not set(infos['allowedRolesAndUsers'])
+                   .intersection(current_user_allowedRolesAndUsers)):
                 continue
 
             obj = context.get(infos['id'])

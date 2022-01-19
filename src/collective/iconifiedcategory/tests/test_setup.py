@@ -23,8 +23,7 @@ class TestSetup(unittest.TestCase):
 
     def test_browserlayer(self):
         """Test that ICollectiveIconifiedCategoryLayer is registered."""
-        from collective.iconifiedcategory.interfaces import (
-            ICollectiveIconifiedCategoryLayer)
+        from collective.iconifiedcategory.interfaces import ICollectiveIconifiedCategoryLayer
         from plone.browserlayer import utils
         self.assertIn(ICollectiveIconifiedCategoryLayer,
                       utils.registered_layers())
