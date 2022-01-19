@@ -22,3 +22,5 @@ log.html
 report.html
 include/
 lib/
+.idea
+pyvenv.cfg
