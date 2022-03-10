@@ -2,11 +2,16 @@
    If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide_addons.html
    This text does not appear on pypi or github. It is a comment.
 
-.. image:: https://travis-ci.org/collective/collective.iconifiedcategory.svg?branch=master
-    :target: https://travis-ci.org/collective/collective.iconifiedcategory
+.. image:: https://github.com/collective/collective.iconifiedcategory/actions/workflows/main.yml/badge.svg?branch=master
+    :target: https://github.com/collective/collective.iconifiedcategory/actions/workflows/main.yml
 
 .. image:: https://coveralls.io/repos/github/collective/collective.iconifiedcategory/badge.svg
     :target: https://coveralls.io/github/collective/collective.iconifiedcategory
+
+.. image:: http://img.shields.io/pypi/v/collective.iconifiedcategory.svg
+   :alt: PyPI badge
+   :target: https://pypi.org/project/collective.iconifiedcategory
+
 
 ==============================================================================
 collective.iconifiedcategory
