@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.51 (unreleased)
+0.51 (2022-03-10)
 -----------------
 
 - Updated upgrade step to 2103 (`Add 'last_updated' to categorized_elements`),
