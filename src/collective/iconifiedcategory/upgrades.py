@@ -130,7 +130,7 @@ def upgrade_to_2103(context):
     '''The element "last_updated" is now in categorized_elements.'''
     catalog = api.portal.get_tool('portal_catalog')
 
-    # compute "modified" for categorized elements
+    # compute "last_updated" for categorized elements
     brains = catalog(
         object_provides='collective.iconifiedcategory.'
         'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
@@ -148,8 +148,7 @@ def upgrade_to_2103(context):
         modified._timezone_naive = True
         if 'last_updated' in parent.categorized_elements[obj.UID()]:
             # already upgraded
-            pghandler.info('STOPPING, already migrated...')
-            break
+            continue
         parent.categorized_elements[obj.UID()]['last_updated'] = modified.asdatetime()
         parent._p_changed = True
     pghandler.finish()

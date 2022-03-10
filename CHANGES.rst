@@ -4,8 +4,11 @@ Changelog
 0.51 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Updated upgrade step to 2103 (`Add 'last_updated' to categorized_elements`),
+  do not stop in case we found a `last_updated` key in `categorized_elements`
+  of an element but continue to next element, maybe some elements were updated
+  by another part of code.
+  [gbastien]
 
 0.50 (2022-01-03)
 -----------------
