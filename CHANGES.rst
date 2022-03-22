@@ -4,8 +4,8 @@ Changelog
 0.52 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed `metadata.xml` version, set `2103` instead `2101`.
+  [gbastien]
 
 0.51 (2022-03-10)
 -----------------
