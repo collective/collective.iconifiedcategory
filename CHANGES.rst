@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.52 (unreleased)
+0.52 (2022-03-22)
 -----------------
 
 - Fixed `metadata.xml` version, set `2103` instead `2101`.
