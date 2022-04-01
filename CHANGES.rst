@@ -4,8 +4,9 @@ Changelog
 0.53 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Make `validateFileIsPDF` invariant check if a `contentType` is directly
+  available on data, this avoid checking on the file.
+  [gbastien]
 
 0.52 (2022-03-22)
 -----------------

@@ -496,6 +496,17 @@ def is_file_type(portal_type):
 
 def validateFileIsPDF(data):
     """May be used as helper in a invariant validator"""
+    def _get_content_type(data):
+        """ """
+        contentType = getattr(data, 'contentType', None)
+        if contentType is None:
+            file = request.form.get('form.widgets.file') or \
+                getattr(aq_base(context), 'file', None)
+            # get contentType
+            if file:
+                contentType = getattr(file, 'contentType', None) or file.headers.get('content-type')
+        return contentType
+
     # check if file contentType is PDF only if used content_category requires it
     request = getRequest()
     # avoid double validation
@@ -503,14 +514,11 @@ def validateFileIsPDF(data):
         return
     request.set('already_validateFileIsPDF', True)
     context = data.__context__ or request.get('PUBLISHED').context
-    file = request.form.get('form.widgets.file') or getattr(aq_base(context), 'file', None)
-    # get contentType
-    if file:
-        contentType = getattr(file, 'contentType', None) or file.headers.get('content-type')
-        if contentType != 'application/pdf':
-            category = get_category_object(context, data.content_category)
-            if category.only_pdf:
-                raise Invalid(_(u"You must select a PDF file!"))
+    contentType = _get_content_type(data)
+    if contentType is not None and contentType != 'application/pdf':
+        category = get_category_object(context, data.content_category)
+        if category.only_pdf:
+            raise Invalid(_(u"You must select a PDF file!"))
 
 
 def _modified(obj, asdatetime=True):
