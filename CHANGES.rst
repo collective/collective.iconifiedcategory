@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.53 (unreleased)
+0.53 (2022-04-22)
 -----------------
 
 - Make `validateFileIsPDF` invariant check if a `contentType` is directly
