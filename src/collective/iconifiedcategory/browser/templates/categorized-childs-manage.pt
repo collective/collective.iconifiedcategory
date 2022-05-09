@@ -1,0 +1,8 @@
+<div class="categorized-elements">
+  <a href="" class="manage-categorized-elements"
+     title="Manage categorized elements" i18n:attributes="title"
+     tal:attributes="href python: view.get_management_url()">
+    <span class="fa manage-categorized-elements" />
+  </a>
+  <div style="clear: both;"></div>
+</div>

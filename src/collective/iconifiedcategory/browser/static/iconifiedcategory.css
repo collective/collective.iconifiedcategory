@@ -278,3 +278,7 @@ ul.select2-results .select2-result-label {
 span.help {
     cursor: help;
 }
+
+#content div.categorized-elements a.manage-categorized-elements {
+    vertical-align: middle;
+}

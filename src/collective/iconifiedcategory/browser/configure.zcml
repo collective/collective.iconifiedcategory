@@ -32,6 +32,15 @@
 
   <browser:page
     for="*"
+    name="categorized-childs-manage"
+    permission="zope2.View"
+    class=".views.ManageCategorizedChildView"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    template="templates/categorized-childs-manage.pt"
+    />
+
+  <browser:page
+    for="*"
     name="categorized-childs-infos"
     permission="zope2.View"
     class=".views.CategorizedChildInfosView"

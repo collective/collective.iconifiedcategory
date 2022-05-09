@@ -4,8 +4,9 @@ Changelog
 0.54 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added `@@categorized-childs-manage` that will render a link to manage
+  categorized elements.
+  [gbastien]
 
 0.53 (2022-04-22)
 -----------------

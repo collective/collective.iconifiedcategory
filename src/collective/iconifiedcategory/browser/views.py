@@ -73,6 +73,14 @@ class CategorizedChildView(BrowserView):
         return infos.values()
 
 
+class ManageCategorizedChildView(BrowserView):
+    """ """
+
+    def get_management_url(self):
+        """Overridable method to define management url."""
+        return "{0}/@@iconifiedcategory".format(self.context.absolute_url())
+
+
 class CategorizedChildInfosView(BrowserView):
     """ """
     def __init__(self, context, request):
