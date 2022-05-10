@@ -86,6 +86,9 @@ class CategorizedContent(object):
             self.obj = obj
         return obj
 
+    # make call to _unrestrictedGetObject behaves like getObject
+    _unrestrictedGetObject = getObject
+
     @property
     def Description(self):
         return self.getObject().Description()
