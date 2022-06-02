@@ -10,6 +10,8 @@ Changelog
 - Implemented `CategorizedContent._unrestrictedGetObject` as `collective.eeafaceted.z3ctable`
   calls now `item._unrestrictedGetObject` instead `item.getObject` for performance optimization.
   [gbastien]
+- Added `safe_utils.py` that will only include safe utils.
+  [gbastien]
 
 0.53 (2022-04-22)
 -----------------
