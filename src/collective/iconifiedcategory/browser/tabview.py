@@ -7,6 +7,8 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.eeafaceted.z3ctable.browser.views import ExtendedCSSTable
+from collective.eeafaceted.z3ctable.columns import BaseColumn
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
@@ -20,12 +22,12 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
-from z3c.table import column
-from z3c.table.table import Table
 from zope.component import getMultiAdapter
 from zope.i18n import translate
 from zope.interface import alsoProvides
 from zope.interface import implements
+
+import html
 
 
 class CategorizedTabView(BrowserView):
@@ -125,7 +127,7 @@ class CategorizedContent(object):
         return portal_url + '/' + suffix
 
 
-class CategorizedTable(Table, BrowserView):
+class CategorizedTable(ExtendedCSSTable, BrowserView):
     implements(ICategorizedTable)
 
     cssClasses = {'table': 'listing iconified-listing nosort'}
@@ -173,7 +175,7 @@ class CategorizedTable(Table, BrowserView):
         return super(CategorizedTable, self).render()
 
 
-class TitleColumn(column.GetAttrColumn):
+class TitleColumn(BaseColumn):
     header = _(u'Title')
     weight = 20
     attrName = 'title'
@@ -199,28 +201,29 @@ class TitleColumn(column.GetAttrColumn):
         )
 
 
-class CategoryColumn(column.GetAttrColumn):
+class CategoryColumn(BaseColumn):
     header = _(u'Category')
     weight = 30
     attrName = 'category_title'
+    escape = False
 
     def renderCell(self, content):
         category_title = safe_unicode(content.category_title)
         if content.subcategory_title:
             category_title = u"{0} / {1}".format(category_title,
                                                  safe_unicode(content.subcategory_title))
-        return category_title
+        return html.escape(category_title)
 
 
-class AuthorColumn(column.GetAttrColumn):
+class AuthorColumn(BaseColumn):
     header = _(u'Author')
     weight = 40
 
     def renderCell(self, content):
-        return content.Creator
+        return html.escape(content.Creator)
 
 
-class CreationDateColumn(column.GetAttrColumn):
+class CreationDateColumn(BaseColumn):
     header = _(u'Creation date')
     weight = 50
 
@@ -231,7 +234,7 @@ class CreationDateColumn(column.GetAttrColumn):
         )
 
 
-class LastModificationColumn(column.GetAttrColumn):
+class LastModificationColumn(BaseColumn):
     header = _(u'Last modification')
     weight = 60
 
@@ -244,7 +247,7 @@ class LastModificationColumn(column.GetAttrColumn):
         )
 
 
-class FilesizeColumn(column.GetAttrColumn):
+class FilesizeColumn(BaseColumn):
     header = _(u'Filesize')
     weight = 70
 
@@ -262,8 +265,9 @@ class FilesizeColumn(column.GetAttrColumn):
         return utils.render_filesize(content.filesize)
 
 
-class IconClickableColumn(column.GetAttrColumn):
+class IconClickableColumn(BaseColumn):
     action_view = ''
+    escape = False
 
     def _deactivated_is_useable(self):
         '''Is deactivated value a useable one?'''
@@ -381,9 +385,10 @@ class PublishableColumn(IconClickableColumn):
         )
 
 
-class ActionColumn(column.GetAttrColumn):
+class ActionColumn(BaseColumn):
     header = u''
     weight = 100
+    escape = False
 
     def renderCell(self, content):
         link = u'<a href="{href}"><img src="{src}" title="{title}" /></a>'

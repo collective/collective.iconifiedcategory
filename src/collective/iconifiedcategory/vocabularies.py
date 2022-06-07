@@ -11,6 +11,8 @@ from collective.iconifiedcategory import utils
 from imio.helpers.content import find
 from zope.schema.vocabulary import SimpleVocabulary
 
+import html
+
 
 class CategoryVocabulary(object):
 
@@ -41,7 +43,7 @@ class CategoryVocabulary(object):
                 category_id = category.UID()
             else:
                 category_id = utils.calculate_category_id(category)
-            category_title = category.Title()
+            category_title = html.escape(category.Title())
             if category.only_pdf:
                 category_title = category_title + ' [PDF!]'
             terms.append(SimpleVocabulary.createTerm(
@@ -56,7 +58,7 @@ class CategoryVocabulary(object):
                     subcategory_id = subcategory.UID()
                 else:
                     subcategory_id = utils.calculate_category_id(subcategory)
-                subcategory_title = subcategory.Title()
+                subcategory_title = html.escape(subcategory.Title())
                 if subcategory.only_pdf:
                     subcategory_title = subcategory_title + ' [PDF!]'
                 terms.append(SimpleVocabulary.createTerm(
