@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 
 from collective.iconifiedcategory.utils import calculate_category_id
 from collective.iconifiedcategory.utils import calculate_filesize
