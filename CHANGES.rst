@@ -14,7 +14,7 @@ Changelog
   [gbastien]
 - We need to escape some content to avoid malicious content:
 
-  - Rely on collective.eeafaceted.z3ctable to display the categorized content table, it manages esacaping content;
+  - Rely on collective.eeafaceted.z3ctable to display the categorized content table, it manages escaping content;
   - Escape category title in vocabularies.
 
   [gbastien]
