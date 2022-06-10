@@ -252,6 +252,7 @@ class LastModificationColumn(BaseColumn):
 class FilesizeColumn(BaseColumn):
     header = _(u'Filesize')
     weight = 70
+    escape = False
 
     def renderHeadCell(self):
         """ """
