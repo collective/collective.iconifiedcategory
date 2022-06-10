@@ -12,6 +12,12 @@ Changelog
   [gbastien]
 - Added `safe_utils.py` that will only include safe utils.
   [gbastien]
+- We need to escape some content to avoid malicious content:
+
+  - Rely on collective.eeafaceted.z3ctable to display the categorized content table, it manages escaping content;
+  - Escape category title in vocabularies.
+
+  [gbastien]
 
 0.53 (2022-04-22)
 -----------------
