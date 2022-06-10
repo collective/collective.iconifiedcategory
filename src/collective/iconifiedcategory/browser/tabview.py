@@ -179,6 +179,8 @@ class TitleColumn(BaseColumn):
     header = _(u'Title')
     weight = 20
     attrName = 'title'
+    # we manage escape here manually
+    escape = False
 
     def renderCell(self, content):
         pattern = (
@@ -193,11 +195,11 @@ class TitleColumn(BaseColumn):
             target = '_blank'
         return pattern.format(
             link=url,
-            title=getattr(content, self.attrName).decode('utf-8'),
+            title=html.escape(getattr(content, self.attrName).decode('utf-8')),
             target=target,
             icon=content.icon_url,
-            category=safe_unicode(content.category_title),
-            description=safe_unicode(content.Description),
+            category=html.escape(safe_unicode(content.category_title)),
+            description=html.escape(safe_unicode(content.Description)),
         )
 
 

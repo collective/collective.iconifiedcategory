@@ -22,7 +22,7 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertTrue('File description' in result)
         self.assertTrue('<a href="http://nohost/plone/image" ' in result)
         self.assertTrue('Image description' in result)
-        self.assertTrue('<td>Category 1-1</td>' in result)
+        self.assertTrue('<td class="td_cell_category-column">Category 1-1</td>' in result)
 
         # 'to_print' and 'confidential' related columns are displayed by default
         self.assertTrue('<th>To be printed</th>' in result)
