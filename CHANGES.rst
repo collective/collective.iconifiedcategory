@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.54 (unreleased)
+0.54 (2022-06-14)
 -----------------
 
 - Added `@@categorized-childs-manage` that will render a link to manage
