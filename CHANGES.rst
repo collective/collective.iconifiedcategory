@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.55 (unreleased)
+0.55 (2022-09-29)
 -----------------
 
 - Fixed `utils.get_ordered_categories` and
