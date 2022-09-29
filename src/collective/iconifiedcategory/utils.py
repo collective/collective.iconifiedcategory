@@ -211,8 +211,9 @@ def update_all_categorized_elements(container, limited=False, sort=True):
 
 
 def get_ordered_categories_cachekey(method, context, only_enabled=True):
-    """ """
-    return get_cachekey_volatile("collective.iconifiedcategory.utils.get_ordered_categories")
+    """Makes cache depend on config root."""
+    return repr(get_config_root(context)),
+    get_cachekey_volatile("collective.iconifiedcategory.utils.get_ordered_categories")
 
 
 @ram.cache(get_ordered_categories_cachekey)
@@ -227,8 +228,8 @@ def get_ordered_categories(context, only_enabled=True):
     if only_enabled:
         query['enabled'] = True
     for idx, category in enumerate(categories):
-        elements[category.UID] = idx
-        elements[calculate_category_id(category.getObject())] = idx
+        elements[category.UID()] = idx
+        elements[calculate_category_id(category)] = idx
         subcategories = find(context=category, unrestricted=True, **query)
         for subcategory in subcategories:
             elements[subcategory.UID] = idx

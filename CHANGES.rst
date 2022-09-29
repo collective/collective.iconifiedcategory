@@ -4,8 +4,11 @@ Changelog
 0.55 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed `utils.get_ordered_categories` and
+  `IconifiedCategoryGroupAdapter.get_every_categories` to make sure returned
+  categories are from the correct `config_root` and `cachekey` is invalidated
+  if `config_root` changed.
+  [gbastien]
 
 0.54 (2022-06-14)
 -----------------
