@@ -212,8 +212,8 @@ def update_all_categorized_elements(container, limited=False, sort=True):
 
 def get_ordered_categories_cachekey(method, context, only_enabled=True):
     """Makes cache depend on config root."""
-    return repr(get_config_root(context)),
-    get_cachekey_volatile("collective.iconifiedcategory.utils.get_ordered_categories")
+    return (repr(get_config_root(context)),
+            get_cachekey_volatile("collective.iconifiedcategory.utils.get_ordered_categories"))
 
 
 @ram.cache(get_ordered_categories_cachekey)
