@@ -177,7 +177,7 @@ msgstr "Nombre maximum d'éléments à afficher par colonne lors de l'affichage 
 
 #: ../browser/templates/categorized-childs-infos.pt:95
 msgid "More infos"
-msgstr "Toutes les infos"
+msgstr "Voir tout"
 
 msgid "Must be printed"
 msgstr "Cet élément doit être imprimé"

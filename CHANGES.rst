@@ -4,8 +4,8 @@ Changelog
 0.56 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Adapted french translation for `More infos`.
+  [gbastien]
 
 0.55 (2022-09-29)
 -----------------
