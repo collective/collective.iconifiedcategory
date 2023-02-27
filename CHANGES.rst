@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.56 (unreleased)
+0.56 (2023-02-27)
 -----------------
 
 - Adapted french translation for `More infos`.
