@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.57 (unreleased)
+0.57 (2023-03-30)
 -----------------
 
 - When no request (when using `plone.app.async`), pass `None` instead `{}`
