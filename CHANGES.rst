@@ -4,8 +4,10 @@ Changelog
 0.57 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- When no request (when using `plone.app.async`), pass `None` instead `{}`
+  to `ImageDataModifiedImageScaling` so `plone.namedfile` scaling is happy
+  when using `plone.protect >= 3`.
+  [aduchene]
 
 0.56 (2023-02-27)
 -----------------
