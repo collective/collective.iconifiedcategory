@@ -12,15 +12,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Python 2.7
-        uses: actions/setup-python@v2
+      - name: Set up pyenv and Python
+        uses: "gabrielfalcao/pyenv-action@v14"
         with:
-          python-version: 2.7
+          default: 2.7.18
+          versions: 3.8.16
+          command: pyenv -v
       - name: Set up Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.6'
-      - name: Setup Env
+      - name: Set up Env
         run: |
           sudo apt-get update
           sudo apt-get install -qqy graphicsmagick poppler-utils libreoffice
@@ -46,12 +48,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Python 2.7
-        uses: actions/setup-python@v2
+      - name: Set up pyenv and Python
+        uses: "gabrielfalcao/pyenv-action@v14"
         with:
-          python-version: 2.7
+          default: 2.7.18
+          versions: 3.8.16
+          command: pyenv -v
       - name: Set up Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.6'
       - name: Setup Env
@@ -77,10 +81,6 @@ jobs:
       - name: test coverage
         run: |
           bin/coverage run bin/test -t !robot
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
       - name: Install Coveralls
         run: |
           pip3 install -U pip setuptools --no-cache-dir
