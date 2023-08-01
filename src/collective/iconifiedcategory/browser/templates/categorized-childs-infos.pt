@@ -9,8 +9,10 @@
     <ul tal:define="number_of_columns python: view.number_of_columns(infos[view.category_uid])"
         tal:attributes="class python: 'many_elements_%d_columns' % view.number_of_columns(infos[view.category_uid])">
       <li tal:repeat="element python: infos[view.category_uid]">
-        <tal:block define="element_url python: element['download_url'] and element['download_url'] or element['relative_url']">
+        <tal:block define="element_url python: element['download_url'] and element['download_url'] or element['relative_url'];
+                           show_preview python: view.show_preview(element)">
         <a class="categorized-element-title"
+           tal:condition="not: show_preview"
            tal:attributes="href string:${portal_url}/${element_url}">
           <span>
             <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
@@ -19,10 +21,46 @@
             <span tal:content="element/title"
                   tal:attributes="title element/description"></span>
           </span>
-          <tal:filesize tal:condition="element/warn_filesize">
-            (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
-          </tal:filesize>
         </a>
+
+        <tal:show_preview condition="show_preview">
+        <span class="help"
+              title="The document is currently under conversion, please refresh the page in a few minutes"
+              i18n:attributes="title"
+              tal:condition="python: element['preview_status'] == 'in_progress'">
+          <img src=""
+               width="16px"
+               height="16px"
+               tal:attributes="src string:${portal_url}/spinner_small.gif" />
+        </span>
+        <span class="help"
+              title="The document conversion failed"
+              i18n:attributes="title"
+              tal:condition="python: element['preview_status'] == 'conversion_error'">
+          <img src=""
+               tal:attributes="src string:${portal_url}/error_icon.png" />
+        </span>
+        <a href=""
+           title="Preview"
+           i18n:attributes="title"
+           target="_blank"
+           tal:attributes="href string:${portal_url}/${element/relative_url}/documentviewer#document/p1">
+          <span>
+            <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
+                                               alt element/category_title;
+                                               title element/category_title" />
+            <img src=""
+                 tal:attributes="src string:${portal_url}/file_icon.png" />
+            <span tal:content="element/title"
+                  tal:attributes="title element/description"></span>
+          </span>
+        </a>
+        </tal:show_preview>
+
+        <tal:filesize tal:condition="element/warn_filesize">
+          (<span tal:replace="structure python: view.render_filesize(size=element['filesize'])">File size warning</span>)
+        </tal:filesize>
+
         <div class="categorized_elements_details" tal:condition="python: view.show_details(number_of_columns)">
           <tal:show_to_print_icon condition="python: view.show(element, 'to_be_printed')">
              <span class=""
@@ -56,32 +94,16 @@
                                    title python: view.get_tag_title_for('publishable', element)">
              </span>
           </tal:show_publishable_icon>
+
+          <tal:show_download_icon condition="python: view.show_download(element)">
+            <a tal:attributes="href string:${portal_url}/${element_url}">
+              <img i18n:attributes="title"
+                   title="Download"
+                   tal:attributes="src string:${portal_url}/download_icon.png;" />
+            </a>
+          </tal:show_download_icon>
         </div>
-        <tal:show_preview_link condition="view/show_preview_link">
-        <a href=""
-           title="Preview"
-           i18n:attributes="title"
-           target="_blank"
-           tal:condition="python: element['preview_status'] == 'converted'"
-           tal:attributes="href string:${portal_url}/${element/relative_url}/documentviewer#document/p1">
-          <img src=""
-               tal:attributes="src string:${portal_url}/file_icon.png" />
-        </a>
-        <span class="help"
-              title="The document is currently under conversion, please refresh the page in a few minutes"
-              i18n:attributes="title"
-              tal:condition="python: element['preview_status'] == 'in_progress'">
-          <img src=""
-               tal:attributes="src string:${portal_url}/spinner.gif" />
-        </span>
-        <span class="help"
-              title="The document conversion failed"
-              i18n:attributes="title"
-              tal:condition="python: element['preview_status'] == 'conversion_error'">
-          <img src=""
-               tal:attributes="src string:${portal_url}/error_icon.png" />
-        </span>
-        </tal:show_preview_link>
+
         </tal:block>
       </li>
     </ul>

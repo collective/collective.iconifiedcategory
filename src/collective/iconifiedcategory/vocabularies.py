@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from imio.helpers.content import find
 from zope.schema.vocabulary import SimpleVocabulary
@@ -110,3 +111,14 @@ class EveryCategoryTitleVocabulary(CategoryTitleVocabulary):
         return super(EveryCategoryTitleVocabulary, self).__call__(
             context,
             only_enabled=only_enabled)
+
+
+class ShowPreviewVocabulary(object):
+
+    def __call__(self, context):
+        voc_terms = [
+            SimpleVocabulary.createTerm(0, 0, _('No')),
+            SimpleVocabulary.createTerm(1, 1, _('Yes')),
+            SimpleVocabulary.createTerm(2, 2, _('Yes and hide download icon'))]
+
+        return SimpleVocabulary(voc_terms)

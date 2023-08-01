@@ -4,8 +4,10 @@ Changelog
 0.58 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added new parameter `Category.show_preview` to turn link to element to a
+  `collective.documentviewer` preview instead download.
+  Fixed icon displayed when preview computation in progress.
+  [gbastien]
 
 0.57 (2023-03-30)
 -----------------

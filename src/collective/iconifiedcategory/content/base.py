@@ -72,6 +72,14 @@ class ICategorize(Interface):
         required=False,
     )
 
+    show_preview = schema.Choice(
+        title=_(u'Show preview?'),
+        description=_(u'Show preview description.'),
+        vocabulary='collective.iconifiedcategory.show_preview_vocabulary',
+        default=0,
+        required=False,
+    )
+
     @invariant
     def signedInvariant(data):
         """'signed' may only be True if 'to_sign' is True."""

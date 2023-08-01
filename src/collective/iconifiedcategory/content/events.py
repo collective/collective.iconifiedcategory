@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective.documentviewer.async import queueJob
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
@@ -112,14 +113,16 @@ def categorized_content_updated(event, is_created=False):
     obj = event.object
 
     if hasattr(obj, 'content_category'):
-        target = utils.get_category_object(obj, obj.content_category)
+        category = utils.get_category_object(obj, obj.content_category)
+
+        if category.show_preview in (1, 2):
+            queueJob(obj)
 
         if hasattr(obj, 'to_print'):
             # if current 'to_print' is None, it means that current content
             # could not be printable, but as it changed,
             # in this case we use the default value
             if obj.to_print is None:
-                category = utils.get_category_object(obj, obj.content_category)
                 category_group = category.get_category_group(category)
                 if category_group.to_be_printed_activated:
                     obj.to_print = category.to_print
@@ -140,7 +143,7 @@ def categorized_content_updated(event, is_created=False):
         if obj.REQUEST.get('defer_update_categorized_elements', False):
             return
 
-        utils.update_categorized_elements(obj.aq_parent, obj, target)
+        utils.update_categorized_elements(obj.aq_parent, obj, category)
 
 
 def content_category_updated(event):
