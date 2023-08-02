@@ -2,6 +2,7 @@
 
 from AccessControl import Unauthorized
 from collective import iconifiedcategory as collective_iconifiedcategory
+from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
 from plone import api
@@ -141,6 +142,63 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
                        filters={"id": "image"})
         self.assertEqual(len(self.viewinfos.categorized_elements), 1)
         self.assertEqual(self.viewinfos.categorized_elements[0]['id'], 'image')
+
+    def test_show_preview(self):
+        infos = self.portal.restrictedTraverse('@@categorized-childs-infos')
+        gsettings = GlobalSettings(self.portal)
+        gsettings.auto_convert = False
+        gsettings.auto_layout_file_types = ['pdf']
+        category_group = self.portal.config.get('group-1')
+        category = category_group.get('category-1-1')
+        category_uid = category.UID()
+        file1 = api.content.create(
+            id='file1',
+            type='File',
+            file=self.file_pdf,
+            container=self.portal,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        # show_preview=0, default element was not converted
+        element = self.portal.categorized_elements[file1.UID()]
+        self.assertEqual(element['show_preview'], 0)
+        self.assertEqual(element['preview_status'], 'not_converted')
+        self.assertFalse('/file1/documentviewer#document/p1' in infos(category_uid, {}))
+        self.assertTrue('/file1/@@download' in infos(category_uid, {}))
+        import ipdb; ipdb.set_trace()
+        # show_preview=1, element is converted and download is still possible
+        category.show_preview = 1
+        file2 = api.content.create(
+            id='file2',
+            type='File',
+            file=self.file_pdf,
+            container=self.portal,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        element = self.portal.categorized_elements[file2.UID()]
+        self.assertEqual(element['show_preview'], 1)
+        self.assertEqual(element['preview_status'], 'converted')
+        self.assertTrue('/file2/documentviewer#document/p1' in infos(category_uid, {}))
+        self.assertTrue('/file2/@@download' in infos(category_uid, {}))
+        # show_preview=2, element is converted and download can be protected
+        category.show_preview = 2
+        file3 = api.content.create(
+            id='file3',
+            type='File',
+            file=self.file_pdf,
+            container=self.portal,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        element = self.portal.categorized_elements[file3.UID()]
+        self.assertEqual(element['show_preview'], 2)
+        self.assertEqual(element['preview_status'], 'converted')
+        self.assertTrue('/file3/documentviewer#document/p1' in infos(category_uid, {}))
+        self.assertTrue('/file3/@@download' in infos(category_uid, {}))
 
 
 class TestCanViewAwareDownload(BaseTestCase):
