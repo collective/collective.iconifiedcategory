@@ -4,7 +4,7 @@ Changelog
 0.58 (unreleased)
 -----------------
 
-- Added new parameter `Category.show_preview` to turn link to element to a
+- Added new field `ICategorize.show_preview` to turn link to element to a
   `collective.documentviewer` preview instead download.
   Fixed icon displayed when preview computation in progress.
   [gbastien]
