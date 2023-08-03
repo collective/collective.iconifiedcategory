@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-29 08:46+0000\n"
+"POT-Creation-Date: 2023-08-03 12:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.iconifiedcategory\n"
 
-#: ../content/base.py:79
+#: ../content/base.py:87
 msgid "'Signed' can not be True when 'To sign?' is False!"
 msgstr ""
 
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Activate the \"to_sign and signed\" options"
 msgstr ""
 
-#: ../browser/tabview.py:213
+#: ../browser/tabview.py:221
 msgid "Author"
 msgstr ""
 
@@ -51,11 +51,11 @@ msgid "Categorized elements"
 msgstr ""
 
 #: ../behaviors/iconifiedcategorization.py:34
-#: ../browser/tabview.py:200
+#: ../browser/tabview.py:207
 msgid "Category"
 msgstr ""
 
-#: ../browser/tabview.py:330
+#: ../browser/tabview.py:340
 msgid "Confidential"
 msgstr ""
 
@@ -81,7 +81,7 @@ msgstr ""
 msgid "ContentSubcategory"
 msgstr ""
 
-#: ../browser/tabview.py:221
+#: ../browser/tabview.py:229
 msgid "Creation date"
 msgstr ""
 
@@ -89,11 +89,12 @@ msgstr ""
 msgid "Default title"
 msgstr ""
 
-#: ../browser/tabview.py:398
+#: ../browser/tabview.py:409
+#: ../browser/templates/categorized-childs-infos.pt:100
 msgid "Download"
 msgstr ""
 
-#: ../browser/tabview.py:392
+#: ../browser/tabview.py:403
 msgid "Edit"
 msgstr ""
 
@@ -130,7 +131,7 @@ msgstr ""
 msgid "Error during process"
 msgstr ""
 
-#: ../browser/tabview.py:245
+#: ../browser/tabview.py:253
 msgid "Filesize"
 msgstr ""
 
@@ -158,15 +159,15 @@ msgstr ""
 msgid "If the categorized element is a file, the user will get a warning whenever the filesize is bigger than defined value. <span style=\"color: red\">Take care that if you change this value, you will have to update the categoized elements stored informations.</span> "
 msgstr ""
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "Installs the collective.iconifiedcategory add-on."
 msgstr ""
 
-#: ../configure.zcml:49
+#: ../configure.zcml:47
 msgid "Installs the collective.iconifiedcategory testing profile."
 msgstr ""
 
-#: ../browser/tabview.py:232
+#: ../browser/tabview.py:240
 msgid "Last modification"
 msgstr ""
 
@@ -174,11 +175,15 @@ msgstr ""
 msgid "Maximum number of elements to display by columns when displaying categorized elements of same category in the tooltipster widget"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:95
+#: ../browser/templates/categorized-childs-infos.pt:118
 msgid "More infos"
 msgstr ""
 
 msgid "Must be printed"
+msgstr ""
+
+#: ../vocabularies.py:120
+msgid "No"
 msgstr ""
 
 #: ../browser/actionview.py:83
@@ -189,7 +194,7 @@ msgstr ""
 msgid "Not convertible to a printable format"
 msgstr ""
 
-#: ../browser/templates/categorized-childs.pt:23
+#: ../browser/templates/categorized-childs.pt:27
 msgid "Nothing."
 msgstr ""
 
@@ -205,12 +210,12 @@ msgstr ""
 msgid "Predefined title"
 msgstr ""
 
-#: ../browser/tabview.py:404
-#: ../browser/templates/categorized-childs-infos.pt:60
+#: ../browser/tabview.py:415
+#: ../browser/templates/categorized-childs-infos.pt:43
 msgid "Preview"
 msgstr ""
 
-#: ../browser/tabview.py:367
+#: ../browser/tabview.py:377
 msgid "Publishable"
 msgstr ""
 
@@ -221,7 +226,15 @@ msgstr ""
 msgid "Should not be printed"
 msgstr ""
 
-#: ../browser/tabview.py:345
+#: ../content/base.py:77
+msgid "Show preview description."
+msgstr ""
+
+#: ../content/base.py:76
+msgid "Show preview?"
+msgstr ""
+
+#: ../browser/tabview.py:355
 msgid "Signed"
 msgstr ""
 
@@ -233,23 +246,23 @@ msgstr ""
 msgid "Sort categorized elements on categorized tab alphabetically automatically. Uncheck to sort elements manually"
 msgstr ""
 
-#: ../content/events.py:100
+#: ../content/events.py:102
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:76
+#: ../browser/templates/categorized-childs-infos.pt:36
 msgid "The document conversion failed"
 msgstr ""
 
-#: ../browser/templates/categorized-childs-infos.pt:69
+#: ../browser/templates/categorized-childs-infos.pt:27
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr ""
 
-#: ../content/events.py:177
+#: ../content/events.py:181
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:191
+#: ../content/events.py:195
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
@@ -261,11 +274,11 @@ msgstr ""
 msgid "This will update title and url of elements using categories defined here."
 msgstr ""
 
-#: ../browser/tabview.py:174
+#: ../browser/tabview.py:179
 msgid "Title"
 msgstr ""
 
-#: ../browser/tabview.py:315
+#: ../browser/tabview.py:325
 msgid "To be printed"
 msgstr ""
 
@@ -285,15 +298,23 @@ msgstr ""
 msgid "Update categorized elements"
 msgstr ""
 
-#: ../utils.py:478
+#: ../vocabularies.py:121
+msgid "Yes"
+msgstr ""
+
+#: ../vocabularies.py:122
+msgid "Yes and hide download icon"
+msgstr ""
+
+#: ../utils.py:522
 msgid "You must select a PDF file!"
 msgstr ""
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "collective.iconifiedcategory"
 msgstr ""
 
-#: ../configure.zcml:49
+#: ../configure.zcml:47
 msgid "collective.iconifiedcategory (testing)"
 msgstr ""
 
@@ -302,6 +323,6 @@ msgid "help_warn_filesize"
 msgstr ""
 
 #. Default: "<span class='discreet iconified_category_no_element'>No element to display.</span>"
-#: ../browser/tabview.py:167
+#: ../browser/tabview.py:172
 msgid "no_element_to_display"
 msgstr ""
