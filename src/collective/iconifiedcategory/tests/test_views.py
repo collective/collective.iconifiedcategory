@@ -166,7 +166,6 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.assertEqual(element['preview_status'], 'not_converted')
         self.assertFalse('/file1/documentviewer#document/p1' in infos(category_uid, {}))
         self.assertTrue('/file1/@@download' in infos(category_uid, {}))
-        import ipdb; ipdb.set_trace()
         # show_preview=1, element is converted and download is still possible
         category.show_preview = 1
         file2 = api.content.create(
