@@ -77,7 +77,7 @@ class ICategorize(Interface):
         description=_(u'Show preview description.'),
         vocabulary='collective.iconifiedcategory.show_preview_vocabulary',
         default=0,
-        required=False,
+        required=True,
     )
 
     @invariant
