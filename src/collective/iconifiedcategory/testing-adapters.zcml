@@ -1,18 +1,27 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.iconifiedcategory">
 
   <include package="zope.component" file="meta.zcml" />
+  <include package="Products.Five" file="meta.zcml" />
 
   <adapter
     for="OFS.interfaces.IItem
          zope.publisher.interfaces.browser.IBrowserRequest
          .behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
     provides=".interfaces.IIconifiedContent"
-    factory=".tests.adapters.TestingCategorizedObjectAdapter"
-    />
+    factory=".tests.adapters.TestingCategorizedObjectAdapter" />
+
+  <browser:page
+    for="OFS.interfaces.IItem"
+    name="categorized-childs-infos"
+    permission="zope2.View"
+    class=".tests.views.TestingCategorizedChildInfosView"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    template="browser/templates/categorized-childs-infos.pt" />
 
 </configure>

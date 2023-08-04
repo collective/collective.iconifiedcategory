@@ -237,5 +237,19 @@ class TestCanViewAwareDownload(BaseTestCase):
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@download'))
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@display-file'))
         self.assertRaises(Unauthorized, img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download'))
-        # cleanUp zmcl.load_config because it impact other tests
+        # when using show_preview == 2, download is disabled
+        # ths widget is shown but downloading raises Unauthorized
+        file_obj.confidential = False
+        img_obj.confidential = False
+        self.assertTrue(file_obj.restrictedTraverse('@@download')())
+        self.assertTrue(img_obj.restrictedTraverse('@@download')())
+        self.portal.categorized_elements[file_obj.UID()]['show_preview'] = 2
+        self.portal.categorized_elements[img_obj.UID()]['show_preview'] = 2
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@display-file'))
+        self.assertTrue(file_obj.unrestrictedTraverse('view/++widget++form.widgets.file/@@download')())
+        self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@download'))
+        self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@display-file'))
+        self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
+        # cleanUp zmcl.load_config because it impacts other tests
         zcml.cleanUp()

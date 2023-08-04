@@ -64,6 +64,8 @@ class CategoryVocabulary(object):
                 subcategory_title = html.escape(subcategory.Title())
                 if subcategory.only_pdf:
                     subcategory_title = subcategory_title + ' [PDF!]'
+                if subcategory.show_preview != 0:
+                    subcategory_title = subcategory_title + ' [Preview!]'
                 terms.append(SimpleVocabulary.createTerm(
                     subcategory_id,
                     subcategory_id,

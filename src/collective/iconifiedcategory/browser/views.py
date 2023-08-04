@@ -226,9 +226,10 @@ class CanViewAwareDownload(Download):
             # when using preview, check if downloadable
             parent = self.context.aq_parent
             element = parent.categorized_elements[self.context.UID()]
-            infos = parent.unrestrictedTraverse('@@categorized-childs-infos')
-            if not infos.show_download(element):
-                raise Unauthorized
+            if element['show_preview'] != 0:
+                infos = parent.unrestrictedTraverse('@@categorized-childs-infos')
+                if not infos.show_download(element):
+                    raise Unauthorized
         # access is managed by can_view
         with api.env.adopt_roles(['Manager']):
             return super(CanViewAwareDownload, self).__call__()
