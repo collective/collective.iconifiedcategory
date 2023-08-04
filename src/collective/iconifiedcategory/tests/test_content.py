@@ -28,6 +28,6 @@ class TestContent(BaseTestCase):
         subcategory = category.get('subcategory-1-1-1')
 
         # just call the view for every contents
-        self.assertTrue(category_group.restrictedTraverse('@@view'))
-        self.assertTrue(category.restrictedTraverse('@@view'))
-        self.assertTrue(subcategory.restrictedTraverse('@@view'))
+        self.assertTrue(category_group.restrictedTraverse('@@view')())
+        self.assertTrue(category.restrictedTraverse('@@view')())
+        self.assertTrue(subcategory.restrictedTraverse('@@view')())
