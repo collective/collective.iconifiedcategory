@@ -27,6 +27,15 @@ import unittest
 class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
     layer = testing.COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING
 
+    def test_content_category_edit_form(self):
+        """ """
+        # displayed on the edit form
+        edit = self.portal.file_txt.restrictedTraverse('@@edit')
+        edit.update()
+        rendered_edit = edit()
+        self.assertTrue('IIconifiedCategorization.content_category' in rendered_edit)
+        self.assertTrue('IIconifiedCategorization.default_titles' in rendered_edit)
+
     def test_content_category_not_set_if_not_activated(self):
         """ """
         category_group = self.portal.config['group-1']

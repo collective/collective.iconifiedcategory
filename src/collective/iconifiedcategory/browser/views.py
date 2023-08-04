@@ -107,9 +107,10 @@ class CategorizedChildInfosView(BrowserView):
            in the tooltispter popup."""
         return bool(number_of_columns < 3)
 
-    def show_preview_link(self):
+    def show_preview(self, element):
         """Made to be overrided."""
-        return True
+        return element["show_preview"] and \
+            element["preview_status"] in ('in_progress', 'converted')
 
     @property
     def categories_uids(self):
@@ -154,6 +155,16 @@ class CategorizedChildInfosView(BrowserView):
         """ """
         show = element['{0}_activated'.format(attr_prefix)] and self._show_detail(attr_prefix)
         return show
+
+    def show_download(self, element):
+        """ """
+        return not element["show_preview"] == 2 or \
+            (element["show_preview"] == 2 and self._show_protected_download(element))
+
+    def _show_protected_download(self, element):
+        """When "show_preview" is "2", trigger advanced check.
+           Made to be overrided."""
+        return True
 
     def _show_detail(self, detail_type):
         """Made to be overrided."""
@@ -211,6 +222,14 @@ class CanViewAwareDownload(Download):
     def __call__(self):
         if not check_can_view(self.context, self.request):
             raise Unauthorized
+        else:
+            # when using preview, check if downloadable
+            parent = self.context.aq_parent
+            element = parent.categorized_elements[self.context.UID()]
+            if element['show_preview'] != 0:
+                infos = parent.unrestrictedTraverse('@@categorized-childs-infos')
+                if not infos.show_download(element):
+                    raise Unauthorized
         # access is managed by can_view
         with api.env.adopt_roles(['Manager']):
             return super(CanViewAwareDownload, self).__call__()

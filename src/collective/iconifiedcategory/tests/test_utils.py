@@ -339,6 +339,7 @@ class TestUtils(BaseTestCase):
               'publishable': False,
               'publishable_activated': False,
               'relative_url': 'doc-subcategory-move',
+              'show_preview': 0,
               'signed': False,
               'signed_activated': False,
               'subcategory_id': None,

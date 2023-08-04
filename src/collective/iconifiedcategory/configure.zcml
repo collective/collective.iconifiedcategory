@@ -29,15 +29,14 @@
       title="collective.iconifiedcategory"
       directory="profiles/default"
       description="Installs the collective.iconifiedcategory add-on."
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
 
   <genericsetup:importStep
       name="collective.iconifiedcategory:default-postInstall"
       title="collective.iconifiedcategory post_install import step"
       description="Post install import step from collective.iconifiedcategory"
       handler=".setuphandlers.post_install">
-      <depends name="types"/>
+      <depends name="types" />
   </genericsetup:importStep>
 
   <genericsetup:registerProfile
@@ -45,8 +44,7 @@
       title="collective.iconifiedcategory (testing)"
       directory="profiles/testing"
       description="Installs the collective.iconifiedcategory testing profile."
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
 
   <genericsetup:importStep
       name="collective.iconifiedcategory:testing-postInstall"
@@ -58,36 +56,35 @@
   <utility
     provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.categories"
-    factory=".vocabularies.CategoryVocabulary"
-    />
+    factory=".vocabularies.CategoryVocabulary" />
 
   <utility
     provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.every_categories"
-    factory=".vocabularies.EveryCategoryVocabulary"
-    />
+    factory=".vocabularies.EveryCategoryVocabulary" />
 
   <utility
     provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.category_titles"
-    factory=".vocabularies.CategoryTitleVocabulary"
-    />
+    factory=".vocabularies.CategoryTitleVocabulary" />
 
   <utility
     provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.every_category_titles"
-    factory=".vocabularies.EveryCategoryTitleVocabulary"
-    />
+    factory=".vocabularies.EveryCategoryTitleVocabulary" />
+
+  <utility
+    provides="zope.schema.interfaces.IVocabularyFactory"
+    name="collective.iconifiedcategory.show_preview_vocabulary"
+    factory=".vocabularies.ShowPreviewVocabulary" />
 
   <!-- indexes -->
   <adapter
     name="enabled"
-    factory=".indexes.enabled"
-    />
+    factory=".indexes.enabled" />
 
   <adapter
     name="content_category_uid"
-    factory=".indexes.content_category_uid"
-    />
+    factory=".indexes.content_category_uid" />
 
 </configure>

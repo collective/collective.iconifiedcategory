@@ -152,3 +152,29 @@ def upgrade_to_2103(context):
         parent.categorized_elements[obj.UID()]['last_updated'] = modified.asdatetime()
         parent._p_changed = True
     pghandler.finish()
+
+
+def upgrade_to_2104(context):
+    '''Add info "show_preview" to categorized_elements.'''
+    catalog = api.portal.get_tool('portal_catalog')
+
+    brains = catalog(
+        object_provides='collective.iconifiedcategory.'
+        'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
+    i = 0
+    pghandler = ZLogHandler(steps=1000)
+    pghandler.info('Initilizing "show_preview" to False for every categorized elements...')
+    pghandler.init('InitShowPreviewForCategorizedElements', len(brains))
+
+    for brain in brains:
+        i += 1
+        pghandler.report(i)
+        obj = brain.getObject()
+        parent = obj.aq_inner.aq_parent
+        obj_uid = obj.UID()
+        if 'show_preview' in parent.categorized_elements[obj_uid]:
+            # already upgraded
+            continue
+        parent.categorized_elements[obj_uid]['show_preview'] = 0
+        parent._p_changed = True
+    pghandler.finish()

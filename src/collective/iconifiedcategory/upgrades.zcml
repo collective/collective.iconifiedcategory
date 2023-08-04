@@ -37,4 +37,12 @@
         handler="collective.iconifiedcategory.upgrades.upgrade_to_2103"
         profile="collective.iconifiedcategory:default" />
 
+    <genericsetup:upgradeStep
+        title="Add 'show_preview' to categorized_elements"
+        description=""
+        source="2103"
+        destination="2104"
+        handler="collective.iconifiedcategory.upgrades.upgrade_to_2104"
+        profile="collective.iconifiedcategory:default" />
+
 </configure>

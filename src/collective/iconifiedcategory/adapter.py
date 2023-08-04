@@ -53,6 +53,7 @@ class CategorizedObjectInfoAdapter(object):
             'to_sign': self._to_sign,
             'signed': self._signed,
             'publishable': self._publishable,
+            'show_preview': self._show_preview(category),
         }
         # update subcategory infos if any
         if ISubcategory.providedBy(category):
@@ -149,6 +150,9 @@ class CategorizedObjectInfoAdapter(object):
     def _publishable(self):
         return getattr(self.obj, 'publishable', False)
 
+    def _show_preview(self, category):
+        return category.show_preview
+
     @property
     def _preview_status(self):
         return IIconifiedPreview(self.obj).status
@@ -221,7 +225,7 @@ class CategorizedObjectPreviewAdapter(object):
         # under conversion?
         ann = IAnnotations(self.context)['collective.documentviewer']
         if 'successfully_converted' not in ann:
-            if 'filehash' in ann:
+            if 'filehash' in ann or ann.get('converting', False) is True:
                 return 'in_progress'
             return 'not_converted'
 
