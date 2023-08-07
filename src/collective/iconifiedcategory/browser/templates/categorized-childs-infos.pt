@@ -15,9 +15,11 @@
            tal:condition="not: show_preview"
            tal:attributes="href string:${portal_url}/${element_url}">
           <span>
-            <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
-                                               alt element/category_title;
-                                               title element/category_title" />
+            <img width="16px"
+                 height="16px"
+                 tal:attributes="src string:${portal_url}/${element/icon_url};
+                                 alt element/category_title;
+                                 title element/category_title" />
             <span tal:content="element/title"
                   tal:attributes="title element/description"></span>
           </span>
@@ -28,8 +30,7 @@
               title="The document is currently under conversion, please refresh the page in a few minutes"
               i18n:attributes="title"
               tal:condition="python: element['preview_status'] == 'in_progress'">
-          <img src=""
-               width="16px"
+          <img width="16px"
                height="16px"
                tal:attributes="src string:${portal_url}/spinner_small.gif" />
         </span>
@@ -37,18 +38,18 @@
               title="The document conversion failed"
               i18n:attributes="title"
               tal:condition="python: element['preview_status'] == 'conversion_error'">
-          <img src=""
-               tal:attributes="src string:${portal_url}/error_icon.png" />
+          <img tal:attributes="src string:${portal_url}/error_icon.png" />
         </span>
-        <a href=""
-           title="Preview"
+        <a title="Preview"
            i18n:attributes="title"
            target="_blank"
            tal:attributes="href string:${portal_url}/${element/relative_url}/documentviewer#document/p1">
           <span>
-            <img src="" alt="" tal:attributes="src string:${portal_url}/${element/icon_url};
-                                               alt element/category_title;
-                                               title element/category_title" />
+            <img width="16px"
+                 height="16px"
+                 tal:attributes="src string:${portal_url}/${element/icon_url};
+                                 alt element/category_title;
+                                 title element/category_title" />
             <img src=""
                  tal:attributes="src string:${portal_url}/file_icon.png" />
             <span tal:content="element/title"

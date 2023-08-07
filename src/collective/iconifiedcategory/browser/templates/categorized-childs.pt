@@ -14,8 +14,8 @@
                        data-base_url string:${context_url};
                        data-filters:json string:${filters_json};">
       <span tal:content="string:${element/counts}"></span>
-      <img src=""
-           alt=""
+      <img width="16px"
+           height="16px"
            tal:attributes="src string:${view/portal_url}/${element/icon};
                            alt string:${element/title};
                            title string:${element/title}" />

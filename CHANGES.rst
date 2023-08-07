@@ -8,6 +8,9 @@ Changelog
   `collective.documentviewer` preview instead download.
   Fixed icon displayed when preview computation in progress.
   [gbastien]
+- Force icon `width/height` to `16px` in `tooltipster`
+  (`categorized-childs.pt` and `categorized-childs-infos.pt`).
+  [gbastien]
 
 0.57 (2023-03-30)
 -----------------
