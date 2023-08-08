@@ -48,8 +48,8 @@ class TestCategorizedChildView(BaseTestCase):
         # the category and elements of category is displayed
         result = self.view()
         self.assertTrue(
-            u'<img src="http://nohost/plone/config/group-1/category-1-1/@@images/{0}"'.format(scale)
-            in result)
+            u'<img width="16px" height="16px" src="{0}/@@images/{1}"'.format(
+                category.absolute_url(), scale) in result)
 
         # remove the categorized elements
         api.content.delete(self.portal['file_txt'])
