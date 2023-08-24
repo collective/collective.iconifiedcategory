@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.58 (unreleased)
+0.58 (2023-08-24)
 -----------------
 
 - Added new field `ICategorize.show_preview` to turn link to element to a
