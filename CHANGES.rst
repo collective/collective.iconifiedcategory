@@ -4,8 +4,8 @@ Changelog
 0.59 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Display the document conversion spinner in any relevant case.
+  [gbastien]
 
 0.58 (2023-08-24)
 -----------------
