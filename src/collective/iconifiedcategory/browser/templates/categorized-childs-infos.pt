@@ -11,6 +11,22 @@
       <li tal:repeat="element python: infos[view.category_uid]">
         <tal:block define="element_url python: element['download_url'] and element['download_url'] or element['relative_url'];
                            show_preview python: view.show_preview(element)">
+
+        <span class="help"
+              title="The document is currently under conversion, please refresh the page in a few minutes"
+              i18n:attributes="title"
+              tal:condition="python: element['preview_status'] == 'in_progress'">
+          <img width="16px"
+               height="16px"
+               tal:attributes="src string:${portal_url}/spinner_small.gif" />
+        </span>
+        <span class="help"
+              title="The document conversion failed"
+              i18n:attributes="title"
+              tal:condition="python: element['preview_status'] == 'conversion_error'">
+          <img tal:attributes="src string:${portal_url}/error_icon.png" />
+        </span>
+
         <a class="categorized-element-title"
            tal:condition="not: show_preview"
            tal:attributes="href string:${portal_url}/${element_url}">
@@ -26,20 +42,6 @@
         </a>
 
         <tal:show_preview condition="show_preview">
-        <span class="help"
-              title="The document is currently under conversion, please refresh the page in a few minutes"
-              i18n:attributes="title"
-              tal:condition="python: element['preview_status'] == 'in_progress'">
-          <img width="16px"
-               height="16px"
-               tal:attributes="src string:${portal_url}/spinner_small.gif" />
-        </span>
-        <span class="help"
-              title="The document conversion failed"
-              i18n:attributes="title"
-              tal:condition="python: element['preview_status'] == 'conversion_error'">
-          <img tal:attributes="src string:${portal_url}/error_icon.png" />
-        </span>
         <a title="Preview"
            i18n:attributes="title"
            target="_blank"
