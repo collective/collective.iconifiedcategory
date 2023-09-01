@@ -178,3 +178,30 @@ def upgrade_to_2104(context):
         parent.categorized_elements[obj_uid]['show_preview'] = 0
         parent._p_changed = True
     pghandler.finish()
+
+
+def upgrade_to_2105(context):
+    '''Add info "contentType" to categorized_elements.'''
+    catalog = api.portal.get_tool('portal_catalog')
+
+    brains = catalog(
+        object_provides='collective.iconifiedcategory.'
+        'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
+    i = 0
+    pghandler = ZLogHandler(steps=1000)
+    pghandler.info('Initilizing "contentType" for every categorized elements...')
+    pghandler.init('InitFileContentTypeForCategorizedElements', len(brains))
+
+    for brain in brains:
+        i += 1
+        pghandler.report(i)
+        obj = brain.getObject()
+        parent = obj.aq_inner.aq_parent
+        obj_uid = obj.UID()
+        if 'contentType' in parent.categorized_elements[obj_uid]:
+            # already upgraded
+            continue
+        adapter = getAdapter(obj, IIconifiedInfos)
+        parent.categorized_elements[obj_uid]['contentType'] = adapter._file_contentType
+        parent._p_changed = True
+    pghandler.finish()

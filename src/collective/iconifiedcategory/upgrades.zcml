@@ -45,4 +45,12 @@
         handler="collective.iconifiedcategory.upgrades.upgrade_to_2104"
         profile="collective.iconifiedcategory:default" />
 
+    <genericsetup:upgradeStep
+        title="Add 'contentType' to categorized_elements"
+        description=""
+        source="2104"
+        destination="2105"
+        handler="collective.iconifiedcategory.upgrades.upgrade_to_2105"
+        profile="collective.iconifiedcategory:default" />
+
 </configure>

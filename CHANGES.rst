@@ -6,6 +6,8 @@ Changelog
 
 - Display the document conversion spinner in any relevant case.
   [gbastien]
+- Added `contentType` value to the `categorized_elements` data.
+  [gbastien]
 
 0.58 (2023-08-24)
 -----------------

@@ -77,6 +77,7 @@ class CategorizedObjectInfoAdapter(object):
             'portal_type': self.obj.portal_type,
             'filesize': filesize,
             'warn_filesize': utils.warn_filesize(filesize),
+            'contentType': self._file_contentType,
             'preview_status': self._preview_status,
             'allowedRolesAndUsers': self._allowedRolesAndUsers,
         }
@@ -107,6 +108,12 @@ class CategorizedObjectInfoAdapter(object):
             return self.obj.file.size
         if IImage.providedBy(self.obj):
             return self.obj.image.size
+
+    @property
+    def _file_contentType(self):
+        """Return the contentType if it is a File or an Image"""
+        if IFile.providedBy(self.obj) or IImage.providedBy(self.obj):
+            return self.obj.file.contentType
 
     @property
     def _last_updated(self):
