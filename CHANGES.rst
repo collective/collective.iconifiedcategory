@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.59 (unreleased)
+0.59 (2023-09-04)
 -----------------
 
 - Display the document conversion spinner in any relevant case.
