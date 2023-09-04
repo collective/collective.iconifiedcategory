@@ -328,6 +328,7 @@ class TestUtils(BaseTestCase):
               'category_uid': category.UID(),
               'confidential': False,
               'confidentiality_activated': False,
+              'contentType': None,
               'description': 'Document description',
               'download_url': None,
               'filesize': None,

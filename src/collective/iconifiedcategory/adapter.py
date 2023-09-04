@@ -94,10 +94,7 @@ class CategorizedObjectInfoAdapter(object):
         """Return the download url (None by default) for the current object"""
         url = u'{url}/@@download'
         portal_url = api.portal.get_tool('portal_url')
-        if IFile.providedBy(self.obj):
-            return url.format(
-                url=portal_url.getRelativeUrl(self.context))
-        if IImage.providedBy(self.obj):
+        if IFile.providedBy(self.obj) or IImage.providedBy(self.obj):
             return url.format(
                 url=portal_url.getRelativeUrl(self.context))
 
@@ -112,8 +109,10 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _file_contentType(self):
         """Return the contentType if it is a File or an Image"""
-        if IFile.providedBy(self.obj) or IImage.providedBy(self.obj):
+        if IFile.providedBy(self.obj):
             return self.obj.file.contentType
+        if IImage.providedBy(self.obj):
+            return self.obj.image.contentType
 
     @property
     def _last_updated(self):
