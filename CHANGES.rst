@@ -4,8 +4,8 @@ Changelog
 0.60 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed version (2105) in `metadata.xml`.
+  [gbastien]
 
 0.59 (2023-09-04)
 -----------------
