@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.60 (unreleased)
+0.60 (2023-09-21)
 -----------------
 
 - Fixed version (2105) in `metadata.xml`.
