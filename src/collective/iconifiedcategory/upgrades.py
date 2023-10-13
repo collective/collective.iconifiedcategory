@@ -163,7 +163,7 @@ def upgrade_to_2104(context):
         'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
     i = 0
     pghandler = ZLogHandler(steps=1000)
-    pghandler.info('Initilizing "show_preview" to False for every categorized elements...')
+    pghandler.info('Initializing "show_preview" to False for every categorized elements...')
     pghandler.init('InitShowPreviewForCategorizedElements', len(brains))
 
     for brain in brains:
@@ -189,7 +189,7 @@ def upgrade_to_2105(context):
         'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
     i = 0
     pghandler = ZLogHandler(steps=1000)
-    pghandler.info('Initilizing "contentType" for every categorized elements...')
+    pghandler.info('Initializing "contentType" for every categorized elements...')
     pghandler.init('InitFileContentTypeForCategorizedElements', len(brains))
 
     for brain in brains:
