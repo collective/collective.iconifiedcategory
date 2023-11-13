@@ -4,8 +4,8 @@ Changelog
 0.61 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Simplified `CategorizedChildView.has_elements_to_show`.
+  [gbastien]
 
 0.60 (2023-09-21)
 -----------------
