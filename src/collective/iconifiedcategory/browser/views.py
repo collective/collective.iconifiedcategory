@@ -57,7 +57,7 @@ class CategorizedChildView(BrowserView):
         return super(CategorizedChildView, self).__call__()
 
     def has_elements_to_show(self):
-        return len(self.context.categorized_elements)
+        return len(self.categorized_elements)
 
     def categories_infos(self):
         infos = [(e['category_uid'], {'id': e['category_id'],
