@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.61 (unreleased)
+0.61 (2023-11-27)
 -----------------
 
 - Simplified `CategorizedChildView.has_elements_to_show`.
