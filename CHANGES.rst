@@ -4,8 +4,8 @@ Changelog
 0.62 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed `CategorizedObjectPreviewAdapter.status` when an existing element is updated.
+  [gbastien]
 
 0.61 (2023-11-27)
 -----------------

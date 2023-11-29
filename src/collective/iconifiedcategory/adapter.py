@@ -238,6 +238,10 @@ class CategorizedObjectPreviewAdapter(object):
         if not ann['successfully_converted'] is True:
             return 'conversion_error'
 
+        # when converting again (file was updated), ann['successfully_converted']
+        # is True but we have 'converting': True
+        if ann['successfully_converted'] is True and ann.get('converting', False) is True:
+            return 'in_progress'
         return 'converted'
 
     @property
