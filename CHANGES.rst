@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.62 (unreleased)
+0.62 (2023-12-11)
 -----------------
 
 - Fixed `CategorizedObjectPreviewAdapter.status` when an existing element is updated.
