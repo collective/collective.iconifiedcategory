@@ -9,6 +9,7 @@ Created by mpeeters
 
 from collective.eeafaceted.z3ctable.browser.views import ExtendedCSSTable
 from collective.eeafaceted.z3ctable.columns import BaseColumn
+from collective.eeafaceted.z3ctable.columns import MemberIdColumn
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
@@ -217,12 +218,9 @@ class CategoryColumn(BaseColumn):
         return html.escape(category_title)
 
 
-class AuthorColumn(BaseColumn):
+class AuthorColumn(MemberIdColumn):
     header = _(u'Author')
     weight = 40
-
-    def renderCell(self, content):
-        return html.escape(content.Creator)
 
 
 class CreationDateColumn(BaseColumn):
