@@ -2,6 +2,7 @@
 """Module where all interfaces, events and exceptions live."""
 
 from collective.iconifiedcategory import _
+from collective.iconifiedcategory import DEFAULT_FILESIZE_LIMIT
 from plone.namedfile.interfaces import IImageScaleTraversable
 from zope import schema
 from zope.component.interfaces import IObjectEvent
@@ -98,7 +99,7 @@ class IIconifiedCategorySettings(Interface):
                       u'defined value. <span style="color: red">Take care that '
                       u'if you change this value, you will have to update the '
                       u'categoized elements stored informations.</span> '),
-        default=5000000,
+        default=DEFAULT_FILESIZE_LIMIT,
     )
 
 

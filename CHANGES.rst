@@ -4,8 +4,8 @@ Changelog
 0.63 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added `get_` and `set_` methods for settings registry records in `config.py`.
+  [gbastien]
 
 0.62 (2023-12-11)
 -----------------

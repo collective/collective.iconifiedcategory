@@ -12,12 +12,12 @@ from collective.eeafaceted.z3ctable.columns import BaseColumn
 from collective.eeafaceted.z3ctable.columns import MemberIdColumn
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.config import get_sort_categorized_tab
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
 from collective.iconifiedcategory.interfaces import ICategorizedPublishable
 from collective.iconifiedcategory.interfaces import ICategorizedSigned
 from collective.iconifiedcategory.interfaces import ICategorizedTable
-from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import _checkPermission
@@ -149,13 +149,9 @@ class CategorizedTable(ExtendedCSSTable, BrowserView):
     @property
     def values(self):
         if not getattr(self, '_v_stored_values', []):
-            sort_on = 'getObjPositionInParent'
-            sort_categorized_tab = api.portal.get_registry_record(
-                'sort_categorized_tab',
-                interface=IIconifiedCategorySettings,
-            )
-            if sort_categorized_tab is True:
-                sort_on = None
+            sort_on = None
+            if get_sort_categorized_tab() is False:
+                sort_on = 'getObjPositionInParent'
             data = [
                 CategorizedContent(self.context, content) for content in
                 utils.get_categorized_elements(

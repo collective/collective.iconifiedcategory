@@ -8,6 +8,7 @@ Created by mpeeters
 """
 
 from collections import OrderedDict
+from collective.iconifiedcategory import DEFAULT_FILESIZE_LIMIT
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.tests.base import BaseTestCase
@@ -251,7 +252,7 @@ class TestUtils(BaseTestCase):
                 'filesizelimit',
                 interface=IIconifiedCategorySettings,
             ),
-            5000000)
+            DEFAULT_FILESIZE_LIMIT)
         file1 = api.content.create(
             id='file1',
             type='File',
@@ -291,9 +292,9 @@ class TestUtils(BaseTestCase):
         # soft warning if filesize no more in B/KB
         self.assertEqual(utils.render_filesize(2500000),
                          u"<span class='soft_warn_filesize'>2.4 MB</span>")
-        self.assertEqual(utils.render_filesize(5000000),
+        self.assertEqual(utils.render_filesize(DEFAULT_FILESIZE_LIMIT),
                          u"<span class='soft_warn_filesize'>4.8 MB</span>")
-        # warning if filesize > 5000000
+        # warning if filesize > DEFAULT_FILESIZE_LIMIT (5000000)
         self.assertEqual(utils.render_filesize(5000001),
                          u"<span class='warn_filesize' title='Annex size is huge, "
                          "it could be difficult to be downloaded!'>4.8 MB</span>")
