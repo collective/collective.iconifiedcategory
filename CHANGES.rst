@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.63 (unreleased)
+0.63 (2024-01-02)
 -----------------
 
 - Added `get_` and `set_` methods for settings registry records in `config.py`.
