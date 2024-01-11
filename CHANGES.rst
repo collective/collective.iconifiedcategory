@@ -4,8 +4,8 @@ Changelog
 0.64 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added `IExcludeFromNavigation` behavior on `ContentCategoryConfiguration` type.
+  [sgeulette]
 
 0.63 (2024-01-02)
 -----------------
