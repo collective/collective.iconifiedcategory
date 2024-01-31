@@ -210,3 +210,8 @@ def upgrade_to_2105(context):
 
 def upgrade_to_2106(context):
     load_type_from_package('ContentCategoryConfiguration', 'profile-collective.iconifiedcategory:default')
+    setup = api.portal.get_tool('portal_setup')
+    ir = setup.getImportStepRegistry()
+    if 'collective.iconifiedcategory:default-postInstall' in ir._registered:
+        del ir._registered['collective.iconifiedcategory:default-postInstall']
+        setup._p_changed = True
