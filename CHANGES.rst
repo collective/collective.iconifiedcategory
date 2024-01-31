@@ -6,6 +6,8 @@ Changelog
 
 - Added `IExcludeFromNavigation` behavior on `ContentCategoryConfiguration` type.
   [sgeulette]
+- Corrected bad step dependency
+  [sgeulette]
 
 0.63 (2024-01-02)
 -----------------

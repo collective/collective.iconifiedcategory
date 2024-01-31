@@ -36,7 +36,7 @@
       title="collective.iconifiedcategory post_install import step"
       description="Post install import step from collective.iconifiedcategory"
       handler=".setuphandlers.post_install">
-      <depends name="types" />
+      <depends name="typeinfo" />
   </genericsetup:importStep>
 
   <genericsetup:registerProfile
