@@ -53,4 +53,12 @@
         handler="collective.iconifiedcategory.upgrades.upgrade_to_2105"
         profile="collective.iconifiedcategory:default" />
 
+    <genericsetup:upgradeStep
+        title="Updated ContentCategoryConfiguration type"
+        description=""
+        source="2105"
+        destination="2106"
+        handler="collective.iconifiedcategory.upgrades.upgrade_to_2106"
+        profile="collective.iconifiedcategory:default" />
+
 </configure>

@@ -2,6 +2,7 @@
 from collective.iconifiedcategory import logger
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 from collective.iconifiedcategory.utils import update_all_categorized_elements
+from imio.helpers.setup import load_type_from_package
 from plone import api
 from plone.dexterity.fti import DexterityFTI
 from Products.CMFPlone.utils import base_hasattr
@@ -205,3 +206,7 @@ def upgrade_to_2105(context):
         parent.categorized_elements[obj_uid]['contentType'] = adapter._file_contentType
         parent._p_changed = True
     pghandler.finish()
+
+
+def upgrade_to_2106(context):
+    load_type_from_package('ContentCategoryConfiguration', 'profile-collective.iconifiedcategory:default')

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>2105</version>
+  <version>2106</version>
   <dependencies>
     <dependency>profile-collective.documentviewer:default</dependency>
     <dependency>profile-collective.fontawesome:default</dependency>
