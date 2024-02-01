@@ -3,6 +3,7 @@ from collective.iconifiedcategory import logger
 from collective.iconifiedcategory.interfaces import IIconifiedInfos
 from collective.iconifiedcategory.utils import update_all_categorized_elements
 from imio.helpers.setup import load_type_from_package
+from imio.helpers.setup import remove_gs_step
 from plone import api
 from plone.dexterity.fti import DexterityFTI
 from Products.CMFPlone.utils import base_hasattr
@@ -210,8 +211,4 @@ def upgrade_to_2105(context):
 
 def upgrade_to_2106(context):
     load_type_from_package('ContentCategoryConfiguration', 'profile-collective.iconifiedcategory:default')
-    setup = api.portal.get_tool('portal_setup')
-    ir = setup.getImportStepRegistry()
-    if 'collective.iconifiedcategory:default-postInstall' in ir._registered:
-        del ir._registered['collective.iconifiedcategory:default-postInstall']
-        setup._p_changed = True
+    remove_gs_step('collective.iconifiedcategory:default-postInstall')
