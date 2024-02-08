@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.64 (unreleased)
+0.64 (2024-02-08)
 -----------------
 
 - Added `IExcludeFromNavigation` behavior on `ContentCategoryConfiguration` type.
