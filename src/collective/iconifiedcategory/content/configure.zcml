@@ -51,14 +51,14 @@
 
   <subscriber
     for="plone.dexterity.interfaces.IDexterityContent
-         OFS.interfaces.IObjectClonedEvent"
-    handler=".events.categorized_content_container_cloned"
+         zope.lifecycleevent.interfaces.IObjectMovedEvent"
+    handler=".events.categorized_content_container_moved"
     />
 
   <subscriber
     for="Products.Archetypes.interfaces.base.IBaseObject
-         OFS.interfaces.IObjectClonedEvent"
-    handler=".events.categorized_content_container_cloned"
+         zope.lifecycleevent.interfaces.IObjectMovedEvent"
+    handler=".events.categorized_content_container_moved"
     />
 
   <subscriber

@@ -63,7 +63,7 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertTrue(img_obj_UID in self.portal.categorized_elements)
         self.assertTrue(new_file_UID in self.portal.categorized_elements)
 
-    def test_categorized_elements_correct_after_copy_paste_categorized_content_container(self):
+    def test_categorized_elements_correct_after_moving_categorized_content_container(self):
         container = api.content.create(
             id='folder',
             type='Folder',
@@ -92,12 +92,17 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertEquals(len(container.categorized_elements), 2)
         self.assertTrue(file_obj1_UID in container.categorized_elements)
         self.assertTrue(file_obj2_UID in container.categorized_elements)
+        # check original categorized_elements
+        self.assertListEqual([dic['relative_url'] for dic in container.categorized_elements.values()],
+                             ['folder/file1', 'folder/file2'])
 
         # copy/paste the container
         copied_data = self.portal.manage_copyObjects(ids=[container.getId()])
         infos = self.portal.manage_pasteObjects(copied_data)
         new_container = self.portal[infos[0]['new_id']]
         self.assertEquals(len(new_container.categorized_elements), 2)
+        self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
+                             ['copy_of_folder/file1', 'copy_of_folder/file2'])
         # old no more referenced
         self.assertTrue(file_obj1_UID not in new_container.categorized_elements)
         self.assertTrue(file_obj2_UID not in new_container.categorized_elements)
@@ -106,6 +111,23 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         copied_file2 = new_container['file2']
         self.assertTrue(copied_file1.UID() in new_container.categorized_elements)
         self.assertTrue(copied_file2.UID() in new_container.categorized_elements)
+        # rename the container
+        api.content.rename(obj=new_container, new_id='new_folder')
+        self.assertEquals(len(new_container.categorized_elements), 2)
+        self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
+                             ['new_folder/file1', 'new_folder/file2'])
+        # cut/paste the container
+        copied_data = self.portal.manage_cutObjects(ids=[new_container.getId()])
+        infos = container.manage_pasteObjects(copied_data)
+        new_container = container[infos[0]['new_id']]
+        self.assertEquals(len(container.categorized_elements), 2)
+        self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
+                             ['folder/new_folder/file1', 'folder/new_folder/file2'])
+        # rename the top level container, check the deepest
+        api.content.rename(obj=container, new_id='top_folder')
+        self.assertEquals(len(new_container.categorized_elements), 2)
+        self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
+                             ['top_folder/new_folder/file1', 'top_folder/new_folder/file2'])
 
     def test_defer_categorized_content_created_event(self):
         """Test that when defering management of the entire

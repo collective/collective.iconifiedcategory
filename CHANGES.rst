@@ -4,8 +4,8 @@ Changelog
 0.65 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Replaced container cloned event by moved event to handle rename, copy/paste and cut/paste of a container in the path.
+  [sgeulette]
 
 0.64 (2024-02-08)
 -----------------

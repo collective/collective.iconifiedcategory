@@ -21,6 +21,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zExceptions import Redirect
 from zope.component import getAdapter
 from zope.event import notify
+from zope.lifecycleevent import IObjectRemovedEvent
 
 
 def categorized_content_created(obj, event):
@@ -166,10 +167,20 @@ def categorized_content_removed(event):
         utils.remove_categorized_element(obj.aq_parent, obj)
 
 
-def categorized_content_container_cloned(container, event):
+def categorized_content_container_moved(container, event):
+    """Update all categorized_elements when a parent object is renamed or pasted"""
+    if IObjectRemovedEvent.providedBy(event):
+        return
     if container.REQUEST.get('defer_update_categorized_elements', False):
         return
-    utils.update_all_categorized_elements(container)
+    pc = api.portal.get_tool('portal_catalog')
+    brains = pc.unrestrictedSearchResults(
+        path={'query': '/'.join(container.getPhysicalPath())},
+        object_provides='collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker'
+    )
+    parents = {b._unrestrictedGetObject().aq_parent for b in brains}
+    for parent in parents:
+        utils.update_all_categorized_elements(container)
 
 
 def category_before_remove(obj, event):
