@@ -26,125 +26,120 @@ from zope.lifecycleevent import IObjectRemovedEvent
 
 def categorized_content_created(obj, event):
 
-    if hasattr(obj, 'content_category'):
-        # if 'to_print' and 'confidential' are managed manually,
-        # we may defer events if relevant value found in the REQUEST
-        if obj.REQUEST.get('defer_categorized_content_created_event', False):
-            return
+    # if 'to_print' and 'confidential' are managed manually,
+    # we may defer events if relevant value found in the REQUEST
+    if obj.REQUEST.get('defer_categorized_content_created_event', False):
+        return
 
-        # set default values for to_print, confidential and to_sign/signed
-        try:
-            category = utils.get_category_object(obj, obj.content_category)
-        except KeyError:
-            return
-        # left False if to_print/confidential/to_sign
-        # not enabled on ContentCategoryGroup
-        category_group = category.get_category_group(category)
+    # set default values for to_print, confidential and to_sign/signed
+    try:
+        category = utils.get_category_object(obj, obj.content_category)
+    except KeyError:
+        return
+    # left False if to_print/confidential/to_sign
+    # not enabled on ContentCategoryGroup
+    category_group = category.get_category_group(category)
 
-        # only set default value if obj was not created with a to_print=True
-        if category_group.to_be_printed_activated and not getattr(obj, 'to_print', False):
-            obj.to_print = category.to_print
-            # notifying IconifiedAttrChangedEvent for 'to_print' is done in categorized_content_updated
-        elif not category_group.to_be_printed_activated:
-            obj.to_print = False
+    # only set default value if obj was not created with a to_print=True
+    if category_group.to_be_printed_activated and not getattr(obj, 'to_print', False):
+        obj.to_print = category.to_print
+        # notifying IconifiedAttrChangedEvent for 'to_print' is done in categorized_content_updated
+    elif not category_group.to_be_printed_activated:
+        obj.to_print = False
 
-        # only set default value if obj was not created with a confidential=True
-        if category_group.confidentiality_activated and not getattr(obj, 'confidential', False):
-            obj.confidential = category.confidential
-            notify(IconifiedAttrChangedEvent(
-                obj,
-                'confidential',
-                old_values={},
-                new_values={'confidential': obj.confidential},
-                is_created=True
-            ))
-        elif not category_group.confidentiality_activated:
-            obj.confidential = False
+    # only set default value if obj was not created with a confidential=True
+    if category_group.confidentiality_activated and not getattr(obj, 'confidential', False):
+        obj.confidential = category.confidential
+        notify(IconifiedAttrChangedEvent(
+            obj,
+            'confidential',
+            old_values={},
+            new_values={'confidential': obj.confidential},
+            is_created=True
+        ))
+    elif not category_group.confidentiality_activated:
+        obj.confidential = False
 
-        # only set default value if obj was not created with a to_sign=True or signed=True
-        if category_group.signed_activated and not (getattr(obj, 'to_sign', False) or getattr(obj, 'signed', False)):
-            obj.to_sign = category.to_sign
-            obj.signed = category.signed
-            notify(IconifiedAttrChangedEvent(
-                obj,
-                'to_sign',
-                old_values={},
-                new_values={'to_sign': obj.to_sign,
-                            'signed': obj.signed},
-                is_created=True
-            ))
+    # only set default value if obj was not created with a to_sign=True or signed=True
+    if category_group.signed_activated and not (getattr(obj, 'to_sign', False) or getattr(obj, 'signed', False)):
+        obj.to_sign = category.to_sign
+        obj.signed = category.signed
+        notify(IconifiedAttrChangedEvent(
+            obj,
+            'to_sign',
+            old_values={},
+            new_values={'to_sign': obj.to_sign,
+                        'signed': obj.signed},
+            is_created=True
+        ))
 
-        elif not category_group.signed_activated:
-            obj.to_sign = False
-            obj.signed = False
+    elif not category_group.signed_activated:
+        obj.to_sign = False
+        obj.signed = False
 
-        # only set default value if obj was not created with a publishable=True
-        if category_group.publishable_activated and not getattr(obj, 'publishable', False):
-            obj.publishable = category.publishable
-            notify(IconifiedAttrChangedEvent(
-                obj,
-                'publishable',
-                old_values={},
-                new_values={'publishable': obj.publishable},
-                is_created=True
-            ))
-        elif not category_group.publishable_activated:
-            obj.publishable = False
+    # only set default value if obj was not created with a publishable=True
+    if category_group.publishable_activated and not getattr(obj, 'publishable', False):
+        obj.publishable = category.publishable
+        notify(IconifiedAttrChangedEvent(
+            obj,
+            'publishable',
+            old_values={},
+            new_values={'publishable': obj.publishable},
+            is_created=True
+        ))
+    elif not category_group.publishable_activated:
+        obj.publishable = False
 
-        # to_print changed event is managed in categorized_content_updated
-        categorized_content_updated(event, is_created=True)
+    # to_print changed event is managed in categorized_content_updated
+    categorized_content_updated(obj, event, is_created=True)
 
-        if utils.is_file_type(obj.portal_type):
-            file_field_name = IPrimaryFieldInfo(obj).fieldname
-            size = getattr(obj, file_field_name).size
-            if utils.warn_filesize(size):
-                plone_utils = api.portal.get_tool('plone_utils')
-                plone_utils.addPortalMessage(
-                    _("The annex that you just added has a large size and "
-                      "could be difficult to download by users wanting to "
-                      "view it!"), type='warning')
+    if utils.is_file_type(obj.portal_type):
+        file_field_name = IPrimaryFieldInfo(obj).fieldname
+        size = getattr(obj, file_field_name).size
+        if utils.warn_filesize(size):
+            plone_utils = api.portal.get_tool('plone_utils')
+            plone_utils.addPortalMessage(
+                _("The annex that you just added has a large size and "
+                  "could be difficult to download by users wanting to "
+                  "view it!"), type='warning')
 
 
 def content_updated(obj, event):
-    if hasattr(obj, 'content_category'):
-        categorized_content_updated(event)
+    categorized_content_updated(obj, event)
 
 
-def categorized_content_updated(event, is_created=False):
-    obj = event.object
+def categorized_content_updated(obj, event, is_created=False):
+    category = utils.get_category_object(obj, obj.content_category)
 
-    if hasattr(obj, 'content_category'):
-        category = utils.get_category_object(obj, obj.content_category)
+    if category.show_preview in (1, 2):
+        queueJob(obj)
 
-        if category.show_preview in (1, 2):
-            queueJob(obj)
+    if hasattr(obj, 'to_print'):
+        # if current 'to_print' is None, it means that current content
+        # could not be printable, but as it changed,
+        # in this case we use the default value
+        if obj.to_print is None:
+            category_group = category.get_category_group(category)
+            if category_group.to_be_printed_activated:
+                obj.to_print = category.to_print
 
-        if hasattr(obj, 'to_print'):
-            # if current 'to_print' is None, it means that current content
-            # could not be printable, but as it changed,
-            # in this case we use the default value
-            if obj.to_print is None:
-                category_group = category.get_category_group(category)
-                if category_group.to_be_printed_activated:
-                    obj.to_print = category.to_print
+        adapter = getAdapter(obj, IIconifiedPrintable)
+        adapter.update_object()
+        notify(IconifiedAttrChangedEvent(
+            obj,
+            'to_print',
+            old_values={'to_print': obj.to_print},
+            new_values={'to_print': obj.to_print},
+            is_created=is_created
+        ))
+    # we may defer call to utils.update_categorized_elements
+    # if relevant value found in the REQUEST
+    # this is useful when adding several categorized elements without
+    # calling update_categorized_elements between every added element
+    if obj.REQUEST.get('defer_update_categorized_elements', False):
+        return
 
-            adapter = getAdapter(obj, IIconifiedPrintable)
-            adapter.update_object()
-            notify(IconifiedAttrChangedEvent(
-                obj,
-                'to_print',
-                old_values={'to_print': obj.to_print},
-                new_values={'to_print': obj.to_print},
-                is_created=is_created
-            ))
-        # we may defer call to utils.update_categorized_elements
-        # if relevant value found in the REQUEST
-        # this is useful when adding several categorized elements without
-        # calling update_categorized_elements between every added element
-        if obj.REQUEST.get('defer_update_categorized_elements', False):
-            return
-
-        utils.update_categorized_elements(obj.aq_parent, obj, category)
+    utils.update_categorized_elements(obj.aq_parent, obj, category)
 
 
 def content_category_updated(event):
@@ -161,10 +156,8 @@ def content_category_updated(event):
         )
 
 
-def categorized_content_removed(event):
-    if hasattr(event.object, 'content_category'):
-        obj = event.object
-        utils.remove_categorized_element(obj.aq_parent, obj)
+def categorized_content_removed(obj, event):
+    utils.remove_categorized_element(obj.aq_parent, obj)
 
 
 def categorized_content_container_moved(container, event):

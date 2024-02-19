@@ -110,6 +110,7 @@ class ICategorizedElementsUpdatedEvent(IObjectEvent):
 
 
 class IIconifiedAttrChangedEvent(IObjectEvent):
+    """A categorized element attribute (from the group) has been changed."""
 
     attr_name = Attribute("The attribute name")
     old_values = Attribute("The old values")

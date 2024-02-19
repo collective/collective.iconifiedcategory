@@ -8,6 +8,10 @@ Changelog
   [sgeulette]
 - Removed useless IconifiedModifiedEvent
   [sgeulette]
+- Used `IIconifiedCategorizationMarker` in adequate subscribers definition
+  [sgeulette]
+- Removed some hasattr tests (MOD-831) and corrected events object
+  [sgeulette]
 
 0.64 (2024-02-08)
 -----------------

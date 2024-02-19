@@ -23,13 +23,13 @@
     />
 
   <subscriber
-    for="plone.dexterity.interfaces.IDexterityContent
+    for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker
          zope.lifecycleevent.interfaces.IObjectAddedEvent"
     handler=".events.categorized_content_created"
     />
 
   <subscriber
-    for="plone.dexterity.interfaces.IDexterityContent
+    for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker
          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".events.content_updated"
     />
@@ -40,7 +40,8 @@
     />
 
   <subscriber
-    for="zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+    for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker
+         zope.lifecycleevent.interfaces.IObjectRemovedEvent"
     handler=".events.categorized_content_removed"
     />
 
