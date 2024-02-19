@@ -116,9 +116,5 @@ class IIconifiedAttrChangedEvent(IObjectEvent):
     new_values = Attribute("The new values")
 
 
-class IIconifiedModifiedEvent(IObjectEvent):
-    pass
-
-
 class IIconifiedCategoryChangedEvent(IObjectEvent):
     pass

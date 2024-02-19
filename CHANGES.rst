@@ -6,6 +6,8 @@ Changelog
 
 - Replaced container cloned event by moved event to handle rename, copy/paste and cut/paste of a container in the path.
   [sgeulette]
+- Removed useless IconifiedModifiedEvent
+  [sgeulette]
 
 0.64 (2024-02-08)
 -----------------

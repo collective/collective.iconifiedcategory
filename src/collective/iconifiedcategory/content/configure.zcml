@@ -35,11 +35,6 @@
     />
 
   <subscriber
-    for="collective.iconifiedcategory.interfaces.IIconifiedModifiedEvent"
-    handler=".events.categorized_content_updated"
-    />
-
-  <subscriber
     for="collective.iconifiedcategory.interfaces.IIconifiedCategoryChangedEvent"
     handler=".events.content_category_updated"
     />

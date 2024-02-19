@@ -10,13 +10,8 @@ Created by mpeeters
 from collective.iconifiedcategory.interfaces import ICategorizedElementsUpdatedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
-from collective.iconifiedcategory.interfaces import IIconifiedModifiedEvent
 from zope.component.interfaces import ObjectEvent
 from zope.interface import implements
-
-
-class IconifiedModifiedEvent(ObjectEvent):
-    implements(IIconifiedModifiedEvent)
 
 
 class IconifiedCategoryChangedEvent(ObjectEvent):
