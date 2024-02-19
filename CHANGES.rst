@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.65 (unreleased)
+0.65 (2024-02-19)
 -----------------
 
 - Replaced container cloned event by moved event to handle rename, copy/paste and cut/paste of a container in the path.
