@@ -12,6 +12,8 @@ Changelog
   [sgeulette]
 - Removed some hasattr tests (MOD-831) and corrected events object
   [sgeulette]
+- Handled cut/paste and rename of a categorized element
+  [sgeulette]
 
 0.64 (2024-02-08)
 -----------------

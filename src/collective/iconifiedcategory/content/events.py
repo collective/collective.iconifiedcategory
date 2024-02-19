@@ -21,6 +21,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zExceptions import Redirect
 from zope.component import getAdapter
 from zope.event import notify
+from zope.lifecycleevent import IObjectAddedEvent
 from zope.lifecycleevent import IObjectRemovedEvent
 
 
@@ -30,7 +31,6 @@ def categorized_content_created(obj, event):
     # we may defer events if relevant value found in the REQUEST
     if obj.REQUEST.get('defer_categorized_content_created_event', False):
         return
-
     # set default values for to_print, confidential and to_sign/signed
     try:
         category = utils.get_category_object(obj, obj.content_category)
@@ -156,8 +156,20 @@ def content_category_updated(event):
         )
 
 
-def categorized_content_removed(obj, event):
-    utils.remove_categorized_element(obj.aq_parent, obj)
+def categorized_content_moved(obj, event):
+    if IObjectAddedEvent.providedBy(event):  # copy/paste or creation => IObjectAddedEvent
+        return
+    if IObjectRemovedEvent.providedBy(event):  # delete but not cut/paste
+        utils.remove_categorized_element(obj.aq_parent, obj)
+        return
+    if obj.REQUEST.get('defer_update_categorized_elements', False):
+        return
+    category = utils.get_category_object(obj, obj.content_category)
+    if event.oldName is not None and event.oldName != event.newName:  # rename
+        utils.update_categorized_elements(obj.aq_parent, obj, category)
+    elif event.oldParent is not None and event.newParent is not None and event.oldParent != event.newParent:  # move
+        utils.update_categorized_elements(obj.aq_parent, obj, category)  # paste
+        utils.remove_categorized_element(event.oldParent, obj)
 
 
 def categorized_content_container_moved(container, event):

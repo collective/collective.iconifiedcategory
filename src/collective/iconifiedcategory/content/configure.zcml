@@ -41,8 +41,8 @@
 
   <subscriber
     for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker
-         zope.lifecycleevent.interfaces.IObjectRemovedEvent"
-    handler=".events.categorized_content_removed"
+         zope.lifecycleevent.interfaces.IObjectMovedEvent"
+    handler=".events.categorized_content_moved"
     />
 
   <subscriber

@@ -52,7 +52,8 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertEquals(len(self.portal.categorized_elements), 2)
         self.assertTrue(file_obj_UID in self.portal.categorized_elements)
         self.assertTrue(img_obj_UID in self.portal.categorized_elements)
-
+        self.assertListEqual([dic['relative_url'] for dic in self.portal.categorized_elements.values()],
+                             ['file_txt', 'image'])
         # copy paste a contained categorized content
         copied_data = self.portal.manage_copyObjects(ids=[file_obj.getId()])
         infos = self.portal.manage_pasteObjects(copied_data)
@@ -62,6 +63,29 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertTrue(file_obj_UID in self.portal.categorized_elements)
         self.assertTrue(img_obj_UID in self.portal.categorized_elements)
         self.assertTrue(new_file_UID in self.portal.categorized_elements)
+        self.assertListEqual([dic['relative_url'] for dic in self.portal.categorized_elements.values()],
+                             ['file_txt', 'copy_of_file_txt', 'image'])
+        # rename the object
+        api.content.rename(obj=new_file, new_id='new_file_txt')
+        self.assertListEqual([dic['relative_url'] for dic in self.portal.categorized_elements.values()],
+                             ['file_txt', 'new_file_txt', 'image'])
+        # cut paste the object
+        container = api.content.create(
+            id='folder',
+            type='Folder',
+            container=self.portal
+        )
+        copied_data = self.portal.manage_cutObjects(ids=['new_file_txt'])
+        infos = container.manage_pasteObjects(copied_data)
+        self.assertEquals(len(self.portal.categorized_elements), 2)
+        self.assertTrue(file_obj_UID in self.portal.categorized_elements)
+        self.assertTrue(img_obj_UID in self.portal.categorized_elements)
+        self.assertListEqual([dic['relative_url'] for dic in self.portal.categorized_elements.values()],
+                             ['file_txt', 'image'])
+        self.assertEquals(len(container.categorized_elements), 1)
+        self.assertTrue(new_file_UID in container.categorized_elements)
+        self.assertListEqual([dic['relative_url'] for dic in container.categorized_elements.values()],
+                             ['folder/new_file_txt'])
 
     def test_categorized_elements_correct_after_moving_categorized_content_container(self):
         container = api.content.create(
