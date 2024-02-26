@@ -22,6 +22,6 @@ def content_category_uid(obj):
         return
     try:
         category_object = utils.get_category_object(obj, obj.content_category)
-    except KeyError:
+    except (KeyError, ValueError):
         return _marker
     return category_object.UID()
