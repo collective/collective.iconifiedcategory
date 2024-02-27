@@ -176,14 +176,15 @@ def categorized_content_container_moved(container, event):
     """Update all categorized_elements when a parent object is renamed or pasted"""
     if IObjectRemovedEvent.providedBy(event):
         return
-    if container.REQUEST.get('defer_update_categorized_elements', False):
+    if container.REQUEST.get('defer_update_categorized_elements', False) or \
+            container.REQUEST.get('defer_categorized_content_created_event', False):
         return
     pc = api.portal.get_tool('portal_catalog')
     brains = pc.unrestrictedSearchResults(
         path={'query': '/'.join(container.getPhysicalPath())},
         object_provides='collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker'
     )
-    parents = {b._unrestrictedGetObject().aq_parent for b in brains}
+    parents = {b._unrestrictedGetObject().aq_parent for b in brains}  # use set to avoid parent duplicates
     for parent in parents:
         utils.update_all_categorized_elements(parent)
 
