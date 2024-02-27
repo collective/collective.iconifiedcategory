@@ -185,7 +185,7 @@ def categorized_content_container_moved(container, event):
     )
     parents = {b._unrestrictedGetObject().aq_parent for b in brains}
     for parent in parents:
-        utils.update_all_categorized_elements(container)
+        utils.update_all_categorized_elements(parent)
 
 
 def category_before_remove(obj, event):

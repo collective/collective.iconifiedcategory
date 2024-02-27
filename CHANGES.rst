@@ -4,8 +4,8 @@ Changelog
 0.66 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Corrected bug due to typo.
+  [sgeulette]
 
 0.65 (2024-02-19)
 -----------------

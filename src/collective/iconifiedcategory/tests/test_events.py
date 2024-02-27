@@ -116,13 +116,14 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertEquals(len(container.categorized_elements), 2)
         self.assertTrue(file_obj1_UID in container.categorized_elements)
         self.assertTrue(file_obj2_UID in container.categorized_elements)
+        self.assertFalse(base_hasattr(file_obj1, 'categorized_elements'))
         # check original categorized_elements
         self.assertListEqual([dic['relative_url'] for dic in container.categorized_elements.values()],
                              ['folder/file1', 'folder/file2'])
-
         # copy/paste the container
         copied_data = self.portal.manage_copyObjects(ids=[container.getId()])
         infos = self.portal.manage_pasteObjects(copied_data)
+        self.assertFalse(base_hasattr(file_obj1, 'categorized_elements'))
         new_container = self.portal[infos[0]['new_id']]
         self.assertEquals(len(new_container.categorized_elements), 2)
         self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
@@ -137,18 +138,21 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertTrue(copied_file2.UID() in new_container.categorized_elements)
         # rename the container
         api.content.rename(obj=new_container, new_id='new_folder')
+        self.assertFalse(base_hasattr(file_obj1, 'categorized_elements'))
         self.assertEquals(len(new_container.categorized_elements), 2)
         self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
                              ['new_folder/file1', 'new_folder/file2'])
         # cut/paste the container
         copied_data = self.portal.manage_cutObjects(ids=[new_container.getId()])
         infos = container.manage_pasteObjects(copied_data)
+        self.assertFalse(base_hasattr(file_obj1, 'categorized_elements'))
         new_container = container[infos[0]['new_id']]
         self.assertEquals(len(container.categorized_elements), 2)
         self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
                              ['folder/new_folder/file1', 'folder/new_folder/file2'])
         # rename the top level container, check the deepest
         api.content.rename(obj=container, new_id='top_folder')
+        self.assertFalse(base_hasattr(file_obj1, 'categorized_elements'))
         self.assertEquals(len(new_container.categorized_elements), 2)
         self.assertListEqual([dic['relative_url'] for dic in new_container.categorized_elements.values()],
                              ['top_folder/new_folder/file1', 'top_folder/new_folder/file2'])
