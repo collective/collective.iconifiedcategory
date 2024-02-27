@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.66 (unreleased)
+0.66 (2024-02-27)
 -----------------
 
 - Corrected bug due to typo.
