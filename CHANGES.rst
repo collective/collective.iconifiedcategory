@@ -4,7 +4,8 @@ Changelog
 0.67 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Avoid an error if category root folder does not exist
+  [mpeeters]
 
 
 0.66 (2024-02-27)
