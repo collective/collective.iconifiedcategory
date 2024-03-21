@@ -362,7 +362,7 @@ def get_categorized_elements(context,
                         elements,
                         key=lambda x, object_ids=context.objectIds(): object_ids.index(x['id']))
             else:
-                if getattr(elements[0], sort_on):
+                if getattr(elements[0], sort_on, None):
                     elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
                 elif sort_on == 'getObjPositionInParent':
                     elements = sorted(

@@ -405,6 +405,12 @@ class TestUtils(BaseTestCase):
                                             result_type='dict',
                                             sort_on='getObjPositionInParent')],
             [document2.UID(), document.UID()])
+        # sort_on='getObjPositionInParent' and result_type='objects'
+        self.assertEqual(
+            utils.get_categorized_elements(self.portal,
+                                           result_type='objects',
+                                           sort_on='getObjPositionInParent'),
+            [document2, document])
 
         # teardown
         self.assertRaises(Redirect, api.content.delete, category)

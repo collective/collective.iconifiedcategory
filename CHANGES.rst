@@ -4,8 +4,9 @@ Changelog
 0.67 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed utils.get_categorized_elements when `result_type='objects'`
+  and `sort_on='getObjPositionInParent'`.
+  [gbastien]
 
 0.66 (2024-02-27)
 -----------------
@@ -16,7 +17,8 @@ Changelog
 0.65 (2024-02-19)
 -----------------
 
-- Replaced container cloned event by moved event to handle rename, copy/paste and cut/paste of a container in the path.
+- Replaced container cloned event by moved event to handle rename,
+  copy/paste and cut/paste of a container in the path.
   [sgeulette]
 - Removed useless IconifiedModifiedEvent
   [sgeulette]
