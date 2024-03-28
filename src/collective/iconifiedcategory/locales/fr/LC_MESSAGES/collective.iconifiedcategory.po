@@ -214,7 +214,7 @@ msgstr "Titre prédéfini"
 #: ../browser/tabview.py:415
 #: ../browser/templates/categorized-childs-infos.pt:43
 msgid "Preview"
-msgstr "Cett annexe est en prévisualisation, cliquez sur l'icône verte \"Télécharger\" pour télécharger l'annexe si vous en avez le besoin et la permission"
+msgstr "Cette annexe est en prévisualisation, cliquez sur l'icône verte \"Télécharger\" pour télécharger l'annexe si vous en avez le besoin et la permission"
 
 #: ../browser/tabview.py:377
 msgid "Publishable"

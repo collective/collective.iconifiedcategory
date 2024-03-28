@@ -7,6 +7,8 @@ Changelog
 - Fixed utils.get_categorized_elements when `result_type='objects'`
   and `sort_on='getObjPositionInParent'`.
   [gbastien]
+- Corrected typo in french translation of `Preview`.
+  [gbastien]
 
 0.66 (2024-02-27)
 -----------------
