@@ -9,6 +9,10 @@ Changelog
   [gbastien]
 - Corrected typo in french translation of `Preview`.
   [gbastien]
+- Removed optimization in `utils.validateFileIsPDF` to avoid multiple validation
+  because it breaks validation of several elements added in the same `REQUEST`
+  (when using rest api for example).
+  [gbastien]
 
 0.66 (2024-02-27)
 -----------------

@@ -286,20 +286,14 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         view = self.portal.restrictedTraverse('folder_contents')
         request['PUBLISHED'] = view
         self.assertFalse(invariants.validate(data))
-        # already_validateFileIsPDF was set in REQUEST
-        self.assertTrue(request.get('already_validateFileIsPDF'))
-        self.assertFalse(invariants.validate(data))
         # PDF needed
-        request.set('already_validateFileIsPDF', False)
         category.only_pdf = True
         errors = invariants.validate(data)
-        request.set('already_validateFileIsPDF', False)
         self.assertEqual(errors[0].message, u'You must select a PDF file!')
         request.form['form.widgets.file'].headers['content-type'] = 'application/pdf'
         # no file in request
         request.form = {}
         self.assertFalse(invariants.validate(data))
-        request.set('already_validateFileIsPDF', False)
         # editing a stored element
         category.only_pdf = False
         obj = api.content.create(
@@ -311,11 +305,9 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         view = obj.restrictedTraverse('view')
         request['PUBLISHED'] = view
         self.assertFalse(invariants.validate(data))
-        request.set('already_validateFileIsPDF', False)
         # PDF needed
         category.only_pdf = True
         errors = invariants.validate(data)
-        request.set('already_validateFileIsPDF', False)
         self.assertEqual(errors[0].message, u'You must select a PDF file!')
         obj.file = self.file_pdf
         self.assertFalse(invariants.validate(data))

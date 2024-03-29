@@ -510,10 +510,6 @@ def validateFileIsPDF(data):
 
     # check if file contentType is PDF only if used content_category requires it
     request = getRequest()
-    # avoid double validation
-    if request.get('already_validateFileIsPDF', False):
-        return
-    request.set('already_validateFileIsPDF', True)
     context = data.__context__ or request.get('PUBLISHED').context
     contentType = _get_content_type(data)
     if contentType is not None and contentType != 'application/pdf':
