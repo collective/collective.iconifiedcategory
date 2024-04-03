@@ -65,6 +65,11 @@
 
   <utility
     provides="zope.schema.interfaces.IVocabularyFactory"
+    name="collective.iconifiedcategory.every_category_uids"
+    factory=".vocabularies.EveryCategoryUIDVocabulary" />
+
+  <utility
+    provides="zope.schema.interfaces.IVocabularyFactory"
     name="collective.iconifiedcategory.category_titles"
     factory=".vocabularies.CategoryTitleVocabulary" />
 

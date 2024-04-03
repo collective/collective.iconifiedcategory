@@ -83,6 +83,15 @@ class EveryCategoryVocabulary(CategoryVocabulary):
             only_enabled=only_enabled)
 
 
+class EveryCategoryUIDVocabulary(CategoryVocabulary):
+
+    def __call__(self, context, use_category_uid_as_token=True, only_enabled=False):
+        return super(EveryCategoryUIDVocabulary, self).__call__(
+            context,
+            use_category_uid_as_token=use_category_uid_as_token,
+            only_enabled=only_enabled)
+
+
 class CategoryTitleVocabulary(CategoryVocabulary):
 
     def __call__(self, context, only_enabled=True):

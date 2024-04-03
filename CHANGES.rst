@@ -13,6 +13,9 @@ Changelog
   because it breaks validation of several elements added in the same `REQUEST`
   (when using rest api for example).
   [gbastien]
+- Added `collective.iconifiedcategory.every_category_uids` vocabulary that
+  lists every found categories with uid as vocabulary term token.
+  [gbastien]
 
 0.66 (2024-02-27)
 -----------------

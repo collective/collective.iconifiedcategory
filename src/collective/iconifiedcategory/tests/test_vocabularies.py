@@ -136,3 +136,43 @@ class TestVocabularies(unittest.TestCase):
              'Category 2-2', 'Subcategory 2-2-2', 'Subcategory 2-2-1',
              'Category 1-1 [Preview!]', 'Subcategory 1-1-2', 'Subcategory 1-1-1 [PDF!] [Preview!]',
              'Category 2-1', 'Subcategory 2-1-2', 'Subcategory 2-1-1'])
+
+    def test_every_categories_vocabulary(self):
+        vocabulary = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.every_categories',
+        )
+        terms = [t.token for t in vocabulary(self.portal)]
+        self.assertEqual(
+            terms,
+            ['plone-config_-_group-1_-_category-1-3',
+             'plone-config_-_group-1_-_category-1-3_-_subcategory-1-3-2',
+             'plone-config_-_group-1_-_category-1-3_-_subcategory-1-3-1',
+             'plone-config_-_group-2_-_category-2-3',
+             'plone-config_-_group-2_-_category-2-3_-_subcategory-2-3-2',
+             'plone-config_-_group-2_-_category-2-3_-_subcategory-2-3-1',
+             'plone-config_-_group-1_-_category-1-2',
+             'plone-config_-_group-1_-_category-1-2_-_subcategory-1-2-2',
+             'plone-config_-_group-1_-_category-1-2_-_subcategory-1-2-1',
+             'plone-config_-_group-2_-_category-2-2',
+             'plone-config_-_group-2_-_category-2-2_-_subcategory-2-2-2',
+             'plone-config_-_group-2_-_category-2-2_-_subcategory-2-2-1',
+             'plone-config_-_group-1_-_category-1-1',
+             'plone-config_-_group-1_-_category-1-1_-_subcategory-1-1-2',
+             'plone-config_-_group-1_-_category-1-1_-_subcategory-1-1-1',
+             'plone-config_-_group-2_-_category-2-1',
+             'plone-config_-_group-2_-_category-2-1_-_subcategory-2-1-2',
+             'plone-config_-_group-2_-_category-2-1_-_subcategory-2-1-1'])
+
+    def test_every_category_uids_vocabulary(self):
+        vocabulary = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.every_category_uids',
+        )
+        terms = [t.token for t in vocabulary(self.portal)]
+        grp1 = self.portal.config.get('group-1')
+        grp2 = self.portal.config.get('group-2')
+        self.assertTrue(grp1.get('category-1-1').UID() in terms)
+        self.assertTrue(grp1.get('category-1-1').get('subcategory-1-1-2').UID() in terms)
+        self.assertTrue(grp2.get('category-2-3').UID() in terms)
+        self.assertTrue(grp2.get('category-2-2').get('subcategory-2-2-2').UID() in terms)
