@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.67 (unreleased)
+0.67 (2024-04-10)
 -----------------
 
 - Fixed utils.get_categorized_elements when `result_type='objects'`
