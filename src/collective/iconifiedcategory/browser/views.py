@@ -22,7 +22,10 @@ from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import _checkPermission
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
-from zope.component.interfaces import ComponentLookupError
+try:
+    from zope.interface.interfaces import ComponentLookupError
+except ImportError:
+    from zope.component.interfaces import ComponentLookupError
 
 import json
 

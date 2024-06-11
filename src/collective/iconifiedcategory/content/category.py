@@ -17,7 +17,7 @@ from plone.dexterity.schema import DexteritySchemaPolicy
 from plone.namedfile.field import NamedBlobImage
 from plone.rfc822.interfaces import IPrimaryField
 from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ICategory(IFolder, ICategorize, IICImageScaleTraversable):
@@ -36,7 +36,7 @@ alsoProvides(ICategory['icon'], IPrimaryField)
 
 
 class Category(Container):
-    implements(ICategory)
+    implementer(ICategory)
 
     @property
     def category_uid(self):
