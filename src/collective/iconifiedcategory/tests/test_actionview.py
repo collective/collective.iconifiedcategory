@@ -8,7 +8,7 @@ from collective.iconifiedcategory.browser.actionview import BaseView
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
-from z3c.json.interfaces import IJSONReader
+# from z3c.json.interfaces import IJSONReader  # MIGRATION-PLONE6
 from zope.component import getUtility
 
 
@@ -17,7 +17,8 @@ class TestBaseView(BaseTestCase):
     def test__call__(self):
         obj = self.portal['file_txt']
         view = BaseView(obj, self.portal.REQUEST)
-        reader = getUtility(IJSONReader)
+        # reader = getUtility(IJSONReader)  # MIGRATION-PLONE6
+        reader = {}
 
         # when attribute_mapping is not set, it does not work
         result = reader.read(view())
