@@ -71,10 +71,10 @@ class CategorizedChildView(BrowserView):
                                       'icon': e['icon_url']})
                  for e in self.categorized_elements]
         infos = OrderedDict(infos)
-        for key, element in infos.items():
+        for key, element in list(infos.items()):
             element['counts'] = len([e for e in self.categorized_elements
                                      if e['category_uid'] == key])
-        return infos.values()
+        return list(infos.values())
 
 
 class ManageCategorizedChildView(BrowserView):
@@ -118,9 +118,9 @@ class CategorizedChildInfosView(BrowserView):
 
     @property
     def categories_uids(self):
-        return OrderedDict.fromkeys(
+        return list(OrderedDict.fromkeys(
             [e['category_uid'] for e in self.categorized_elements],
-        ).keys()
+        ).keys())
 
     def infos(self):
         infos = OrderedDict([(e, []) for e in self.categories_uids])
