@@ -9,7 +9,7 @@ Created by mpeeters
 
 from plone.app.contenttypes.interfaces import IFolder
 from plone.dexterity.content import Container
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ICategoryConfiguration(IFolder):
@@ -17,4 +17,4 @@ class ICategoryConfiguration(IFolder):
 
 
 class CategoryConfiguration(Container):
-    implements(ICategoryConfiguration)
+    implementer(ICategoryConfiguration)
