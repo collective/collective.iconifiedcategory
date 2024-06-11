@@ -14,7 +14,7 @@
   <include package="collective.fontawesome" />
   <include package="collective.js.tooltipster" />
   <include package="collective.z3cform.select2" />
-  <include package="z3c.json" />
+  <!-- <include package="z3c.json" />  MIGRATION-PLONE6 -->
 
   <include package=".browser" />
   <include package=".content" />

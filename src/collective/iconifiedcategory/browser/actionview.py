@@ -15,7 +15,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.Five import BrowserView
-from z3c.json.interfaces import IJSONWriter
+# from z3c.json.interfaces import IJSONWriter  # MIGRATION-PLONE6
 from zope.component import getAdapter
 from zope.component import getUtility
 from zope.event import notify
@@ -44,7 +44,8 @@ class BaseView(BrowserView):
                1 --> set to True;
                2 --> error;
            """
-        writer = getUtility(IJSONWriter)
+        # writer = getUtility(IJSONWriter)  # MIGRATION-PLONE6
+        writer = {}
         values = {'msg': u'Values have been set'}
         try:
             self.request.response.setHeader('content-type',
