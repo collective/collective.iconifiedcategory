@@ -34,7 +34,7 @@ class FormMixin(object):
 
     def updateWidgets(self):
         super(FormMixin, self).updateWidgets()
-        for name, widget in self.widgets.items():
+        for name, widget in list(self.widgets.items()):
             related_attribute = self.related_widgets.get(name)
             if not related_attribute:
                 continue
@@ -68,7 +68,7 @@ class BaseView(DefaultView):
 
     def updateWidgets(self):
         super(BaseView, self).updateWidgets()
-        for rel_widget, rel_attribute in self.related_widgets.items():
+        for rel_widget, rel_attribute in list(self.related_widgets.items()):
             parent_value = getattr(
                 self.context.get_category_group(),
                 rel_attribute,

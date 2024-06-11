@@ -255,7 +255,7 @@ class CategorizedObjectPreviewAdapter(object):
         """
         # collective.documentviewer add an entry to the annotations
         annotations = IAnnotations(self.context)
-        if 'collective.documentviewer' not in annotations.keys():
+        if 'collective.documentviewer' not in list(annotations.keys()):
             Settings(self.context)
 
         settings = GlobalSettings(api.portal.get())

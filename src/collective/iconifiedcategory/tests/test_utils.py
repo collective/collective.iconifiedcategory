@@ -357,7 +357,7 @@ class TestUtils(BaseTestCase):
             utils.get_categorized_elements(self.portal,
                                            portal_type='Document'),
             result)
-        self.failIf(utils.get_categorized_elements(self.portal,
+        self.assertFalse(utils.get_categorized_elements(self.portal,
                                                    portal_type='Document2'))
         # ask the objects
         self.assertEqual(
@@ -487,7 +487,7 @@ class TestUtils(BaseTestCase):
         result = ['doc1', 'Doc4', 'doc10', 'CV Info N\xc2\xb02016-1', 'CV Info N\xc2\xb02016-2']
         self.assertEqual(
             result,
-            [e['title'] for e in self.portal.categorized_elements.values()],
+            [e['title'] for e in list(self.portal.categorized_elements.values())],
         )
         api.content.delete(document1)
         api.content.delete(document2)

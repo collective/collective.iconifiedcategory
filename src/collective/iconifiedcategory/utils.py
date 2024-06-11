@@ -243,7 +243,7 @@ def sort_categorized_elements(context):
     # use realsorted on a lowered title so it mixes uppercase and lowercase titles
     try:
         elements = natsorted(
-            context.categorized_elements.items(),
+            list(context.categorized_elements.items()),
             key=lambda x: (ordered_categories[x[1]['category_uid']],
                            safe_unicode(x[1]['title'].lower()),),
         )
@@ -273,7 +273,7 @@ def _categorized_elements(context):
 def _check_filters(infos, filters):
     """ """
     keep = True
-    for k, v in filters.items():
+    for k, v in list(filters.items()):
         # manage case when stored value is a list or not
         stored_value = infos[k]
         if not hasattr(stored_value, '__iter__'):
@@ -320,7 +320,7 @@ def get_categorized_elements(context,
                 result_type,
                 portal_type,
                 '_'.join(uids),
-                ['{0}_{1}'.format(k, v) for k, v in filters.items()])
+                ['{0}_{1}'.format(k, v) for k, v in list(filters.items())])
         cache = IAnnotations(context.REQUEST)
         elements = cache.get(key, None)
 
@@ -330,11 +330,11 @@ def get_categorized_elements(context,
         if not categorized_elements:
             return elements
 
-        uids = uids or categorized_elements.keys()
+        uids = uids or list(categorized_elements.keys())
         catalog = api.portal.get_tool('portal_catalog')
         current_user_allowedRolesAndUsers = catalog._listAllowedRolesAndUsers(api.user.get_current())
         adapter = None
-        for uid, infos in categorized_elements.items():
+        for uid, infos in list(categorized_elements.items()):
             if (uids and uid not in uids) or \
                (portal_type and infos['portal_type'] != portal_type) or \
                not _check_filters(infos, filters) or \
@@ -397,7 +397,7 @@ def calculate_filesize(size):
         1024. * 1024: 'MB',
         1024.: 'KB',
     }
-    for s, u in sizes.items():
+    for s, u in list(sizes.items()):
         if size >= s:
             unit = u
             factor = s

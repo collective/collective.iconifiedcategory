@@ -61,11 +61,11 @@ class BaseView(BrowserView):
 
     def get_current_values(self):
         return {k: getattr(self.context, k)
-                for k in self.attribute_mapping.keys()}
+                for k in list(self.attribute_mapping.keys())}
 
     def get_values(self):
         return {k: self.convert_boolean(self.request.get(v))
-                for k, v in self.attribute_mapping.items()}
+                for k, v in list(self.attribute_mapping.items())}
 
     def _may_set_values(self, values, ):
         res = bool(api.user.has_permission(ModifyPortalContent, obj=self.context))
@@ -85,7 +85,7 @@ class BaseView(BrowserView):
 
         old_values = self.get_current_values()
 
-        for key, value in values.items():
+        for key, value in list(values.items()):
             self._set_value(key, value)
         status, msg = self._get_status(values), utils.boolean_message(
             self.context, attr_name=self.attr_name)
@@ -105,7 +105,7 @@ class BaseView(BrowserView):
         return status, msg
 
     def _get_status(self, values):
-        value = values.get(self.attribute_mapping.keys()[0], None)
+        value = values.get(list(self.attribute_mapping.keys())[0], None)
         if value is False:
             return 0
         elif value is True:
