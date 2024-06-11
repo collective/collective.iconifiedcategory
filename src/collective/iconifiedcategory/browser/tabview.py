@@ -26,7 +26,7 @@ from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.i18n import translate
 from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import implementer
 
 import html
 
@@ -129,7 +129,7 @@ class CategorizedContent(object):
 
 
 class CategorizedTable(ExtendedCSSTable, BrowserView):
-    implements(ICategorizedTable)
+    implementer(ICategorizedTable)
 
     cssClasses = {'table': 'listing iconified-listing nosort'}
 

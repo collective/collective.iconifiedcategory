@@ -13,11 +13,11 @@ from collective.iconifiedcategory.content.categoryconfiguration import ICategory
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySubtyper
 from Products.Five import BrowserView
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class IconifiedCategoryPublicSubtyper(BrowserView):
-    implements(IIconifiedCategorySubtyper)
+    implementer(IIconifiedCategorySubtyper)
 
     def __init__(self, context, request):
         self.context = aq_base(context)
