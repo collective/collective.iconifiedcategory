@@ -59,7 +59,7 @@ setup(
         'plone.namedfile',
         'setuptools',
         'z3c.jbot',
-        'z3c.json',
+        # 'z3c.json',  # MIGRATION-PLONE6
         'z3c.table',
     ],
     extras_require={
