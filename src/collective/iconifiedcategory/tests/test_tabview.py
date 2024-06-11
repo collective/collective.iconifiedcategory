@@ -81,7 +81,7 @@ class TestCategorizedTabView(BaseTestCase):
         self.portal.portal_properties.site_properties.typesUseViewActionInListings = ()
         # enable collective.documentviewer so document is convertible
         gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
         # initialize collective.documentviewer annotations on file
         file_obj = self.portal['file_txt']
         image_obj = self.portal['image']
@@ -113,7 +113,7 @@ class TestCategorizedTabView(BaseTestCase):
 
         # enable collective.documentviewer so document is convertible
         gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
         # enable to_print management in configuration
         category = utils.get_category_object(obj, obj.content_category)
         category_group = category.get_category_group(category)

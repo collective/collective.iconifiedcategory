@@ -115,7 +115,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
     def test_infos(self):
         self.viewinfos.update()
         infos = self.viewinfos.infos()
-        self.assertItemsEqual([self.viewinfos.category_uid], infos.keys())
+        self.assertItemsEqual([self.viewinfos.category_uid], list(infos.keys()))
         self.assertItemsEqual(
             ['file.txt', 'ic\xc3\xb4ne1.png'],
             [e['title'] for e in infos[self.viewinfos.category_uid]],
@@ -124,7 +124,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.viewinfos.category_uid = self.config['group-1']['category-1-2'].UID()
         self.viewinfos.update()
         infos = self.viewinfos.infos()
-        self.assertItemsEqual([self.viewinfos.category_uid], infos.keys())
+        self.assertItemsEqual([self.viewinfos.category_uid], list(infos.keys()))
         self.assertItemsEqual(
             ['A', 'B'],
             [e['title'] for e in infos[self.viewinfos.category_uid]],

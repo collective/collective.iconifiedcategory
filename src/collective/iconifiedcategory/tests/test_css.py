@@ -31,7 +31,7 @@ class TestIconifiedCategoryCSS(BaseTestCase):
     def test_css_recooked(self):
         """portal_css is recooked when a category is added/moved/removed."""
         def _current_css_cachekey():
-            cachekey = [k for k, v in self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items()
+            cachekey = [k for k, v in list(self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items())
                         if 'collective-iconifiedcategory.css' in v and '-cachekey-' in k][0]
             return cachekey
         # portal_css is cooked, the collective-iconfiedcategory.css is stored in a cachekey cooked css

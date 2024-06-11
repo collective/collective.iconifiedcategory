@@ -223,7 +223,7 @@ class TestCategorizedObjectPrintableAdapter(BaseTestCase):
     def setUp(self):
         super(TestCategorizedObjectPrintableAdapter, self).setUp()
         gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
 
     def test_is_printable_default(self):
         obj = self.portal.file_txt
@@ -283,7 +283,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
         self.assertFalse(preview_adapter.is_convertible())
 
         # right enable every file_types in collective.documentviewer
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
 
         convertables = (
             'application/msword',
@@ -335,7 +335,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
         self.assertFalse(preview_adapter.converted)
 
         # enable every supported types including txt
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
         obj.file.contentType = 'text/plain'
         # collective.documentviewer checks if element was modified
         # or it does not convert again

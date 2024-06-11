@@ -77,7 +77,7 @@ class TestToPrintChangeView(BaseTestCase):
 
         # will be correctly set if format is managed
         gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
         view.set_values({'to_print': True})
         self.assertTrue(obj.to_print, obj.aq_parent.categorized_elements[obj.UID()]['to_print'])
         view.set_values({'to_print': False})

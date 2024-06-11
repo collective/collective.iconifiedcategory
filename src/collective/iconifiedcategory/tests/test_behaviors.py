@@ -89,7 +89,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         category_group.to_be_printed_activated = True
         # enable conversion
         gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
 
         # set to False
         category.to_print = False
@@ -171,7 +171,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             content_category=content_category_id)
         # enable conversion
         gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
         file2.file.contentType = 'text/unknown'
 
         notify(ObjectModifiedEvent(file2))
@@ -243,7 +243,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         # enable conversion and back to category11
         category11.to_print = True
         gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+        gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())
         # set to_print to False, aka the default value of category12
         obj.to_print = False
         setattr(adapted_obj, 'content_category', category11_id)
