@@ -4,7 +4,7 @@ from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.base import ICategorize
 from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer import indexer
-from Products.PluginIndexes.common.UnIndex import _marker
+from Products.PluginIndexes.unindex import _marker
 
 
 @indexer(ICategorize)
