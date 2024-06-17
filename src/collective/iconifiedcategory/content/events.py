@@ -8,7 +8,7 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
-from collective.documentviewer.async import queueJob
+from collective.documentviewer.async_utils import queueJob
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
