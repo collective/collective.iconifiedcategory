@@ -7,7 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from collective.documentviewer.async import queueJob
+from collective.documentviewer.async_utils import queueJob
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
