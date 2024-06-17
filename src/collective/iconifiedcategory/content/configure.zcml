@@ -51,11 +51,11 @@
     handler=".events.categorized_content_container_moved"
     />
 
-  <subscriber
+  <!-- <subscriber
     for="Products.Archetypes.interfaces.base.IBaseObject
          zope.lifecycleevent.interfaces.IObjectMovedEvent"
     handler=".events.categorized_content_container_moved"
-    />
+    />  MIGRATION-PLONE6 -->
 
   <subscriber
     for=".category.ICategory
