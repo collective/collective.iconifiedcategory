@@ -4,8 +4,10 @@ Changelog
 0.68 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed `CategorizedObjectAdapter.can_view` default implementation that was
+  checking `View` permission on context but we need to check on
+  `categorized_obj` as permissions could be different.
+  [gbastien]
 
 0.67 (2024-04-10)
 -----------------

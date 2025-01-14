@@ -209,7 +209,7 @@ class CategorizedObjectAdapter(object):
         """By default, check that current user may View the context.
            Indeed for some advanced management (@@download), views are
            declared permission="zope2.Public"."""
-        if _checkPermission(View, self.context):
+        if _checkPermission(View, self.categorized_obj):
             return True
 
 

@@ -6,6 +6,10 @@ from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
 from plone import api
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.app.testing.interfaces import TEST_USER_NAME
+from Products.CMFCore.permissions import View
 from Products.Five import zcml
 
 
@@ -213,6 +217,18 @@ class TestCanViewAwareDownload(BaseTestCase):
         self.assertTrue(img_obj.restrictedTraverse('@@download')())
         self.assertTrue(img_obj.restrictedTraverse('@@display-file')())
         self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
+        # make file_obj not downloadable
+        file_obj.manage_permission(View, ['Manager', ])
+        login(self.portal, TEST_USER_NAME)
+        self.assertFalse(api.user.get_current().has_permission(View, file_obj))
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@display-file'))
+        self.assertRaises(Unauthorized, file_obj.unrestrictedTraverse('view/++widget++form.widgets.file/@@download'))
+        logout()
+        self.assertFalse(api.user.get_current().has_permission(View, file_obj))
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@display-file'))
+        self.assertRaises(Unauthorized, file_obj.unrestrictedTraverse('view/++widget++form.widgets.file/@@download'))
 
     def test_can_not_view(self):
         # register an adapter that will return False

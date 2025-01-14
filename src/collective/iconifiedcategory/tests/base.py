@@ -80,6 +80,7 @@ class BaseTestCase(unittest.TestCase):
         )
 
     def tearDown(self):
+        login(self.portal, 'adminuser')
         elements = ('file_txt', 'image')
         for element in elements:
             if element in self.portal:
