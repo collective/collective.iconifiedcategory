@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.68 (unreleased)
+0.68 (2025-02-03)
 -----------------
 
 - Fixed `CategorizedObjectAdapter.can_view` default implementation that was
