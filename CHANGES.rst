@@ -4,8 +4,8 @@ Changelog
 0.69 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed typo in `Show preview?` french translation.
+  [gbastien]
 
 0.68 (2025-02-03)
 -----------------
