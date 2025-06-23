@@ -8,11 +8,17 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up pyenv and Python
+      - name: Setup Env
+        run: |
+          sudo apt-get update -qqy
+          sudo apt-get install -y libjpeg8-dev libbz2-dev
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Set up pyenvi and Python
         uses: "gabrielfalcao/pyenv-action@v14"
         with:
           default: 2.7.18
@@ -44,10 +50,16 @@ jobs:
         run: |
           bin/test -t !robot
   coverage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Setup Env
+        run: |
+          sudo apt-get update -qqy
+          sudo apt-get install -y libjpeg8-dev libbz2-dev
+          pip install --upgrade pip
+          pip install -r requirements.txt
       - name: Set up pyenv and Python
         uses: "gabrielfalcao/pyenv-action@v14"
         with:
