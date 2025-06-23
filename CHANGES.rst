@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.69 (unreleased)
+0.69 (2025-06-23)
 -----------------
 
 - Fixed typo in `Show preview?` french translation.
