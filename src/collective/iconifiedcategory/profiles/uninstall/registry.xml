@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<registry>
+
+  <records interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySettings" 
+           remove="True" />
+
+  <records prefix="plone.bundles/iconifiedcategory"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           remove="True" />
+
+  <records prefix="plone.bundles/iconifiedcategory-dynamic"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           remove="True" />
+
+</registry>

@@ -32,14 +32,16 @@ def create_config(context):
             type='ContentCategoryGroup',
             title='Group {0}'.format(idx),
             container=config,
-            to_be_printed_activated=True
+            to_be_printed_activated=True,
+            enabled=True,
         )
         groups.append(obj)
     for group_idx, group in enumerate(groups):
         for cat_idx in reversed(list(range(1, 4))):
             filename = u'icône{0}.png'.format(cat_idx)
-            f = open(os.path.join(current_path, 'tests', filename), 'r')
+            f = open(os.path.join(current_path, 'tests', filename), 'rb')
             icon = namedfile.NamedBlobFile(f.read(), filename=filename)
+            f.close()
             title = 'Category {0}-{1}'.format(group_idx + 1, cat_idx)
             category = api.content.create(
                 type='ContentCategory',
@@ -47,6 +49,7 @@ def create_config(context):
                 container=group,
                 icon=icon,
                 predefined_title=title,
+                enabled=True,
             )
             for idx in reversed(list(range(1, 3))):
                 api.content.create(
@@ -57,4 +60,5 @@ def create_config(context):
                         idx,
                     ),
                     container=category,
+                    enabled=True,
                 )

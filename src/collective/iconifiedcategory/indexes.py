@@ -10,7 +10,7 @@ from Products.PluginIndexes.unindex import _marker
 @indexer(ICategorize)
 def enabled(obj):
     """
-    Indexes the 'sortable_title 'enabled' attribute.
+    Indexes the 'enabled' attribute.
     """
     return obj.enabled
 

@@ -10,7 +10,7 @@ from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing.interfaces import TEST_USER_NAME
 from Products.CMFCore.permissions import View
-from Products.Five import zcml
+from zope.configuration import xmlconfig
 
 
 class TestCategorizedChildView(BaseTestCase):
@@ -119,17 +119,17 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
     def test_infos(self):
         self.viewinfos.update()
         infos = self.viewinfos.infos()
-        self.assertItemsEqual([self.viewinfos.category_uid], list(infos.keys()))
-        self.assertItemsEqual(
-            ['file.txt', 'ic\xc3\xb4ne1.png'],
+        self.assertCountEqual([self.viewinfos.category_uid], list(infos.keys()))
+        self.assertCountEqual(
+            ['file.txt', 'icône1.png'],
             [e['title'] for e in infos[self.viewinfos.category_uid]],
         )
 
         self.viewinfos.category_uid = self.config['group-1']['category-1-2'].UID()
         self.viewinfos.update()
         infos = self.viewinfos.infos()
-        self.assertItemsEqual([self.viewinfos.category_uid], list(infos.keys()))
-        self.assertItemsEqual(
+        self.assertCountEqual([self.viewinfos.category_uid], list(infos.keys()))
+        self.assertCountEqual(
             ['A', 'B'],
             [e['title'] for e in infos[self.viewinfos.category_uid]],
         )
@@ -232,7 +232,7 @@ class TestCanViewAwareDownload(BaseTestCase):
 
     def test_can_not_view(self):
         # register an adapter that will return False
-        zcml.load_config('testing-adapters.zcml', collective_iconifiedcategory)
+        xmlconfig.file("testing-adapters.zcml", package=collective_iconifiedcategory)
         file_obj = self.portal['file_txt']
         img_obj = self.portal['image']
         # downloadable when element is not confidential
@@ -267,5 +267,3 @@ class TestCanViewAwareDownload(BaseTestCase):
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@download'))
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@display-file'))
         self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
-        # cleanUp zmcl.load_config because it impacts other tests
-        zcml.cleanUp()

@@ -48,8 +48,9 @@ class ICategoryGroup(IFolder):
     )
 
 
+@implementer(ICategoryGroup)
 class CategoryGroup(Container):
-    implementer(ICategoryGroup)
+    """"""
 
 
 class CategoryGroupSchemaPolicy(DexteritySchemaPolicy):

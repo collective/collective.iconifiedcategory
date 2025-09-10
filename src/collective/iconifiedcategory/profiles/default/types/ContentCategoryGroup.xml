@@ -3,7 +3,7 @@
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
   <property name="title" i18n:translate="">ContentCategoryGroup</property>
   <property name="description" i18n:translate=""></property>
-  <property name="icon_expr"></property>
+  <property name="icon_expr">string:contenttype/folder</property>
   <property name="factory">CategoryGroup</property>
   <property name="add_view_expr">string:${folder_url}/++add++ContentCategoryGroup</property>
   <property name="link_target"></property>
@@ -21,6 +21,7 @@
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>
   <property name="klass">collective.iconifiedcategory.content.categorygroup.CategoryGroup</property>
+  <property name="schema">collective.iconifiedcategory.content.categorygroup.ICategoryGroup</property>
   <property name="schema_policy">category_group_schema_policy</property>
   <property name="behaviors" purge="false">
     <element value="plone.app.content.interfaces.INameFromTitle"/>

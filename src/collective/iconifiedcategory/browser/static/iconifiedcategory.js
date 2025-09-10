@@ -8,7 +8,7 @@ IconifiedCategory.defineDefaultTitle = function(select, init_time=false) {
   }
   /* title field id depends on used behavior (basic, dublincore, ...)
      so we get the id beginning with 'form-widgets-' and ending with '-title' */
-  var field = container.find('input#[id^=form-widgets-][id$=-title]');
+  var field = container.find("input[id^='form-widgets-'][id$='-title']");
   if (init_time && field.val()) {
     return;
   }
@@ -23,27 +23,9 @@ IconifiedCategory.initializeCategoryWidget = function(obj) {
 };
 
 initializeIconifiedCategoryWidget = function () {
-
-jQuery(function($) {
-
-  IconifiedCategory.initializeCategoryWidget($('#form_widgets_IIconifiedCategorization_content_category'));
-
-  $('.tooltip').tooltipster({
-    functionInit: function(origin, content) {
-      var id = $(origin).attr('href');
-      return $(id).html();
-    },
-    contentAsHTML: true,
-    interactive: true,
-    theme: 'tooltipster-shadow',
-    position: 'bottom',
-    speed: 100,
-    delay: 0,
-    animation: 'fade'
-    });
-
-});
-
+  jQuery(function($) {
+    IconifiedCategory.initializeCategoryWidget($('#form_widgets_IIconifiedCategorization_content_category'));
+  });
 };
 
 initializeIconifiedActions = function () {

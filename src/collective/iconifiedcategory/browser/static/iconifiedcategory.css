@@ -1,16 +1,3 @@
-.icons-on .contenttype-contentcategoryconfiguration,
-.icons-on .contenttype-contentcategorygroup,
-.icons-on .contenttype-contentcategory {
-    background: transparent url("../contenttypes-sprite.png") no-repeat scroll 0 -644px;
-}
-.icons-on .contenttype-contentcategoryconfiguration,
-.icons-on .contenttype-contentcategorygroup,
-.icons-on .contenttype-contentcategory {
-    display: inline-block;
-    line-height: 2em;
-    padding-left: 20px !important;
-}
-
 #content div.categorized-elements {
     display: inline-block;
 }
@@ -37,9 +24,10 @@ div.categorized-elements a.deactivated > span {
     padding-bottom: 0.3em;
     border-radius: 5px;
     /* force height and display for Chrome */
-    height: 16px;
+    height: 1.5em;
     display: inherit;
     line-height: 1em;
+    text-decoration: none;
 }
 
 p.warn_filesize,
@@ -223,29 +211,52 @@ div.tooltipster-categorized-elements span.iconified-publishable.deactivated {
     color: #C97200!important;
 }
 
+
+#content .iconified-listing td[class^="iconified-"] a::before,
+div.tooltipster-categorized-elements span[class^="iconified-"]::before {
+  content: "";
+  display: inline-block;
+  font-weight: bolder;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
 #content .iconified-listing td.iconified-print a:before,
 div.tooltipster-categorized-elements span.iconified-print:before {
-    content: "\f02f";
+    -webkit-mask-image: url("++plone++bootstrap-icons/printer.svg");
+    mask-image: url("++plone++bootstrap-icons/printer.svg");
 }
 
 #content .iconified-listing td.iconified-publishable a:before,
 div.tooltipster-categorized-elements span.iconified-publishable:before {
-    content: "\f093";
+    -webkit-mask-image: url("++plone++bootstrap-icons/send.svg");
+    mask-image: url("++plone++bootstrap-icons/send.svg");
 }
 
 #content .iconified-listing td.iconified-confidential a:before,
 div.tooltipster-categorized-elements span.iconified-confidential:before {
-    content: "\f3c1";
+    -webkit-mask-image: url("++plone++bootstrap-icons/incognito.svg");
+    mask-image: url("++plone++bootstrap-icons/incognito.svg");
 }
 
 #content .iconified-listing td.iconified-confidential a.active:before,
 div.tooltipster-categorized-elements span.iconified-confidential.active:before {
-    content: "\f023";
+    -webkit-mask-image: url("++plone++bootstrap-icons/lock.svg");
+    mask-image: url("++plone++bootstrap-icons/lock.svg");
 }
 
 #content .iconified-listing td.iconified-signed a:before,
 div.tooltipster-categorized-elements span.iconified-signed:before {
-    content: "\f044";
+    -webkit-mask-image: url("++plone++bootstrap-icons/pen.svg");
+    mask-image: url("++plone++bootstrap-icons/pen.svg");
 }
 
 div.tooltipster-categorized-elements div.categorized_elements_details {

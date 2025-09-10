@@ -16,8 +16,9 @@ from Products.Five import BrowserView
 from zope.interface import implementer
 
 
+@implementer(IIconifiedCategorySubtyper)
 class IconifiedCategoryPublicSubtyper(BrowserView):
-    implementer(IIconifiedCategorySubtyper)
+    """"""
 
     def __init__(self, context, request):
         self.context = aq_base(context)
@@ -43,6 +44,7 @@ class IconifiedCategoryPublicSubtyper(BrowserView):
 
 
 class IconifiedCategorySubtyper(IconifiedCategoryPublicSubtyper):
+    """"""
 
     @property
     def have_categorized_elements(self):

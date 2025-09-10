@@ -17,8 +17,8 @@ except ImportError:
 from zope.interface import implementer
 
 
+@implementer(IIconifiedCategoryChangedEvent)
 class IconifiedCategoryChangedEvent(ObjectEvent):
-    implementer(IIconifiedCategoryChangedEvent)
 
     def __init__(self, object, category, sort=False):
         super(IconifiedCategoryChangedEvent, self).__init__(object)
@@ -26,8 +26,8 @@ class IconifiedCategoryChangedEvent(ObjectEvent):
         self.sort = sort
 
 
+@implementer(IIconifiedAttrChangedEvent)
 class IconifiedAttrChangedEvent(ObjectEvent):
-    implementer(IIconifiedAttrChangedEvent)
 
     def __init__(self, object, attr_name, old_values, new_values, is_created=False):
         super(IconifiedAttrChangedEvent, self).__init__(object)
@@ -37,5 +37,6 @@ class IconifiedAttrChangedEvent(ObjectEvent):
         self.is_created = is_created
 
 
+@implementer(ICategorizedElementsUpdatedEvent)
 class CategorizedElementsUpdatedEvent(ObjectEvent):
-    implementer(ICategorizedElementsUpdatedEvent)
+    """"""

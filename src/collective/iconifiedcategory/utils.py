@@ -409,6 +409,8 @@ def calculate_filesize(size):
 
 
 def warn_filesize(size):
+    if size is None:
+        return False
     filesizelimit = api.portal.get_registry_record(
         'filesizelimit',
         interface=IIconifiedCategorySettings,
@@ -522,7 +524,15 @@ def _modified(obj, asdatetime=True):
     """Returns max value between obj.modified() and obj._p_mtime,
        in case an annotation is changed on obj, obj._p_mtime is changed,
        not obj.modified()."""
-    modified = max(float(obj.modified()), obj._p_mtime)
+    values = []
+    dc_modified = obj.modified()
+    if dc_modified:
+        values.append(float(dc_modified))
+    if obj._p_mtime:
+        values.append(obj._p_mtime)
+    if not values:
+        return None
+    modified = max(values)
     if asdatetime:
         modified = datetime.fromtimestamp(modified)
     return modified

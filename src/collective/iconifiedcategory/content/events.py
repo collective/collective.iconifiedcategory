@@ -16,10 +16,13 @@ from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from imio.helpers.cache import invalidate_cachekey_volatile_for
 from plone import api
+from plone.api import exc
+from plone.resource.interfaces import IResourceDirectory
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.statusmessages.interfaces import IStatusMessage
 from zExceptions import Redirect
 from zope.component import getAdapter
+from zope.component import getUtility
 from zope.event import notify
 from zope.lifecycleevent import IObjectAddedEvent
 from zope.lifecycleevent import IObjectRemovedEvent
@@ -179,6 +182,11 @@ def categorized_content_container_moved(container, event):
     if container.REQUEST.get('defer_update_categorized_elements', False) or \
             container.REQUEST.get('defer_categorized_content_created_event', False):
         return
+    try:
+        # do not fail on Plone Site creation
+        api.portal.get()
+    except exc.CannotGetPortalError:
+        return
     pc = api.portal.get_tool('portal_catalog')
     brains = pc.unrestrictedSearchResults(
         path={'query': '/'.join(container.getPhysicalPath())},
@@ -241,11 +249,33 @@ def subcategory_moved(obj, event):
         raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
 
 
-def _cookCssResources():
-    # recook portal_css because we need
-    # iconified-category.css to be compiled again as it is cached
-    portal_css = api.portal.get_tool('portal_css')
-    portal_css.cookResources()
+def generate_iconifiedcategory_css(context):
+    css_tpl = (
+        ".{0} {{ padding-left: 1.4em; background: "
+        "transparent url('{1}') no-repeat top left; "
+        "background-size: contain; }}"
+    )
+    if not utils.has_config_root(context):
+        return ""
+
+    categories = utils.get_categories(context, sort_on=None, only_enabled=False)
+    rules = []
+    for category in categories:
+        obj = category._unrestrictedGetObject()
+        category_id = utils.calculate_category_id(obj)
+        url = f"{obj.absolute_url()}/@@download"
+        rules.append(css_tpl.format(utils.format_id_css(category_id), url))
+    return "\n".join(rules)
+
+
+def _cookCssResources(context=None):
+    portal = api.portal.get()
+    persistent = getUtility(IResourceDirectory, name="persistent")
+    if "collective.iconifiedcategory" not in persistent:
+        persistent.makeDirectory("collective.iconifiedcategory")
+    css = generate_iconifiedcategory_css(portal)
+    resdir = persistent["collective.iconifiedcategory"]
+    resdir.writeFile("collective-iconifiedcategory.css", css.encode("utf-8"))
 
 
 def category_created(category, event):

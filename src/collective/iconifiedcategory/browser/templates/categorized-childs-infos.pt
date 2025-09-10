@@ -4,7 +4,7 @@
              i18n:domain="collective.iconifiedcategory">
   <div class="tooltipster-categorized-elements">
     <label class="content-category">
-      <span i18n:translate="ContentCategory">Content category</span> : <span tal:content="python: infos[view.category_uid][0]['category_title']" />
+      <span i18n:translate="">Content category</span> : <span tal:content="python: infos[view.category_uid][0]['category_title']" />
     </label>
     <ul tal:define="number_of_columns python: view.number_of_columns(infos[view.category_uid])"
         tal:attributes="class python: 'many_elements_%d_columns' % view.number_of_columns(infos[view.category_uid])">
@@ -18,13 +18,13 @@
               tal:condition="python: element['preview_status'] == 'in_progress'">
           <img width="16px"
                height="16px"
-               tal:attributes="src string:${portal_url}/spinner_small.gif" />
+               tal:attributes="src string:${portal_url}/spinner_small.gif" /><!-- MIGRATION-PLONE6 -->
         </span>
         <span class="help"
               title="The document conversion failed"
               i18n:attributes="title"
               tal:condition="python: element['preview_status'] == 'conversion_error'">
-          <img tal:attributes="src string:${portal_url}/error_icon.png" />
+          <img tal:attributes="src string:${portal_url}/@@iconresolver/plone-error" />
         </span>
 
         <a class="categorized-element-title"
@@ -53,7 +53,7 @@
                                  alt element/category_title;
                                  title element/category_title" />
             <img src=""
-                 tal:attributes="src string:${portal_url}/file_icon.png" />
+                 tal:attributes="src string:${portal_url}/@@iconresolver/contenttype/file" />
             <span tal:content="element/title"
                   tal:attributes="title element/description"></span>
           </span>
@@ -102,7 +102,7 @@
             <a tal:attributes="href string:${portal_url}/${element_url}">
               <img i18n:attributes="title"
                    title="Download"
-                   tal:attributes="src string:${portal_url}/download_icon.png;" />
+                   tal:attributes="src string:${portal_url}/@@iconresolver/download;" />
             </a>
           </tal:show_download_icon>
         </div>

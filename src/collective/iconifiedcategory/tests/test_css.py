@@ -1,58 +1,76 @@
 # -*- coding: utf-8 -*-
 
+from collective.iconifiedcategory.content.events import _cookCssResources
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
+from plone.app.theming.interfaces import IThemeSettings
+from plone.resource.interfaces import IResourceDirectory
+from Products.CMFPlone.resources.browser.resource import REQUEST_CACHE_KEY
+from Products.CMFPlone.resources.browser.resource import StylesView
+from zope.component import getUtility
+
+import re
+import transaction
 
 
 class TestIconifiedCategoryCSS(BaseTestCase):
 
-    def test__call__(self):
-        view = self.portal.restrictedTraverse('@@collective-iconifiedcategory.css')
-        css = view()
-        self.assertTrue(".plone-config-group-1-category-1-1 " in css)
-        self.assertTrue(u"background: transparent url("
-                        u"'http://nohost/plone/config/group-1/category-1-1/@@download')"
-                        in css)
-        self.assertTrue(".plone-config-group-2-category-2-2 " in css)
-        self.assertTrue(u"background: transparent url("
-                        u"'http://nohost/plone/config/group-2/category-2-2/@@download')"
-                        in css)
-        self.assertTrue(".plone-config-group-2-category-2-3 " in css)
-        self.assertTrue(u"background: transparent url("
-                        u"'http://nohost/plone/config/group-2/category-2-3/@@download')"
-                        in css)
-
-        # delete the config
-        api.content.delete(self.portal['file_txt'])
-        api.content.delete(self.portal['image'])
-        api.content.delete(self.portal['config'])
-        self.assertEqual(view(), '')
-
-    def test_css_recooked(self):
-        """portal_css is recooked when a category is added/moved/removed."""
-        def _current_css_cachekey():
-            cachekey = [k for k, v in list(self.portal.portal_css.concatenatedResourcesByTheme['Plone Default'].items())
-                        if 'collective-iconifiedcategory.css' in v and '-cachekey-' in k][0]
-            return cachekey
-        # portal_css is cooked, the collective-iconfiedcategory.css is stored in a cachekey cooked css
-        cachekey1 = _current_css_cachekey()
-        # add a category, css resources are cooked again
-        category = api.content.create(
-            type='ContentCategory',
-            title='Brand new category',
-            icon=self.icon,
-            container=self.portal.config['group-1'],
+    def setUp(self):
+        super(TestIconifiedCategoryCSS, self).setUp()
+        api.portal.set_registry_record(
+            interface=IThemeSettings,
+            name="custom_css",
+            value=" ",
         )
-        cachekey2 = _current_css_cachekey()
-        self.assertNotEqual(cachekey1, cachekey2)
 
-        # rename the category so it is moved, css resources are cooked again
-        category_parent = category.aq_inner.aq_parent
-        category_parent.manage_renameObject(category.getId(), 'renamed_id')
-        cachekey3 = _current_css_cachekey()
-        self.assertNotEqual(cachekey2, cachekey3)
+    def _bundle_infos(self):
+        styles = StylesView(self.portal, self.layer["request"], None)
+        styles.update()
+        html = styles.render()
+        m = re.search(r'<link[^>]+data-bundle="plonecustomcss"[^>]+>', html)
+        self.assertIsNotNone(m)
+        tag = m.group(0)
+        href_m = re.search(r'href="([^"]+)"', tag)
+        href = href_m.group(1)
+        hash_m = re.search(r"\+\+webresource\+\+([^/]+)/", href)
+        self.assertIsNotNone(hash_m)
+        bundle_hash = hash_m.group(1)
+        return href, bundle_hash
 
-        # remove the category, css resources are cooked again
-        api.content.delete(category)
-        cachekey4 = _current_css_cachekey()
-        self.assertNotEqual(cachekey3, cachekey4)
+    def _read_dynamic_css(self):
+        persistent = getUtility(IResourceDirectory, name="persistent")
+        pkgdir = persistent["collective.iconifiedcategory"]
+        return pkgdir.readFile("collective-iconifiedcategory.css").decode("utf-8")
+
+    def test_css_file_is_generated(self):
+        _cookCssResources(self.portal)
+        css = self._read_dynamic_css()
+        self.assertIn(".plone-config-group-1-category-1-1 ", css)
+        self.assertIn("http://nohost/plone/config/group-1/category-1-1/@@download", css)
+        self.assertIn(".plone-config-group-2-category-2-2 ", css)
+        self.assertIn("http://nohost/plone/config/group-2/category-2-2/@@download", css)
+        self.assertIn(".plone-config-group-2-category-2-3 ", css)
+        self.assertIn("http://nohost/plone/config/group-2/category-2-3/@@download", css)
+        api.content.delete(self.portal["file_txt"])
+        api.content.delete(self.portal["image"])
+        api.content.delete(self.portal["config"])
+        _cookCssResources(self.portal)
+        css = self._read_dynamic_css()
+        self.assertEqual(css.strip(), "")
+
+    def test_bundle_url_changes_on_cook(self):
+        _cookCssResources(self.portal)
+        transaction.commit()
+        href1, hash1 = self._bundle_infos()
+        self.assertIn("++webresource++", href1)
+        api.content.create(
+            type="ContentCategory",
+            title="Brand new category",
+            icon=self.icon,
+            container=self.portal.config["group-1"],
+        )
+        _cookCssResources(self.portal)
+        transaction.commit()
+        setattr(self.request, REQUEST_CACHE_KEY, None)
+        href2, hash2 = self._bundle_infos()
+        self.assertNotEqual(hash1, hash2)

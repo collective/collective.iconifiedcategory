@@ -255,9 +255,14 @@ class CanViewAwareFNWDownload(fnw_Download):
 class ImageDataModifiedImageScaling(ImageScaling):
     """ """
 
-    def modified(self):
+    def modified(self, fieldname=None):
         """Returns the stored file _p_mtime instead content _p_mtime."""
         context = aq_base(self.context)
-        value = IPrimaryFieldInfo(context).value
-        date = DateTime(value._p_mtime)
+        if fieldname is not None:
+            field = getattr(context, fieldname, None)
+            modified = getattr(field, "modified", None)
+            date = DateTime(modified or context._p_mtime)
+        else:
+            value = IPrimaryFieldInfo(context).value
+            date = DateTime(value._p_mtime)
         return date.millis()

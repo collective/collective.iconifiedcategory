@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<object name="portal_catalog">
+
+    <column value="content_category_uid" remove="True"/>
+    <index name="content_category_uid" meta_type="KeywordIndex" remove="True"/>
+    <index name="enabled" meta_type="BooleanIndex" remove="True"/>
+
+</object>

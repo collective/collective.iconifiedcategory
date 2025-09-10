@@ -15,11 +15,11 @@ from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.Five import BrowserView
-# from z3c.json.interfaces import IJSONWriter  # MIGRATION-PLONE6
 from zope.component import getAdapter
-from zope.component import getUtility
 from zope.event import notify
 from zope.i18n import translate
+
+import json
 
 
 class BaseView(BrowserView):
@@ -44,8 +44,6 @@ class BaseView(BrowserView):
                1 --> set to True;
                2 --> error;
            """
-        # writer = getUtility(IJSONWriter)  # MIGRATION-PLONE6
-        writer = {}
         values = {'msg': u'Values have been set'}
         try:
             self.request.response.setHeader('content-type',
@@ -57,10 +55,10 @@ class BaseView(BrowserView):
         except Exception:
             values['status'] = 2
             values['msg'] = self._translate(_('Error during process'))
-        return writer.write(values)
+        return json.dumps(values)
 
     def get_current_values(self):
-        return {k: getattr(self.context, k)
+        return {k: getattr(self.context, k, None)
                 for k in list(self.attribute_mapping.keys())}
 
     def get_values(self):

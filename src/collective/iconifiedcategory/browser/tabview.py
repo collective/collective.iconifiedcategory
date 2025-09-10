@@ -128,8 +128,8 @@ class CategorizedContent(object):
         return portal_url + '/' + suffix
 
 
+@implementer(ICategorizedTable)
 class CategorizedTable(ExtendedCSSTable, BrowserView):
-    implementer(ICategorizedTable)
 
     cssClasses = {'table': 'listing iconified-listing nosort'}
 
@@ -192,7 +192,7 @@ class TitleColumn(BaseColumn):
             target = '_blank'
         return pattern.format(
             link=url,
-            title=html.escape(getattr(content, self.attrName).decode('utf-8')),
+            title=html.escape(getattr(content, self.attrName)),
             target=target,
             icon=content.icon_url,
             category=html.escape(safe_unicode(content.category_title)),
@@ -393,19 +393,19 @@ class ActionColumn(BaseColumn):
         if _checkPermission(ModifyPortalContent, content):
             render.append(link.format(
                 href=u'{0}/edit'.format(content.getURL()),
-                src=u'{0}/edit.gif'.format(content.getURL()),
+                src=u'{0}/@@iconresolver/plone-edit'.format(content.getURL()),
                 title=_('Edit'),
             ))
         if content.download_url:
             render.append(link.format(
                 href=content.download_url,
-                src=u'{0}/download_icon.png'.format(content.getURL()),
+                src=u'{0}/@@iconresolver/download'.format(content.getURL()),
                 title=_('Download'),
             ))
         if content.preview_status == 'converted':
             render.append(link.format(
                 href=u'{0}/documentviewer#document/p1'.format(content.getURL()),
-                src=u'{0}/file_icon.png'.format(content.getURL()),
+                src=u'{0}/@@iconresolver/eye'.format(content.getURL()),
                 title=_('Preview'),
             ))
         return u''.join(render)

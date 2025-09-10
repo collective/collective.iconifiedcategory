@@ -18,6 +18,7 @@ from zope.i18n import translate
 
 
 class UpdateCategorizedElementsBase(BrowserView):
+    """"""
 
     def __init__(self, context, request):
         super(UpdateCategorizedElementsBase, self).__init__(context, request)
@@ -50,6 +51,7 @@ class UpdateCategorizedElementsBase(BrowserView):
 
 
 class UpdateCategorizedElementsConfig(UpdateCategorizedElementsBase):
+    """"""
 
     def index(self):
         brains = api.content.find(
@@ -60,9 +62,14 @@ class UpdateCategorizedElementsConfig(UpdateCategorizedElementsBase):
             self.notify_category_updated(b.getObject())
         self._finished()
 
+    __call__ = index
+
 
 class UpdateCategorizedElementsCategory(UpdateCategorizedElementsBase):
+    """"""
 
     def index(self):
         self.notify_category_updated(self.context)
         self._finished()
+
+    __call__ = index

@@ -15,10 +15,12 @@
     />
 
   <!-- views -->
-  <browser:view
-    name="collective-iconifiedcategory.css"
-    permission="zope2.View"
+  <browser:page
+    name="custom.css"
+    for="*"
     class=".css.IconifiedCategory"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    permission="zope.Public"
     />
 
   <browser:page
@@ -275,6 +277,7 @@
     class=".subtyper.IconifiedCategoryPublicSubtyper"
     permission="zope.Public"
     allowed_interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySubtyper"
+    allowed_attributes="on_config have_categorized_elements"
     />
 
   <browser:page
@@ -284,6 +287,7 @@
     class=".subtyper.IconifiedCategorySubtyper"
     permission="zope.Public"
     allowed_interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySubtyper"
+    allowed_attributes="on_config have_categorized_elements"
     />
 
   <!-- overrides for @@download and @@display-file views, permission is Public,

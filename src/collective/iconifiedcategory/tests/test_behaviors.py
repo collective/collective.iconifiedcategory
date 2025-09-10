@@ -14,14 +14,22 @@ from collective.iconifiedcategory.behaviors.iconifiedcategorization import IIcon
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import calculate_category_id
 from collective.iconifiedcategory.utils import get_category_object
+from io import BytesIO
 from plone import api
 from z3c.form import validator
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 from ZPublisher.HTTPRequest import FileUpload
 
-import cgi
 import unittest
+
+
+class FakeFieldStorage:
+    def __init__(self, data, filename, content_type):
+        self.file = BytesIO(data)
+        self.filename = filename
+        self.headers = {"content-type": content_type}
+        self.name = filename
 
 
 class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
@@ -276,20 +284,18 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         invariants = validator.InvariantsValidator(
             None, None, None, IIconifiedCategorization, None)
         # form and data in request
-        fieldstorage = cgi.FieldStorage()
-        fieldstorage.file = self.file.data
-        fieldstorage.filename = self.file.filename
+        file_obj = FakeFieldStorage(b"Hello Plone 6!", "File.pdf", "text/plain")
         data = {}
         data['content_category'] = content_category_id
         request = self.portal.REQUEST
-        request.form['form.widgets.file'] = FileUpload(fieldstorage)
+        request.form["form.widgets.file"] = FileUpload(file_obj)
         view = self.portal.restrictedTraverse('folder_contents')
         request['PUBLISHED'] = view
         self.assertFalse(invariants.validate(data))
         # PDF needed
         category.only_pdf = True
         errors = invariants.validate(data)
-        self.assertEqual(errors[0].message, u'You must select a PDF file!')
+        self.assertEqual(str(errors[0]), u'You must select a PDF file!')
         request.form['form.widgets.file'].headers['content-type'] = 'application/pdf'
         # no file in request
         request.form = {}
@@ -308,6 +314,6 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         # PDF needed
         category.only_pdf = True
         errors = invariants.validate(data)
-        self.assertEqual(errors[0].message, u'You must select a PDF file!')
+        self.assertEqual(str(errors[0]), u'You must select a PDF file!')
         obj.file = self.file_pdf
         self.assertFalse(invariants.validate(data))

@@ -8,8 +8,8 @@ from collective.iconifiedcategory.browser.actionview import BaseView
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
-# from z3c.json.interfaces import IJSONReader  # MIGRATION-PLONE6
-from zope.component import getUtility
+
+import json
 
 
 class TestBaseView(BaseTestCase):
@@ -17,11 +17,9 @@ class TestBaseView(BaseTestCase):
     def test__call__(self):
         obj = self.portal['file_txt']
         view = BaseView(obj, self.portal.REQUEST)
-        # reader = getUtility(IJSONReader)  # MIGRATION-PLONE6
-        reader = {}
 
         # when attribute_mapping is not set, it does not work
-        result = reader.read(view())
+        result = json.loads(view())
         self.assertEqual(result[u'status'], 2)
         self.assertEqual(result[u'msg'], u'No values to set')
 
@@ -29,14 +27,14 @@ class TestBaseView(BaseTestCase):
         view.attribute_mapping = {'title': 'action-value-title'}
         self.portal.REQUEST.set('action-value-title', 'My new title')
         obj.manage_permission(ModifyPortalContent, roles=[])
-        result = reader.read(view())
+        result = json.loads(view())
         self.assertEqual(result[u'status'], 2)
         self.assertEqual(result[u'msg'], u'Error during process')
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
 
         # change title
         self.assertEqual(obj.title, u'file.txt')
-        result = reader.read(view())
+        result = json.loads(view())
         self.assertEqual(result[u'status'], -1)
         self.assertEqual(result[u'msg'], u'Values have been set')
         self.assertEqual(obj.title, 'My new title')

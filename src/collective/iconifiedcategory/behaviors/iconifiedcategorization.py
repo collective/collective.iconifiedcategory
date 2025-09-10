@@ -13,14 +13,53 @@ from collective.iconifiedcategory.utils import get_category_object
 from collective.iconifiedcategory.utils import validateFileIsPDF
 from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
 from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
+from plone.app.z3cform.interfaces import IPloneFormLayer
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
+from plone.z3cform.fieldsets.extensible import FormExtender
+from plone.z3cform.fieldsets.interfaces import IFormExtender
+from z3c.form.field import Fields
+from z3c.form.interfaces import IAddForm
+from z3c.form.interfaces import IEditForm
 from zope import schema
 from zope.component import adapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import invariant
 from zope.interface import provider
+
+
+def _put_field_first(form, name):
+    if name not in form.fields:
+        return
+    ordered = [name] + [n for n in form.fields.keys() if n != name]
+    new_fields = Fields()
+    for n in ordered:
+        new_fields += form.fields.select(n)  # Fields
+    form.fields = new_fields
+
+
+@implementer(IFormExtender)
+@adapter(Interface, IPloneFormLayer, IEditForm)
+class FileImageEditExtender(FormExtender):
+    """Place content_category on top for File/Image content types"""
+
+    def update(self):
+        pt = getattr(self.context, "portal_type", None)
+        if pt not in ("File", "Image"):
+            return
+        _put_field_first(self.form, "IIconifiedCategorization.content_category")
+
+
+@implementer(IFormExtender)
+@adapter(Interface, IPloneFormLayer, IAddForm)
+class FileImageAddExtender(FormExtender):
+    """Place content_category on top for File/Image content types"""
+    def update(self):
+        pt = getattr(self.form, "portal_type", None)
+        if pt not in ("File", "Image"):
+            return
+        _put_field_first(self.form, "IIconifiedCategorization.content_category")
 
 
 @provider(IFormFieldProvider)
@@ -67,6 +106,10 @@ class IconifiedCategorization(object):
     def default_titles(self):
         return None
 
+    @default_titles.setter
+    def default_titles(self, value):
+        return
+
     @property
     def content_category(self):
         return getattr(self.context, 'content_category', None)
@@ -87,21 +130,21 @@ class IconifiedCategorization(object):
         category_group = current_category.get_category_group(current_category)
         # to_print
         if category_group.to_be_printed_activated and \
-           self.context.to_print == current_category.to_print:
+           getattr(self.context, "to_print", None) == current_category.to_print:
             self.context.to_print = new_category.to_print
         # confidential
         if category_group.confidentiality_activated and \
-           self.context.confidential == current_category.confidential:
+           getattr(self.context, "confidential", None) == current_category.confidential:
             self.context.confidential = new_category.confidential
         # to_sign/signed
         if category_group.signed_activated and \
-           self.context.to_sign == current_category.to_sign and \
-           self.context.signed == current_category.signed:
+           getattr(self.context, "to_sign", None) == current_category.to_sign and \
+           getattr(self.context, "signed", None) == current_category.signed:
             self.context.to_sign = new_category.to_sign
             self.context.signed = new_category.signed
         # publishable
         if category_group.publishable_activated and \
-           self.context.publishable == current_category.publishable:
+           getattr(self.context, "publishable", None) == current_category.publishable:
             self.context.publishable = new_category.publishable
 
     @content_category.setter
@@ -118,18 +161,38 @@ class IconifiedCategorization(object):
     def to_print(self):
         return getattr(aq_base(self.context), 'to_print', False)
 
+    @to_print.setter
+    def to_print(self, value):
+        setattr(self.context, 'to_print', bool(value))
+
     @property
     def confidential(self):
         return getattr(aq_base(self.context), 'confidential', False)
+
+    @confidential.setter
+    def confidential(self, value):
+        setattr(self.context, 'confidential', bool(value))
 
     @property
     def to_sign(self):
         return getattr(aq_base(self.context), 'to_sign', False)
 
+    @to_sign.setter
+    def to_sign(self, value):
+        setattr(self.context, 'to_sign', bool(value))
+
     @property
     def signed(self):
         return getattr(aq_base(self.context), 'signed', False)
 
+    @signed.setter
+    def signed(self, value):
+        setattr(self.context, 'signed', bool(value))
+
     @property
     def publishable(self):
         return getattr(aq_base(self.context), 'publishable', False)
+
+    @publishable.setter
+    def publishable(self, value):
+        setattr(self.context, 'publishable', bool(value))

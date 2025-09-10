@@ -17,25 +17,25 @@ class BaseTestCase(unittest.TestCase):
     @property
     def image(self):
         current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'icône1.png'), 'r')
+        f = open(os.path.join(current_path, 'icône1.png'), 'rb')
         return namedfile.NamedBlobFile(f.read(), filename=u'icône1.png')
 
     @property
     def file(self):
         current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'file.txt'), 'r')
+        f = open(os.path.join(current_path, 'file.txt'), 'rb')
         return namedfile.NamedBlobFile(f.read(), filename=u'file.txt')
 
     @property
     def file_pdf(self):
         current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'file.pdf'), 'r')
+        f = open(os.path.join(current_path, 'file.pdf'), 'rb')
         return namedfile.NamedBlobFile(f.read(), filename=u'file.pdf')
 
     @property
     def icon(self):
         current_path = os.path.dirname(__file__)
-        f = open(os.path.join(current_path, 'icône1.png'), 'r')
+        f = open(os.path.join(current_path, 'icône1.png'), 'rb')
         return namedfile.NamedBlobFile(f.read(), filename=u'icône1.png')
 
     def _modified(self, obj):
@@ -44,11 +44,12 @@ class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
         self.portal = self.layer['portal']
+        self.request = self.layer['request']
         self.config = self.portal['config']
         api.user.create(
             email='test@test.com',
             username='adminuser',
-            password='secret',
+            password='secret12',
         )
         api.user.grant_roles(
             username='adminuser',

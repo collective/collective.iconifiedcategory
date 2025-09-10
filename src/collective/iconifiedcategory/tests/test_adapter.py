@@ -7,7 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from collective.documentviewer.async import queueJob
+from collective.documentviewer.async_utils import queueJob
 from collective.documentviewer.config import CONVERTABLE_TYPES
 from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory import adapter
