@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layers>
+  <layer
+      name="collective.iconifiedcategory"
+      interface="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+      remove="True"
+      />
+</layers>

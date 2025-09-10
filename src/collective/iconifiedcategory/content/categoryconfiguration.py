@@ -16,5 +16,6 @@ class ICategoryConfiguration(IFolder):
     """Marker interface of ContentCategoryConfiguration"""
 
 
+@implementer(ICategoryConfiguration)
 class CategoryConfiguration(Container):
-    implementer(ICategoryConfiguration)
+    """"""

@@ -14,7 +14,6 @@
   <include package="collective.fontawesome" />
   <include package="collective.js.tooltipster" />
   <include package="collective.z3cform.select2" />
-  <!-- <include package="z3c.json" />  MIGRATION-PLONE6 -->
 
   <include package=".browser" />
   <include package=".content" />
@@ -52,6 +51,13 @@
       description="Post install import step from collective.iconifiedcategory"
       handler=".setuphandlers.post_test_install">
   </genericsetup:importStep>
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.iconifiedcategory uninstall"
+      directory="profiles/uninstall"
+      description="Uninstalls the collective.iconifiedcategory add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
 
   <utility
     provides="zope.schema.interfaces.IVocabularyFactory"

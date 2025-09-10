@@ -35,8 +35,8 @@ class ICategory(IFolder, ICategorize, IICImageScaleTraversable):
 alsoProvides(ICategory['icon'], IPrimaryField)
 
 
+@implementer(ICategory)
 class Category(Container):
-    implementer(ICategory)
 
     @property
     def category_uid(self):

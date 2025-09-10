@@ -13,4 +13,27 @@
     for="plone.dexterity.interfaces.IDexterityContent"
     marker=".iconifiedcategorization.IIconifiedCategorizationMarker" />
 
+  <adapter
+      factory=".iconifiedcategorization.FileImageAddExtender"
+      provides="plone.z3cform.fieldsets.interfaces.IFormExtender"
+      for="zope.interface.Interface
+           collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer
+           z3c.form.interfaces.IAddForm"
+      />
+
+  <adapter
+      factory=".iconifiedcategorization.FileImageEditExtender"
+      provides="plone.z3cform.fieldsets.interfaces.IFormExtender"
+      for="plone.app.contenttypes.interfaces.IFile
+           collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer
+           z3c.form.interfaces.IEditForm"
+      />
+  <adapter
+      factory=".iconifiedcategorization.FileImageEditExtender"
+      provides="plone.z3cform.fieldsets.interfaces.IFormExtender"
+      for="plone.app.contenttypes.interfaces.IImage
+           collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer
+           z3c.form.interfaces.IEditForm"
+      />
+
 </configure>

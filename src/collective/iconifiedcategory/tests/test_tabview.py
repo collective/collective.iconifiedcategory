@@ -41,19 +41,19 @@ class TestCategorizedTabView(BaseTestCase):
            - subcategory title."""
         category = api.content.create(
             type='ContentCategory',
-            title='Category \xc3\xa0',
+            title='Category à',
             icon=self.icon,
             container=self.portal.config['group-1'],
         )
         subcategory = api.content.create(
             type='ContentSubcategory',
-            title='Subcategory \xc3\xa0',
+            title='Subcategory à',
             icon=self.icon,
             container=category,
         )
         document = api.content.create(
             type='Document',
-            title='Document \xc3\xa0',
+            title='Document à',
             container=self.portal,
             content_category=utils.calculate_category_id(category),
             to_print=False,
@@ -61,7 +61,7 @@ class TestCategorizedTabView(BaseTestCase):
         )
         document2 = api.content.create(
             type='Document',
-            title='Document \xc3\xa0',
+            title='Document à',
             container=self.portal,
             content_category=utils.calculate_category_id(subcategory),
             to_print=False,
@@ -78,7 +78,6 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertTrue(document2.title in result)
 
     def test_table_render_when_preview_enabled(self):
-        self.portal.portal_properties.site_properties.typesUseViewActionInListings = ()
         # enable collective.documentviewer so document is convertible
         gsettings = GlobalSettings(self.portal)
         gsettings.auto_layout_file_types = list(CONVERTABLE_TYPES.keys())

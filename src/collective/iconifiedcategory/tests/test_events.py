@@ -14,7 +14,7 @@ from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
 from Products.CMFPlone.utils import base_hasattr
-from Products.Five import zcml
+from Zope2.App import zcml
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 

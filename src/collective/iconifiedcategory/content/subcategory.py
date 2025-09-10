@@ -18,8 +18,8 @@ class ISubcategory(IFolder, ICategorize):
     pass
 
 
+@implementer(ISubcategory)
 class Subcategory(Item):
-    implementer(ISubcategory)
 
     @property
     def category_uid(self):

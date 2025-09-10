@@ -12,7 +12,7 @@
     category="Products"
     condition_expr=""
     url_expr="string:${portal_url}/@@iconifiedcategory-controlpanel"
-    icon_expr="string:$portal_url/maintenance_icon.png"
+    icon_expr=""
     visible="True"
     i18n:attributes="title">
       <permission>Manage portal</permission>

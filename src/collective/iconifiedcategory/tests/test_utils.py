@@ -400,7 +400,7 @@ class TestUtils(BaseTestCase):
                                             sort_on='getObjPositionInParent')],
             [document.UID(), document2.UID()])
         # change document position
-        self.portal.folder_position(position='up', id=document2.getId())
+        self.portal.moveObjectsUp([document2.getId()])
         # sort_on='getObjPositionInParent'
         self.assertEqual(
             [elt['UID'] for elt in
@@ -509,6 +509,8 @@ class TestUtils(BaseTestCase):
             to_print=False,
             confidential=False,
         )
+
+        utils.get_categories(document1, the_objects=True)
 
         self.assertEqual(
             [cat.id for cat in utils.get_categories(document1, the_objects=True)],
