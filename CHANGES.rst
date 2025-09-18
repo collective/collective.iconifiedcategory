@@ -6,6 +6,8 @@ Changelog
 
 - Fix invalid jQuery selector for default Title field filling
   [laulaz]
+- Added "Approved?" column to the categorized elements table
+  [chris-adam]
 
 
 0.69 (2025-06-23)

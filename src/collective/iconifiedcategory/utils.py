@@ -465,6 +465,18 @@ def signed_message(obj=None, to_sign_value=None, signed_value=None):
         return messages[signed_value]
 
 
+def approved_message(obj=None, approved_value=None):
+    """Return the approved message for the given object"""
+    messages = {
+        True: u'Element has been approved',
+        False: u'Element must be approved',
+        None: u'Element doesn\'t need to be approved',
+    }
+    if obj:
+        approved_value = getattr(obj, 'approved', None)
+    return messages[approved_value]
+
+
 def boolean_message(obj=None, attr_name='', value=None):
     """Return the default boolean status message for the given object"""
     messages = {

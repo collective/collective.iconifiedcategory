@@ -6,6 +6,7 @@ from Acquisition import aq_inner
 from collections import OrderedDict
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.interfaces import IIconifiedContent
+from collective.iconifiedcategory.utils import approved_message
 from collective.iconifiedcategory.utils import boolean_message
 from collective.iconifiedcategory.utils import get_categorized_elements
 from collective.iconifiedcategory.utils import print_message
@@ -185,6 +186,12 @@ class CategorizedChildInfosView(BrowserView):
                 css_classes.append('deactivated')
             elif element['signed'] is True:
                 css_classes.append('active')
+        elif functionnality == "approved":
+            css_classes.append("iconified-approved")
+            if element['approved'] is None:
+                css_classes.append('deactivated')
+            elif element['approved'] is True:
+                css_classes.append('active')
         else:
             # default behavior
             css_classes.append("iconified-{0}".format(functionnality))
@@ -200,6 +207,8 @@ class CategorizedChildInfosView(BrowserView):
         elif functionnality == "signed":
             msg = signed_message(to_sign_value=element['to_sign'],
                                  signed_value=element['signed'])
+        elif functionnality == "approved":
+            msg = approved_message(approved_value=element['approved'])
         else:
             # default behavior, a boolean message
             msg = boolean_message(attr_name=functionnality,

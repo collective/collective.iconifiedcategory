@@ -24,6 +24,7 @@ class FormMixin(object):
         'to_print': 'to_be_printed_activated',
         'to_sign': 'signed_activated',
         'signed': 'signed_activated',
+        'approved': 'approved_activated',
     }
 
     @property
@@ -64,6 +65,7 @@ class BaseView(DefaultView):
         'to_print': 'to_be_printed_activated',
         'to_sign': 'signed_activated',
         'signed': 'signed_activated',
+        'approved': 'approved_activated',
     }
 
     def updateWidgets(self):

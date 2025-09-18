@@ -13,6 +13,7 @@ from collective.eeafaceted.z3ctable.columns import MemberIdColumn
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.config import get_sort_categorized_tab
+from collective.iconifiedcategory.interfaces import ICategorizedApproved
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
 from collective.iconifiedcategory.interfaces import ICategorizedPublishable
@@ -51,6 +52,8 @@ class CategorizedTabView(BrowserView):
             alsoProvides(self.table, ICategorizedPublishable)
         if self.show('signed'):
             alsoProvides(self.table, ICategorizedSigned)
+        if self.show('approved'):
+            alsoProvides(self.table, ICategorizedApproved)
 
     def _config(self):
         """ """
@@ -365,6 +368,21 @@ class SignedColumn(IconClickableColumn):
 
     def is_deactivated(self, content):
         return not getattr(content, 'to_sign', True)
+
+
+class ApprovedColumn(IconClickableColumn):
+    header = _(u'Approved')
+    cssClasses = {'td': 'iconified-approved'}
+    weight = 100
+    attrName = 'approved'
+    action_view = 'iconified-approved'
+
+    def alt(self, content):
+        return translate(
+            utils.approved_message(content),
+            domain='collective.iconifiedcategory',
+            context=self.table.request,
+        )
 
 
 class PublishableColumn(IconClickableColumn):

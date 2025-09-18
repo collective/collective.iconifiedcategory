@@ -77,6 +77,19 @@ def categorized_content_created(obj, event):
         obj.to_sign = False
         obj.signed = False
 
+    # only set default value if obj was not created with a approved=True
+    if category_group.approved_activated and not getattr(obj, 'approved', False):
+        obj.approved = category.approved
+        notify(IconifiedAttrChangedEvent(
+            obj,
+            'approved',
+            old_values={},
+            new_values={'approved': obj.approved},
+            is_created=True
+        ))
+    elif not category_group.approved_activated:
+        obj.approved = False
+
     # only set default value if obj was not created with a publishable=True
     if category_group.publishable_activated and not getattr(obj, 'publishable', False):
         obj.publishable = category.publishable

@@ -99,6 +99,10 @@ class IconifiedCategorization(object):
            self.context.signed == current_category.signed:
             self.context.to_sign = new_category.to_sign
             self.context.signed = new_category.signed
+        # to_approve
+        if category_group.approved_activated and \
+           self.context.approved == current_category.approved:
+            self.context.approved = new_category.approved
         # publishable
         if category_group.publishable_activated and \
            self.context.publishable == current_category.publishable:
@@ -129,6 +133,9 @@ class IconifiedCategorization(object):
     @property
     def signed(self):
         return getattr(aq_base(self.context), 'signed', False)
+
+    def approved(self):
+        return getattr(aq_base(self.context), 'approved', False)
 
     @property
     def publishable(self):

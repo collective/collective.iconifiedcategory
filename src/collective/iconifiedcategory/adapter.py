@@ -47,11 +47,13 @@ class CategorizedObjectInfoAdapter(object):
             'to_be_printed_activated': self._to_be_printed_activated(category),
             'confidentiality_activated': self._confidentiality_activated(category),
             'signed_activated': self._signed_activated(category),
+            'approved_activated': self._approved_activated(category),
             'publishable_activated': self._publishable_activated(category),
             'to_print': self._to_print,
             'confidential': self._confidential,
             'to_sign': self._to_sign,
             'signed': self._signed,
+            'approved': self._approved,
             'publishable': self._publishable,
             'show_preview': self._show_preview(category),
         }
@@ -147,6 +149,14 @@ class CategorizedObjectInfoAdapter(object):
     @property
     def _signed(self):
         return getattr(self.obj, 'signed', False)
+
+    def _approved_activated(self, category):
+        category_group = category.get_category_group()
+        return category_group.approved_activated
+
+    @property
+    def _approved(self):
+        return getattr(self.obj, 'approved', False)
 
     def _publishable_activated(self, category):
         category_group = category.get_category_group()

@@ -64,6 +64,10 @@ class ICategorizedSigned(ICategorizedTable):
     pass
 
 
+class ICategorizedApproved(ICategorizedTable):
+    pass
+
+
 class IICImageScaleTraversable(IImageScaleTraversable):
     pass
 

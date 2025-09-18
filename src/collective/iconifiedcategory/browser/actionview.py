@@ -101,6 +101,7 @@ class BaseView(BrowserView):
                 old_values,
                 values,
             ))
+            self.context.reindexObject(idxs=list(self.attribute_mapping.keys()))
         return status, msg
 
     def _get_status(self, values):
@@ -184,6 +185,34 @@ class SignedChangeView(BaseView):
         status, values = self._get_next_values(old_values)
         super(SignedChangeView, self).set_values(values)
         return status, utils.signed_message(self.context)
+
+
+class ApprovedChangeView(BaseView):
+    attribute_mapping = {
+        'approved': 'iconified-value',
+    }
+    category_group_attr_name = 'approved_activated'
+    attr_name = 'approved'
+
+    def _get_next_values(self, old_values):
+        """ """
+        cycle = [False, True, None]
+        idx = cycle.index(old_values['approved'])
+        idx = (idx + 1) % len(cycle)
+        values = {'approved': cycle[idx]}
+        if values['approved'] is False:
+            status = 0
+        elif values['approved'] is True:
+            status = 1
+        else:
+            status = -1
+        return status, values
+
+    def set_values(self, values):
+        old_values = self.get_current_values()
+        status, values = self._get_next_values(old_values)
+        status, msg = super(ApprovedChangeView, self).set_values(values)
+        return status, utils.approved_message(self.context)
 
 
 class PublishableChangeView(BaseView):
