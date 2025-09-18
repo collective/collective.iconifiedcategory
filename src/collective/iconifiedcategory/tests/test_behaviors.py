@@ -154,6 +154,36 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         self.assertTrue(file4.to_sign)
         self.assertTrue(file4.signed)
 
+    def test_content_category_approved_on_creation(self):
+        """ """
+        category_group = self.portal.config['group-1']
+        category = self.portal.config['group-1']['category-1-1']
+        content_category_id = calculate_category_id(category)
+        category_group.approved_activated = True
+        # enable conversion
+        gsettings = GlobalSettings(self.portal)
+        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
+
+        # set to False
+        category.approved = False
+        file2 = api.content.create(
+            id='file2',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category=content_category_id)
+        self.assertFalse(file2.approved)
+
+        # set to True
+        category.approved = True
+        file3 = api.content.create(
+            id='file3',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category=content_category_id)
+        self.assertTrue(file3.approved)
+
     def test_content_category_to_print_only_set_if_convertible_when_conversion_enabled(self):
         """ """
         category_group = self.portal.config['group-1']
@@ -199,12 +229,13 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
 
     def test_content_category_changed_default_values(self):
         """While content_category is changed on an element, the default values for fields
-           to_print/confidential/to_sign/signed are reapplied with new content_category
+           to_print/confidential/to_sign/signed/approved are reapplied with new content_category
            default values if it was still the default value of the original content_category."""
         category_group = self.portal.config['group-1']
         category_group.to_be_printed_activated = True
         category_group.confidentiality_activated = True
         category_group.signed_activated = True
+        category_group.approved_activated = True
         category11 = self.portal.config['group-1']['category-1-1']
         category11_id = calculate_category_id(category11)
         obj = api.content.create(
@@ -217,12 +248,14 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         self.assertFalse(obj.to_sign)
         self.assertFalse(obj.signed)
         self.assertIsNone(obj.to_print)
+        self.assertFalse(obj.approved)
         # now enable everything on category-1-2 and use it
         category12 = self.portal.config['group-1']['category-1-2']
         category12.to_print = False
         category12.confidential = True
         category12.to_sign = True
         category12.signed = True
+        category12.approved = True
         category12_id = calculate_category_id(category12)
         adapted_obj = IIconifiedCategorization(obj)
         setattr(adapted_obj, 'content_category', category12_id)
@@ -239,6 +272,8 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         # to_print could not be set to False because not printable
         self.assertIsNone(obj.to_print)
         self.assertIsNone(parent_cat_elements['to_print'])
+        self.assertTrue(obj.approved)
+        self.assertTrue(parent_cat_elements['approved'])
 
         # enable conversion and back to category11
         category11.to_print = True

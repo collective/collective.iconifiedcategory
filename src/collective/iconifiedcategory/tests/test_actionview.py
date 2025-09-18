@@ -179,6 +179,48 @@ class TestSignedChangeView(BaseTestCase):
             (0, {'to_sign': True, 'signed': False}))
 
 
+class TestApprovedChangeView(BaseTestCase):
+
+    def test_set_values(self):
+        obj = self.portal['file_txt']
+        view = obj.restrictedTraverse('@@iconified-approved')
+
+        # works only if functionnality enabled and user have Modify portal content
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+
+        # fails if one of 2 conditions is not fullfilled
+        self.assertTrue(api.user.has_permission(ModifyPortalContent, obj=obj))
+        group.approved_activated = False
+        self.assertRaises(Unauthorized, view.set_values, {'approved': True})
+        group.approved_activated = True
+
+        obj.manage_permission(ModifyPortalContent, roles=[])
+        self.assertRaises(Unauthorized, view.set_values, {'approved': True})
+        obj.manage_permission(ModifyPortalContent, roles=['Manager'])
+
+        view.set_values({'approved': True})
+        self.assertTrue(obj.approved, obj.aq_parent.categorized_elements[obj.UID()]['approved'])
+        view.set_values({'approved': False})
+        self.assertFalse(obj.approved, obj.aq_parent.categorized_elements[obj.UID()]['approved'])
+
+    def test_get_next_values(self):
+        obj = self.portal['file_txt']
+        view = obj.restrictedTraverse('@@iconified-approved')
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+        group.approved_activated = True
+        self.assertEqual(
+            view._get_next_values({'approved': False}),
+            (1, {'approved': True}))
+        self.assertEqual(
+            view._get_next_values({'approved': True}),
+            (0, {'approved': False}))
+        self.assertEqual(
+            view._get_next_values({'approved': None}),
+            (2, {'approved': False}))
+
+
 class TestPublishableChangeView(BaseTestCase):
 
     def test_set_values(self):

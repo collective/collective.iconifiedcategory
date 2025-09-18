@@ -21,15 +21,16 @@ This product will let you categorize created content using a category identified
 
 A dexterity behavior can be enabled and will add a field "content category" that will list available categories defined in a configuration.
 
-So you first have to define the categories by adding a ContentCategoryConfiguration somewhere.  Then add a CategoryGroup on which some extra features may be activated :
+So you first have to define the categories by adding a ContentCategoryConfiguration somewhere. Then add a CategoryGroup on which some extra features may be activated :
 
 - is content confidential?
 - is content an element to print?
 - is content an element to sign?
+- is content an element to approve?
 
 If activated, these fields will be available on the content using the behavior.
 
-Then into a CategoryGroup, you will be able to add ContentCategory that are characterized by a title and an icon.  These ContentCategory elements will be the terms of a vocabulary used to select a category on a content using the behavior.
+Then into a CategoryGroup, you will be able to add ContentCategory that are characterized by a title and an icon. These ContentCategory elements will be the terms of a vocabulary used to select a category on a content using the behavior.
 
 This package is widely overridable and is made to manage many usecases of iconified categories.
 

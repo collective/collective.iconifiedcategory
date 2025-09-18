@@ -195,17 +195,15 @@ class ApprovedChangeView(BaseView):
     attr_name = 'approved'
 
     def _get_next_values(self, old_values):
-        """ """
-        cycle = [False, True, None]
-        idx = cycle.index(old_values['approved'])
-        idx = (idx + 1) % len(cycle)
-        values = {'approved': cycle[idx]}
-        if values['approved'] is False:
+        if old_values['approved'] is True:
             status = 0
-        elif values['approved'] is True:
+            values = {'approved': False}
+        elif old_values['approved'] is False:
             status = 1
+            values = {'approved': True}
         else:
-            status = -1
+            status = 2
+            values = {'approved': False}
         return status, values
 
     def set_values(self, values):
