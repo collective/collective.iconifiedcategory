@@ -4,7 +4,8 @@ Changelog
 0.70 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix invalid jQuery selector for default Title field filling
+  [laulaz]
 
 
 0.69 (2025-06-23)

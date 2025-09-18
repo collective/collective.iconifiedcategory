@@ -8,7 +8,7 @@ IconifiedCategory.defineDefaultTitle = function(select, init_time=false) {
   }
   /* title field id depends on used behavior (basic, dublincore, ...)
      so we get the id beginning with 'form-widgets-' and ending with '-title' */
-  var field = container.find('input#[id^=form-widgets-][id$=-title]');
+  var field = container.find("input[id^='form-widgets-'][id$='-title']");
   if (init_time && field.val()) {
     return;
   }
