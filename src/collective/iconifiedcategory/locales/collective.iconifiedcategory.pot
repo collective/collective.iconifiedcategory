@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-09-19 08:13+0000\n"
+"POT-Creation-Date: 2025-09-22 10:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,6 +110,9 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
+msgid "Element has been approved"
+msgstr ""
+
 msgid "Element is confidential"
 msgstr ""
 
@@ -123,6 +126,9 @@ msgid "Element is publishable"
 msgstr ""
 
 msgid "Element is signed"
+msgstr ""
+
+msgid "Element must be approved"
 msgstr ""
 
 msgid "Element must be signed but is still not"
@@ -318,7 +324,7 @@ msgstr ""
 msgid "Yes and hide download icon"
 msgstr ""
 
-#: ../utils.py:530
+#: ../utils.py:529
 msgid "You must select a PDF file!"
 msgstr ""
 
