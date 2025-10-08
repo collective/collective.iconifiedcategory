@@ -8,7 +8,8 @@ Changelog
   [laulaz]
 - Added "Approved?" column to the categorized elements table
   [chris-adam]
-
+- Added cache on IconClickableColumn action view.
+  [chris-adam]
 
 0.69 (2025-06-23)
 -----------------
