@@ -278,7 +278,7 @@ class IconClickableColumn(BaseColumn):
             return '#'
         return '{url}/@@{action}'.format(
             url=content.getURL(),
-            action=self.get_action_view(content),
+            action=self.get_action_view_name(content),
         )
 
     def get_action_view(self, content):
