@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-09-22 10:01+0000\n"
+"POT-Creation-Date: 2025-10-08 08:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,13 +14,13 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ../content/base.py:94
+#: ../content/base.py:107
+msgid "'Approved' can not be True when 'To approve?' is False!"
+msgstr "\"Approuvé?\" ne peut être coché lorsque \"A approver?\" ne l'est pas!"
+
+#: ../content/base.py:101
 msgid "'Signed' can not be True when 'To sign?' is False!"
 msgstr "\"Signé?\" ne peut être coché lorsque \"A signer?\" ne l'est pas!"
-
-#: ../content/categorygroup.py:45
-msgid "Activate the \"approved\" option"
-msgstr "Activer l'option \"approuvé\""
 
 #: ../content/categorygroup.py:24
 msgid "Activate the \"confidential\" option"
@@ -34,6 +34,10 @@ msgstr "Activer l'option \"publiable\""
 msgid "Activate the \"to be printed\" option"
 msgstr "Activer l'option \"à imprimer\""
 
+#: ../content/categorygroup.py:45
+msgid "Activate the \"to_approve and approved\" option"
+msgstr "Activer les options \"A approuver?/Approuvé?\""
+
 #: ../content/categorygroup.py:38
 msgid "Activate the \"to_sign and signed\" options"
 msgstr "Activer les options \"A signer?/Signé?\""
@@ -42,7 +46,7 @@ msgstr "Activer les options \"A signer?/Signé?\""
 msgid "Approved"
 msgstr "Approuvé?"
 
-#: ../content/base.py:56
+#: ../content/base.py:63
 msgid "Approved default"
 msgstr "Approuvé par defaut?"
 
@@ -111,9 +115,6 @@ msgstr "Télécharger"
 msgid "Edit"
 msgstr "Éditer"
 
-msgid "Element has been approved"
-msgstr "Cet élément a été approuvé"
-
 msgid "Element is confidential"
 msgstr "Cet élément est confidentiel"
 
@@ -129,8 +130,14 @@ msgstr "Cet élément est publiable"
 msgid "Element is signed"
 msgstr "Cet élément est signé"
 
-msgid "Element must be approved"
+msgid "Element must be approved but is still not"
 msgstr "Cet élément doit être approuvé"
+
+msgid "Element is approved"
+msgstr "Cet élément est approuvé"
+
+msgid "Element should not be approved"
+msgstr "Cet élément ne doit pas être approuvé"
 
 msgid "Element must be signed but is still not"
 msgstr "Cet élément doit être signé"
@@ -142,11 +149,11 @@ msgstr "Cet élément ne doit pas être signé"
 msgid "Elements updated!"
 msgstr "Les éléments ont été mis à jour!"
 
-#: ../content/base.py:70
+#: ../content/base.py:77
 msgid "Enabled?"
 msgstr "Activé?"
 
-#: ../browser/actionview.py:58
+#: ../browser/actionview.py:59
 msgid "Error during process"
 msgstr "Une erreur est survenue"
 
@@ -205,7 +212,7 @@ msgstr "Cet élément doit être imprimé"
 msgid "No"
 msgstr "non"
 
-#: ../browser/actionview.py:83
+#: ../browser/actionview.py:84
 msgid "No values to set"
 msgstr "Aucune valeur à définir"
 
@@ -217,7 +224,7 @@ msgstr "Cet élément ne peut pas être converti dans un format imprimable"
 msgid "Nothing."
 msgstr "Aucun élément."
 
-#: ../content/base.py:77
+#: ../content/base.py:84
 msgid "Only PDF?"
 msgstr "Format PDF requis?"
 
@@ -238,18 +245,18 @@ msgstr "Cette annexe est en prévisualisation, cliquez sur l'icône verte \"Tél
 msgid "Publishable"
 msgstr "Publiable?"
 
-#: ../content/base.py:63
+#: ../content/base.py:70
 msgid "Publishable default"
 msgstr "Publiable par défaut?"
 
 msgid "Should not be printed"
 msgstr "Cet élément ne doit pas être imprimé"
 
-#: ../content/base.py:84
+#: ../content/base.py:91
 msgid "Show preview description."
 msgstr "Lorsque \"oui\" est sélectionné, le lien vers l'élément sera une prévisualisation et non un téléchargement.  L'action \"Télécharger\" reste disponible. L'option \"oui et limiter l'accès au téléchargement\" permet de restreindre l'accès à l'action \"Télécharger\" à certains rôles (éditeurs et utilisateurs avancés)."
 
-#: ../content/base.py:83
+#: ../content/base.py:90
 msgid "Show preview?"
 msgstr "En prévisualisation?"
 
@@ -265,7 +272,7 @@ msgstr "Signé par défaut?"
 msgid "Sort categorized elements on categorized tab alphabetically automatically. Uncheck to sort elements manually"
 msgstr "Ordonner les éléments catégorisés dans l'onglet 'Eléments catégorisés' automatiquement par ordre alphabétique (décochez pour pouvoir ordonner les éléments manuellement)"
 
-#: ../content/events.py:115
+#: ../content/events.py:119
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr "L'annexe que vous venez d'ajouter pourrait poser des problèmes aux utilisateurs souhaitant la consulter à cause de sa grande taille."
 
@@ -277,11 +284,11 @@ msgstr "La conversion a échoué"
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr "L'élément est en cours de conversion, veuillez actualiser la page dans quelques minutes"
 
-#: ../content/events.py:211
+#: ../content/events.py:215
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr "Cette catégorie ou l'une des sous-catégorie est utilisée par un autre objet et ne peut dès lors être supprimée"
 
-#: ../content/events.py:225
+#: ../content/events.py:229
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr "Cette catégorie est utilisée par un autre objet et ne peut dès lors être supprimée"
 
@@ -296,6 +303,10 @@ msgstr "Cette action mettra à jour le titre et l'URL des éléments utilisant l
 #: ../browser/tabview.py:179
 msgid "Title"
 msgstr "Titre"
+
+#: ../content/base.py:56
+msgid "To approve default"
+msgstr "A approuver par défaut?"
 
 #: ../browser/tabview.py:322
 msgid "To be printed"
@@ -325,7 +336,7 @@ msgstr "oui"
 msgid "Yes and hide download icon"
 msgstr "oui et limiter l'accès au téléchargement"
 
-#: ../utils.py:529
+#: ../utils.py:535
 msgid "You must select a PDF file!"
 msgstr "La catégorie sélectionnée requiert l'utilisation d'un fichier au format PDF uniquement!"
 

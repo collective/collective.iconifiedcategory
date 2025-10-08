@@ -225,6 +225,8 @@ def upgrade_to_2107(context):
     parents_to_update = []
     for brain in brains:
         obj = brain.getObject()
+        if not(base_hasattr(obj, 'to_approve')):
+            setattr(obj, 'to_approve', False)
         if not(base_hasattr(obj, 'approved')):
             setattr(obj, 'approved', False)
 

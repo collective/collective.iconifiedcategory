@@ -190,26 +190,39 @@ class SignedChangeView(BaseView):
 class ApprovedChangeView(BaseView):
     attribute_mapping = {
         'approved': 'iconified-value',
+        'to_approve': 'iconified-value',
     }
     category_group_attr_name = 'approved_activated'
-    attr_name = 'approved'
+    attr_name = 'to_approve'
 
     def _get_next_values(self, old_values):
-        if old_values['approved'] is True:
+        """ """
+        values = {}
+        if old_values['to_approve'] is False:
+            values['to_approve'] = True
+            values['approved'] = False
             status = 0
-            values = {'approved': False}
-        elif old_values['approved'] is False:
+        elif old_values['to_approve'] is True and old_values['approved'] is False:
+            values['to_approve'] = True
+            values['approved'] = True
             status = 1
-            values = {'approved': True}
         else:
-            status = 2
-            values = {'approved': False}
+            values['to_approve'] = False
+            values['approved'] = False
+            status = -1
         return status, values
 
     def set_values(self, values):
+        """
+        Value are setting 'to_approve' and 'approved' attributes with following
+        possibility depending on allowed ones :
+           - False/False;
+           - True/False;
+           - True/True.
+        """
         old_values = self.get_current_values()
         status, values = self._get_next_values(old_values)
-        status, msg = super(ApprovedChangeView, self).set_values(values)
+        super(ApprovedChangeView, self).set_values(values)
         return status, utils.approved_message(self.context)
 
 

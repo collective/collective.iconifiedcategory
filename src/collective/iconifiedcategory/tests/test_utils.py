@@ -353,6 +353,7 @@ class TestUtils(BaseTestCase):
               'to_be_printed_activated': True,
               'to_print': False,
               'to_sign': False,
+              'to_approve': False,
               'warn_filesize': False}])
         # filter on portal_type
         self.assertEqual(

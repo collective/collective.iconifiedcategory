@@ -53,6 +53,7 @@ class CategorizedObjectInfoAdapter(object):
             'confidential': self._confidential,
             'to_sign': self._to_sign,
             'signed': self._signed,
+            'to_approve': self._to_approve,
             'approved': self._approved,
             'publishable': self._publishable,
             'show_preview': self._show_preview(category),
@@ -153,6 +154,10 @@ class CategorizedObjectInfoAdapter(object):
     def _approved_activated(self, category):
         category_group = category.get_category_group()
         return category_group.approved_activated
+
+    @property
+    def _to_approve(self):
+        return getattr(self.obj, 'to_approve', False)
 
     @property
     def _approved(self):

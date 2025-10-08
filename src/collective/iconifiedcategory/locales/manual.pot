@@ -26,9 +26,6 @@ msgstr ""
 msgid "Should not be printed"
 msgstr ""
 
-msgid "Element has been approved"
-msgstr ""
-
 msgid "Element is confidential"
 msgstr ""
 
@@ -41,7 +38,13 @@ msgstr ""
 msgid "Element is not publishable"
 msgstr ""
 
-msgid "Element must be approved"
+msgid "Element must be approved but is still not"
+msgstr ""
+
+msgid "Element is approved"
+msgstr ""
+
+msgid "Element should not be approved"
 msgstr ""
 
 msgid "Element must be signed but is still not"

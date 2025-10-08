@@ -160,11 +160,9 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         category = self.portal.config['group-1']['category-1-1']
         content_category_id = calculate_category_id(category)
         category_group.approved_activated = True
-        # enable conversion
-        gsettings = GlobalSettings(self.portal)
-        gsettings.auto_layout_file_types = CONVERTABLE_TYPES.keys()
 
-        # set to False
+        # set to False both attributes
+        category.to_approve = False
         category.approved = False
         file2 = api.content.create(
             id='file2',
@@ -172,17 +170,32 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
             file=self.file,
             container=self.portal,
             content_category=content_category_id)
+        self.assertFalse(file2.to_approve)
         self.assertFalse(file2.approved)
 
-        # set to True
-        category.approved = True
+        # set True for to_approve, False for approved
+        category.to_approve = True
+        category.approved = False
         file3 = api.content.create(
             id='file3',
             type='File',
             file=self.file,
             container=self.portal,
             content_category=content_category_id)
-        self.assertTrue(file3.approved)
+        self.assertTrue(file3.to_approve)
+        self.assertFalse(file3.approved)
+
+        # set True for both attributes
+        category.to_approve = True
+        category.approved = True
+        file4 = api.content.create(
+            id='file4',
+            type='File',
+            file=self.file,
+            container=self.portal,
+            content_category=content_category_id)
+        self.assertTrue(file4.to_approve)
+        self.assertTrue(file4.approved)
 
     def test_content_category_to_print_only_set_if_convertible_when_conversion_enabled(self):
         """ """
@@ -248,6 +261,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         self.assertFalse(obj.to_sign)
         self.assertFalse(obj.signed)
         self.assertIsNone(obj.to_print)
+        self.assertFalse(obj.to_approve)
         self.assertFalse(obj.approved)
         # now enable everything on category-1-2 and use it
         category12 = self.portal.config['group-1']['category-1-2']
@@ -255,6 +269,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         category12.confidential = True
         category12.to_sign = True
         category12.signed = True
+        category12.to_approve = True
         category12.approved = True
         category12_id = calculate_category_id(category12)
         adapted_obj = IIconifiedCategorization(obj)
@@ -272,6 +287,8 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         # to_print could not be set to False because not printable
         self.assertIsNone(obj.to_print)
         self.assertIsNone(parent_cat_elements['to_print'])
+        self.assertTrue(obj.to_approve)
+        self.assertTrue(parent_cat_elements['to_approve'])
         self.assertTrue(obj.approved)
         self.assertTrue(parent_cat_elements['approved'])
 

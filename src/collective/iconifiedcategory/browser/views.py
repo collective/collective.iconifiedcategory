@@ -188,7 +188,7 @@ class CategorizedChildInfosView(BrowserView):
                 css_classes.append('active')
         elif functionnality == "approved":
             css_classes.append("iconified-approved")
-            if element['approved'] is None:
+            if element['to_approve'] is False:
                 css_classes.append('deactivated')
             elif element['approved'] is True:
                 css_classes.append('active')
@@ -208,7 +208,8 @@ class CategorizedChildInfosView(BrowserView):
             msg = signed_message(to_sign_value=element['to_sign'],
                                  signed_value=element['signed'])
         elif functionnality == "approved":
-            msg = approved_message(approved_value=element['approved'])
+            msg = approved_message(to_approve_value=element['to_approve'],
+                                   approved_value=element['approved'])
         else:
             # default behavior, a boolean message
             msg = boolean_message(attr_name=functionnality,

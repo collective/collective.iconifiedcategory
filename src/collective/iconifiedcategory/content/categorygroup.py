@@ -42,7 +42,7 @@ class ICategoryGroup(IFolder):
 
     form.widget('approved_activated', RadioFieldWidget)
     approved_activated = schema.Bool(
-        title=_(u'Activate the "approved" option'),
+        title=_(u'Activate the "to_approve and approved" option'),
         required=False,
         default=False,
     )

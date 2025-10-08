@@ -384,6 +384,13 @@ class ApprovedColumn(IconClickableColumn):
             context=self.table.request,
         )
 
+    def _deactivated_is_useable(self):
+        '''Is deactivated value a useable one?'''
+        return True
+
+    def is_deactivated(self, content):
+        return not getattr(content, 'to_approve', True)
+
 
 class PublishableColumn(IconClickableColumn):
     header = _(u'Publishable')

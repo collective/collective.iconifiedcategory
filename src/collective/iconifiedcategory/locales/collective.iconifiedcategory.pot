@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-09-22 10:01+0000\n"
+"POT-Creation-Date: 2025-10-08 08:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.iconifiedcategory\n"
 
-#: ../content/base.py:94
-msgid "'Signed' can not be True when 'To sign?' is False!"
+#: ../content/base.py:107
+msgid "'Approved' can not be True when 'To approve?' is False!"
 msgstr ""
 
-#: ../content/categorygroup.py:45
-msgid "Activate the \"approved\" option"
+#: ../content/base.py:101
+msgid "'Signed' can not be True when 'To sign?' is False!"
 msgstr ""
 
 #: ../content/categorygroup.py:24
@@ -37,6 +37,10 @@ msgstr ""
 msgid "Activate the \"to be printed\" option"
 msgstr ""
 
+#: ../content/categorygroup.py:45
+msgid "Activate the \"to_approve and approved\" option"
+msgstr ""
+
 #: ../content/categorygroup.py:38
 msgid "Activate the \"to_sign and signed\" options"
 msgstr ""
@@ -45,7 +49,7 @@ msgstr ""
 msgid "Approved"
 msgstr ""
 
-#: ../content/base.py:56
+#: ../content/base.py:63
 msgid "Approved default"
 msgstr ""
 
@@ -141,11 +145,11 @@ msgstr ""
 msgid "Elements updated!"
 msgstr ""
 
-#: ../content/base.py:70
+#: ../content/base.py:77
 msgid "Enabled?"
 msgstr ""
 
-#: ../browser/actionview.py:58
+#: ../browser/actionview.py:59
 msgid "Error during process"
 msgstr ""
 
@@ -204,7 +208,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: ../browser/actionview.py:83
+#: ../browser/actionview.py:84
 msgid "No values to set"
 msgstr ""
 
@@ -216,7 +220,7 @@ msgstr ""
 msgid "Nothing."
 msgstr ""
 
-#: ../content/base.py:77
+#: ../content/base.py:84
 msgid "Only PDF?"
 msgstr ""
 
@@ -237,18 +241,18 @@ msgstr ""
 msgid "Publishable"
 msgstr ""
 
-#: ../content/base.py:63
+#: ../content/base.py:70
 msgid "Publishable default"
 msgstr ""
 
 msgid "Should not be printed"
 msgstr ""
 
-#: ../content/base.py:84
+#: ../content/base.py:91
 msgid "Show preview description."
 msgstr ""
 
-#: ../content/base.py:83
+#: ../content/base.py:90
 msgid "Show preview?"
 msgstr ""
 
@@ -264,7 +268,7 @@ msgstr ""
 msgid "Sort categorized elements on categorized tab alphabetically automatically. Uncheck to sort elements manually"
 msgstr ""
 
-#: ../content/events.py:115
+#: ../content/events.py:119
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr ""
 
@@ -276,11 +280,11 @@ msgstr ""
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr ""
 
-#: ../content/events.py:211
+#: ../content/events.py:215
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr ""
 
-#: ../content/events.py:225
+#: ../content/events.py:229
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr ""
 
@@ -294,6 +298,10 @@ msgstr ""
 
 #: ../browser/tabview.py:179
 msgid "Title"
+msgstr ""
+
+#: ../content/base.py:56
+msgid "To approve default"
 msgstr ""
 
 #: ../browser/tabview.py:322
@@ -324,7 +332,7 @@ msgstr ""
 msgid "Yes and hide download icon"
 msgstr ""
 
-#: ../utils.py:529
+#: ../utils.py:535
 msgid "You must select a PDF file!"
 msgstr ""
 

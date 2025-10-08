@@ -68,6 +68,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'to_be_printed_activated': True,
              'to_print': None,
              'to_sign': False,
+             'to_approve': False,
              'warn_filesize': False})
 
     def test_get_infos_for_image(self):
@@ -111,6 +112,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'to_be_printed_activated': True,
              'to_print': False,
              'to_sign': False,
+             'to_approve': False,
              'warn_filesize': False})
 
     def test_get_infos_with_subcategory(self):
@@ -154,6 +156,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'to_be_printed_activated': True,
              'to_print': None,
              'to_sign': False,
+             'to_approve': False,
              'warn_filesize': False})
 
     def test_category(self):
