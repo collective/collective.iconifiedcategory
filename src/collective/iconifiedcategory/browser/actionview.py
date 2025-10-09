@@ -28,6 +28,7 @@ class BaseView(BrowserView):
     attr_name = ''
     # when updating element, do that limited?
     limited = True
+    permission = ModifyPortalContent
 
     def _translate(self, msgid):
         return translate(
@@ -67,7 +68,7 @@ class BaseView(BrowserView):
                 for k, v in self.attribute_mapping.items()}
 
     def _may_set_values(self, values, ):
-        res = bool(api.user.has_permission(ModifyPortalContent, obj=self.context))
+        res = bool(api.user.has_permission(self.permission, obj=self.context))
         if res:
             # is this functionnality enabled?
             self.category = utils.get_category_object(self.context, self.context.content_category)
