@@ -51,6 +51,20 @@ class ICategorize(Interface):
         default=False,
     )
 
+    form.widget('to_approve', RadioFieldWidget)
+    to_approve = schema.Bool(
+        title=_(u'To approve default'),
+        required=False,
+        default=False,
+    )
+
+    form.widget('approved', RadioFieldWidget)
+    approved = schema.Bool(
+        title=_(u'Approved default'),
+        required=False,
+        default=False,
+    )
+
     form.widget('publishable', RadioFieldWidget)
     publishable = schema.Bool(
         title=_(u'Publishable default'),
@@ -85,3 +99,9 @@ class ICategorize(Interface):
         """'signed' may only be True if 'to_sign' is True."""
         if data.to_sign is False and data.signed is True:
             raise Invalid(_(u"'Signed' can not be True when 'To sign?' is False!"))
+
+    @invariant
+    def approvedInvariant(data):
+        """'approved' may only be True if 'to_approve' is True."""
+        if data.to_approve is False and data.approved is True:
+            raise Invalid(_(u"'Approved' can not be True when 'To approve?' is False!"))

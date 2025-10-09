@@ -335,6 +335,7 @@ class TestUtils(BaseTestCase):
               'filesize': None,
               'icon_url': u'config/group-1/category-x/@@images/{0}'.format(scale),
               'id': 'doc-subcategory-move',
+              'approved': False,
               'last_updated': self._modified(document),
               'portal_type': 'Document',
               'preview_status': 'not_convertable',
@@ -342,6 +343,7 @@ class TestUtils(BaseTestCase):
               'publishable_activated': False,
               'relative_url': 'doc-subcategory-move',
               'show_preview': 0,
+              'approved_activated': False,
               'signed': False,
               'signed_activated': False,
               'subcategory_id': None,
@@ -351,6 +353,7 @@ class TestUtils(BaseTestCase):
               'to_be_printed_activated': True,
               'to_print': False,
               'to_sign': False,
+              'to_approve': False,
               'warn_filesize': False}])
         # filter on portal_type
         self.assertEqual(

@@ -13,6 +13,7 @@ from collective.eeafaceted.z3ctable.columns import MemberIdColumn
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.config import get_sort_categorized_tab
+from collective.iconifiedcategory.interfaces import ICategorizedApproved
 from collective.iconifiedcategory.interfaces import ICategorizedConfidential
 from collective.iconifiedcategory.interfaces import ICategorizedPrint
 from collective.iconifiedcategory.interfaces import ICategorizedPublishable
@@ -51,6 +52,8 @@ class CategorizedTabView(BrowserView):
             alsoProvides(self.table, ICategorizedPublishable)
         if self.show('signed'):
             alsoProvides(self.table, ICategorizedSigned)
+        if self.show('approved'):
+            alsoProvides(self.table, ICategorizedApproved)
 
     def _config(self):
         """ """
@@ -263,7 +266,7 @@ class FilesizeColumn(BaseColumn):
 
 
 class IconClickableColumn(BaseColumn):
-    action_view = ''
+    action_view_name = ''
     escape = False
 
     def _deactivated_is_useable(self):
@@ -275,11 +278,25 @@ class IconClickableColumn(BaseColumn):
             return '#'
         return '{url}/@@{action}'.format(
             url=content.getURL(),
-            action=self.get_action_view(content),
+            action=self.get_action_view_name(content),
         )
 
     def get_action_view(self, content):
-        return self.action_view
+        if content.UID in getattr(self, '_cached_action_views', {}):
+            view = self._cached_action_views[content.UID]
+        else:
+            view = getMultiAdapter((content.getObject(), self.request), name=self.action_view_name)
+            self._store_cached_view(content.UID, view)
+        return view
+
+    def get_action_view_name(self, content):
+        return self.action_view_name
+
+    def _store_cached_view(self, value, view):
+        """ """
+        if getattr(self, '_cached_action_views', None) is None:
+            self._cached_action_views = {}
+        self._cached_action_views[value] = view
 
     def alt(self, content):
         return self.header
@@ -288,7 +305,7 @@ class IconClickableColumn(BaseColumn):
         return getattr(content, self.attrName, False) is None
 
     def is_editable(self, content):
-        view = getMultiAdapter((content.getObject(), self.request), name=self.action_view)
+        view = self.get_action_view(content)
         return view._may_set_values({})
 
     def is_active(self, content):
@@ -320,7 +337,7 @@ class PrintColumn(IconClickableColumn):
     cssClasses = {'td': 'iconified-print'}
     weight = 80
     attrName = 'to_print'
-    action_view = 'iconified-print'
+    action_view_name = 'iconified-print'
 
     def alt(self, content):
         return translate(
@@ -335,7 +352,7 @@ class ConfidentialColumn(IconClickableColumn):
     cssClasses = {'td': 'iconified-confidential'}
     weight = 90
     attrName = 'confidential'
-    action_view = 'iconified-confidential'
+    action_view_name = 'iconified-confidential'
 
     def alt(self, content):
         return translate(
@@ -350,7 +367,7 @@ class SignedColumn(IconClickableColumn):
     cssClasses = {'td': 'iconified-signed'}
     weight = 95
     attrName = 'signed'
-    action_view = 'iconified-signed'
+    action_view_name = 'iconified-signed'
 
     def alt(self, content):
         return translate(
@@ -367,12 +384,34 @@ class SignedColumn(IconClickableColumn):
         return not getattr(content, 'to_sign', True)
 
 
+class ApprovedColumn(IconClickableColumn):
+    header = _(u'Approved')
+    cssClasses = {'td': 'iconified-approved'}
+    weight = 100
+    attrName = 'approved'
+    action_view_name = 'iconified-approved'
+
+    def alt(self, content):
+        return translate(
+            utils.approved_message(content),
+            domain='collective.iconifiedcategory',
+            context=self.table.request,
+        )
+
+    def _deactivated_is_useable(self):
+        '''Is deactivated value a useable one?'''
+        return True
+
+    def is_deactivated(self, content):
+        return not getattr(content, 'to_approve', True)
+
+
 class PublishableColumn(IconClickableColumn):
     header = _(u'Publishable')
     cssClasses = {'td': 'iconified-publishable'}
     weight = 98
     attrName = 'publishable'
-    action_view = 'iconified-publishable'
+    action_view_name = 'iconified-publishable'
 
     def alt(self, content):
         return translate(

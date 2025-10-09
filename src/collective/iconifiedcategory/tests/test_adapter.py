@@ -50,6 +50,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'filesize': 3017,
              'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
+             'approved': False,
              'last_updated': self._modified(obj),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -57,6 +58,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'publishable_activated': False,
              'relative_url': 'file_txt',
              'show_preview': 0,
+             'approved_activated': False,
              'signed': False,
              'signed_activated': False,
              'subcategory_id': None,
@@ -66,6 +68,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'to_be_printed_activated': True,
              'to_print': None,
              'to_sign': False,
+             'to_approve': False,
              'warn_filesize': False})
 
     def test_get_infos_for_image(self):
@@ -91,6 +94,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'filesize': 3742,
              'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
+             'approved': False,
              'last_updated': self._modified(obj),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -98,6 +102,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'publishable_activated': False,
              'relative_url': 'image',
              'show_preview': 0,
+             'approved_activated': False,
              'signed': False,
              'signed_activated': False,
              'subcategory_id': subcategory.id,
@@ -107,6 +112,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'to_be_printed_activated': True,
              'to_print': False,
              'to_sign': False,
+             'to_approve': False,
              'warn_filesize': False})
 
     def test_get_infos_with_subcategory(self):
@@ -132,6 +138,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'filesize': 3017,
              'icon_url': u'config/group-1/category-1-1/@@images/{0}'.format(scale),
              'id': obj.getId(),
+             'approved': False,
              'last_updated': self._modified(obj),
              'portal_type': obj.portal_type,
              'preview_status': 'not_convertable',
@@ -139,6 +146,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'publishable_activated': False,
              'relative_url': 'file_txt',
              'show_preview': 0,
+             'approved_activated': False,
              'signed': False,
              'signed_activated': False,
              'subcategory_id': subcategory.getId(),
@@ -148,6 +156,7 @@ class TestCategorizedObjectInfoAdapter(BaseTestCase):
              'to_be_printed_activated': True,
              'to_print': None,
              'to_sign': False,
+             'to_approve': False,
              'warn_filesize': False})
 
     def test_category(self):

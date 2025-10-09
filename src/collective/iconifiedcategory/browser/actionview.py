@@ -14,6 +14,7 @@ from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFPlone.utils import base_hasattr
 from Products.Five import BrowserView
 from z3c.json.interfaces import IJSONWriter
 from zope.component import getAdapter
@@ -28,6 +29,7 @@ class BaseView(BrowserView):
     attr_name = ''
     # when updating element, do that limited?
     limited = True
+    permission = ModifyPortalContent
 
     def _translate(self, msgid):
         return translate(
@@ -67,9 +69,11 @@ class BaseView(BrowserView):
                 for k, v in self.attribute_mapping.items()}
 
     def _may_set_values(self, values, ):
-        res = bool(api.user.has_permission(ModifyPortalContent, obj=self.context))
+        res = bool(api.user.has_permission(self.permission, obj=self.context))
         if res:
             # is this functionnality enabled?
+            if not base_hasattr(self.context, "content_category"):
+                return False
             self.category = utils.get_category_object(self.context, self.context.content_category)
             category_group = self.category.get_category_group()
             res = getattr(category_group, self.category_group_attr_name, True)
@@ -101,6 +105,7 @@ class BaseView(BrowserView):
                 old_values,
                 values,
             ))
+            self.context.reindexObject(idxs=list(self.attribute_mapping.keys()))
         return status, msg
 
     def _get_status(self, values):
@@ -184,6 +189,45 @@ class SignedChangeView(BaseView):
         status, values = self._get_next_values(old_values)
         super(SignedChangeView, self).set_values(values)
         return status, utils.signed_message(self.context)
+
+
+class ApprovedChangeView(BaseView):
+    attribute_mapping = {
+        'approved': 'iconified-value',
+        'to_approve': 'iconified-value',
+    }
+    category_group_attr_name = 'approved_activated'
+    attr_name = 'to_approve'
+
+    def _get_next_values(self, old_values):
+        """ """
+        values = {}
+        if old_values['to_approve'] is False:
+            values['to_approve'] = True
+            values['approved'] = False
+            status = 0
+        elif old_values['to_approve'] is True and old_values['approved'] is False:
+            values['to_approve'] = True
+            values['approved'] = True
+            status = 1
+        else:
+            values['to_approve'] = False
+            values['approved'] = False
+            status = -1
+        return status, values
+
+    def set_values(self, values):
+        """
+        Value are setting 'to_approve' and 'approved' attributes with following
+        possibility depending on allowed ones :
+           - False/False;
+           - True/False;
+           - True/True.
+        """
+        old_values = self.get_current_values()
+        status, values = self._get_next_values(old_values)
+        super(ApprovedChangeView, self).set_values(values)
+        return status, utils.approved_message(self.context)
 
 
 class PublishableChangeView(BaseView):

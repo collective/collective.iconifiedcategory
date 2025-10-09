@@ -31,12 +31,12 @@ def categorized_content_created(obj, event):
     # we may defer events if relevant value found in the REQUEST
     if obj.REQUEST.get('defer_categorized_content_created_event', False):
         return
-    # set default values for to_print, confidential and to_sign/signed
+    # set default values for to_print, confidential, to_sign/signed and to_approve/approved
     try:
-        category = utils.get_category_object(obj, obj.content_category)
+        category = utils.get_category_object(obj, getattr(obj, "content_category", "_none"))
     except KeyError:
         return
-    # left False if to_print/confidential/to_sign
+    # left False if to_print/confidential/to_sign/to_approve
     # not enabled on ContentCategoryGroup
     category_group = category.get_category_group(category)
 
@@ -76,6 +76,23 @@ def categorized_content_created(obj, event):
     elif not category_group.signed_activated:
         obj.to_sign = False
         obj.signed = False
+
+    # only set default value if obj was not created with a to_approve=True or approved=True
+    if category_group.approved_activated and not (getattr(obj, 'to_approve', False) or getattr(obj, 'approved', False)):
+        obj.to_approve = category.to_approve
+        obj.approved = category.approved
+        notify(IconifiedAttrChangedEvent(
+            obj,
+            'to_approve',
+            old_values={},
+            new_values={'to_approve': obj.to_approve,
+                        'approved': obj.approved},
+            is_created=True
+        ))
+
+    elif not category_group.approved_activated:
+        obj.to_approve = False
+        obj.approved = False
 
     # only set default value if obj was not created with a publishable=True
     if category_group.publishable_activated and not getattr(obj, 'publishable', False):

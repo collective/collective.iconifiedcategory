@@ -144,6 +144,14 @@
     />
 
   <browser:page
+    name="iconified-approved"
+    for="*"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".actionview.ApprovedChangeView"
+    permission="zope2.View"
+    />
+
+  <browser:page
     name="iconified-publishable"
     for="*"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
@@ -248,6 +256,15 @@
          collective.iconifiedcategory.interfaces.ICategorizedSigned"
     provides="z3c.table.interfaces.IColumn"
     factory=".tabview.SignedColumn"
+    />
+
+  <adapter
+    name="approved-column"
+    for="zope.interface.Interface
+         zope.interface.Interface
+         collective.iconifiedcategory.interfaces.ICategorizedApproved"
+    provides="z3c.table.interfaces.IColumn"
+    factory=".tabview.ApprovedColumn"
     />
 
   <adapter

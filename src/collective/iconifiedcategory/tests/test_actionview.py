@@ -179,6 +179,74 @@ class TestSignedChangeView(BaseTestCase):
             (0, {'to_sign': True, 'signed': False}))
 
 
+class TestApprovedChangeView(BaseTestCase):
+
+    def test_set_values(self):
+        obj = self.portal['file_txt']
+        view = obj.restrictedTraverse('@@iconified-approved')
+
+        # works only if functionnality enabled and user have Modify portal content
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+
+        # fails if one of 2 conditions is not fullfilled
+        self.assertTrue(api.user.has_permission(ModifyPortalContent, obj=obj))
+        group.approved_activated = False
+        self.assertRaises(Unauthorized, view.set_values, {'to_approve': True})
+        group.approved_activated = True
+
+        obj.manage_permission(ModifyPortalContent, roles=[])
+        self.assertRaises(Unauthorized, view.set_values, {'to_approve': True})
+        obj.manage_permission(ModifyPortalContent, roles=['Manager'])
+
+        # functionnality enabled and user have Modify portal content
+        self.assertFalse(obj.to_approve, obj.aq_parent.categorized_elements[obj.UID()]['to_approve'])
+        self.assertFalse(obj.approved, obj.aq_parent.categorized_elements[obj.UID()]['approved'])
+
+        view.set_values({'to_approve': True})
+        self.assertTrue(obj.to_approve, obj.aq_parent.categorized_elements[obj.UID()]['to_approve'])
+        view.set_values({'approved': True})
+        self.assertTrue(obj.approved, obj.aq_parent.categorized_elements[obj.UID()]['approved'])
+
+        # multiple attributes may be set at the same time
+        view.set_values({'to_approve': False, 'approved': False})
+        self.assertFalse(obj.to_approve, obj.aq_parent.categorized_elements[obj.UID()]['to_approve'])
+        self.assertFalse(obj.approved, obj.aq_parent.categorized_elements[obj.UID()]['approved'])
+        view.set_values({'to_approve': True, 'approved': False})
+        self.assertTrue(obj.to_approve, obj.aq_parent.categorized_elements[obj.UID()]['to_approve'])
+        self.assertFalse(obj.approved, obj.aq_parent.categorized_elements[obj.UID()]['approved'])
+        view.set_values({'to_approve': True, 'approved': True})
+        self.assertTrue(obj.to_approve, obj.aq_parent.categorized_elements[obj.UID()]['to_approve'])
+        self.assertTrue(obj.approved, obj.aq_parent.categorized_elements[obj.UID()]['approved'])
+
+    def test_get_next_values(self):
+        """to_approve/approved are logically linked and the action in the UI
+           will loop among possible values :
+           - to_approve False, approved False;
+           - to_approve True, approved False,
+           - to_approve True, approved True.
+           to_approve False, approved True is not possible."""
+        obj = self.portal['file_txt']
+        view = obj.restrictedTraverse('@@iconified-approved')
+        category = utils.get_category_object(obj, obj.content_category)
+        group = category.get_category_group()
+        group.approved_activated = True
+        # loop between possibilities
+        self.assertEqual(
+            view._get_next_values({'to_approve': False, 'approved': False}),
+            (0, {'to_approve': True, 'approved': False}))
+        self.assertEqual(
+            view._get_next_values({'to_approve': True, 'approved': False}),
+            (1, {'to_approve': True, 'approved': True}))
+        self.assertEqual(
+            view._get_next_values({'to_approve': True, 'approved': True}),
+            (-1, {'to_approve': False, 'approved': False}))
+        # not possible values, back to 'to_approve'
+        self.assertEqual(
+            view._get_next_values({'to_approve': False, 'approved': True}),
+            (0, {'to_approve': True, 'approved': False}))
+
+
 class TestPublishableChangeView(BaseTestCase):
 
     def test_set_values(self):

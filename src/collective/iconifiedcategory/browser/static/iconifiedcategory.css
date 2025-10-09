@@ -134,12 +134,14 @@ div.tooltipster-categorized-elements label {
 
 #content .iconified-listing td.iconified-print a,
 #content .iconified-listing td.iconified-signed a,
+#content .iconified-listing td.iconified-approved a,
 #content .iconified-listing td.iconified-confidential a,
 #content .iconified-listing td.iconified-publishable a,
 div.tooltipster-categorized-elements span.iconified-print,
 div.tooltipster-categorized-elements span.iconified-confidential,
 div.tooltipster-categorized-elements span.iconified-publishable,
-div.tooltipster-categorized-elements span.iconified-signed {
+div.tooltipster-categorized-elements span.iconified-signed,
+div.tooltipster-categorized-elements span.iconified-approved {
     font-family: 'Font Awesome 5 Free';
     font-size: 110%;
     cursor: help;
@@ -149,6 +151,7 @@ div.tooltipster-categorized-elements span.iconified-signed {
 /* need to use !important to have a border-bottom because it is removed using !important in base.css... */
 #content .iconified-listing td.iconified-print a.editable,
 #content .iconified-listing td.iconified-signed a.editable,
+#content .iconified-listing td.iconified-approved a.editable,
 #content .iconified-listing td.iconified-confidential a.editable,
 #content .iconified-listing td.iconified-publishable a.editable {
     border-bottom: 1px dotted !important;
@@ -158,9 +161,11 @@ div.tooltipster-categorized-elements span.iconified-signed {
 
 #content .iconified-listing td.iconified-print a,
 #content .iconified-listing td.iconified-signed a,
+#content .iconified-listing td.iconified-approved a,
 #content .iconified-listing td.iconified-confidential a.active,
 #content .iconified-listing td.iconified-publishable a,
 div.tooltipster-categorized-elements span.iconified-print,
+div.tooltipster-categorized-elements span.iconified-approved,
 div.tooltipster-categorized-elements span.iconified-confidential.active,
 div.tooltipster-categorized-elements span.iconified-publishable,
 div.tooltipster-categorized-elements span.iconified-signed {
@@ -169,10 +174,12 @@ div.tooltipster-categorized-elements span.iconified-signed {
 
 #content .iconified-listing td.iconified-print a.active,
 #content .iconified-listing td.iconified-signed a.active,
+#content .iconified-listing td.iconified-approved a.active,
 #content .iconified-listing td.iconified-confidential a,
 #content .iconified-listing td.iconified-publishable a.active,
 div.tooltipster-categorized-elements span.iconified-print.active,
 div.tooltipster-categorized-elements span.iconified-signed.active,
+div.tooltipster-categorized-elements span.iconified-approved.active,
 div.tooltipster-categorized-elements span.iconified-confidential,
 div.tooltipster-categorized-elements span.iconified-publishable.active {
     color: #75ad0a;
@@ -180,6 +187,7 @@ div.tooltipster-categorized-elements span.iconified-publishable.active {
 
 #content .iconified-listing td.iconified-print a.active:hover,
 #content .iconified-listing td.iconified-signed a.active:hover,
+#content .iconified-listing td.iconified-approved a.active:hover,
 #content .iconified-listing td.iconified-confidential a:hover,
 #content .iconified-listing td.iconified-publishable a.active:hover {
     color: #0B8400!important;
@@ -187,6 +195,7 @@ div.tooltipster-categorized-elements span.iconified-publishable.active {
 
 #content .iconified-listing td.iconified-print a:hover,
 #content .iconified-listing td.iconified-signed a:hover,
+#content .iconified-listing td.iconified-approved a:hover,
 #content .iconified-listing td.iconified-confidential a.active:hover,
 #content .iconified-listing td.iconified-publishable a:hover {
     color: #B50000!important;
@@ -194,17 +203,20 @@ div.tooltipster-categorized-elements span.iconified-publishable.active {
 
 #content .iconified-listing td.iconified-print a.deactivated,
 #content .iconified-listing td.iconified-signed a.deactivated,
+#content .iconified-listing td.iconified-approved a.deactivated,
 #content .iconified-listing td.iconified-confidential a.deactivated,
 #content .iconified-listing td.iconified-publishable a.deactivated,
 div.tooltipster-categorized-elements span.iconified-print.deactivated,
 div.tooltipster-categorized-elements span.iconified-signed.deactivated,
+div.tooltipster-categorized-elements span.iconified-approved.deactivated,
 div.tooltipster-categorized-elements span.iconified-confidential.deactivated,
 div.tooltipster-categorized-elements span.iconified-publishable.deactivated {
-    color: #999;
+    color: silver;
 }
 
 #content .iconified-listing td.iconified-print a.deactivated:hover,
 #content .iconified-listing td.iconified-signed a.deactivated:hover,
+#content .iconified-listing td.iconified-approved a.deactivated:hover,
 #content .iconified-listing td.iconified-confidential a.deactivated:hover,
 #content .iconified-listing td.iconified-publishable a.deactivated:hover {
     color: #666!important;
@@ -212,6 +224,7 @@ div.tooltipster-categorized-elements span.iconified-publishable.deactivated {
 
 #content .iconified-listing td.iconified-print a.error,
 #content .iconified-listing td.iconified-signed a.error,
+#content .iconified-listing td.iconified-approved a.error,
 #content .iconified-listing td.iconified-confidential a.error,
 #content .iconified-listing td.iconified-publishable a.error {
     color: #E58200;
@@ -246,6 +259,11 @@ div.tooltipster-categorized-elements span.iconified-confidential.active:before {
 #content .iconified-listing td.iconified-signed a:before,
 div.tooltipster-categorized-elements span.iconified-signed:before {
     content: "\f044";
+}
+
+#content .iconified-listing td.iconified-approved a:before,
+div.tooltipster-categorized-elements span.iconified-approved:before {
+    content: "\f00c";
 }
 
 div.tooltipster-categorized-elements div.categorized_elements_details {

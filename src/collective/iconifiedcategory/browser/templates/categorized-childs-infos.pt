@@ -89,6 +89,14 @@
                                    title python: view.get_tag_title_for('signed', element)">
              </span>
           </tal:show_signed_icon>
+          <tal:show_approved_icon condition="python: view.show(element, 'approved')">
+             <span class=""
+                   title=""
+                   i18n:attributes="title"
+                   tal:attributes="class python: view.get_css_classses_for('approved', element);
+                                   title python: view.get_tag_title_for('approved', element)">
+             </span>
+          </tal:show_approved_icon>
           <tal:show_publishable_icon condition="python: view.show(element, 'publishable')">
              <span class=""
                    title=""
