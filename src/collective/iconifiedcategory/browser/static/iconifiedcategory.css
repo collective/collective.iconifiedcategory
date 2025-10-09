@@ -211,7 +211,7 @@ div.tooltipster-categorized-elements span.iconified-signed.deactivated,
 div.tooltipster-categorized-elements span.iconified-approved.deactivated,
 div.tooltipster-categorized-elements span.iconified-confidential.deactivated,
 div.tooltipster-categorized-elements span.iconified-publishable.deactivated {
-    color: #999;
+    color: silver;
 }
 
 #content .iconified-listing td.iconified-print a.deactivated:hover,
