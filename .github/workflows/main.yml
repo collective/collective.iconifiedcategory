@@ -22,7 +22,6 @@ jobs:
         uses: "gabrielfalcao/pyenv-action@v18"
         with:
           default: 2.7.18
-          versions: 2.7.18
           command: pyenv -v
       - name: Set up Env
         run: |
@@ -80,7 +79,7 @@ jobs:
         uses: "gabrielfalcao/pyenv-action@v18"
         with:
           default: 2.7.18
-          versions: 2.7.18 3.6.15
+          versions: 3.6.15
           command: pyenv -v
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
