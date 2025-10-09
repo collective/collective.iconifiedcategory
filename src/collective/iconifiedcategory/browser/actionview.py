@@ -14,6 +14,7 @@ from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFPlone.utils import base_hasattr
 from Products.Five import BrowserView
 from z3c.json.interfaces import IJSONWriter
 from zope.component import getAdapter
@@ -71,6 +72,8 @@ class BaseView(BrowserView):
         res = bool(api.user.has_permission(self.permission, obj=self.context))
         if res:
             # is this functionnality enabled?
+            if not base_hasattr(self.context, "content_category"):
+                return False
             self.category = utils.get_category_object(self.context, self.context.content_category)
             category_group = self.category.get_category_group()
             res = getattr(category_group, self.category_group_attr_name, True)
