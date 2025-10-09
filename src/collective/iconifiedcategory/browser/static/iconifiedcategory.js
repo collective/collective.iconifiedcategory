@@ -64,6 +64,10 @@ jQuery(function($) {
       obj.attr('href'),
       values,
       function(data) {
+        if (data.reload) {
+          window.location.reload();
+          return;
+        }
         if (data.status == 0) {
           obj.removeClass('active');
           obj.removeClass('deactivated');

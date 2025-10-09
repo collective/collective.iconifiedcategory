@@ -7,9 +7,11 @@ Changelog
 - Fix invalid jQuery selector for default Title field filling
   [laulaz]
 - Added "Approved?" column to the categorized elements table
-  [chris-adam]
+  [chris-adam,sgeulette]
 - Added cache on IconClickableColumn action view.
   [chris-adam]
+- Added page reload possibility
+  [sgeulette]
 
 0.69 (2025-06-23)
 -----------------
