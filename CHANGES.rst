@@ -12,6 +12,9 @@ Changelog
   [chris-adam]
 - Added page reload possibility
   [sgeulette]
+- Moved css pattern outside css generation view (`css.IconifiedCategory`)
+  so it is reusable by an external package.
+  [gbastien]
 
 0.69 (2025-06-23)
 -----------------
