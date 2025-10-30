@@ -10,9 +10,11 @@ Created by mpeeters
 from collective.iconifiedcategory import utils
 from Products.Five import BrowserView
 
+
 css_pattern = (u".{0} {{ padding-left: 1.4em; background: "
-    u"transparent url('{1}') no-repeat top left; "
-    u"background-size: contain; }}")
+               u"transparent url('{1}') no-repeat top left; "
+               u"background-size: contain; }}")
+
 
 class IconifiedCategory(BrowserView):
 
