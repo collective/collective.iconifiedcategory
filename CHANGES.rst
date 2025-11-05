@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.70 (unreleased)
+0.70 (2025-11-05)
 -----------------
 
 - Fix invalid jQuery selector for default Title field filling
