@@ -126,7 +126,10 @@ def content_updated(obj, event):
 
 
 def categorized_content_updated(obj, event, is_created=False):
-    category = utils.get_category_object(obj, obj.content_category)
+    if hasattr(obj, 'content_category'):
+        category = utils.get_category_object(obj, obj.content_category)
+    else:
+        return
 
     if category.show_preview in (1, 2):
         queueJob(obj)
