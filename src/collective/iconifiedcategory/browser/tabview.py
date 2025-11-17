@@ -195,7 +195,7 @@ class TitleColumn(BaseColumn):
             target = '_blank'
         return pattern.format(
             link=url,
-            title=html.escape(getattr(content, self.attrName).decode('utf-8')),
+            title=html.escape(safe_unicode(getattr(content, self.attrName))),
             target=target,
             icon=content.icon_url,
             category=html.escape(safe_unicode(content.category_title)),
@@ -387,7 +387,7 @@ class SignedColumn(IconClickableColumn):
 class ApprovedColumn(IconClickableColumn):
     header = _(u'Approved')
     cssClasses = {'td': 'iconified-approved'}
-    weight = 100
+    weight = 99
     attrName = 'approved'
     action_view_name = 'iconified-approved'
 
