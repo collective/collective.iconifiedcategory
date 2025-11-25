@@ -235,9 +235,9 @@ def upgrade_to_2107(context):
         if 'to_approve' not in parent.categorized_elements[obj_uid]:
             obj.to_approve = False
             parent.categorized_elements[obj_uid]['to_approve'] = False
-            parent._p_changed = True
-        if 'approved' not in parent.categorized_elements[obj_uid]:
             obj.approved = False
             parent.categorized_elements[obj_uid]['approved'] = False
+            obj.approved_activated = False
+            parent.categorized_elements[obj_uid]['approved_activated'] = False
             parent._p_changed = True
     pghandler.finish()

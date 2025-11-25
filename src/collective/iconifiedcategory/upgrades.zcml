@@ -62,7 +62,7 @@
         profile="collective.iconifiedcategory:default" />
 
     <genericsetup:upgradeStep
-        title="Updated ContentCategoryConfiguration type"
+        title="Updated to_approve/approved workflow"
         description=""
         source="2106"
         destination="2107"
