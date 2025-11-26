@@ -48,9 +48,9 @@ def upgrade_to_2100(context):
     for brain in brains:
         obj = brain.getObject()
         # this can be useless if using behavior 'Scan metadata' collective.dms.scanbehavior
-        if not(base_hasattr(obj, 'to_sign')):
+        if not (base_hasattr(obj, 'to_sign')):
             setattr(obj, 'to_sign', False)
-        if not(base_hasattr(obj, 'signed')):
+        if not (base_hasattr(obj, 'signed')):
             setattr(obj, 'signed', False)
 
         parent = obj.aq_parent
@@ -80,7 +80,7 @@ def upgrade_to_2101(context):
     parents_to_update = []
     for brain in brains:
         obj = brain.getObject()
-        if not(base_hasattr(obj, 'publishable')):
+        if not (base_hasattr(obj, 'publishable')):
             setattr(obj, 'publishable', False)
 
         parent = obj.aq_parent
