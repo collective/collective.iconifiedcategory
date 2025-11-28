@@ -237,7 +237,6 @@ def upgrade_to_2107(context):
             parent.categorized_elements[obj_uid]['to_approve'] = False
             obj.approved = False
             parent.categorized_elements[obj_uid]['approved'] = False
-            obj.approved_activated = False
             parent.categorized_elements[obj_uid]['approved_activated'] = False
             parent._p_changed = True
     pghandler.finish()
