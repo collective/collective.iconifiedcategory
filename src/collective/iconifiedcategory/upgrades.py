@@ -48,9 +48,9 @@ def upgrade_to_2100(context):
     for brain in brains:
         obj = brain.getObject()
         # this can be useless if using behavior 'Scan metadata' collective.dms.scanbehavior
-        if not(base_hasattr(obj, 'to_sign')):
+        if not (base_hasattr(obj, 'to_sign')):
             setattr(obj, 'to_sign', False)
-        if not(base_hasattr(obj, 'signed')):
+        if not (base_hasattr(obj, 'signed')):
             setattr(obj, 'signed', False)
 
         parent = obj.aq_parent
@@ -80,7 +80,7 @@ def upgrade_to_2101(context):
     parents_to_update = []
     for brain in brains:
         obj = brain.getObject()
-        if not(base_hasattr(obj, 'publishable')):
+        if not (base_hasattr(obj, 'publishable')):
             setattr(obj, 'publishable', False)
 
         parent = obj.aq_parent
@@ -216,29 +216,27 @@ def upgrade_to_2106(context):
 
 def upgrade_to_2107(context):
     ''' '''
-    portal_types = _portal_types_using_behavior()
     catalog = api.portal.get_tool('portal_catalog')
-    brains = catalog(portal_type=portal_types)
 
-    logger.info('Querying elements to update among "{0}" objects of portal_type "{1}"'.format(
-        len(brains), ', '.join(portal_types)))
-    parents_to_update = []
+    brains = catalog(
+        object_provides='collective.iconifiedcategory.'
+        'behaviors.iconifiedcategorization.IIconifiedCategorizationMarker')
+    i = 0
+    pghandler = ZLogHandler(steps=1000)
+    pghandler.info('Initializing "approved/to_approve" for every categorized elements...')
+    pghandler.init('InitFileContentTypeForCategorizedElements', len(brains))
+
     for brain in brains:
+        i += 1
+        pghandler.report(i)
         obj = brain.getObject()
-        if not(base_hasattr(obj, 'to_approve')):
-            setattr(obj, 'to_approve', False)
-        if not(base_hasattr(obj, 'approved')):
-            setattr(obj, 'approved', False)
-
+        obj_uid = obj.UID()
         parent = obj.aq_parent
-        if parent not in parents_to_update:
-            parents_to_update.append(parent)
-
-    # finally update parents that contains categorized elements
-    nb_of_parents_to_update = len(parents_to_update)
-    i = 1
-    for parent_to_update in parents_to_update:
-        logger.info('Running update_all_categorized_elements for element {0}/{1} ({2})'.format(
-            i, nb_of_parents_to_update, '/'.join(parent_to_update.getPhysicalPath())))
-        i = i + 1
-        update_all_categorized_elements(parent_to_update)
+        if 'to_approve' not in parent.categorized_elements[obj_uid]:
+            obj.to_approve = False
+            parent.categorized_elements[obj_uid]['to_approve'] = False
+            obj.approved = False
+            parent.categorized_elements[obj_uid]['approved'] = False
+            parent.categorized_elements[obj_uid]['approved_activated'] = False
+            parent._p_changed = True
+    pghandler.finish()
