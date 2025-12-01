@@ -47,18 +47,35 @@ class BaseView(BrowserView):
                2 --> error;
            """
         writer = getUtility(IJSONWriter)
-        values = {'msg': u'Values have been set'}
+        results = {'msg': u'Values have been set'}
         try:
             self.request.response.setHeader('content-type',
                                             'application/json')
-            status, msg = self.set_values(self.get_values())
-            values['status'] = status
+            values = self.get_values()
+            current_values = self.get_current_values()
+            for k, v in values.items():
+                if v != current_values.get(k):
+                    results["reload"] = True
+                    api.portal.show_message(
+                        _("Your action could not be performed because the content has been edited by another user."),
+                        request=self.request,
+                        type="error",
+                    )
+                    raise ValueError
+            status, msg = self.set_values(values)
+
+            # return current values to update HTML data-* attributes
+            current_values = self.get_current_values()
+            for k, v in values.items():
+                results["data-%s" % k] = current_values.get(k)
+
+            results['status'] = status
             if msg:
-                values['msg'] = self._translate(msg)
+                results['msg'] = self._translate(msg)
         except Exception:
-            values['status'] = 2
-            values['msg'] = self._translate(_('Error during process'))
-        return writer.write(values)
+            results['status'] = 2
+            results['msg'] = self._translate(_('Error during process'))
+        return writer.write(results)
 
     def get_current_values(self):
         return {k: getattr(self.context, k)
@@ -68,7 +85,7 @@ class BaseView(BrowserView):
         return {k: self.convert_boolean(self.request.get(v))
                 for k, v in self.attribute_mapping.items()}
 
-    def _may_set_values(self, values, ):
+    def _may_set_values(self, values):
         res = bool(api.user.has_permission(self.permission, obj=self.context))
         if res:
             # is this functionnality enabled?
@@ -87,6 +104,11 @@ class BaseView(BrowserView):
             return 2, self._translate(_('No values to set'))
 
         old_values = self.get_current_values()
+
+        # If the view doesn't define _get_next_values, toggle the boolean value
+        if not hasattr(self, '_get_next_values'):
+            for key in values.keys():
+                values[key] = not old_values[key]
 
         for key, value in values.items():
             self._set_value(key, value)
@@ -131,7 +153,7 @@ class BaseView(BrowserView):
 
 class ToPrintChangeView(BaseView):
     attribute_mapping = {
-        'to_print': 'iconified-value',
+        'to_print': 'to_print',
     }
     category_group_attr_name = 'to_be_printed_activated'
     attr_name = 'to_print'
@@ -145,7 +167,7 @@ class ToPrintChangeView(BaseView):
 
 class ConfidentialChangeView(BaseView):
     attribute_mapping = {
-        'confidential': 'iconified-value',
+        'confidential': 'confidential',
     }
     category_group_attr_name = 'confidentiality_activated'
     attr_name = 'confidential'
@@ -154,8 +176,8 @@ class ConfidentialChangeView(BaseView):
 
 class SignedChangeView(BaseView):
     attribute_mapping = {
-        'signed': 'iconified-value',
-        'to_sign': 'iconified-value',
+        'signed': 'signed',
+        'to_sign': 'to_sign',
     }
     category_group_attr_name = 'signed_activated'
     attr_name = 'to_sign'
@@ -193,8 +215,8 @@ class SignedChangeView(BaseView):
 
 class ApprovedChangeView(BaseView):
     attribute_mapping = {
-        'approved': 'iconified-value',
-        'to_approve': 'iconified-value',
+        'approved': 'approved',
+        'to_approve': 'to_approve',
     }
     category_group_attr_name = 'approved_activated'
     attr_name = 'to_approve'
@@ -232,7 +254,7 @@ class ApprovedChangeView(BaseView):
 
 class PublishableChangeView(BaseView):
     attribute_mapping = {
-        'publishable': 'iconified-value',
+        'publishable': 'publishable',
     }
     category_group_attr_name = 'publishable_activated'
     attr_name = 'publishable'

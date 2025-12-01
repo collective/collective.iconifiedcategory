@@ -107,7 +107,8 @@ class TestCategorizedTabView(BaseTestCase):
             u'<a href="#" '
             u'class="iconified-action deactivated" '
             u'alt="Not convertible to a printable format" '
-            u'title="Not convertible to a printable format"></a>')
+            u'title="Not convertible to a printable format" '
+            u'data-to_print="false"></a>')
         self.assertIsNone(categorized_content.to_print)
         self.assertIsNone(obj.to_print)
 
@@ -130,7 +131,7 @@ class TestCategorizedTabView(BaseTestCase):
             u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
             u'class="iconified-action editable" '
             u'alt="Should not be printed" '
-            u'title="Should not be printed"></a>')
+            u'title="Should not be printed" data-to_print="false"></a>')
 
         # set to_print to True
         obj.to_print = True
@@ -145,7 +146,7 @@ class TestCategorizedTabView(BaseTestCase):
             u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
             u'class="iconified-action active editable" '
             u'alt="Must be printed" '
-            u'title="Must be printed"></a>')
+            u'title="Must be printed" data-to_print="true"></a>')
 
         # if element is not editable, the 'editable' CSS class is not there
         obj.manage_permission(ModifyPortalContent, roles=[])
@@ -153,4 +154,5 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertEqual(column.renderCell(categorized_content),
                          u'<a href="http://nohost/plone/file_txt/@@iconified-print" '
                          u'class="iconified-action active" '
-                         u'alt="Must be printed" title="Must be printed"></a>')
+                         u'alt="Must be printed" title="Must be printed" '
+                         u'data-to_print="true"></a>')

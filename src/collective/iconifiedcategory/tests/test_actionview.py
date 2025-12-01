@@ -25,8 +25,8 @@ class TestBaseView(BaseTestCase):
         self.assertEqual(result[u'msg'], u'No values to set')
 
         # only doable if user has Modify portal content on obj
-        view.attribute_mapping = {'title': 'action-value-title'}
-        self.portal.REQUEST.set('action-value-title', 'My new title')
+        view.attribute_mapping = {'approved': 'approved'}
+        self.portal.REQUEST.set('approved', 'false')
         obj.manage_permission(ModifyPortalContent, roles=[])
         result = reader.read(view())
         self.assertEqual(result[u'status'], 2)
@@ -34,11 +34,11 @@ class TestBaseView(BaseTestCase):
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
 
         # change title
-        self.assertEqual(obj.title, u'file.txt')
+        self.assertFalse(obj.approved)
         result = reader.read(view())
-        self.assertEqual(result[u'status'], -1)
+        self.assertEqual(result[u'status'], 1)
         self.assertEqual(result[u'msg'], u'Values have been set')
-        self.assertEqual(obj.title, 'My new title')
+        self.assertTrue(obj.approved)
 
     def test_get_current_values(self):
         obj = self.portal['file_txt']

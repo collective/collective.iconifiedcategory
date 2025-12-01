@@ -322,13 +322,17 @@ class IconClickableColumn(BaseColumn):
             return '{0} editable'.format(base_css)
         return base_css
 
+    def render_data(self, content):
+        return u''
+
     def renderCell(self, content):
         link = (u'<a href="{0}" class="iconified-action{1}" alt="{2}" '
-                u'title="{2}"></a>')
+                u'title="{2}" {3}></a>')
         return link.format(
             self.get_url(content),
             self.css_class(content),
             self.alt(content),
+            self.render_data(content),
         )
 
 
@@ -346,6 +350,11 @@ class PrintColumn(IconClickableColumn):
             context=self.table.request,
         )
 
+    def render_data(self, content):
+        return u'data-to_print="{0}"'.format(
+            content.to_print and 'true' or 'false'
+        )
+
 
 class ConfidentialColumn(IconClickableColumn):
     header = _(u'Confidential')
@@ -359,6 +368,11 @@ class ConfidentialColumn(IconClickableColumn):
             utils.boolean_message(content, attr_name='confidential'),
             domain='collective.iconifiedcategory',
             context=self.table.request,
+        )
+
+    def render_data(self, content):
+        return u'data-confidential="{0}"'.format(
+            content.confidential and 'true' or 'false'
         )
 
 
@@ -383,6 +397,12 @@ class SignedColumn(IconClickableColumn):
     def is_deactivated(self, content):
         return not getattr(content, 'to_sign', True)
 
+    def render_data(self, content):
+        return u'data-to_sign="{0}" data-signed="{1}"'.format(
+            content.to_sign and 'true' or 'false',
+            content.signed and 'true' or 'false'
+        )
+
 
 class ApprovedColumn(IconClickableColumn):
     header = _(u'Approved')
@@ -405,6 +425,12 @@ class ApprovedColumn(IconClickableColumn):
     def is_deactivated(self, content):
         return not getattr(content, 'to_approve', True)
 
+    def render_data(self, content):
+        return u'data-to_approve="{0}" data-approved="{1}"'.format(
+            content.to_approve and 'true' or 'false',
+            content.approved and 'true' or 'false'
+        )
+
 
 class PublishableColumn(IconClickableColumn):
     header = _(u'Publishable')
@@ -418,6 +444,11 @@ class PublishableColumn(IconClickableColumn):
             utils.boolean_message(content, attr_name='publishable'),
             domain='collective.iconifiedcategory',
             context=self.table.request,
+        )
+
+    def render_data(self, content):
+        return u'data-publishable="{0}"'.format(
+            content.publishable and 'true' or 'false'
         )
 
 
