@@ -55,11 +55,11 @@ jQuery(function($) {
   //});
 
   $('a.iconified-action').click(function() {
-    var obj = $(this);
+    let obj = $(this);
     if (!obj.hasClass('editable')) {
       return false;
     }
-    var values = {'iconified-value': !obj.hasClass('active')};
+    let values = obj.data();
     $.getJSON(
       obj.attr('href'),
       values,
@@ -85,6 +85,17 @@ jQuery(function($) {
           }
         obj.attr('alt', data.msg);
         obj.attr('title', data.msg);
+
+        // Update all data-* attributes from the response
+        for (let key in data) {
+          if (key.startsWith('data-')) {
+            // Extract the data key name (remove 'data-' prefix)
+            let dataKey = key.substring(5);
+            // Update both the attribute and the data cache
+            obj.attr(key, data[key]);
+            obj.data(dataKey, data[key]);
+          }
+        }
       }
     );
     return false;

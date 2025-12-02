@@ -6,6 +6,8 @@ Changelog
 
 - Avoid an error if category root folder does not exist
   [mpeeters]
+- Added error if frontend and backend data differ when setting values.
+  [chris-adam]
 
 
 0.70 (2025-11-05)
