@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-10-08 08:22+0000\n"
+"POT-Creation-Date: 2025-12-01 15:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -334,6 +334,10 @@ msgstr ""
 
 #: ../utils.py:535
 msgid "You must select a PDF file!"
+msgstr ""
+
+#: ../browser/actionview.py:59
+msgid "Your action could not be performed because the content has been edited by another user."
 msgstr ""
 
 #: ../configure.zcml:32
