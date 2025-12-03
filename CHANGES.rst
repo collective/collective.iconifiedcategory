@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.71 (unreleased)
+0.71 (2025-12-03)
 -----------------
 
 - Avoid an error if category root folder does not exist
