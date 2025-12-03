@@ -6,7 +6,8 @@ Changelog
 
 - Avoid an error if category root folder does not exist
   [mpeeters]
-
+- Optimized `upgrade_to_2107` (approved/to_approve).
+  [chris-adam]
 
 0.70 (2025-11-05)
 -----------------
