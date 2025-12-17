@@ -48,16 +48,16 @@ class BaseView(BrowserView):
            """
         writer = getUtility(IJSONWriter)
         values = {'msg': u'Values have been set'}
-        try:
-            self.request.response.setHeader('content-type',
-                                            'application/json')
-            status, msg = self.set_values(self.get_values())
-            values['status'] = status
-            if msg:
-                values['msg'] = self._translate(msg)
-        except Exception:
-            values['status'] = 2
-            values['msg'] = self._translate(_('Error during process'))
+        # try:
+        self.request.response.setHeader('content-type',
+                                        'application/json')
+        status, msg = self.set_values(self.get_values())
+        values['status'] = status
+        if msg:
+            values['msg'] = self._translate(msg)
+        # except Exception:
+        #     values['status'] = 2
+        #     values['msg'] = self._translate(_('Error during process'))
         return writer.write(values)
 
     def get_current_values(self):

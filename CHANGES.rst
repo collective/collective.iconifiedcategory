@@ -4,8 +4,8 @@ Changelog
 0.72 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Removed exception catch in action view call.
+  [sgeulette]
 
 0.71 (2025-12-03)
 -----------------

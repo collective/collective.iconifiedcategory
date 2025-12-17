@@ -28,9 +28,10 @@ class TestBaseView(BaseTestCase):
         view.attribute_mapping = {'title': 'action-value-title'}
         self.portal.REQUEST.set('action-value-title', 'My new title')
         obj.manage_permission(ModifyPortalContent, roles=[])
-        result = reader.read(view())
-        self.assertEqual(result[u'status'], 2)
-        self.assertEqual(result[u'msg'], u'Error during process')
+        self.assertRaises(Unauthorized, view.__call__)
+        # result = reader.read(view())  # commented after try except has been commented
+        # self.assertEqual(result[u'status'], 2)
+        # self.assertEqual(result[u'msg'], u'Error during process')
         obj.manage_permission(ModifyPortalContent, roles=['Manager'])
 
         # change title
