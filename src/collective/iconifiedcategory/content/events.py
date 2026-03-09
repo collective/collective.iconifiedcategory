@@ -194,8 +194,11 @@ def categorized_content_moved(obj, event):
 
 def categorized_content_container_moved(container, event):
     """Update all categorized_elements when a parent object is renamed or pasted"""
-    if IObjectRemovedEvent.providedBy(event):
+    # can not test on IObjectAddedEvent because a created/moved element
+    # will provide it, so test if actually containing something
+    if IObjectRemovedEvent.providedBy(event) or not container.objectIds():
         return
+
     if container.REQUEST.get('defer_update_categorized_elements', False) or \
             container.REQUEST.get('defer_categorized_content_created_event', False):
         return

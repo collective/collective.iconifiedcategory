@@ -16,6 +16,7 @@ from collective.iconifiedcategory import logger
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.content.subcategory import ISubcategory
+from collective.iconifiedcategory.event import CategorizedElementUpdatedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
@@ -35,6 +36,7 @@ from zope.annotation import IAnnotations
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
+from zope.event import notify
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import Invalid
@@ -163,7 +165,8 @@ def update_categorized_elements(parent,
                                 category,
                                 limited=False,
                                 sort=True,
-                                logging=False):
+                                logging=False,
+                                trigger_event=True):
     """ Update categorized elements
     parameters:
         - parent : The object parent
@@ -171,11 +174,13 @@ def update_categorized_elements(parent,
         - category : The category object
         - limited : Update only category related informations
         - logging : Enables logging
+        - trigger_event : Will trigger the CategorizedElementUpdatedEvent with old and new values
     """
     if 'categorized_elements' not in parent.__dict__:
         parent.categorized_elements = OrderedDict()
     uid, new_infos = get_categorized_infos(obj, category, limited=limited)
     infos = parent.categorized_elements.get(uid, {})
+    old_values = copy.deepcopy(infos)
     infos.update(new_infos)
     parent.categorized_elements[uid] = infos
     parent._p_changed = True
@@ -184,6 +189,9 @@ def update_categorized_elements(parent,
     if logging:
         logger.info('Updated categorized elements of {0}'.format(
             obj.absolute_url_path()))
+    if trigger_event:
+        notify(CategorizedElementUpdatedEvent(
+            obj, parent, old_values=old_values, new_values=copy.deepcopy(infos), limited=limited))
 
 
 def update_all_categorized_elements(container, limited=False, sort=True):

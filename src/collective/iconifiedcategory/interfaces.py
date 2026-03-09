@@ -113,6 +113,15 @@ class ICategorizedElementsUpdatedEvent(IObjectEvent):
     pass
 
 
+class ICategorizedElementUpdatedEvent(IObjectEvent):
+    """A categorized element was updated."""
+
+    parent = Attribute("The object's parent")
+    old_values = Attribute("The old values")
+    new_values = Attribute("The new values")
+    limited = Attribute("Limited")
+
+
 class IIconifiedAttrChangedEvent(IObjectEvent):
     """A categorized element attribute (from the group) has been changed."""
 
