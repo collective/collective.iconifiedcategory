@@ -8,6 +8,7 @@ Created by mpeeters
 """
 
 from collective.iconifiedcategory.interfaces import ICategorizedElementsUpdatedEvent
+from collective.iconifiedcategory.interfaces import ICategorizedElementUpdatedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
 from zope.component.interfaces import ObjectEvent
@@ -36,3 +37,15 @@ class IconifiedAttrChangedEvent(ObjectEvent):
 
 class CategorizedElementsUpdatedEvent(ObjectEvent):
     implements(ICategorizedElementsUpdatedEvent)
+
+
+class CategorizedElementUpdatedEvent(ObjectEvent):
+    implements(ICategorizedElementUpdatedEvent)
+
+    def __init__(self, object, parent, old_values, new_values, limited=False):
+        super(CategorizedElementUpdatedEvent, self).__init__(object)
+        self.object = object
+        self.parent = parent
+        self.old_values = old_values
+        self.new_values = new_values
+        self.limited = limited

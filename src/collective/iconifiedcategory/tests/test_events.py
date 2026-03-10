@@ -7,12 +7,16 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from collective import iconifiedcategory as collective_iconifiedcategory
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
 from Products.CMFPlone.utils import base_hasattr
+from Products.Five import zcml
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 import unittest
 
@@ -333,3 +337,37 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         )
         delattr(self.portal, 'categorized_elements')
         api.content.delete(file2)
+
+    def test_categorized_element_updated_event(self):
+        """An ICategorizedElementUpdatedEvent event is triggered when a content
+           is updated using utils.update_categorized_element."""
+        # register an event that will store values in the REQUEST
+        zcml.load_config('testing-adapters.zcml', collective_iconifiedcategory)
+        req = self.portal.REQUEST
+        self.assertIsNone(req.get('old_values'))
+        self.assertIsNone(req.get('new_values'))
+        self.assertIsNone(req.get('parent'))
+        self.assertIsNone(req.get('limited'))
+        # created
+        obj = api.content.create(
+            id='file1',
+            type='File',
+            title='File 1',
+            file=self.file,
+            container=self.portal,
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertEqual(req.get('old_values'), {})
+        self.assertEqual(req.get('new_values')['id'], obj.getId())
+        self.assertEqual(req.get('new_values')['title'], 'File 1')
+        self.assertEqual(req.get('parent'), self.portal)
+        self.assertEqual(req.get('limited'), False)
+        # modified
+        obj.setTitle('New file 1')
+        notify(ObjectModifiedEvent(obj))
+        self.assertEqual(req.get('old_values')['title'], 'File 1')
+        self.assertEqual(req.get('new_values')['title'], 'New file 1')
+        # cleanUp zmcl.load_config because it impacts other tests
+        zcml.cleanUp()
