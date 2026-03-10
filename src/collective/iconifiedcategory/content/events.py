@@ -198,7 +198,6 @@ def categorized_content_container_moved(container, event):
     # will provide it, so test if actually containing something
     if IObjectRemovedEvent.providedBy(event) or not container.objectIds():
         return
-
     if container.REQUEST.get('defer_update_categorized_elements', False) or \
             container.REQUEST.get('defer_categorized_content_created_event', False):
         return
