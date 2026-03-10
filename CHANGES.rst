@@ -6,6 +6,14 @@ Changelog
 
 - Removed exception catch in action view call.
   [sgeulette]
+- Fixed `content.events.categorized_content_container_moved` event handler that
+  was called when new content created leading to `utils.update_categorized_element`
+  called 2 times, now we check if content contains something, if not,
+  not necessary to update or we are creating a new content.
+  [gbastien]
+- Trigger `CategorizedElementUpdatedEvent` after a categorized element is updated,
+  event contains old and new values.
+  [gbastien]
 
 0.71 (2025-12-03)
 -----------------
