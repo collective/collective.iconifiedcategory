@@ -362,12 +362,18 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertEqual(req.get('old_values'), {})
         self.assertEqual(req.get('new_values')['id'], obj.getId())
         self.assertEqual(req.get('new_values')['title'], 'File 1')
+        self.assertEqual(req.get('new_values')['filesize'], 3017)
+        self.assertEqual(req.get('new_values')['relative_url'], 'file1')
         self.assertEqual(req.get('parent'), self.portal)
         self.assertEqual(req.get('limited'), False)
         # modified
         obj.setTitle('New file 1')
+        # edit file, filename and content so size changed
+        obj.file = self.file_pdf
         notify(ObjectModifiedEvent(obj))
         self.assertEqual(req.get('old_values')['title'], 'File 1')
         self.assertEqual(req.get('new_values')['title'], 'New file 1')
+        self.assertEqual(req.get('new_values')['filesize'], 25368)
+        self.assertEqual(req.get('new_values')['relative_url'], 'file1')
         # cleanUp zmcl.load_config because it impacts other tests
         zcml.cleanUp()
