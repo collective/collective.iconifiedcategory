@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.72 (unreleased)
+0.72 (2026-03-20)
 -----------------
 
 - Removed exception catch in action view call.
