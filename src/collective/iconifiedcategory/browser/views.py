@@ -115,9 +115,7 @@ class CategorizedChildInfosView(BrowserView):
 
     @property
     def categories_uids(self):
-        return OrderedDict.fromkeys(
-            [e['category_uid'] for e in self.categorized_elements],
-        ).keys()
+        return [e['category_uid'] for e in self.categorized_elements]
 
     def infos(self):
         infos = OrderedDict([(e, []) for e in self.categories_uids])

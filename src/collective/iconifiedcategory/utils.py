@@ -8,7 +8,6 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
-from collections import OrderedDict
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import CAT_SEPARATOR
 from collective.iconifiedcategory import CSS_SEPARATOR
@@ -26,6 +25,7 @@ from datetime import datetime
 from imio.helpers.cache import get_cachekey_volatile
 from imio.helpers.content import find
 from natsort import natsorted
+from persistent.mapping import PersistentMapping
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
@@ -177,7 +177,7 @@ def update_categorized_elements(parent,
         - trigger_event : Will trigger the CategorizedElementUpdatedEvent with old and new values
     """
     if 'categorized_elements' not in parent.__dict__:
-        parent.categorized_elements = OrderedDict()
+        parent.categorized_elements = PersistentMapping()
     uid, new_infos = get_categorized_infos(obj, category, limited=limited)
     infos = parent.categorized_elements.get(uid, {})
     old_values = copy.deepcopy(infos)
@@ -197,7 +197,7 @@ def update_categorized_elements(parent,
 def update_all_categorized_elements(container, limited=False, sort=True):
     # recompute everything if limited=False
     if not limited:
-        container.categorized_elements = OrderedDict()
+        container.categorized_elements = PersistentMapping()
     adapter = None
     for obj in container.objectValues():
         if hasattr(obj, 'content_category'):
@@ -257,12 +257,12 @@ def sort_categorized_elements(context):
         )
     except KeyError:
         return
-    context.categorized_elements = OrderedDict([(k, v) for k, v in elements])
-    context._p_changed = True
+    context.categorized_elements.clear()
+    context.categorized_elements.update({k: v for k, v in elements})
 
 
 def remove_categorized_element(parent, obj):
-    if obj.UID() in getattr(parent, 'categorized_elements', OrderedDict()):
+    if obj.UID() in getattr(parent, 'categorized_elements', PersistentMapping()):
         del parent.categorized_elements[obj.UID()]
 
 
@@ -274,7 +274,7 @@ def get_categorized_infos(obj, category, limited=False):
 def _categorized_elements(context):
     """Return a deepcopy of the categorized elements of the given context"""
     return copy.deepcopy(
-        getattr(aq_base(context), 'categorized_elements', OrderedDict())
+        getattr(aq_base(context), 'categorized_elements', PersistentMapping())
     )
 
 
