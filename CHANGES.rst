@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.73 (unreleased)
+0.73 (2026-04-01)
 -----------------
 
 - Adapted `utils.get_categorized_elements` to be able to pass a list of values
