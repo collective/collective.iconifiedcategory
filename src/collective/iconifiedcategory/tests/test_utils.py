@@ -423,7 +423,7 @@ class TestUtils(BaseTestCase):
 
     def test_get_categorized_elements_filters(self):
         self.config.get('group-1').confidentiality_activated = True
-        createContentInContainer(
+        doc1 = createContentInContainer(
             container=self.portal,
             portal_type='Document',
             title='Doc1',
@@ -437,6 +437,36 @@ class TestUtils(BaseTestCase):
         self.assertEqual(len(utils.get_categorized_elements(
             self.portal, filters={'confidential': False})),
             0)
+        # filter can be a list of values
+        doc2 = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='Doc2',
+            content_category='config_-_group-1_-_category-1-2',
+            to_print=False,
+            confidential=False,
+        )
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'confidential': True})),
+            1)
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'confidential': False})),
+            1)
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'confidential': (True, False)})),
+            2)
+        # filter on category_uid
+        doc1_category_uid = self.portal.categorized_elements[doc1.UID()]['category_uid']
+        doc2_category_uid = self.portal.categorized_elements[doc2.UID()]['category_uid']
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'category_uid': doc1_category_uid})),
+            1)
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'category_uid': doc2_category_uid})),
+            1)
+        self.assertEqual(len(utils.get_categorized_elements(
+            self.portal, filters={'category_uid': (doc1_category_uid, doc2_category_uid)})),
+            2)
 
     def test_update_categorized_elements(self):
         document2 = createContentInContainer(

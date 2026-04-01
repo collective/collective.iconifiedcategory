@@ -286,7 +286,10 @@ def _check_filters(infos, filters):
         stored_value = infos[k]
         if not hasattr(stored_value, '__iter__'):
             stored_value = (stored_value, )
-        if v not in stored_value:
+        # manage case when filtered value is a list or not
+        if not hasattr(v, '__iter__'):
+            v = (v, )
+        if not set(v).intersection(stored_value):
             keep = False
             break
     return keep
@@ -317,6 +320,7 @@ def get_categorized_elements(context,
        - 'objects': categorized objects are returned.
        If some p_filters are given, the values will be filtered,
        available filters are values stored in categorized_elements.
+       The values of the filters can be a single value or a list of values.
        If p_check_can_view is True, then the IIconifiedContent.can_view
        check will be called."""
     elements = None

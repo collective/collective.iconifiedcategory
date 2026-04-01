@@ -4,8 +4,9 @@ Changelog
 0.73 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Adapted `utils.get_categorized_elements` to be able to pass a list of values
+  for the `filters` parameter.
+  [gbastien]
 
 0.72 (2026-03-20)
 -----------------
