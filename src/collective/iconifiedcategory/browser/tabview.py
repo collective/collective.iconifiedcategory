@@ -203,68 +203,6 @@ class TitleColumn(BaseColumn):
         )
 
 
-class CategoryColumn(BaseColumn):
-    header = _(u'Category')
-    weight = 30
-    attrName = 'category_title'
-    escape = False
-
-    def renderCell(self, content):
-        category_title = safe_unicode(content.category_title)
-        if content.subcategory_title:
-            category_title = u"{0} / {1}".format(category_title,
-                                                 safe_unicode(content.subcategory_title))
-        return html.escape(category_title)
-
-
-class AuthorColumn(MemberIdColumn):
-    header = _(u'Author')
-    weight = 40
-
-
-class CreationDateColumn(BaseColumn):
-    header = _(u'Creation date')
-    weight = 50
-
-    def renderCell(self, content):
-        return api.portal.get_localized_time(
-            datetime=content.created,
-            long_format=True,
-        )
-
-
-class LastModificationColumn(BaseColumn):
-    header = _(u'Last modification')
-    weight = 60
-
-    def renderCell(self, content):
-        if content.created == content.modified:
-            return ''
-        return api.portal.get_localized_time(
-            datetime=content.modified,
-            long_format=True,
-        )
-
-
-class FilesizeColumn(BaseColumn):
-    header = _(u'Filesize')
-    weight = 70
-    escape = False
-
-    def renderHeadCell(self):
-        """ """
-        header = super(FilesizeColumn, self).renderHeadCell()
-        total = sum([v.filesize for v in self.table.values
-                     if v.filesize is not None])
-        header += u"<p>(Total: {0})</p>".format(utils.render_filesize(total))
-        return header
-
-    def renderCell(self, content):
-        if getattr(content, 'filesize', None) is None:
-            return ''
-        return utils.render_filesize(content.filesize)
-
-
 class IconClickableColumn(BaseColumn):
     action_view_name = ''
     escape = False
@@ -335,7 +273,7 @@ class IconClickableColumn(BaseColumn):
 class PrintColumn(IconClickableColumn):
     header = _(u'To be printed')
     cssClasses = {'td': 'iconified-print'}
-    weight = 80
+    weight = 30
     attrName = 'to_print'
     action_view_name = 'iconified-print'
 
@@ -350,7 +288,7 @@ class PrintColumn(IconClickableColumn):
 class ConfidentialColumn(IconClickableColumn):
     header = _(u'Confidential')
     cssClasses = {'td': 'iconified-confidential'}
-    weight = 90
+    weight = 32
     attrName = 'confidential'
     action_view_name = 'iconified-confidential'
 
@@ -365,7 +303,7 @@ class ConfidentialColumn(IconClickableColumn):
 class SignedColumn(IconClickableColumn):
     header = _(u'Signed')
     cssClasses = {'td': 'iconified-signed'}
-    weight = 95
+    weight = 34
     attrName = 'signed'
     action_view_name = 'iconified-signed'
 
@@ -387,7 +325,7 @@ class SignedColumn(IconClickableColumn):
 class ApprovedColumn(IconClickableColumn):
     header = _(u'Approved')
     cssClasses = {'td': 'iconified-approved'}
-    weight = 99
+    weight = 36
     attrName = 'approved'
     action_view_name = 'iconified-approved'
 
@@ -409,7 +347,7 @@ class ApprovedColumn(IconClickableColumn):
 class PublishableColumn(IconClickableColumn):
     header = _(u'Publishable')
     cssClasses = {'td': 'iconified-publishable'}
-    weight = 98
+    weight = 38
     attrName = 'publishable'
     action_view_name = 'iconified-publishable'
 
@@ -419,6 +357,68 @@ class PublishableColumn(IconClickableColumn):
             domain='collective.iconifiedcategory',
             context=self.table.request,
         )
+
+
+class CategoryColumn(BaseColumn):
+    header = _(u'Category')
+    weight = 40
+    attrName = 'category_title'
+    escape = False
+
+    def renderCell(self, content):
+        category_title = safe_unicode(content.category_title)
+        if content.subcategory_title:
+            category_title = u"{0} / {1}".format(category_title,
+                                                 safe_unicode(content.subcategory_title))
+        return html.escape(category_title)
+
+
+class AuthorColumn(MemberIdColumn):
+    header = _(u'Author')
+    weight = 50
+
+
+class CreationDateColumn(BaseColumn):
+    header = _(u'Creation date')
+    weight = 60
+
+    def renderCell(self, content):
+        return api.portal.get_localized_time(
+            datetime=content.created,
+            long_format=True,
+        )
+
+
+class LastModificationColumn(BaseColumn):
+    header = _(u'Last modification')
+    weight = 70
+
+    def renderCell(self, content):
+        if content.created == content.modified:
+            return ''
+        return api.portal.get_localized_time(
+            datetime=content.modified,
+            long_format=True,
+        )
+
+
+class FilesizeColumn(BaseColumn):
+    header = _(u'Filesize')
+    weight = 80
+    escape = False
+
+    def renderHeadCell(self):
+        """ """
+        header = super(FilesizeColumn, self).renderHeadCell()
+        total = sum([v.filesize for v in self.table.values
+                     if v.filesize is not None])
+        header += u"<p>(Total: {0})</p>".format(utils.render_filesize(total))
+        return header
+
+    def renderCell(self, content):
+        if getattr(content, 'filesize', None) is None:
+            return ''
+        return utils.render_filesize(content.filesize)
 
 
 class ActionColumn(BaseColumn):
