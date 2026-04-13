@@ -6,7 +6,9 @@ Changelog
 
 - Reordered columns in `CategorizedTabView` to have iconified columns first.
   [chris-adam]
-
+- Fixed tooltip icons sometimes wrong displayed because
+  download icon width was not defined.
+  [gbastien]
 
 0.73 (2026-04-01)
 -----------------

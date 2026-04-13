@@ -108,7 +108,8 @@
 
           <tal:show_download_icon condition="python: view.show_download(element)">
             <a tal:attributes="href string:${portal_url}/${element_url}">
-              <img i18n:attributes="title"
+              <img class="iconified-download-icon"
+		   i18n:attributes="title"
                    title="Download"
                    tal:attributes="src string:${portal_url}/download_icon.png;" />
             </a>
