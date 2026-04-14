@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.74 (unreleased)
+0.74 (2026-04-14)
 -----------------
 
 - Reordered columns in `CategorizedTabView` to have iconified columns first.
