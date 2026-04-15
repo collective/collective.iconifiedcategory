@@ -140,6 +140,7 @@ class IconifiedCategorization(object):
     def to_approve(self):
         return getattr(aq_base(self.context), 'to_approve', False)
 
+    @property
     def approved(self):
         return getattr(aq_base(self.context), 'approved', False)
 

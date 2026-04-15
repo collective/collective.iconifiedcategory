@@ -137,11 +137,11 @@ div.tooltipster-categorized-elements label {
 #content .iconified-listing td.iconified-approved a,
 #content .iconified-listing td.iconified-confidential a,
 #content .iconified-listing td.iconified-publishable a,
-div.tooltipster-categorized-elements span.iconified-print,
-div.tooltipster-categorized-elements span.iconified-confidential,
-div.tooltipster-categorized-elements span.iconified-publishable,
-div.tooltipster-categorized-elements span.iconified-signed,
-div.tooltipster-categorized-elements span.iconified-approved {
+div.categorized_elements_details span.iconified-print,
+div.categorized_elements_details span.iconified-confidential,
+div.categorized_elements_details span.iconified-publishable,
+div.categorized_elements_details span.iconified-signed,
+div.categorized_elements_details span.iconified-approved {
     font-family: 'Font Awesome 5 Free';
     font-size: 110%;
     cursor: help;
@@ -164,11 +164,11 @@ div.tooltipster-categorized-elements span.iconified-approved {
 #content .iconified-listing td.iconified-approved a,
 #content .iconified-listing td.iconified-confidential a.active,
 #content .iconified-listing td.iconified-publishable a,
-div.tooltipster-categorized-elements span.iconified-print,
-div.tooltipster-categorized-elements span.iconified-approved,
-div.tooltipster-categorized-elements span.iconified-confidential.active,
-div.tooltipster-categorized-elements span.iconified-publishable,
-div.tooltipster-categorized-elements span.iconified-signed {
+div.categorized_elements_details span.iconified-print,
+div.categorized_elements_details span.iconified-approved,
+div.categorized_elements_details span.iconified-confidential.active,
+div.categorized_elements_details span.iconified-publishable,
+div.categorized_elements_details span.iconified-signed {
     color: #EA0000;
 }
 
@@ -177,11 +177,11 @@ div.tooltipster-categorized-elements span.iconified-signed {
 #content .iconified-listing td.iconified-approved a.active,
 #content .iconified-listing td.iconified-confidential a,
 #content .iconified-listing td.iconified-publishable a.active,
-div.tooltipster-categorized-elements span.iconified-print.active,
-div.tooltipster-categorized-elements span.iconified-signed.active,
-div.tooltipster-categorized-elements span.iconified-approved.active,
-div.tooltipster-categorized-elements span.iconified-confidential,
-div.tooltipster-categorized-elements span.iconified-publishable.active {
+div.categorized_elements_details span.iconified-print.active,
+div.categorized_elements_details span.iconified-signed.active,
+div.categorized_elements_details span.iconified-approved.active,
+div.categorized_elements_details span.iconified-confidential,
+div.categorized_elements_details span.iconified-publishable.active {
     color: #75ad0a;
 }
 
@@ -206,11 +206,11 @@ div.tooltipster-categorized-elements span.iconified-publishable.active {
 #content .iconified-listing td.iconified-approved a.deactivated,
 #content .iconified-listing td.iconified-confidential a.deactivated,
 #content .iconified-listing td.iconified-publishable a.deactivated,
-div.tooltipster-categorized-elements span.iconified-print.deactivated,
-div.tooltipster-categorized-elements span.iconified-signed.deactivated,
-div.tooltipster-categorized-elements span.iconified-approved.deactivated,
-div.tooltipster-categorized-elements span.iconified-confidential.deactivated,
-div.tooltipster-categorized-elements span.iconified-publishable.deactivated {
+div.categorized_elements_details span.iconified-print.deactivated,
+div.categorized_elements_details span.iconified-signed.deactivated,
+div.categorized_elements_details span.iconified-approved.deactivated,
+div.categorized_elements_details span.iconified-confidential.deactivated,
+div.categorized_elements_details span.iconified-publishable.deactivated {
     color: silver;
 }
 
@@ -237,32 +237,32 @@ div.tooltipster-categorized-elements span.iconified-publishable.deactivated {
 }
 
 #content .iconified-listing td.iconified-print a:before,
-div.tooltipster-categorized-elements span.iconified-print:before {
+div.categorized_elements_details span.iconified-print:before {
     content: "\f02f";
 }
 
 #content .iconified-listing td.iconified-publishable a:before,
-div.tooltipster-categorized-elements span.iconified-publishable:before {
+div.categorized_elements_details span.iconified-publishable:before {
     content: "\f093";
 }
 
 #content .iconified-listing td.iconified-confidential a:before,
-div.tooltipster-categorized-elements span.iconified-confidential:before {
+div.categorized_elements_details span.iconified-confidential:before {
     content: "\f3c1";
 }
 
 #content .iconified-listing td.iconified-confidential a.active:before,
-div.tooltipster-categorized-elements span.iconified-confidential.active:before {
+div.categorized_elements_details span.iconified-confidential.active:before {
     content: "\f023";
 }
 
 #content .iconified-listing td.iconified-signed a:before,
-div.tooltipster-categorized-elements span.iconified-signed:before {
+div.categorized_elements_details span.iconified-signed:before {
     content: "\f044";
 }
 
 #content .iconified-listing td.iconified-approved a:before,
-div.tooltipster-categorized-elements span.iconified-approved:before {
+div.categorized_elements_details span.iconified-approved:before {
     content: "\f00c";
 }
 
