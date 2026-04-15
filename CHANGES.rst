@@ -4,7 +4,8 @@ Changelog
 0.75 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Display category infos on categorized item.
+  [chris-adam]
 
 
 0.74 (2026-04-14)

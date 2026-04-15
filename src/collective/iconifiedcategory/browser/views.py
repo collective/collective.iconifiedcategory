@@ -22,10 +22,66 @@ from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import _checkPermission
 from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component.interfaces import ComponentLookupError
 
 import json
+
+
+class CategorizedElementsMixin(object):
+    """Mixin providing shared icon rendering for categorized elements."""
+
+    _element_icons = ViewPageTemplateFile('templates/categorized-element-icons.pt')
+
+    def element_icons_html(self, element):
+        """Render the status icon spans for the given element."""
+        return self._element_icons(element=element)
+
+    def get_css_classses_for(self, functionnality, element):
+        """ """
+        css_classes = []
+        if functionnality == "to_print":
+            css_classes.append("iconified-print")
+            if element['to_print'] is None:
+                css_classes.append('deactivated')
+            elif element['to_print'] is True:
+                css_classes.append('active')
+        elif functionnality == "signed":
+            css_classes.append("iconified-signed")
+            if element['to_sign'] is False:
+                css_classes.append('deactivated')
+            elif element['signed'] is True:
+                css_classes.append('active')
+        elif functionnality == "approved":
+            css_classes.append("iconified-approved")
+            if element['to_approve'] is False:
+                css_classes.append('deactivated')
+            elif element['approved'] is True:
+                css_classes.append('active')
+        else:
+            # default behavior
+            css_classes.append("iconified-{0}".format(functionnality))
+            if element[functionnality] is True:
+                css_classes.append('active')
+        return " ".join(css_classes)
+
+    def get_tag_title_for(self, functionnality, element):
+        """ """
+        msg = ''
+        if functionnality == "to_print":
+            msg = print_message(to_print_value=element['to_print'])
+        elif functionnality == "signed":
+            msg = signed_message(to_sign_value=element['to_sign'],
+                                 signed_value=element['signed'])
+        elif functionnality == "approved":
+            msg = approved_message(to_approve_value=element['to_approve'],
+                                   approved_value=element['approved'])
+        else:
+            # default behavior, a boolean message
+            msg = boolean_message(attr_name=functionnality,
+                                  value=element[functionnality])
+        return msg
 
 
 class CategorizedChildView(BrowserView):
@@ -82,7 +138,7 @@ class ManageCategorizedChildView(BrowserView):
         return "{0}/@@iconifiedcategory".format(self.context.absolute_url())
 
 
-class CategorizedChildInfosView(BrowserView):
+class CategorizedChildInfosView(CategorizedElementsMixin, BrowserView):
     """ """
     def __init__(self, context, request):
         """ """
@@ -170,52 +226,6 @@ class CategorizedChildInfosView(BrowserView):
     def _show_detail(self, detail_type):
         """Made to be overrided."""
         return True
-
-    def get_css_classses_for(self, functionnality, element):
-        """ """
-        css_classes = []
-        if functionnality == "to_print":
-            css_classes.append("iconified-print")
-            if element['to_print'] is None:
-                css_classes.append('deactivated')
-            elif element['to_print'] is True:
-                css_classes.append('active')
-        elif functionnality == "signed":
-            css_classes.append("iconified-signed")
-            if element['to_sign'] is False:
-                css_classes.append('deactivated')
-            elif element['signed'] is True:
-                css_classes.append('active')
-        elif functionnality == "approved":
-            css_classes.append("iconified-approved")
-            if element['to_approve'] is False:
-                css_classes.append('deactivated')
-            elif element['approved'] is True:
-                css_classes.append('active')
-        else:
-            # default behavior
-            css_classes.append("iconified-{0}".format(functionnality))
-            if element[functionnality] is True:
-                css_classes.append('active')
-        return " ".join(css_classes)
-
-    def get_tag_title_for(self, functionnality, element):
-        """ """
-        msg = ''
-        if functionnality == "to_print":
-            msg = print_message(to_print_value=element['to_print'])
-        elif functionnality == "signed":
-            msg = signed_message(to_sign_value=element['to_sign'],
-                                 signed_value=element['signed'])
-        elif functionnality == "approved":
-            msg = approved_message(to_approve_value=element['to_approve'],
-                                   approved_value=element['approved'])
-        else:
-            # default behavior, a boolean message
-            msg = boolean_message(attr_name=functionnality,
-                                  value=element[functionnality])
-        return msg
-
 
 def check_can_view(obj, request):
     """ """
