@@ -24,8 +24,9 @@
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
     template="browser/templates/categorized-childs-infos.pt" />
 
- <subscriber for="OFS.interfaces.IItem
-                  collective.iconifiedcategory.interfaces.ICategorizedElementUpdatedEvent"
-             handler=".tests.events.on_categorized_element_updated" />
+  <subscriber
+    for="OFS.interfaces.IItem
+         collective.iconifiedcategory.interfaces.ICategorizedElementUpdatedEvent"
+    handler=".tests.events.on_categorized_element_updated" />
 
 </configure>
