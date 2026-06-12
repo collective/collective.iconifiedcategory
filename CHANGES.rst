@@ -4,8 +4,9 @@ Changelog
 0.75 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Make the `red not signed` icon less aggressive by using
+  the normal version instead bold.
+  [gbastien]
 
 0.74 (2026-04-14)
 -----------------

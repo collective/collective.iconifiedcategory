@@ -261,6 +261,11 @@ div.tooltipster-categorized-elements span.iconified-signed:before {
     content: "\f044";
 }
 
+/* use less aggressive non bold for not signed */
+#content .iconified-signed a.iconified-action:not(.active):not(.deactivated):before {
+    font-weight: normal;
+}
+
 #content .iconified-listing td.iconified-approved a:before,
 div.tooltipster-categorized-elements span.iconified-approved:before {
     content: "\f00c";
