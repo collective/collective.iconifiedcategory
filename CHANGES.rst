@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.75 (unreleased)
+0.75 (2026-06-18)
 -----------------
 
 - Make the `red not signed` icon less aggressive by using
