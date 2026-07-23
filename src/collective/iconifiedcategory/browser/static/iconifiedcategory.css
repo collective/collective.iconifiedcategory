@@ -113,12 +113,8 @@ div.tooltipster-categorized-elements li:hover {
     border-radius: 5px;
 }
 /* avoid categorized element title and touching details icons */
-div.tooltipster-categorized-elements li a {
+div.tooltipster-categorized-elements li a.categorized-element-title {
     padding-right: 1em;
-}
-
-#content table.iconified-listing {
-    width: 100%;
 }
 
 /* avoid occcasionnally scroll bars */
@@ -262,7 +258,8 @@ div.tooltipster-categorized-elements span.iconified-signed:before {
 }
 
 /* use less aggressive non bold for not signed */
-#content .iconified-signed a.iconified-action:not(.active):not(.deactivated):before {
+div.tooltipster-categorized-elements span.iconified-signed:not(.active):before,
+#content .iconified-signed a.iconified-action:not(.active):before {
     font-weight: normal;
 }
 
@@ -281,6 +278,11 @@ div.tooltipster-categorized-elements div.categorized_elements_details span {
     width: 20px;
     text-align: center;
 }
+/* fix img (dowload icon) size so tooltipster can calculate it */
+div.tooltipster-categorized-elements div.categorized_elements_details img {
+    width: 16px;
+}
+
 /* reduce select2 font-size */
 .select2-container, .select2-results {
     font-size: 90%;
