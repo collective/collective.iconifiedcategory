@@ -115,7 +115,6 @@ class IconifiedCategorization(object):
         # if content_category changed, we check also if default values
         # need to be updated.  We will update values that were not modified
         # since last default values
-        import ipdb; ipdb.set_trace()
         if getattr(self.context, 'content_category', None) and self.context.content_category != value:
             self._content_category_changed_default_values(value)
         self.context.content_category = value
