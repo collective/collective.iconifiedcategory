@@ -10,6 +10,9 @@ Changelog
 - Fixed icons in `tooltipster` sometimes wrongly displayed next to
   the element's title.
   [gbastien]
+- Use `base_hasattr` and `aq_base` for `getattr` to avoid getting attribute
+  from a parent.
+  [gbastien]
 
 0.75 (2026-06-18)
 -----------------

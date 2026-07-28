@@ -7,6 +7,7 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
+from Acquisition import aq_base
 from collective.documentviewer.async import queueJob
 from collective.iconifiedcategory import _
 from collective.iconifiedcategory import utils
@@ -17,6 +18,7 @@ from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from imio.helpers.cache import invalidate_cachekey_volatile_for
 from plone import api
 from plone.rfc822.interfaces import IPrimaryFieldInfo
+from Products.CMFPlone.utils import base_hasattr
 from Products.statusmessages.interfaces import IStatusMessage
 from zExceptions import Redirect
 from zope.component import getAdapter
@@ -26,14 +28,14 @@ from zope.lifecycleevent import IObjectRemovedEvent
 
 
 def categorized_content_created(obj, event):
-
+    base_obj = aq_base(obj)
     # if 'to_print' and 'confidential' are managed manually,
     # we may defer events if relevant value found in the REQUEST
     if obj.REQUEST.get('defer_categorized_content_created_event', False):
         return
     # set default values for to_print, confidential, to_sign/signed and to_approve/approved
     try:
-        category = utils.get_category_object(obj, getattr(obj, "content_category", "_none"))
+        category = utils.get_category_object(obj, getattr(base_obj, "content_category", "_none"))
     except KeyError:
         return
     # left False if to_print/confidential/to_sign/to_approve
@@ -41,14 +43,17 @@ def categorized_content_created(obj, event):
     category_group = category.get_category_group(category)
 
     # only set default value if obj was not created with a to_print=True
-    if category_group.to_be_printed_activated and not getattr(obj, 'to_print', False):
+    if category_group.to_be_printed_activated and \
+       not getattr(base_obj, 'to_print', False):
         obj.to_print = category.to_print
-        # notifying IconifiedAttrChangedEvent for 'to_print' is done in categorized_content_updated
+        # notifying IconifiedAttrChangedEvent for 'to_print' is done
+        # in categorized_content_updated
     elif not category_group.to_be_printed_activated:
         obj.to_print = False
 
     # only set default value if obj was not created with a confidential=True
-    if category_group.confidentiality_activated and not getattr(obj, 'confidential', False):
+    if category_group.confidentiality_activated and \
+       not getattr(base_obj, 'confidential', False):
         obj.confidential = category.confidential
         notify(IconifiedAttrChangedEvent(
             obj,
@@ -61,7 +66,8 @@ def categorized_content_created(obj, event):
         obj.confidential = False
 
     # only set default value if obj was not created with a to_sign=True or signed=True
-    if category_group.signed_activated and not (getattr(obj, 'to_sign', False) or getattr(obj, 'signed', False)):
+    if category_group.signed_activated and \
+       not (getattr(base_obj, 'to_sign', False) or getattr(base_obj, 'signed', False)):
         obj.to_sign = category.to_sign
         obj.signed = category.signed
         notify(IconifiedAttrChangedEvent(
@@ -78,7 +84,8 @@ def categorized_content_created(obj, event):
         obj.signed = False
 
     # only set default value if obj was not created with a to_approve=True or approved=True
-    if category_group.approved_activated and not (getattr(obj, 'to_approve', False) or getattr(obj, 'approved', False)):
+    if category_group.approved_activated and \
+       not (getattr(base_obj, 'to_approve', False) or getattr(base_obj, 'approved', False)):
         obj.to_approve = category.to_approve
         obj.approved = category.approved
         notify(IconifiedAttrChangedEvent(
@@ -95,7 +102,8 @@ def categorized_content_created(obj, event):
         obj.approved = False
 
     # only set default value if obj was not created with a publishable=True
-    if category_group.publishable_activated and not getattr(obj, 'publishable', False):
+    if category_group.publishable_activated and \
+       not getattr(base_obj, 'publishable', False):
         obj.publishable = category.publishable
         notify(IconifiedAttrChangedEvent(
             obj,
@@ -112,7 +120,7 @@ def categorized_content_created(obj, event):
 
     if utils.is_file_type(obj.portal_type):
         file_field_name = IPrimaryFieldInfo(obj).fieldname
-        size = getattr(obj, file_field_name).size
+        size = getattr(base_obj, file_field_name).size
         if utils.warn_filesize(size):
             plone_utils = api.portal.get_tool('plone_utils')
             plone_utils.addPortalMessage(
@@ -126,7 +134,7 @@ def content_updated(obj, event):
 
 
 def categorized_content_updated(obj, event, is_created=False):
-    if hasattr(obj, 'content_category'):
+    if base_hasattr(obj, 'content_category'):
         category = utils.get_category_object(obj, obj.content_category)
     else:
         return
@@ -134,7 +142,7 @@ def categorized_content_updated(obj, event, is_created=False):
     if category.show_preview in (1, 2):
         queueJob(obj)
 
-    if hasattr(obj, 'to_print'):
+    if base_hasattr(obj, 'to_print'):
         # if current 'to_print' is None, it means that current content
         # could not be printable, but as it changed,
         # in this case we use the default value
@@ -163,7 +171,7 @@ def categorized_content_updated(obj, event, is_created=False):
 
 
 def content_category_updated(event):
-    if hasattr(event.object, 'content_category'):
+    if base_hasattr(event.object, 'content_category'):
         obj = event.object
         target = utils.get_category_object(obj, obj.content_category)
         utils.update_categorized_elements(
@@ -187,7 +195,9 @@ def categorized_content_moved(obj, event):
     category = utils.get_category_object(obj, obj.content_category)
     if event.oldName is not None and event.oldName != event.newName:  # rename
         utils.update_categorized_elements(obj.aq_parent, obj, category)
-    elif event.oldParent is not None and event.newParent is not None and event.oldParent != event.newParent:  # move
+    elif event.oldParent is not None and \
+            event.newParent is not None and \
+            event.oldParent != event.newParent:  # move
         utils.update_categorized_elements(obj.aq_parent, obj, category)  # paste
         utils.remove_categorized_element(event.oldParent, obj)
 
@@ -222,7 +232,7 @@ def category_before_remove(obj, event):
                 type='error',
             )
             raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
-        _cookCssResources()
+        _cook_css_resources()
 
 
 def subcategory_before_remove(obj, event):
@@ -248,7 +258,7 @@ def category_moved(obj, event):
             type='error',
         )
         raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
-    _cookCssResources()
+    _cook_css_resources()
 
 
 def subcategory_moved(obj, event):
@@ -263,7 +273,7 @@ def subcategory_moved(obj, event):
         raise Redirect(obj.REQUEST.get('HTTP_REFERER'))
 
 
-def _cookCssResources():
+def _cook_css_resources():
     # recook portal_css because we need
     # iconified-category.css to be compiled again as it is cached
     portal_css = api.portal.get_tool('portal_css')
@@ -273,7 +283,7 @@ def _cookCssResources():
 def category_created(category, event):
     # make sure the 'listing' scale image is created
     category.restrictedTraverse('@@images').scale(scale='listing')
-    _cookCssResources()
+    _cook_css_resources()
 
 
 def container_modified(obj, event):
