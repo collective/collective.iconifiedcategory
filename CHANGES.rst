@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.76 (unreleased)
+0.76 (2026-07-31)
 -----------------
 
 - Use `normal` version (instead `bold`) for icons `grey not to sign` and
