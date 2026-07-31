@@ -5,7 +5,7 @@ Changelog
 -----------------
 
 - Use `normal` version (instead `bold`) for icons `grey not to sign` and
- `red not signed` everywhere.
+  `red not signed` everywhere.
   [gbastien]
 - Fixed icons in `tooltipster` sometimes wrongly displayed next to
   the element's title.
