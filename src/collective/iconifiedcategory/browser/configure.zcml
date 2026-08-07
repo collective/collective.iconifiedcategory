@@ -59,6 +59,16 @@
     permission="zope2.View"
     />
 
+  <browser:viewlet
+    name="iconifiedcategory.item.infos"
+    for="collective.iconifiedcategory.behaviors.iconifiedcategorization.IIconifiedCategorizationMarker"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+    layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
+    class=".viewlets.CategorizedItemInfoViewlet"
+    template="templates/categorized-item-info-viewlet.pt"
+    permission="zope2.View"
+    />
+
   <!-- Edit form views -->
   <browser:page
     name="edit"
