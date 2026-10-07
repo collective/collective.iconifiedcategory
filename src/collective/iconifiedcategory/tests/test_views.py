@@ -3,14 +3,37 @@
 from AccessControl import Unauthorized
 from collective import iconifiedcategory as collective_iconifiedcategory
 from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory.behaviors.iconifiedcategorization import IIconifiedCategorizationMarker
+from collective.iconifiedcategory.interfaces import IIconifiedContent
+from collective.iconifiedcategory.tests.adapters import TestingCategorizedObjectAdapter
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.utils import get_category_icon_url
 from collective.iconifiedcategory.utils import get_category_object
+from DateTime import DateTime
+from OFS.interfaces import IItem
 from plone import api
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing.interfaces import TEST_USER_NAME
 from Products.CMFCore.permissions import View
 from zope.configuration import xmlconfig
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
+from zope.publisher.interfaces.browser import IBrowserRequest
+
+import transaction
+
+
+def _restrict_view_and_trust_can_view(testcase, obj):
+    """Remove View from obj for the test user but let IIconifiedContent.can_view
+       grant access to non confidential elements."""
+    testcase.register_adapter(
+        TestingCategorizedObjectAdapter,
+        (IItem, IBrowserRequest, IIconifiedCategorizationMarker),
+        IIconifiedContent)
+    obj.manage_permission(View, ['Manager'])
+    login(testcase.portal, TEST_USER_NAME)
+    testcase.assertFalse(api.user.get_current().has_permission(View, obj))
 
 
 class TestCategorizedChildView(BaseTestCase):
@@ -68,6 +91,14 @@ class TestCategorizedChildView(BaseTestCase):
         self.assertEqual(2, len(infos))
         self.assertEqual('category-1-1', infos[1]['id'])
         self.assertEqual(2, infos[0]['counts'])
+
+
+class TestManageCategorizedChildView(BaseTestCase):
+
+    def test_get_management_url(self):
+        view = self.portal.restrictedTraverse('@@categorized-childs-manage')
+        self.assertEqual(view.get_management_url(), 'http://nohost/plone/@@iconifiedcategory')
+        self.assertIn('href="http://nohost/plone/@@iconifiedcategory"', view())
 
 
 class TestCategorizedChildInfosView(TestCategorizedChildView):
@@ -267,3 +298,56 @@ class TestCanViewAwareDownload(BaseTestCase):
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@download'))
         self.assertRaises(Unauthorized, img_obj.restrictedTraverse('@@display-file'))
         self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
+
+    def test_can_view_without_view_permission(self):
+        """Access is managed by IIconifiedContent.can_view, not by the View permission."""
+        file_obj = self.portal['file_txt']
+        _restrict_view_and_trust_can_view(self, file_obj)
+        self.assertTrue(file_obj.restrictedTraverse('@@download')())
+        self.assertTrue(file_obj.restrictedTraverse('@@display-file')())
+        file_obj.confidential = True
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@download'))
+        self.assertRaises(Unauthorized, file_obj.restrictedTraverse('@@display-file'))
+
+
+class TestCanViewAwareFNWDownload(BaseTestCase):
+
+    def test___call__(self):
+        """The edit/view form widget download is managed by IIconifiedContent.can_view."""
+        file_obj = self.portal['file_txt']
+        img_obj = self.portal['image']
+        _restrict_view_and_trust_can_view(self, file_obj)
+        img_obj.manage_permission(View, ['Manager'])
+        file_download = 'view/++widget++form.widgets.file/@@download'
+        img_download = 'view/++widget++form.widgets.image/@@download'
+        self.assertTrue(file_obj.unrestrictedTraverse(file_download)())
+        self.assertTrue(img_obj.unrestrictedTraverse(img_download)())
+        file_obj.confidential = True
+        img_obj.confidential = True
+        self.assertRaises(Unauthorized, file_obj.unrestrictedTraverse(file_download))
+        self.assertRaises(Unauthorized, img_obj.unrestrictedTraverse(img_download))
+
+
+class TestImageDataModifiedImageScaling(BaseTestCase):
+
+    def test_modified(self):
+        """The icon file modification date is used, not the category one,
+           so editing a category does not change the icon url."""
+        category = self.config['group-1']['category-1-1']
+        transaction.commit()
+        modified = category.restrictedTraverse('@@images').modified()
+        self.assertEqual(modified, DateTime(category.icon._p_mtime).millis())
+        icon_url = get_category_icon_url(category)
+        # edit the category
+        category.setTitle(u'Category 1-1 edited')
+        notify(ObjectModifiedEvent(category))
+        transaction.commit()
+        self.assertNotEqual(category._p_mtime, category.icon._p_mtime)
+        self.assertEqual(category.restrictedTraverse('@@images').modified(), modified)
+        self.assertEqual(get_category_icon_url(category), icon_url)
+        # change the icon
+        category.icon = self.icon
+        notify(ObjectModifiedEvent(category))
+        transaction.commit()
+        self.assertNotEqual(category.restrictedTraverse('@@images').modified(), modified)
+        self.assertNotEqual(get_category_icon_url(category), icon_url)

@@ -176,3 +176,36 @@ class TestVocabularies(unittest.TestCase):
         self.assertTrue(grp1.get('category-1-1').get('subcategory-1-1-2').UID() in terms)
         self.assertTrue(grp2.get('category-2-3').UID() in terms)
         self.assertTrue(grp2.get('category-2-2').get('subcategory-2-2-2').UID() in terms)
+
+    def test_every_category_titles_vocabulary(self):
+        category_titles = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.category_titles',
+        )
+        every_category_titles = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.every_category_titles',
+        )
+        # disable a category, only every_category_titles still contains it
+        category = self.portal.config['group-1']['category-1-1']
+        category.enabled = False
+        notify(ObjectModifiedEvent(category))
+        self.assertNotIn('Category 1-1', [t.title for t in category_titles(self.portal)])
+        terms = [(t.token, t.title) for t in every_category_titles(self.portal)]
+        self.assertEqual(
+            sorted(terms),
+            [('plone-config_-_group-1_-_category-1-1', 'Category 1-1'),
+             ('plone-config_-_group-1_-_category-1-2', 'Category 1-2'),
+             ('plone-config_-_group-1_-_category-1-3', 'Category 1-3'),
+             ('plone-config_-_group-2_-_category-2-1', 'Category 2-1'),
+             ('plone-config_-_group-2_-_category-2-2', 'Category 2-2'),
+             ('plone-config_-_group-2_-_category-2-3', 'Category 2-3')])
+
+    def test_show_preview_vocabulary(self):
+        vocabulary = getUtility(
+            IVocabularyFactory,
+            name='collective.iconifiedcategory.show_preview_vocabulary',
+        )
+        self.assertEqual(
+            [(t.value, t.token, t.title) for t in vocabulary(self.portal)],
+            [(0, '0', u'No'), (1, '1', u'Yes'), (2, '2', u'Yes and hide download icon')])

@@ -10,13 +10,42 @@ Created by mpeeters
 from collections import OrderedDict
 from collective.iconifiedcategory import DEFAULT_FILESIZE_LIMIT
 from collective.iconifiedcategory import utils
+from collective.iconifiedcategory.adapter import IconifiedCategoryGroupAdapter
+from collective.iconifiedcategory.content.categoryconfiguration import ICategoryConfiguration
+from collective.iconifiedcategory.interfaces import IIconifiedCategoryConfig
+from collective.iconifiedcategory.interfaces import IIconifiedCategoryGroup
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
+from plone.app.contenttypes.interfaces import INewsItem
+from plone.app.testing import login
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.utils import createContentInContainer
+from Products.CMFCore.permissions import AccessContentsInformation
+from Products.CMFCore.permissions import View
 from zExceptions import Redirect
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 import transaction
+
+
+class Config2Adapter(object):
+    """IIconifiedCategoryConfig adapter, the 'config2' configuration is used for news items."""
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_config(self):
+        return api.portal.get()['config2']
+
+
+class Group1Adapter(IconifiedCategoryGroupAdapter):
+    """IIconifiedCategoryGroup adapter, only 'group-1' is used for news items."""
+
+    def get_group(self):
+        return self.config['group-1']
 
 
 class TestUtils(BaseTestCase):
@@ -612,3 +641,122 @@ class TestUtils(BaseTestCase):
         self.portal.config.get('group-1').moveObjectsDown('category-1-2')
         res_after_cat_position_changed = sorted(utils.get_ordered_categories(self.portal).items())
         self.assertNotEqual(res, res_after_cat_position_changed)
+
+    def test_signed_message(self):
+        obj = type('obj', (object, ), {})()
+        self.assertEqual(utils.signed_message(obj), u'Element should not be signed')
+        obj.to_sign = True
+        self.assertEqual(utils.signed_message(obj), u'Element must be signed but is still not')
+        obj.signed = True
+        self.assertEqual(utils.signed_message(obj), u'Element is signed')
+        obj.signed = None
+        self.assertEqual(utils.signed_message(obj), u'')
+        obj.to_sign = False
+        obj.signed = True
+        self.assertEqual(utils.signed_message(obj), u'Element should not be signed')
+        # values stored in categorized_elements
+        self.assertEqual(utils.signed_message(to_sign_value=False, signed_value=True),
+                         u'Element should not be signed')
+        self.assertEqual(utils.signed_message(to_sign_value=True, signed_value=False),
+                         u'Element must be signed but is still not')
+        self.assertEqual(utils.signed_message(to_sign_value=True, signed_value=True),
+                         u'Element is signed')
+
+    def test_approved_message(self):
+        obj = type('obj', (object, ), {})()
+        self.assertEqual(utils.approved_message(obj), u'Element should not be approved')
+        obj.to_approve = True
+        self.assertEqual(utils.approved_message(obj), u'Element must be approved but is still not')
+        obj.approved = True
+        self.assertEqual(utils.approved_message(obj), u'Element is approved')
+        obj.approved = None
+        self.assertEqual(utils.approved_message(obj), u'')
+        obj.to_approve = False
+        obj.approved = True
+        self.assertEqual(utils.approved_message(obj), u'Element should not be approved')
+        # values stored in categorized_elements
+        self.assertEqual(utils.approved_message(to_approve_value=False, approved_value=True),
+                         u'Element should not be approved')
+        self.assertEqual(utils.approved_message(to_approve_value=True, approved_value=False),
+                         u'Element must be approved but is still not')
+        self.assertEqual(utils.approved_message(to_approve_value=True, approved_value=True),
+                         u'Element is approved')
+
+    def test_query_config_root(self):
+        self.assertEqual(utils.query_config_root(self.portal), self.config)
+        self.assertIsNone(utils.query_config_root(None))
+        # an IIconifiedCategoryConfig adapter selects the configuration of a context
+        config2 = api.content.create(type='ContentCategoryConfiguration', title='Config2', container=self.portal)
+        news = api.content.create(type='News Item', title='News', container=self.portal)
+        self.register_adapter(Config2Adapter, (INewsItem, ), IIconifiedCategoryConfig)
+        self.assertEqual(utils.query_config_root(news), config2)
+        # without configuration
+        api.content.delete(self.config)
+        api.content.delete(config2)
+        self.assertIsNone(utils.query_config_root(self.portal))
+
+    def test_has_config_root(self):
+        self.assertTrue(utils.has_config_root(self.portal))
+        api.content.delete(self.config)
+        self.assertFalse(utils.has_config_root(self.portal))
+
+    def test_get_config_root(self):
+        self.assertEqual(utils.get_config_root(self.portal), self.config)
+        # an IIconifiedCategoryGroup adapter selects the group of a context
+        news = api.content.create(type='News Item', title='News', container=self.portal)
+        self.register_adapter(Group1Adapter, (ICategoryConfiguration, INewsItem), IIconifiedCategoryGroup)
+        self.assertEqual(utils.get_config_root(news), self.config['group-1'])
+        self.assertEqual(utils.get_config_root(self.portal), self.config)
+        # without configuration
+        api.content.delete(self.config)
+        with self.assertRaises(ValueError) as cm:
+            utils.get_config_root(self.portal)
+        self.assertEqual(str(cm.exception), 'Categories config cannot be found')
+
+    def test_get_group(self):
+        news = api.content.create(type='News Item', title='News', container=self.portal)
+        self.assertEqual(utils.get_group(self.config, news), self.config)
+        self.register_adapter(Group1Adapter, (ICategoryConfiguration, INewsItem), IIconifiedCategoryGroup)
+        self.assertEqual(utils.get_group(self.config, news), self.config['group-1'])
+        self.assertEqual(utils.get_group(self.config, self.portal), self.config)
+
+    def test_get_categorized_elements_confidential(self):
+        """A confidential element is only returned to the users in its stored allowedRolesAndUsers."""
+        self.config['group-1'].confidentiality_activated = True
+        doc = createContentInContainer(
+            container=self.portal,
+            portal_type='Document',
+            title='Doc',
+            content_category='config_-_group-1_-_category-1-1',
+            to_print=False,
+            confidential=True,
+        )
+        # allowedRolesAndUsers uses View (Plone 4) or Access contents information (Plone 6)
+        for permission in (View, AccessContentsInformation):
+            doc.manage_permission(permission, ['Manager'], acquire=False)
+        notify(ObjectModifiedEvent(doc))
+        self.assertEqual(self.portal.categorized_elements[doc.UID()]['allowedRolesAndUsers'], ['Manager'])
+
+        def uids(user_name):
+            login(self.portal, user_name)
+            uids = [e['UID'] for e in utils.get_categorized_elements(
+                self.portal, check_can_view=False, caching=False)]
+            login(self.portal, 'adminuser')
+            return uids
+
+        self.assertEqual(uids('adminuser'), [doc.UID()])
+        self.assertEqual(uids(TEST_USER_NAME), [])
+        # a local role giving View, stored when the element is updated
+        doc.manage_setLocalRoles(TEST_USER_ID, ['Reader'])
+        for permission in (View, AccessContentsInformation):
+            doc.manage_permission(permission, ['Manager', 'Reader'], acquire=False)
+        self.assertEqual(uids(TEST_USER_NAME), [])
+        notify(ObjectModifiedEvent(doc))
+        self.assertEqual(uids(TEST_USER_NAME), [doc.UID()])
+        # allowedRolesAndUsers is not checked for a not confidential element
+        doc.manage_delLocalRoles([TEST_USER_ID])
+        doc.confidential = False
+        notify(ObjectModifiedEvent(doc))
+        self.assertNotIn('user:{0}'.format(TEST_USER_ID),
+                         self.portal.categorized_elements[doc.UID()]['allowedRolesAndUsers'])
+        self.assertEqual(uids(TEST_USER_NAME), [doc.UID()])

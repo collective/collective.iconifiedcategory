@@ -5,6 +5,7 @@ from collective.iconifiedcategory.utils import _modified
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
+from zope.component import getGlobalSiteManager
 
 import os
 import unittest
@@ -40,6 +41,12 @@ class BaseTestCase(unittest.TestCase):
 
     def _modified(self, obj):
         return _modified(obj)
+
+    def register_adapter(self, factory, required, provided):
+        """Register a global adapter for the current test only."""
+        gsm = getGlobalSiteManager()
+        gsm.registerAdapter(factory, required, provided)
+        self.addCleanup(gsm.unregisterAdapter, factory, required, provided)
 
     def setUp(self):
         self.maxDiff = None

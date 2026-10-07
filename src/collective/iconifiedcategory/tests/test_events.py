@@ -377,3 +377,21 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         self.assertEqual(req.get('new_values')['relative_url'], 'file1')
         # cleanUp zmcl.load_config because it impacts other tests
         zcml.cleanUp()
+
+    # Plone 6 regression pinned in phase 3 (fix in phase 7): getattr(obj, 'content_category', '_none')
+    # returns None in Plone 6 so categorized_content_created fails on None.split
+    @unittest.expectedFailure
+    def test_categorized_content_created_without_content_category(self):
+        """A content of a categorized type may be created without content_category."""
+        document = api.content.create(id='doc', type='Document', container=self.portal)
+        self.assertNotIn(document.UID(), self.portal.categorized_elements)
+
+    # Plone 6 regression pinned in phase 3 (fix in phase 7): getattr(obj, 'content_category', '_none')
+    # returns None in Plone 6 so categorized_content_created fails on None.split
+    @unittest.expectedFailure
+    def test_categorized_content_moved_without_content_category(self):
+        """Plone 4 bug pinned: renaming a content of a categorized type that has no
+           content_category (created before the behavior was enabled) fails."""
+        document = api.content.create(id='doc', type='Document', container=self.portal)
+        self.assertFalse(base_hasattr(document, 'content_category'))
+        self.assertRaises(AttributeError, api.content.rename, obj=document, new_id='doc2')
