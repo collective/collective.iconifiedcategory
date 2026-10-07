@@ -18,7 +18,7 @@
               tal:condition="python: element['preview_status'] == 'in_progress'">
           <img width="16px"
                height="16px"
-               tal:attributes="src string:${portal_url}/spinner_small.gif" /><!-- MIGRATION-PLONE6 -->
+               tal:attributes="src string:${portal_url}/@@iconresolver/hourglass-split" />
         </span>
         <span class="help"
               title="The document conversion failed"

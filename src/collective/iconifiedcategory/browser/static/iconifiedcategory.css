@@ -126,7 +126,6 @@ div.tooltipster-categorized-elements span.iconified-confidential,
 div.tooltipster-categorized-elements span.iconified-publishable,
 div.tooltipster-categorized-elements span.iconified-signed,
 div.tooltipster-categorized-elements span.iconified-approved {
-    font-family: 'Font Awesome 5 Free';
     font-size: 110%;
     cursor: help;
     font-weight: bold;

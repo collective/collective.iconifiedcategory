@@ -124,9 +124,6 @@ class TestUninstall(unittest.TestCase):
         portal_types = api.portal.get_tool("portal_types")
         self.assertEqual([t for t in TYPES if t in portal_types.objectIds()], [])
 
-    # Plone 6 regression pinned in phase 3 (fix in phase 7): the 'enabled' column added by
-    # profiles/default/catalog.xml is not removed by profiles/uninstall/catalog.xml
-    @unittest.expectedFailure
     def test_catalog(self):
         # Plone 6 uninstall profile removes the catalog indexes and columns
         catalog = api.portal.get_tool("portal_catalog")

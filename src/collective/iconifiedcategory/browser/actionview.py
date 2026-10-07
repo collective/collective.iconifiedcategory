@@ -14,7 +14,6 @@ from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
-from Products.CMFPlone.utils import base_hasattr
 from Products.Five import BrowserView
 from zope.component import getAdapter
 from zope.event import notify
@@ -77,7 +76,7 @@ class BaseView(BrowserView):
         res = bool(api.user.has_permission(self.permission, obj=self.context))
         if res:
             # is this functionnality enabled?
-            if not base_hasattr(self.context, "content_category"):
+            if not getattr(self.context, "content_category", None):
                 return False
             self.category = utils.get_category_object(
                 self.context, self.context.content_category

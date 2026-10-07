@@ -7,13 +7,12 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from collective.documentviewer.async_utils import queueJob
-from collective.documentviewer.config import CONVERTABLE_TYPES
-from collective.documentviewer.settings import GlobalSettings
 from collective.iconifiedcategory import adapter
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.tests.base import skip_without_documentviewer
 from collective.iconifiedcategory.utils import get_category_object
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
@@ -25,6 +24,14 @@ from zope.component import getMultiAdapter
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.lifecycleevent import ObjectModifiedEvent
+
+import unittest
+
+
+if HAS_DOCUMENTVIEWER:
+    from collective.documentviewer.async_utils import queueJob
+    from collective.documentviewer.config import CONVERTABLE_TYPES
+    from collective.documentviewer.settings import GlobalSettings
 
 
 class TestCategorizedObjectInfoAdapter(BaseTestCase):
@@ -226,6 +233,7 @@ class TestCategorizedObjectAdapter(BaseTestCase):
         self.assertTrue(cat_adapter.can_view())
 
 
+@skip_without_documentviewer
 class TestCategorizedObjectPrintableAdapter(BaseTestCase):
 
     def setUp(self):
@@ -274,6 +282,16 @@ class TestCategorizedObjectPrintableAdapter(BaseTestCase):
 
 class TestCategorizedObjectPreviewAdapter(BaseTestCase):
 
+    @unittest.skipIf(HAS_DOCUMENTVIEWER, "converted by collective.documentviewer")
+    def test_without_documentviewer(self):
+        """Without collective.documentviewer nothing is convertible, so a File is not printable."""
+        obj = self.portal["file_txt"]
+        preview_adapter = adapter.CategorizedObjectPreviewAdapter(obj)
+        self.assertFalse(preview_adapter.is_convertible())
+        self.assertEqual(preview_adapter.status, "not_convertable")
+        self.assertFalse(adapter.CategorizedObjectPrintableAdapter(obj).is_printable)
+
+    @skip_without_documentviewer
     def test_is_convertible(self):
         obj = self.portal["file_txt"]
 
@@ -314,6 +332,7 @@ class TestCategorizedObjectPreviewAdapter(BaseTestCase):
             obj.file.contentType = not_convertable
             self.assertFalse(preview_adapter.is_convertible())
 
+    @skip_without_documentviewer
     def test_status(self):
         obj = self.portal["file_txt"]
 

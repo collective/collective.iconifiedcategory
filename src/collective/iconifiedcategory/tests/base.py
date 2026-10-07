@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.utils import _modified
 from plone import api
@@ -9,6 +10,13 @@ from zope.component import getGlobalSiteManager
 
 import os
 import unittest
+
+
+# collective.documentviewer is replaced on Plone 6 (pdf viewer undecided): no conversion, no preview
+skip_without_documentviewer = unittest.skipIf(
+    not HAS_DOCUMENTVIEWER,
+    "collective.documentviewer is not installed (replaced on Plone 6)",
+)
 
 
 class BaseTestCase(unittest.TestCase):

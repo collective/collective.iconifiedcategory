@@ -1,16 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict
-from collective.documentviewer.config import CONVERTABLE_TYPES
-from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.browser.tabview import CategorizedContent
 from collective.iconifiedcategory.browser.tabview import PrintColumn
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.tests.base import skip_without_documentviewer
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
+
+
+if HAS_DOCUMENTVIEWER:
+    from collective.documentviewer.config import CONVERTABLE_TYPES
+    from collective.documentviewer.settings import GlobalSettings
 
 
 class TestCategorizedTabView(BaseTestCase):
@@ -79,6 +84,7 @@ class TestCategorizedTabView(BaseTestCase):
         self.assertTrue(document.title in result)
         self.assertTrue(document2.title in result)
 
+    @skip_without_documentviewer
     def test_table_render_when_preview_enabled(self):
         # enable collective.documentviewer so document is convertible
         gsettings = GlobalSettings(self.portal)
@@ -98,6 +104,7 @@ class TestCategorizedTabView(BaseTestCase):
             in result
         )
 
+    @skip_without_documentviewer
     def test_PrintColumn(self):
         table = self.portal.restrictedTraverse("@@iconifiedcategory")
         file_infos = utils.get_categorized_elements(

@@ -7,13 +7,13 @@ Created by mpeeters
 :license: GPL, see LICENCE.txt for more details.
 """
 
-from collective.documentviewer.config import CONVERTABLE_TYPES
-from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory import testing
 from collective.iconifiedcategory.behaviors.iconifiedcategorization import (
     IIconifiedCategorization,
 )
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.tests.base import skip_without_documentviewer
 from collective.iconifiedcategory.utils import calculate_category_id
 from collective.iconifiedcategory.utils import get_category_object
 from io import BytesIO
@@ -24,6 +24,11 @@ from zope.lifecycleevent import ObjectModifiedEvent
 from ZPublisher.HTTPRequest import FileUpload
 
 import unittest
+
+
+if HAS_DOCUMENTVIEWER:
+    from collective.documentviewer.config import CONVERTABLE_TYPES
+    from collective.documentviewer.settings import GlobalSettings
 
 
 class FakeFieldStorage:
@@ -94,6 +99,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         )
         self.assertTrue(file3.confidential)
 
+    @skip_without_documentviewer
     def test_content_category_to_print_on_creation(self):
         """ """
         category_group = self.portal.config["group-1"]
@@ -218,6 +224,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         self.assertTrue(file4.to_approve)
         self.assertTrue(file4.approved)
 
+    @skip_without_documentviewer
     def test_content_category_to_print_only_set_if_convertible_when_conversion_enabled(
         self,
     ):
@@ -264,6 +271,7 @@ class TestIconifiedCategorization(BaseTestCase, unittest.TestCase):
         obj_brain = catalog(UID=obj.UID())[0]
         self.assertEqual(obj_brain.content_category_uid, category2.UID())
 
+    @skip_without_documentviewer
     def test_content_category_changed_default_values(self):
         """While content_category is changed on an element, the default values for fields
         to_print/confidential/to_sign/signed/approved are reapplied with new content_category

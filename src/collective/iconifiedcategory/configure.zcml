@@ -3,6 +3,7 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="collective.iconifiedcategory">
 
   <i18n:registerTranslations directory="locales" />
@@ -10,10 +11,8 @@
   <include package="Products.CMFCore" />
   <include package="plone.app.dexterity" />
   <include package="plone.app.contenttypes" />
-  <include package="collective.documentviewer" />
-  <include package="collective.fontawesome" />
+  <include package="collective.documentviewer" zcml:condition="installed collective.documentviewer" />
   <include package="collective.js.tooltipster" />
-  <include package="collective.z3cform.select2" />
 
   <include package=".browser" />
   <include package=".content" />

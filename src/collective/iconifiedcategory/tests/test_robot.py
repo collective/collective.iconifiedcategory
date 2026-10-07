@@ -7,21 +7,13 @@ ROBOT_* environment variables to the suites as robot variables.
 from collective.iconifiedcategory.testing import (
     COLLECTIVE_ICONIFIED_CATEGORY_ACCEPTANCE_TESTING,
 )
+from importlib.metadata import version
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 
 import os
 import robotsuite
 import unittest
-
-
-try:
-    from importlib.metadata import version
-except ImportError:  # Python 2
-    from pkg_resources import get_distribution
-
-    def version(name):
-        return get_distribution(name).version
 
 
 def test_suite():

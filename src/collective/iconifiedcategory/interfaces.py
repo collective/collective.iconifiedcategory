@@ -5,15 +5,9 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import DEFAULT_FILESIZE_LIMIT
 from plone.namedfile.interfaces import IImageScaleTraversable
 from zope import schema
-
-
-try:
-    from zope.interface.interfaces import IObjectEvent
-except ImportError:
-    from zope.component.interfaces import IObjectEvent
-
 from zope.interface import Attribute
 from zope.interface import Interface
+from zope.interface.interfaces import IObjectEvent
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.viewlet.interfaces import IViewletManager
 

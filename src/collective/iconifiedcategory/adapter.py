@@ -8,9 +8,7 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
-from collective.documentviewer.settings import GlobalSettings
-from collective.documentviewer.settings import Settings
-from collective.documentviewer.utils import allowedDocumentType
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from collective.iconifiedcategory.interfaces import IIconifiedPreview
@@ -24,6 +22,12 @@ from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import _checkPermission
 from zope.annotation import IAnnotations
 from zope.component import queryMultiAdapter
+
+
+if HAS_DOCUMENTVIEWER:
+    from collective.documentviewer.settings import GlobalSettings
+    from collective.documentviewer.settings import Settings
+    from collective.documentviewer.utils import allowedDocumentType
 
 
 class CategorizedObjectInfoAdapter(object):
@@ -275,7 +279,10 @@ class CategorizedObjectPreviewAdapter(object):
     def is_convertible(self):
         """
         Check if the context is convertible (hopefully).
+        Never without collective.documentviewer.
         """
+        if not HAS_DOCUMENTVIEWER:
+            return False
         # collective.documentviewer add an entry to the annotations
         annotations = IAnnotations(self.context)
         if "collective.documentviewer" not in list(annotations.keys()):

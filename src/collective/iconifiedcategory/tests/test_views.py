@@ -2,13 +2,14 @@
 
 from AccessControl import Unauthorized
 from collective import iconifiedcategory as collective_iconifiedcategory
-from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory.behaviors.iconifiedcategorization import (
     IIconifiedCategorizationMarker,
 )
 from collective.iconifiedcategory.interfaces import IIconifiedContent
 from collective.iconifiedcategory.tests.adapters import TestingCategorizedObjectAdapter
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.tests.base import skip_without_documentviewer
 from collective.iconifiedcategory.utils import get_category_icon_url
 from collective.iconifiedcategory.utils import get_category_object
 from DateTime import DateTime
@@ -37,6 +38,10 @@ def _restrict_view_and_trust_can_view(testcase, obj):
     obj.manage_permission(View, ["Manager"])
     login(testcase.portal, TEST_USER_NAME)
     testcase.assertFalse(api.user.get_current().has_permission(View, obj))
+
+
+if HAS_DOCUMENTVIEWER:
+    from collective.documentviewer.settings import GlobalSettings
 
 
 class TestCategorizedChildView(BaseTestCase):
@@ -109,6 +114,11 @@ class TestManageCategorizedChildView(BaseTestCase):
         )
         self.assertIn('href="http://nohost/plone/@@iconifiedcategory"', view())
 
+    def test__call__(self):
+        """The Font Awesome glyph of Plone 4 is an icon of the icon resolver."""
+        view = self.portal.restrictedTraverse("@@categorized-childs-manage")
+        self.assertIn('class="plone-icon manage-categorized-elements', view())
+
 
 class TestCategorizedChildInfosView(TestCategorizedChildView):
 
@@ -158,6 +168,22 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.viewinfos.update()
         self.assertEqual(self.viewinfos.index(), "\n")
 
+    def test_preview_status_icons(self):
+        """The Plone 4 skin image spinner_small.gif is an icon of the icon resolver."""
+        infos = self.portal.categorized_elements[self.portal["file_txt"].UID()]
+        infos["preview_status"] = "in_progress"
+        self.viewinfos.update()
+        self.assertIn(
+            'src="http://nohost/plone/@@iconresolver/hourglass-split"',
+            self.viewinfos.index(),
+        )
+        infos["preview_status"] = "conversion_error"
+        self.viewinfos.update()
+        self.assertIn(
+            'src="http://nohost/plone/@@iconresolver/plone-error"',
+            self.viewinfos.index(),
+        )
+
     def test_categories_uids(self):
         self.viewinfos.update()
         self.assertEqual(
@@ -203,6 +229,7 @@ class TestCategorizedChildInfosView(TestCategorizedChildView):
         self.assertEqual(len(self.viewinfos.categorized_elements), 1)
         self.assertEqual(self.viewinfos.categorized_elements[0]["id"], "image")
 
+    @skip_without_documentviewer
     def test_show_preview(self):
         infos = self.portal.restrictedTraverse("@@categorized-childs-infos")
         gsettings = GlobalSettings(self.portal)

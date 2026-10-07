@@ -10,19 +10,15 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         include:
-#          - python: 2.7.18
-#            plone: 4.3
-#          - python: 3.7.14
-#            plone: 5.2
-#          - python: 3.10.11
-#            plone: "6.0"
           - python: 3.13.1
             plone: "6.1"
+          - python: 3.13.1
+            plone: "6.2"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,16 +26,8 @@ jobs:
         uses: "gabrielfalcao/pyenv-action@v18"
         with:
           default: "${{ matrix.python }}"
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.4'
       - name: Setup Env
         run: |
-          sudo apt-get update -qqy
-          sudo apt-get install -y libjpeg8-dev libbz2-dev
-          sudo apt-get install -qqy graphicsmagick ghostscript pdftk qpdf poppler-utils libreoffice
-          sudo gem install docsplit
           pip install --upgrade pip
           pip install -r requirements-${{ matrix.plone }}.txt
       - name: Cache eggs
@@ -58,13 +46,13 @@ jobs:
         run: |
           bin/test -t !robot
   coverage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         include:
           - python: 3.13.1
-            plone: "6.1"
+            plone: "6.2"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,16 +60,8 @@ jobs:
         uses: "gabrielfalcao/pyenv-action@v18"
         with:
           default: "${{ matrix.python }}"
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.4'
       - name: Setup Env
         run: |
-          sudo apt-get update -qqy
-          sudo apt-get install -y libjpeg8-dev libbz2-dev
-          sudo apt-get install -qqy graphicsmagick ghostscript pdftk qpdf poppler-utils libreoffice
-          sudo gem install docsplit
           pip install --upgrade pip
           pip install -r requirements-${{ matrix.plone }}.txt
           pip install -U coveralls coverage

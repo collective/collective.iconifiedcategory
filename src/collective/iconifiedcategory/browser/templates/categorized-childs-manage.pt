@@ -2,7 +2,7 @@
   <a href="" class="manage-categorized-elements"
      title="Manage categorized elements" i18n:attributes="title"
      tal:attributes="href python: view.get_management_url()">
-    <span class="fa manage-categorized-elements" />
+    <tal:icon replace="structure python: context.restrictedTraverse('@@iconresolver').tag('list-task', tag_class='manage-categorized-elements')" />
   </a>
   <div style="clear: both;"></div>
 </div>

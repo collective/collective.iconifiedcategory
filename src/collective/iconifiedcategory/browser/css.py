@@ -8,14 +8,9 @@ Created by mpeeters
 """
 
 from collective.iconifiedcategory import utils
-
-# from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
-from datetime import datetime
-from datetime import timezone
-from plone.app.theming.browser.custom_css import CustomCSSView
-from plone.app.theming.interfaces import IThemeSettings
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
+from plone import api
+from plone.memoize import ram
+from Products.Five import BrowserView
 
 
 css_pattern = (
@@ -25,43 +20,31 @@ css_pattern = (
 )
 
 
-class IconifiedCategory(CustomCSSView):
+def _categories_css_cachekey(method, portal):
+    """Every category change reindexes the catalog; urls depend on the virtual host."""
+    return portal.absolute_url(), api.portal.get_tool("portal_catalog").getCounter()
 
-    def __call__(self, *args, **kwargs):
+
+@ram.cache(_categories_css_cachekey)
+def categories_css(portal):
+    """One rule per category: its icon in front of the elements having its css class."""
+    if utils.has_config_root(portal) is False:
+        return ""
+    content = []
+    # sort_on=None to avoid useless sort_on="getObjPositionInParent"
+    for category in utils.get_categories(portal, sort_on=None, only_enabled=False):
+        obj = category._unrestrictedGetObject()
+        category_id = utils.calculate_category_id(obj)
+        url = "{0}/@@download".format(obj.absolute_url())
+        content.append(css_pattern.format(utils.format_id_css(category_id), url))
+    return "\n".join(content)
+
+
+class IconifiedCategory(BrowserView):
+    """@@collective-iconifiedcategory.css, served by the iconifiedcategory-dynamic bundle:
+    Plone renders its url with a hash of its content, so a category change busts the browser cache.
+    """
+
+    def __call__(self):
         self.request.response.setHeader("Content-Type", "text/css")
-        base_css = super().__call__()
-        dynamic_css = self._dynamic_css()
-        lm = self._last_modified()
-        if lm:
-            self.request.response.setHeader(
-                "Last-Modified",
-                lm.strftime("%a, %d %b %Y %H:%M:%S GMT"),
-            )
-        return "\n".join([c for c in (base_css, dynamic_css) if c])
-
-    def _dynamic_css(self):
-        content = []
-        if utils.has_config_root(self.context) is False:
-            return ""
-        # sort_on=None to avoid useless sort_on="getObjPositionInParent"
-        categories = utils.get_categories(
-            self.context, sort_on=None, only_enabled=False
-        )
-        for category in categories:
-            obj = category._unrestrictedGetObject()
-            category_id = utils.calculate_category_id(obj)
-            url = "{0}/@@download".format(obj.absolute_url())
-            content.append(css_pattern.format(utils.format_id_css(category_id), url))
-        return " ".join(content)
-
-    def _last_modified(self):
-        registry = getUtility(IRegistry)
-        lm_list = []
-        theme_settings = registry.forInterface(IThemeSettings, False)
-        lm_list.append(theme_settings.custom_css_timestamp)
-        # iconified = registry.forInterface(IIconifiedCategorySettings)
-        # lm_list.append(iconified.css_timestamp)
-        lm_list = [d for d in lm_list if d]
-        if lm_list:
-            return max(lm_list)
-        return datetime.now(timezone.utc)
+        return categories_css(api.portal.get())

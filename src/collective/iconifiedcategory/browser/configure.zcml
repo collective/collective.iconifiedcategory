@@ -16,7 +16,7 @@
 
   <!-- views -->
   <browser:page
-    name="custom.css"
+    name="collective-iconifiedcategory.css"
     for="*"
     class=".css.IconifiedCategory"
     layer="collective.iconifiedcategory.interfaces.ICollectiveIconifiedCategoryLayer"
@@ -360,7 +360,7 @@
   <!-- control panel -->
   <browser:page
     name="iconifiedcategory-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    for="plone.base.interfaces.IPloneSiteRoot"
     class=".controlpanel.IconifiedCategorySettingsView"
     permission="cmf.ManagePortal"
     />

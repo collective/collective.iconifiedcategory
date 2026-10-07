@@ -8,8 +8,8 @@ Created by mpeeters
 """
 
 from Acquisition import aq_base
-from collective.documentviewer.async_utils import queueJob
 from collective.iconifiedcategory import _
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
@@ -18,16 +18,18 @@ from collective.iconifiedcategory.interfaces import IIconifiedPrintable
 from imio.helpers.cache import invalidate_cachekey_volatile_for
 from plone import api
 from plone.api import exc
-from plone.resource.interfaces import IResourceDirectory
+from plone.base.utils import base_hasattr
 from plone.rfc822.interfaces import IPrimaryFieldInfo
-from Products.CMFPlone.utils import base_hasattr
 from Products.statusmessages.interfaces import IStatusMessage
 from zExceptions import Redirect
 from zope.component import getAdapter
-from zope.component import getUtility
 from zope.event import notify
 from zope.lifecycleevent import IObjectAddedEvent
 from zope.lifecycleevent import IObjectRemovedEvent
+
+
+if HAS_DOCUMENTVIEWER:
+    from collective.documentviewer.async_utils import queueJob
 
 
 def categorized_content_created(obj, event):
@@ -39,7 +41,7 @@ def categorized_content_created(obj, event):
     # set default values for to_print, confidential, to_sign/signed and to_approve/approved
     try:
         category = utils.get_category_object(
-            obj, getattr(base_obj, "content_category", "_none")
+            obj, getattr(base_obj, "content_category", None) or "_none"
         )
     except KeyError:
         return
@@ -154,12 +156,13 @@ def content_updated(obj, event):
 
 
 def categorized_content_updated(obj, event, is_created=False):
-    if base_hasattr(obj, "content_category"):
+    # Plone 6 Dexterity returns the field default (None) for an unset content_category
+    if getattr(obj, "content_category", None):
         category = utils.get_category_object(obj, obj.content_category)
     else:
         return
 
-    if category.show_preview in (1, 2):
+    if HAS_DOCUMENTVIEWER and category.show_preview in (1, 2):
         queueJob(obj)
 
     if base_hasattr(obj, "to_print"):
@@ -193,7 +196,7 @@ def categorized_content_updated(obj, event, is_created=False):
 
 
 def content_category_updated(event):
-    if base_hasattr(event.object, "content_category"):
+    if getattr(event.object, "content_category", None):
         obj = event.object
         target = utils.get_category_object(obj, obj.content_category)
         utils.update_categorized_elements(
@@ -262,7 +265,6 @@ def category_before_remove(obj, event):
                 type="error",
             )
             raise Redirect(obj.REQUEST.get("HTTP_REFERER"))
-        _cook_css_resources()
 
 
 def subcategory_before_remove(obj, event):
@@ -294,7 +296,6 @@ def category_moved(obj, event):
             type="error",
         )
         raise Redirect(obj.REQUEST.get("HTTP_REFERER"))
-    _cook_css_resources()
 
 
 def subcategory_moved(obj, event):
@@ -308,39 +309,9 @@ def subcategory_moved(obj, event):
         raise Redirect(obj.REQUEST.get("HTTP_REFERER"))
 
 
-def generate_iconifiedcategory_css(context):
-    css_tpl = (
-        ".{0} {{ padding-left: 1.4em; background: "
-        "transparent url('{1}') no-repeat top left; "
-        "background-size: contain; }}"
-    )
-    if not utils.has_config_root(context):
-        return ""
-
-    categories = utils.get_categories(context, sort_on=None, only_enabled=False)
-    rules = []
-    for category in categories:
-        obj = category._unrestrictedGetObject()
-        category_id = utils.calculate_category_id(obj)
-        url = f"{obj.absolute_url()}/@@download"
-        rules.append(css_tpl.format(utils.format_id_css(category_id), url))
-    return "\n".join(rules)
-
-
-def _cook_css_resources(context=None):
-    portal = api.portal.get()
-    persistent = getUtility(IResourceDirectory, name="persistent")
-    if "collective.iconifiedcategory" not in persistent:
-        persistent.makeDirectory("collective.iconifiedcategory")
-    css = generate_iconifiedcategory_css(portal)
-    resdir = persistent["collective.iconifiedcategory"]
-    resdir.writeFile("collective-iconifiedcategory.css", css.encode("utf-8"))
-
-
 def category_created(category, event):
     # make sure the 'listing' scale image is created
     category.restrictedTraverse("@@images").scale(scale="listing")
-    _cook_css_resources()
 
 
 def container_modified(obj, event):

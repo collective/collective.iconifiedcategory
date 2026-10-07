@@ -5,11 +5,11 @@
            remove="True" />
 
   <records prefix="plone.bundles/iconifiedcategory"
-           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           interface="plone.base.interfaces.IBundleRegistry"
            remove="True" />
 
   <records prefix="plone.bundles/iconifiedcategory-dynamic"
-           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           interface="plone.base.interfaces.IBundleRegistry"
            remove="True" />
 
 </registry>

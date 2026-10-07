@@ -13,7 +13,7 @@ from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.event import IconifiedAttrChangedEvent
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from plone import api
-from Products.CMFPlone.utils import base_hasattr
+from plone.base.utils import base_hasattr
 from Zope2.App import zcml
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -422,22 +422,24 @@ class TestTriggeredEvents(BaseTestCase, unittest.TestCase):
         # cleanUp zmcl.load_config because it impacts other tests
         zcml.cleanUp()
 
-    # Plone 6 regression pinned in phase 3 (fix in phase 7): getattr(obj, 'content_category', '_none')
-    # returns None in Plone 6 so categorized_content_created fails on None.split
-    @unittest.expectedFailure
     def test_categorized_content_created_without_content_category(self):
         """A content of a categorized type may be created without content_category."""
         document = api.content.create(id="doc", type="Document", container=self.portal)
         self.assertNotIn(document.UID(), self.portal.categorized_elements)
 
-    # Plone 6 regression pinned in phase 3 (fix in phase 7): getattr(obj, 'content_category', '_none')
-    # returns None in Plone 6 so categorized_content_created fails on None.split
-    @unittest.expectedFailure
+    def test_categorized_content_updated_without_content_category(self):
+        """A content of a categorized type without content_category may be modified."""
+        document = api.content.create(id="doc", type="Document", container=self.portal)
+        notify(ObjectModifiedEvent(document))
+        utils.update_all_categorized_elements(self.portal)
+        self.assertNotIn(document.UID(), self.portal.categorized_elements)
+
     def test_categorized_content_moved_without_content_category(self):
         """Plone 4 bug pinned: renaming a content of a categorized type that has no
         content_category (created before the behavior was enabled) fails."""
         document = api.content.create(id="doc", type="Document", container=self.portal)
-        self.assertFalse(base_hasattr(document, "content_category"))
+        # Plone 6 Dexterity returns the field default (None) for an unset content_category
+        self.assertIsNone(document.content_category)
         self.assertRaises(
             AttributeError, api.content.rename, obj=document, new_id="doc2"
         )

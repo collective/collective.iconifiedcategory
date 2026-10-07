@@ -12,8 +12,8 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory.utils import get_category_object
 from collective.iconifiedcategory.utils import validateFileIsPDF
 from collective.iconifiedcategory.widget.widget import CategoryTitleFieldWidget
-from collective.z3cform.select2.widget.widget import SingleSelect2FieldWidget
 from plone.app.z3cform.interfaces import IPloneFormLayer
+from plone.app.z3cform.widgets.select import Select2FieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.z3cform.fieldsets.extensible import FormExtender
@@ -69,7 +69,7 @@ class IIconifiedCategorization(Interface):
     form.order_before(content_category="title")
     form.order_before(content_category="IBasic.title")
     form.order_before(content_category="IDublinCore.title")
-    form.widget(content_category=SingleSelect2FieldWidget)
+    form.widget(content_category=Select2FieldWidget)
     content_category = schema.Choice(
         title=_("Category"),
         source="collective.iconifiedcategory.categories",

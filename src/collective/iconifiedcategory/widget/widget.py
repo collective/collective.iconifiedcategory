@@ -15,14 +15,7 @@ class ICategoryTitleWidget(Interface):
 
 @implementer(ICategoryTitleWidget, interfaces.ISelectWidget)
 class CategoryTitleWidget(SelectWidget):
-
-    @property
-    def placeholder(self):
-        return self.field.placeholder
-
-    @property
-    def select2_id(self):
-        return self.id.replace("-", "_")
+    """Hidden inputs (id: category id, value: predefined title) read by iconifiedcategory.js"""
 
 
 @adapter(IChoice, interfaces.IFormLayer)

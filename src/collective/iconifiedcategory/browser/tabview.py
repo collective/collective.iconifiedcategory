@@ -20,9 +20,9 @@ from collective.iconifiedcategory.interfaces import ICategorizedPublishable
 from collective.iconifiedcategory.interfaces import ICategorizedSigned
 from collective.iconifiedcategory.interfaces import ICategorizedTable
 from plone import api
+from plone.base.utils import safe_text
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.i18n import translate
@@ -196,11 +196,11 @@ class TitleColumn(BaseColumn):
             target = "_blank"
         return pattern.format(
             link=url,
-            title=html.escape(safe_unicode(getattr(content, self.attrName))),
+            title=html.escape(safe_text(getattr(content, self.attrName))),
             target=target,
             icon=content.icon_url,
-            category=html.escape(safe_unicode(content.category_title)),
-            description=html.escape(safe_unicode(content.Description)),
+            category=html.escape(safe_text(content.category_title)),
+            description=html.escape(safe_text(content.Description)),
         )
 
 
@@ -368,10 +368,10 @@ class CategoryColumn(BaseColumn):
     escape = False
 
     def renderCell(self, content):
-        category_title = safe_unicode(content.category_title)
+        category_title = safe_text(content.category_title)
         if content.subcategory_title:
             category_title = "{0} / {1}".format(
-                category_title, safe_unicode(content.subcategory_title)
+                category_title, safe_text(content.subcategory_title)
             )
         return html.escape(category_title)
 

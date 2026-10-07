@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-10-08 08:22+0000\n"
+"POT-Creation-Date: 2026-10-07 20:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Activer les options \"A approuver?/Approuvé?\""
 msgid "Activate the \"to_sign and signed\" options"
 msgstr "Activer les options \"A signer?/Signé?\""
 
-#: ../browser/tabview.py:374
+#: ../browser/tabview.py:328
 msgid "Approved"
 msgstr "Approuvé?"
 
@@ -50,7 +50,7 @@ msgstr "Approuvé?"
 msgid "Approved default"
 msgstr "Approuvé par defaut?"
 
-#: ../browser/tabview.py:221
+#: ../browser/tabview.py:380
 msgid "Author"
 msgstr "Auteur"
 
@@ -63,12 +63,12 @@ msgstr "Ne peut pas être imprimé"
 msgid "Categorized elements"
 msgstr "Eléments catégorisés"
 
-#: ../behaviors/iconifiedcategorization.py:34
-#: ../browser/tabview.py:207
+#: ../behaviors/iconifiedcategorization.py:74
+#: ../browser/tabview.py:365
 msgid "Category"
 msgstr "Catégorie"
 
-#: ../browser/tabview.py:337
+#: ../browser/tabview.py:291
 msgid "Confidential"
 msgstr "Confidentiel?"
 
@@ -76,8 +76,11 @@ msgstr "Confidentiel?"
 msgid "Confidential default"
 msgstr "Confidentiel par défaut?"
 
-#. Default: "Content category"
 #: ../browser/templates/categorized-childs-infos.pt:7
+msgid "Content category"
+msgstr "Catégorie de contenu"
+
+#. Default: "Content category"
 #: ../profiles/default/types/ContentCategory.xml
 #, fuzzy
 msgid "ContentCategory"
@@ -98,22 +101,25 @@ msgstr "Groupe de catégories"
 msgid "ContentSubcategory"
 msgstr "Sous-catégorie"
 
-#: ../browser/tabview.py:226
+#: ../browser/tabview.py:385
 msgid "Creation date"
 msgstr "Date de création"
 
-#: ../behaviors/iconifiedcategorization.py:45
+#: ../behaviors/iconifiedcategorization.py:85
 msgid "Default title"
 msgstr "Titre par défaut"
 
-#: ../browser/tabview.py:421
+#: ../browser/tabview.py:447
 #: ../browser/templates/categorized-childs-infos.pt:111
 msgid "Download"
 msgstr "Télécharger"
 
-#: ../browser/tabview.py:415
+#: ../browser/tabview.py:439
 msgid "Edit"
 msgstr "Éditer"
+
+msgid "Element is approved"
+msgstr "Cet élément est approuvé"
 
 msgid "Element is confidential"
 msgstr "Cet élément est confidentiel"
@@ -133,14 +139,11 @@ msgstr "Cet élément est signé"
 msgid "Element must be approved but is still not"
 msgstr "Cet élément doit être approuvé"
 
-msgid "Element is approved"
-msgstr "Cet élément est approuvé"
+msgid "Element must be signed but is still not"
+msgstr "Cet élément doit être signé"
 
 msgid "Element should not be approved"
 msgstr "Cet élément ne doit pas être approuvé"
-
-msgid "Element must be signed but is still not"
-msgstr "Cet élément doit être signé"
 
 msgid "Element should not be signed"
 msgstr "Cet élément ne doit pas être signé"
@@ -153,15 +156,11 @@ msgstr "Les éléments ont été mis à jour!"
 msgid "Enabled?"
 msgstr "Activé?"
 
-#: ../browser/actionview.py:59
-msgid "Error during process"
-msgstr "Une erreur est survenue"
-
-#: ../browser/tabview.py:250
+#: ../browser/tabview.py:409
 msgid "Filesize"
 msgstr "Taille du fichier"
 
-#: ../interfaces.py:100
+#: ../interfaces.py:103
 msgid "Filesize limit in bytes enabling a warning"
 msgstr "Taille de fichier (en octets, 5000000 = 5Mo) au delà de laquelle un avertissement sera affiché"
 
@@ -181,38 +180,38 @@ msgstr "Paramètres pour la catégorisation par icône"
 msgid "Iconified Content Categorization"
 msgstr "Catégorisation par icône"
 
-#: ../interfaces.py:101
+#: ../interfaces.py:104
 msgid "If the categorized element is a file, the user will get a warning whenever the filesize is bigger than defined value. <span style=\"color: red\">Take care that if you change this value, you will have to update the categoized elements stored informations.</span> "
 msgstr "Si l'élément catégorisé est un fichier, l'utilisateur aura un avertissement lors du téléversement ou de la visualitation du fichier si sa taille dépasse la valeur renseignée.  <span style=\"color: red\">Si vous changez ce paramètre, il sera nécessaire de mettre à jour les éléments catégorisés car cette valeur est indexée.</span>"
 
-#: ../configure.zcml:32
+#: ../configure.zcml:30
 msgid "Installs the collective.iconifiedcategory add-on."
 msgstr ""
 
-#: ../configure.zcml:47
+#: ../configure.zcml:45
 msgid "Installs the collective.iconifiedcategory testing profile."
 msgstr ""
 
-#: ../browser/tabview.py:237
+#: ../browser/tabview.py:396
 msgid "Last modification"
 msgstr "Dernière modification"
 
-#: ../interfaces.py:93
+#: ../interfaces.py:94
 msgid "Maximum number of elements to display by columns when displaying categorized elements of same category in the tooltipster widget"
 msgstr "Nombre maximum d'éléments à afficher par colonne lors de l'affichage des éléments catégorisés d'une catégorie dans le widget Tooltipster"
 
-#: ../browser/templates/categorized-childs-infos.pt:129
+#: ../browser/templates/categorized-childs-infos.pt:130
 msgid "More infos"
 msgstr "Voir tout"
 
 msgid "Must be printed"
 msgstr "Cet élément doit être imprimé"
 
-#: ../vocabularies.py:133
+#: ../vocabularies.py:147
 msgid "No"
 msgstr "non"
 
-#: ../browser/actionview.py:84
+#: ../browser/actionview.py:93
 msgid "No values to set"
 msgstr "Aucune valeur à définir"
 
@@ -236,12 +235,12 @@ msgstr "Idéalement, utilisez une image ayant une taille de 16x16, si différent
 msgid "Predefined title"
 msgstr "Titre prédéfini"
 
-#: ../browser/tabview.py:427
+#: ../browser/tabview.py:455
 #: ../browser/templates/categorized-childs-infos.pt:45
 msgid "Preview"
 msgstr "Cette annexe est en prévisualisation, cliquez sur l'icône verte \"Télécharger\" pour télécharger l'annexe si vous en avez le besoin et la permission"
 
-#: ../browser/tabview.py:389
+#: ../browser/tabview.py:350
 msgid "Publishable"
 msgstr "Publiable?"
 
@@ -260,7 +259,7 @@ msgstr "Lorsque \"oui\" est sélectionné, le lien vers l'élément sera une pr�
 msgid "Show preview?"
 msgstr "En prévisualisation?"
 
-#: ../browser/tabview.py:352
+#: ../browser/tabview.py:306
 msgid "Signed"
 msgstr "Signé?"
 
@@ -272,7 +271,7 @@ msgstr "Signé par défaut?"
 msgid "Sort categorized elements on categorized tab alphabetically automatically. Uncheck to sort elements manually"
 msgstr "Ordonner les éléments catégorisés dans l'onglet 'Eléments catégorisés' automatiquement par ordre alphabétique (décochez pour pouvoir ordonner les éléments manuellement)"
 
-#: ../content/events.py:119
+#: ../content/events.py:145
 msgid "The annex that you just added has a large size and could be difficult to download by users wanting to view it!"
 msgstr "L'annexe que vous venez d'ajouter pourrait poser des problèmes aux utilisateurs souhaitant la consulter à cause de sa grande taille."
 
@@ -284,11 +283,11 @@ msgstr "La conversion a échoué"
 msgid "The document is currently under conversion, please refresh the page in a few minutes"
 msgstr "L'élément est en cours de conversion, veuillez actualiser la page dans quelques minutes"
 
-#: ../content/events.py:215
+#: ../content/events.py:261
 msgid "This category or one of is subcategory are used by another object and cannot be deleted"
 msgstr "Cette catégorie ou l'une des sous-catégorie est utilisée par un autre objet et ne peut dès lors être supprimée"
 
-#: ../content/events.py:229
+#: ../content/events.py:278
 msgid "This subcategory is used by another object and cannot be deleted"
 msgstr "Cette catégorie est utilisée par un autre objet et ne peut dès lors être supprimée"
 
@@ -300,7 +299,7 @@ msgstr "Cette action mettra à jour le titre et l'URL des éléments utilisant l
 msgid "This will update title and url of elements using categories defined here."
 msgstr "Cette action mettra à jour le titre et l'URL des éléments utilisant les catégories définies ici."
 
-#: ../browser/tabview.py:179
+#: ../browser/tabview.py:180
 msgid "Title"
 msgstr "Titre"
 
@@ -308,7 +307,7 @@ msgstr "Titre"
 msgid "To approve default"
 msgstr "A approuver par défaut?"
 
-#: ../browser/tabview.py:322
+#: ../browser/tabview.py:276
 msgid "To be printed"
 msgstr "À imprimer?"
 
@@ -320,6 +319,10 @@ msgstr "À imprimer par défaut?"
 msgid "To sign default"
 msgstr "À signer par défaut?"
 
+#: ../configure.zcml:59
+msgid "Uninstalls the collective.iconifiedcategory add-on."
+msgstr ""
+
 #: ../profiles/default/actions.xml
 msgid "Update and sort categorized elements"
 msgstr "Mise à jour et tri des éléments catégorisés"
@@ -328,24 +331,28 @@ msgstr "Mise à jour et tri des éléments catégorisés"
 msgid "Update categorized elements"
 msgstr "Mise à jour des éléments catégorisés"
 
-#: ../vocabularies.py:134
+#: ../vocabularies.py:148
 msgid "Yes"
 msgstr "oui"
 
-#: ../vocabularies.py:135
+#: ../vocabularies.py:149
 msgid "Yes and hide download icon"
 msgstr "oui et limiter l'accès au téléchargement"
 
-#: ../utils.py:535
+#: ../utils.py:590
 msgid "You must select a PDF file!"
 msgstr "La catégorie sélectionnée requiert l'utilisation d'un fichier au format PDF uniquement!"
 
-#: ../configure.zcml:32
+#: ../configure.zcml:30
 msgid "collective.iconifiedcategory"
 msgstr ""
 
-#: ../configure.zcml:47
+#: ../configure.zcml:45
 msgid "collective.iconifiedcategory (testing)"
+msgstr ""
+
+#: ../configure.zcml:59
+msgid "collective.iconifiedcategory uninstall"
 msgstr ""
 
 #. Default: "Annex size is huge, it could be difficult to be downloaded!"

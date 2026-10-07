@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import Unauthorized
-from collective.documentviewer.config import CONVERTABLE_TYPES
-from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory import HAS_DOCUMENTVIEWER
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.browser.actionview import BaseView
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from collective.iconifiedcategory.tests.base import skip_without_documentviewer
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 
 import json
+
+
+if HAS_DOCUMENTVIEWER:
+    from collective.documentviewer.config import CONVERTABLE_TYPES
+    from collective.documentviewer.settings import GlobalSettings
 
 
 class TestBaseView(BaseTestCase):
@@ -51,6 +56,7 @@ class TestBaseView(BaseTestCase):
 
 class TestToPrintChangeView(BaseTestCase):
 
+    @skip_without_documentviewer
     def test_set_values(self):
         obj = self.portal["file_txt"]
         view = obj.restrictedTraverse("@@iconified-print")

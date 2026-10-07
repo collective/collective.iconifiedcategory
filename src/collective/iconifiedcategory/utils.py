@@ -29,8 +29,8 @@ from natsort import natsorted
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
+from plone.base.utils import safe_text
 from plone.memoize import ram
-from Products.CMFPlone.utils import safe_unicode
 from time import time
 from zope.annotation import IAnnotations
 from zope.component import getAdapter
@@ -204,7 +204,7 @@ def update_all_categorized_elements(container, limited=False, sort=True):
         container.categorized_elements = OrderedDict()
     adapter = None
     for obj in container.objectValues():
-        if hasattr(obj, "content_category"):
+        if getattr(obj, "content_category", None):
             try:
                 category = get_category_object(obj, obj.content_category)
             except KeyError:
@@ -264,7 +264,7 @@ def sort_categorized_elements(context):
             list(context.categorized_elements.items()),
             key=lambda x: (
                 ordered_categories[x[1]["category_uid"]],
-                safe_unicode(x[1]["title"].lower()),
+                safe_text(x[1]["title"].lower()),
             ),
         )
     except KeyError:

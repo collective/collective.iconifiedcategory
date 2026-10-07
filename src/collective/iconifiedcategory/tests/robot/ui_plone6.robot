@@ -2,8 +2,7 @@
 Documentation  Plone 6 Classic UI keywords. Same keyword names and arguments as ui_plone4.robot.
 ...            Robot Framework 3.0 syntax: shared with the Plone 4.3 (Python 2) environment.
 ...            Selectors checked on Plone 6.1 (collective.contact.contactlist, collective.iconifiedcategory).
-...            Category field: implemented for the widget of the python3 branch in phase 3
-...            (collective.z3cform.select2 master); to rework in phase 7 with plone.app.z3cform's widget.
+...            Category field: plone.app.z3cform Select2Widget (pat-select2, select2 3.5, same markup as Plone 4).
 Resource  plone/app/robotframework/selenium.robot
 Resource  plone/app/robotframework/keywords.robot
 Library  Remote  ${PLONE_URL}/RobotRemote
@@ -13,9 +12,8 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 ${MODAL}  css=.modal-dialog
 ${ERROR_PAGE_TEXT}  there seems to be an error
 ${NOT_FOUND_TEXT}  This page does not seem to exist
-# category field of the IIconifiedCategorization behavior (python3 branch: collective.z3cform.select2 master, select2 3.x)
+# category field of the IIconifiedCategorization behavior (plone.app.z3cform Select2Widget)
 ${CATEGORY_FIELD}  css=#formfield-form-widgets-IIconifiedCategorization-content_category
-${CATEGORY_SELECT}  css=#form_widgets_IIconifiedCategorization_content_category
 
 
 *** Keywords ***
@@ -129,16 +127,9 @@ Open the configlet
 # Category field (IIconifiedCategorization behavior)
 
 Select the category
-    [Documentation]  Option of the category field, by title. The select2 widget of the branch is only initialized
-    ...              when the async faceted.jquery bundle (select2 library) runs before the DOM is ready
-    ...              (MIGRATION.md known issue): plain select otherwise
+    [Documentation]  Option of the category field, by title (pat-select2 is initialized asynchronously)
     [Arguments]  ${title}
-    ${select2}=  Run keyword and return status  Page should contain element  ${CATEGORY_FIELD} a.select2-choice
-    Run keyword if  ${select2}  Select the category with select2  ${title}
-    ...  ELSE  Select from list by label  ${CATEGORY_SELECT}  ${title}
-
-Select the category with select2
-    [Arguments]  ${title}
+    Wait until page contains element  ${CATEGORY_FIELD} a.select2-choice
     Click element  ${CATEGORY_FIELD} a.select2-choice
     Wait until element is visible  css=.select2-drop-active
     Click element
@@ -146,17 +137,13 @@ Select the category with select2
     Wait until element is not visible  css=.select2-drop-active
 
 The selected category is
-    [Documentation]  Selected option of the select (kept in sync by select2, that hides it)
     [Arguments]  ${title}
-    ${selected}=  Execute javascript
-    ...  return document.getElementById('form_widgets_IIconifiedCategorization_content_category').selectedOptions[0].textContent.trim();
-    Should be equal  ${selected}  ${title}
+    Wait until page contains element  ${CATEGORY_FIELD} a.select2-choice
+    Element text should be  ${CATEGORY_FIELD} a.select2-choice > span.select2-chosen  ${title}
 
 The selected category shows its icon
-    [Documentation]  Background image of the category, from the categories CSS (<category>/@@download),
-    ...              shown by the select2 widget only
+    [Documentation]  Background image of the category, from the categories CSS (<category>/@@download)
     [Arguments]  ${category_path}
     ${image}=  Execute javascript
-    ...  var span = document.querySelector('#formfield-form-widgets-IIconifiedCategorization-content_category a.select2-choice > span > span');
-    ...  return span ? window.getComputedStyle(span).backgroundImage : 'no select2 widget';
+    ...  return window.getComputedStyle(document.querySelector('#formfield-form-widgets-IIconifiedCategorization-content_category a.select2-choice > span.select2-chosen > span')).backgroundImage;
     Should contain  ${image}  ${category_path}/@@download

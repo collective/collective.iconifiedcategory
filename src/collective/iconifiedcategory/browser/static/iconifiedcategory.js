@@ -22,9 +22,41 @@ IconifiedCategory.initializeCategoryWidget = function(obj) {
   IconifiedCategory.defineDefaultTitle(obj, init_time=true);
 };
 
+/* css classes of a category option: the icon of the category (@@collective-iconifiedcategory.css),
+   "subcategory" indents a subcategory, shown with the icon of its category */
+IconifiedCategory.categoryCss = function(value) {
+  var parts = value.split('_-_');
+  return (parts.length > 3 ? 'subcategory ' : '') + parts.slice(0, 3).join('-');
+};
+
+/* option titles are already HTML-escaped by the vocabulary */
+IconifiedCategory.formatCategory = function(state) {
+  if (!state.id) {
+    return state.text;
+  }
+  return '<span class="' + IconifiedCategory.categoryCss(state.id) + '">' + state.text + '</span>';
+};
+
+/* show the category icons in the pat-select2 widget (select2 3.5) */
+IconifiedCategory.showCategoryIcons = function(select) {
+  var select2 = select.data('select2');
+  if (!select2) {
+    return;
+  }
+  select2.opts.formatResult = IconifiedCategory.formatCategory;
+  select2.opts.formatSelection = IconifiedCategory.formatCategory;
+  select2.updateSelection(select2.data());
+};
+
 initializeIconifiedCategoryWidget = function () {
   jQuery(function($) {
-    IconifiedCategory.initializeCategoryWidget($('#form_widgets_IIconifiedCategorization_content_category'));
+    var select = $('#form-widgets-IIconifiedCategorization-content_category');
+    IconifiedCategory.initializeCategoryWidget(select);
+    // pat-select2 is initialized asynchronously, maybe already done
+    IconifiedCategory.showCategoryIcons(select);
+    select.on('init.select2.patterns', function() {
+      IconifiedCategory.showCategoryIcons(select);
+    });
   });
 };
 
