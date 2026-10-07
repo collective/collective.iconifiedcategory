@@ -25,8 +25,8 @@ import json
 
 class BaseView(BrowserView):
     attribute_mapping = {}
-    category_group_attr_name = ''
-    attr_name = ''
+    category_group_attr_name = ""
+    attr_name = ""
     # when updating element, do that limited?
     limited = True
     permission = ModifyPortalContent
@@ -34,46 +34,54 @@ class BaseView(BrowserView):
     def _translate(self, msgid):
         return translate(
             msgid,
-            domain='collective.iconifiedcategory',
+            domain="collective.iconifiedcategory",
             context=self.request,
         )
 
     def __call__(self):
         """Do the work :
-           - status :
-               -1 --> deactivate;
-               0 --> set to False;
-               1 --> set to True;
-               2 --> error;
-           """
-        values = {'msg': u'Values have been set'}
+        - status :
+            -1 --> deactivate;
+            0 --> set to False;
+            1 --> set to True;
+            2 --> error;
+        """
+        values = {"msg": "Values have been set"}
         # try:
-        self.request.response.setHeader('content-type',
-                                        'application/json')
+        self.request.response.setHeader("content-type", "application/json")
         status, msg = self.set_values(self.get_values())
-        values['status'] = status
+        values["status"] = status
         if msg:
-            values['msg'] = self._translate(msg)
+            values["msg"] = self._translate(msg)
         # except Exception:
         #     values['status'] = 2
         #     values['msg'] = self._translate(_('Error during process'))
         return json.dumps(values)
 
     def get_current_values(self):
-        return {k: getattr(self.context, k, None)
-                for k in list(self.attribute_mapping.keys())}
+        return {
+            k: getattr(self.context, k, None)
+            for k in list(self.attribute_mapping.keys())
+        }
 
     def get_values(self):
-        return {k: self.convert_boolean(self.request.get(v))
-                for k, v in list(self.attribute_mapping.items())}
+        return {
+            k: self.convert_boolean(self.request.get(v))
+            for k, v in list(self.attribute_mapping.items())
+        }
 
-    def _may_set_values(self, values, ):
+    def _may_set_values(
+        self,
+        values,
+    ):
         res = bool(api.user.has_permission(self.permission, obj=self.context))
         if res:
             # is this functionnality enabled?
             if not base_hasattr(self.context, "content_category"):
                 return False
-            self.category = utils.get_category_object(self.context, self.context.content_category)
+            self.category = utils.get_category_object(
+                self.context, self.context.content_category
+            )
             category_group = self.category.get_category_group()
             res = getattr(category_group, self.category_group_attr_name, True)
         return res
@@ -83,27 +91,31 @@ class BaseView(BrowserView):
             raise Unauthorized
 
         if not values:
-            return 2, self._translate(_('No values to set'))
+            return 2, self._translate(_("No values to set"))
 
         old_values = self.get_current_values()
 
         for key, value in list(values.items()):
             self._set_value(key, value)
         status, msg = self._get_status(values), utils.boolean_message(
-            self.context, attr_name=self.attr_name)
+            self.context, attr_name=self.attr_name
+        )
         if not status == 2:
             utils.update_categorized_elements(
                 self.context.aq_parent,
                 self.context,
                 self.category,
                 limited=self.limited,
-                sort=False)
-            notify(IconifiedAttrChangedEvent(
-                self.context,
-                self.attr_name,
-                old_values,
-                values,
-            ))
+                sort=False,
+            )
+            notify(
+                IconifiedAttrChangedEvent(
+                    self.context,
+                    self.attr_name,
+                    old_values,
+                    values,
+                )
+            )
             self.context.reindexObject(idxs=list(self.attribute_mapping.keys()))
         return status, msg
 
@@ -122,18 +134,18 @@ class BaseView(BrowserView):
     @staticmethod
     def convert_boolean(value):
         values = {
-            'false': False,
-            'true': True,
+            "false": False,
+            "true": True,
         }
         return values.get(value, value)
 
 
 class ToPrintChangeView(BaseView):
     attribute_mapping = {
-        'to_print': 'iconified-value',
+        "to_print": "iconified-value",
     }
-    category_group_attr_name = 'to_be_printed_activated'
-    attr_name = 'to_print'
+    category_group_attr_name = "to_be_printed_activated"
+    attr_name = "to_print"
 
     def set_values(self, values):
         status, msg = super(ToPrintChangeView, self).set_values(values)
@@ -144,46 +156,46 @@ class ToPrintChangeView(BaseView):
 
 class ConfidentialChangeView(BaseView):
     attribute_mapping = {
-        'confidential': 'iconified-value',
+        "confidential": "iconified-value",
     }
-    category_group_attr_name = 'confidentiality_activated'
-    attr_name = 'confidential'
+    category_group_attr_name = "confidentiality_activated"
+    attr_name = "confidential"
     limited = False
 
 
 class SignedChangeView(BaseView):
     attribute_mapping = {
-        'signed': 'iconified-value',
-        'to_sign': 'iconified-value',
+        "signed": "iconified-value",
+        "to_sign": "iconified-value",
     }
-    category_group_attr_name = 'signed_activated'
-    attr_name = 'to_sign'
+    category_group_attr_name = "signed_activated"
+    attr_name = "to_sign"
 
     def _get_next_values(self, old_values):
         """ """
         values = {}
-        if old_values['to_sign'] is False:
-            values['to_sign'] = True
-            values['signed'] = False
+        if old_values["to_sign"] is False:
+            values["to_sign"] = True
+            values["signed"] = False
             status = 0
-        elif old_values['to_sign'] is True and old_values['signed'] is False:
-            values['to_sign'] = True
-            values['signed'] = True
+        elif old_values["to_sign"] is True and old_values["signed"] is False:
+            values["to_sign"] = True
+            values["signed"] = True
             status = 1
         else:
             # old_values['to_sign'] is True and old_values['signed'] is True
             # disable to_sign and signed
-            values['to_sign'] = False
-            values['signed'] = False
+            values["to_sign"] = False
+            values["signed"] = False
             status = -1
         return status, values
 
     def set_values(self, values):
         """Value are setting 'to_print' and 'signed' attributes with following
-           possibility depending on allowed ones :
-           - False/False;
-           - True/False;
-           - True/True."""
+        possibility depending on allowed ones :
+        - False/False;
+        - True/False;
+        - True/True."""
         old_values = self.get_current_values()
         status, values = self._get_next_values(old_values)
         super(SignedChangeView, self).set_values(values)
@@ -192,26 +204,26 @@ class SignedChangeView(BaseView):
 
 class ApprovedChangeView(BaseView):
     attribute_mapping = {
-        'approved': 'iconified-value',
-        'to_approve': 'iconified-value',
+        "approved": "iconified-value",
+        "to_approve": "iconified-value",
     }
-    category_group_attr_name = 'approved_activated'
-    attr_name = 'to_approve'
+    category_group_attr_name = "approved_activated"
+    attr_name = "to_approve"
 
     def _get_next_values(self, old_values):
         """ """
         values = {}
-        if old_values['to_approve'] is False:
-            values['to_approve'] = True
-            values['approved'] = False
+        if old_values["to_approve"] is False:
+            values["to_approve"] = True
+            values["approved"] = False
             status = 0
-        elif old_values['to_approve'] is True and old_values['approved'] is False:
-            values['to_approve'] = True
-            values['approved'] = True
+        elif old_values["to_approve"] is True and old_values["approved"] is False:
+            values["to_approve"] = True
+            values["approved"] = True
             status = 1
         else:
-            values['to_approve'] = False
-            values['approved'] = False
+            values["to_approve"] = False
+            values["approved"] = False
             status = -1
         return status, values
 
@@ -231,7 +243,7 @@ class ApprovedChangeView(BaseView):
 
 class PublishableChangeView(BaseView):
     attribute_mapping = {
-        'publishable': 'iconified-value',
+        "publishable": "iconified-value",
     }
-    category_group_attr_name = 'publishable_activated'
-    attr_name = 'publishable'
+    category_group_attr_name = "publishable_activated"
+    attr_name = "publishable"

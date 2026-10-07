@@ -8,23 +8,27 @@ Created by mpeeters
 """
 
 from collective.iconifiedcategory import utils
+
 # from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
-from datetime import datetime, timezone
+from datetime import datetime
+from datetime import timezone
 from plone.app.theming.browser.custom_css import CustomCSSView
 from plone.app.theming.interfaces import IThemeSettings
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
 
-css_pattern = (u".{0} {{ padding-left: 1.4em; background: "
-               u"transparent url('{1}') no-repeat top left; "
-               u"background-size: contain; }}")
+css_pattern = (
+    ".{0} {{ padding-left: 1.4em; background: "
+    "transparent url('{1}') no-repeat top left; "
+    "background-size: contain; }}"
+)
 
 
 class IconifiedCategory(CustomCSSView):
 
     def __call__(self, *args, **kwargs):
-        self.request.response.setHeader('Content-Type', 'text/css')
+        self.request.response.setHeader("Content-Type", "text/css")
         base_css = super().__call__()
         dynamic_css = self._dynamic_css()
         lm = self._last_modified()
@@ -38,18 +42,17 @@ class IconifiedCategory(CustomCSSView):
     def _dynamic_css(self):
         content = []
         if utils.has_config_root(self.context) is False:
-            return ''
+            return ""
         # sort_on=None to avoid useless sort_on="getObjPositionInParent"
-        categories = utils.get_categories(self.context,
-                                          sort_on=None,
-                                          only_enabled=False)
+        categories = utils.get_categories(
+            self.context, sort_on=None, only_enabled=False
+        )
         for category in categories:
             obj = category._unrestrictedGetObject()
             category_id = utils.calculate_category_id(obj)
-            url = u'{0}/@@download'.format(obj.absolute_url())
-            content.append(css_pattern.format(
-                utils.format_id_css(category_id), url))
-        return ' '.join(content)
+            url = "{0}/@@download".format(obj.absolute_url())
+            content.append(css_pattern.format(utils.format_id_css(category_id), url))
+        return " ".join(content)
 
     def _last_modified(self):
         registry = getUtility(IRegistry)

@@ -55,6 +55,7 @@ class FileImageEditExtender(FormExtender):
 @adapter(Interface, IPloneFormLayer, IAddForm)
 class FileImageAddExtender(FormExtender):
     """Place content_category on top for File/Image content types"""
+
     def update(self):
         pt = getattr(self.form, "portal_type", None)
         if pt not in ("File", "Image"):
@@ -65,24 +66,24 @@ class FileImageAddExtender(FormExtender):
 @provider(IFormFieldProvider)
 class IIconifiedCategorization(Interface):
 
-    form.order_before(content_category='title')
-    form.order_before(content_category='IBasic.title')
-    form.order_before(content_category='IDublinCore.title')
+    form.order_before(content_category="title")
+    form.order_before(content_category="IBasic.title")
+    form.order_before(content_category="IDublinCore.title")
     form.widget(content_category=SingleSelect2FieldWidget)
     content_category = schema.Choice(
-        title=_(u'Category'),
-        source='collective.iconifiedcategory.categories',
+        title=_("Category"),
+        source="collective.iconifiedcategory.categories",
         required=True,
     )
 
-    form.order_before(default_titles='title')
-    form.order_before(default_titles='IBasic.title')
-    form.order_before(default_titles='IDublinCore.title')
-    form.mode(default_titles='hidden')
+    form.order_before(default_titles="title")
+    form.order_before(default_titles="IBasic.title")
+    form.order_before(default_titles="IDublinCore.title")
+    form.mode(default_titles="hidden")
     form.widget(default_titles=CategoryTitleFieldWidget)
     default_titles = schema.Choice(
-        title=_(u'Default title'),
-        vocabulary='collective.iconifiedcategory.category_titles',
+        title=_("Default title"),
+        vocabulary="collective.iconifiedcategory.category_titles",
         required=False,
     )
 
@@ -112,16 +113,16 @@ class IconifiedCategorization(object):
 
     @property
     def content_category(self):
-        return getattr(self.context, 'content_category', None)
+        return getattr(self.context, "content_category", None)
 
     def _content_category_changed_default_values(self, new_value):
         """When changing content_category, change default values
-           if original default was not yet changed."""
+        if original default was not yet changed."""
         try:
             current_category = get_category_object(
-                self.context, self.context.content_category)
-            new_category = get_category_object(
-                self.context, new_value)
+                self.context, self.context.content_category
+            )
+            new_category = get_category_object(self.context, new_value)
         except KeyError:
             # in case we can not get the category, we return
             # this can be the case when changing category of an element
@@ -129,28 +130,40 @@ class IconifiedCategorization(object):
             return
         category_group = current_category.get_category_group(current_category)
         # to_print
-        if category_group.to_be_printed_activated and \
-           getattr(self.context, "to_print", None) == current_category.to_print:
+        if (
+            category_group.to_be_printed_activated
+            and getattr(self.context, "to_print", None) == current_category.to_print
+        ):
             self.context.to_print = new_category.to_print
         # confidential
-        if category_group.confidentiality_activated and \
-           getattr(self.context, "confidential", None) == current_category.confidential:
+        if (
+            category_group.confidentiality_activated
+            and getattr(self.context, "confidential", None)
+            == current_category.confidential
+        ):
             self.context.confidential = new_category.confidential
         # to_sign/signed
-        if category_group.signed_activated and \
-           getattr(self.context, "to_sign", None) == current_category.to_sign and \
-           getattr(self.context, "signed", None) == current_category.signed:
+        if (
+            category_group.signed_activated
+            and getattr(self.context, "to_sign", None) == current_category.to_sign
+            and getattr(self.context, "signed", None) == current_category.signed
+        ):
             self.context.to_sign = new_category.to_sign
             self.context.signed = new_category.signed
         # to_approve
-        if category_group.approved_activated and \
-           self.context.to_approve == current_category.to_approve and \
-           self.context.approved == current_category.approved:
+        if (
+            category_group.approved_activated
+            and self.context.to_approve == current_category.to_approve
+            and self.context.approved == current_category.approved
+        ):
             self.context.to_approve = new_category.to_approve
             self.context.approved = new_category.approved
         # publishable
-        if category_group.publishable_activated and \
-           getattr(self.context, "publishable", None) == current_category.publishable:
+        if (
+            category_group.publishable_activated
+            and getattr(self.context, "publishable", None)
+            == current_category.publishable
+        ):
             self.context.publishable = new_category.publishable
 
     @content_category.setter
@@ -158,54 +171,57 @@ class IconifiedCategorization(object):
         # if content_category changed, we check also if default values
         # need to be updated.  We will update values that were not modified
         # since last default values
-        if getattr(self.context, 'content_category', None) and self.context.content_category != value:
+        if (
+            getattr(self.context, "content_category", None)
+            and self.context.content_category != value
+        ):
             self._content_category_changed_default_values(value)
         self.context.content_category = value
-        self.context.reindexObject(idxs=['content_category_uid'])
+        self.context.reindexObject(idxs=["content_category_uid"])
 
     @property
     def to_print(self):
-        return getattr(aq_base(self.context), 'to_print', False)
+        return getattr(aq_base(self.context), "to_print", False)
 
     @to_print.setter
     def to_print(self, value):
-        setattr(self.context, 'to_print', bool(value))
+        setattr(self.context, "to_print", bool(value))
 
     @property
     def confidential(self):
-        return getattr(aq_base(self.context), 'confidential', False)
+        return getattr(aq_base(self.context), "confidential", False)
 
     @confidential.setter
     def confidential(self, value):
-        setattr(self.context, 'confidential', bool(value))
+        setattr(self.context, "confidential", bool(value))
 
     @property
     def to_sign(self):
-        return getattr(aq_base(self.context), 'to_sign', False)
+        return getattr(aq_base(self.context), "to_sign", False)
 
     @to_sign.setter
     def to_sign(self, value):
-        setattr(self.context, 'to_sign', bool(value))
+        setattr(self.context, "to_sign", bool(value))
 
     @property
     def signed(self):
-        return getattr(aq_base(self.context), 'signed', False)
+        return getattr(aq_base(self.context), "signed", False)
 
     @signed.setter
     def signed(self, value):
-        setattr(self.context, 'signed', bool(value))
+        setattr(self.context, "signed", bool(value))
 
     @property
     def to_approve(self):
-        return getattr(aq_base(self.context), 'to_approve', False)
+        return getattr(aq_base(self.context), "to_approve", False)
 
     def approved(self):
-        return getattr(aq_base(self.context), 'approved', False)
+        return getattr(aq_base(self.context), "approved", False)
 
     @property
     def publishable(self):
-        return getattr(aq_base(self.context), 'publishable', False)
+        return getattr(aq_base(self.context), "publishable", False)
 
     @publishable.setter
     def publishable(self, value):
-        setattr(self.context, 'publishable', bool(value))
+        setattr(self.context, "publishable", bool(value))

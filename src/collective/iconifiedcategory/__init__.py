@@ -7,10 +7,10 @@ import imio.helpers.converters  # noqa
 import logging
 
 
-logger = logging.getLogger('collective.iconifiedcategory')
+logger = logging.getLogger("collective.iconifiedcategory")
 
-CAT_SEPARATOR = '_-_'
-CSS_SEPARATOR = '-'
+CAT_SEPARATOR = "_-_"
+CSS_SEPARATOR = "-"
 DEFAULT_FILESIZE_LIMIT = 5000000
 
-_ = MessageFactory('collective.iconifiedcategory')
+_ = MessageFactory("collective.iconifiedcategory")

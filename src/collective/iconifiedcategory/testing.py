@@ -20,11 +20,11 @@ class CollectiveIconifedCategoryLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        z2.installProduct(app, 'Products.DateRecurringIndex')
+        z2.installProduct(app, "Products.DateRecurringIndex")
         self.loadZCML(package=collective.iconifiedcategory)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'collective.iconifiedcategory:testing')
+        applyProfile(portal, "collective.iconifiedcategory:testing")
 
 
 COLLECTIVE_ICONIFIED_CATEGORY_FIXTURE = CollectiveIconifedCategoryLayer()
@@ -32,26 +32,32 @@ COLLECTIVE_ICONIFIED_CATEGORY_FIXTURE = CollectiveIconifedCategoryLayer()
 
 COLLECTIVE_ICONIFIED_CATEGORY_INTEGRATION_TESTING = IntegrationTesting(
     bases=(COLLECTIVE_ICONIFIED_CATEGORY_FIXTURE,),
-    name='CollectiveIconifedCategoryLayer:IntegrationTesting'
+    name="CollectiveIconifedCategoryLayer:IntegrationTesting",
 )
 
 
 COLLECTIVE_ICONIFIED_CATEGORY_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(COLLECTIVE_ICONIFIED_CATEGORY_FIXTURE,),
-    name='CollectiveIconifedCategoryLayer:FunctionalTesting'
+    name="CollectiveIconifedCategoryLayer:FunctionalTesting",
 )
 
 
 class IconifiedCategoryRemoteKeywords(RemoteLibrary):
     """Robot keywords of collective.iconifiedcategory, imported from ${PLONE_URL}/IconifiedCategoryRobotRemote."""
 
-    def create_categorized_content(self, container_path, portal_type, title, content_category):
+    def create_categorized_content(
+        self, container_path, portal_type, title, content_category
+    ):
         """Create a categorized content like its add form does (the Create content keyword
-           fails on the category field, its vocabulary needs a context), return its UID."""
+        fails on the category field, its vocabulary needs a context), return its UID."""
         disableCSRFProtection()
         container = api.portal.get().unrestrictedTraverse(container_path)
         obj = api.content.create(
-            container=container, type=portal_type, title=title, content_category=content_category)
+            container=container,
+            type=portal_type,
+            title=title,
+            content_category=content_category,
+        )
         return obj.UID()
 
     def set_content_attribute(self, path, name, value):
@@ -65,7 +71,7 @@ class IconifiedCategoryRemoteKeywords(RemoteLibrary):
 ICONIFIED_CATEGORY_REMOTE_LIBRARY_FIXTURE = RemoteLibraryLayer(
     bases=(PLONE_FIXTURE,),
     libraries=(IconifiedCategoryRemoteKeywords,),
-    name='IconifiedCategoryRemoteLibrary:IconifiedCategoryRobotRemote'
+    name="IconifiedCategoryRemoteLibrary:IconifiedCategoryRobotRemote",
 )
 
 
@@ -76,5 +82,5 @@ COLLECTIVE_ICONIFIED_CATEGORY_ACCEPTANCE_TESTING = FunctionalTesting(
         ICONIFIED_CATEGORY_REMOTE_LIBRARY_FIXTURE,
         WSGI_SERVER_FIXTURE,
     ),
-    name='CollectiveIconifedCategoryLayer:AcceptanceTesting'
+    name="CollectiveIconifedCategoryLayer:AcceptanceTesting",
 )

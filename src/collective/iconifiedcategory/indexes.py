@@ -18,7 +18,7 @@ def enabled(obj):
 @indexer(IDexterityContent)
 def content_category_uid(obj):
     """Index the category_uid"""
-    if not hasattr(obj, 'content_category'):
+    if not hasattr(obj, "content_category"):
         return
     try:
         category_object = utils.get_category_object(obj, obj.content_category)

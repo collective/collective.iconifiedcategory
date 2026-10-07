@@ -45,4 +45,4 @@ class Subcategory(Item):
 class SubcategorySchemaPolicy(DexteritySchemaPolicy):
 
     def bases(self, schema_name, tree):
-        return (ISubcategory, )
+        return (ISubcategory,)

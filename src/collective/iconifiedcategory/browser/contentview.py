@@ -20,12 +20,12 @@ from zope.interface import classImplements
 
 class FormMixin(object):
     related_widgets = {
-        'confidential': 'confidentiality_activated',
-        'to_print': 'to_be_printed_activated',
-        'to_sign': 'signed_activated',
-        'signed': 'signed_activated',
-        'to_approve': 'approved_activated',
-        'approved': 'approved_activated',
+        "confidential": "confidentiality_activated",
+        "to_print": "to_be_printed_activated",
+        "to_sign": "signed_activated",
+        "signed": "signed_activated",
+        "to_approve": "approved_activated",
+        "approved": "approved_activated",
     }
 
     @property
@@ -62,12 +62,12 @@ class BaseAddView(DefaultAddView):
 
 class BaseView(DefaultView):
     related_widgets = {
-        'confidential': 'confidentiality_activated',
-        'to_print': 'to_be_printed_activated',
-        'to_sign': 'signed_activated',
-        'signed': 'signed_activated',
-        'to_approve': 'approved_activated',
-        'approved': 'approved_activated',
+        "confidential": "confidentiality_activated",
+        "to_print": "to_be_printed_activated",
+        "to_sign": "signed_activated",
+        "signed": "signed_activated",
+        "to_approve": "approved_activated",
+        "approved": "approved_activated",
     }
 
     def updateWidgets(self):

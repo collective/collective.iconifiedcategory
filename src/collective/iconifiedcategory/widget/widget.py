@@ -22,7 +22,7 @@ class CategoryTitleWidget(SelectWidget):
 
     @property
     def select2_id(self):
-        return self.id.replace('-', '_')
+        return self.id.replace("-", "_")
 
 
 @adapter(IChoice, interfaces.IFormLayer)

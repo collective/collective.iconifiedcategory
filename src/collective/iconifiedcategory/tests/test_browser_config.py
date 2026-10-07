@@ -31,8 +31,8 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
 
     def tearDown(self):
         self.gsm.unregisterHandler(object_modified_subscriber)
-        category = self.portal['config']['group-1']['category-1-1']
-        category.title = 'Category 1-1'
+        category = self.portal["config"]["group-1"]["category-1-1"]
+        category.title = "Category 1-1"
         super(TestUpdateCategorizedElementsConfig, self).tearDown()
 
     def test_subscriber(self):
@@ -40,29 +40,29 @@ class TestUpdateCategorizedElementsConfig(BaseTestCase):
         Test the ObjectModified event notifier for update-categorized-elements
         view on config context
         """
-        config = self.portal['config']
-        view = config.restrictedTraverse('@@update-categorized-elements')
+        config = self.portal["config"]
+        view = config.restrictedTraverse("@@update-categorized-elements")
         view()
-        self.assertListEqual(['file_txt', 'image'], SUBSCRIBED_ELEMENTS)
+        self.assertListEqual(["file_txt", "image"], SUBSCRIBED_ELEMENTS)
 
     def test_result(self):
         """
         Test the update-categorized-elements view on config context
         """
-        config = self.portal['config']
-        category = config['group-1']['category-1-1']
-        plone_file = self.portal['file_txt']
-        plone_file.title = 'foo.txt'
+        config = self.portal["config"]
+        category = config["group-1"]["category-1-1"]
+        plone_file = self.portal["file_txt"]
+        plone_file.title = "foo.txt"
         element = self.portal.categorized_elements[plone_file.UID()]
-        self.assertEqual('Category 1-1', element['category_title'])
-        category.title = 'Category 1-1 Modified'
+        self.assertEqual("Category 1-1", element["category_title"])
+        category.title = "Category 1-1 Modified"
 
-        view = config.restrictedTraverse('@@update-categorized-elements')
+        view = config.restrictedTraverse("@@update-categorized-elements")
         view()
         element = self.portal.categorized_elements[plone_file.UID()]
-        self.assertEqual('Category 1-1 Modified', element['category_title'])
+        self.assertEqual("Category 1-1 Modified", element["category_title"])
         # Title must be updated as well as limited=False
-        self.assertEqual('foo.txt', element['title'])
+        self.assertEqual("foo.txt", element["title"])
 
 
 class TestUpdateCategorizedElementsCategory(BaseTestCase):
@@ -75,8 +75,8 @@ class TestUpdateCategorizedElementsCategory(BaseTestCase):
 
     def tearDown(self):
         self.gsm.unregisterHandler(object_modified_subscriber)
-        category = self.portal['config']['group-1']['category-1-1']
-        category.title = 'Category 1-1'
+        category = self.portal["config"]["group-1"]["category-1-1"]
+        category.title = "Category 1-1"
         super(TestUpdateCategorizedElementsCategory, self).tearDown()
 
     def test_subscriber(self):
@@ -84,24 +84,24 @@ class TestUpdateCategorizedElementsCategory(BaseTestCase):
         Test the ObjectModified event notifier for update-categorized-elements
         view on category context
         """
-        config = self.portal['config']
-        category = config['group-1']['category-1-1']['subcategory-1-1-1']
-        view = category.restrictedTraverse('@@update-categorized-elements')
+        config = self.portal["config"]
+        category = config["group-1"]["category-1-1"]["subcategory-1-1-1"]
+        view = category.restrictedTraverse("@@update-categorized-elements")
         view()
-        self.assertListEqual(['image'], SUBSCRIBED_ELEMENTS)
+        self.assertListEqual(["image"], SUBSCRIBED_ELEMENTS)
 
     def test_result(self):
         """
         Test the update-categorized-elements view on category context
         """
-        config = self.portal['config']
-        category = config['group-1']['category-1-1']
-        plone_file = self.portal['file_txt']
+        config = self.portal["config"]
+        category = config["group-1"]["category-1-1"]
+        plone_file = self.portal["file_txt"]
         element = self.portal.categorized_elements[plone_file.UID()]
-        self.assertEqual('Category 1-1', element['category_title'])
-        category.title = 'Category 1-1 Modified'
+        self.assertEqual("Category 1-1", element["category_title"])
+        category.title = "Category 1-1 Modified"
 
-        view = category.restrictedTraverse('@@update-categorized-elements')
+        view = category.restrictedTraverse("@@update-categorized-elements")
         view()
         element = self.portal.categorized_elements[plone_file.UID()]
-        self.assertEqual('Category 1-1 Modified', element['category_title'])
+        self.assertEqual("Category 1-1 Modified", element["category_title"])

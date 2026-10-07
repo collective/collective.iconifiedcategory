@@ -11,10 +11,13 @@ from collective.iconifiedcategory.interfaces import ICategorizedElementsUpdatedE
 from collective.iconifiedcategory.interfaces import ICategorizedElementUpdatedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedAttrChangedEvent
 from collective.iconifiedcategory.interfaces import IIconifiedCategoryChangedEvent
+
+
 try:
     from zope.interface.interfaces import ObjectEvent
 except ImportError:
     from zope.component.interfaces import ObjectEvent
+
 from zope.interface import implementer
 
 

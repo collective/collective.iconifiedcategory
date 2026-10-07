@@ -19,37 +19,37 @@ from zope.interface import implementer
 
 class ICategoryGroup(IFolder):
 
-    form.widget('confidentiality_activated', RadioFieldWidget)
+    form.widget("confidentiality_activated", RadioFieldWidget)
     confidentiality_activated = schema.Bool(
-        title=_(u'Activate the "confidential" option'),
+        title=_('Activate the "confidential" option'),
         required=False,
         default=False,
     )
 
-    form.widget('to_be_printed_activated', RadioFieldWidget)
+    form.widget("to_be_printed_activated", RadioFieldWidget)
     to_be_printed_activated = schema.Bool(
-        title=_(u'Activate the "to be printed" option'),
+        title=_('Activate the "to be printed" option'),
         required=False,
         default=False,
     )
 
-    form.widget('signed_activated', RadioFieldWidget)
+    form.widget("signed_activated", RadioFieldWidget)
     signed_activated = schema.Bool(
-        title=_(u'Activate the "to_sign and signed" options'),
+        title=_('Activate the "to_sign and signed" options'),
         required=False,
         default=False,
     )
 
-    form.widget('approved_activated', RadioFieldWidget)
+    form.widget("approved_activated", RadioFieldWidget)
     approved_activated = schema.Bool(
-        title=_(u'Activate the "to_approve and approved" option'),
+        title=_('Activate the "to_approve and approved" option'),
         required=False,
         default=False,
     )
 
-    form.widget('publishable_activated', RadioFieldWidget)
+    form.widget("publishable_activated", RadioFieldWidget)
     publishable_activated = schema.Bool(
-        title=_(u'Activate the "publishable" option'),
+        title=_('Activate the "publishable" option'),
         required=False,
         default=False,
     )
@@ -63,4 +63,4 @@ class CategoryGroup(Container):
 class CategoryGroupSchemaPolicy(DexteritySchemaPolicy):
 
     def bases(self, schema_name, tree):
-        return (ICategoryGroup, )
+        return (ICategoryGroup,)

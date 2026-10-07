@@ -19,21 +19,21 @@ class CategoryVocabulary(object):
 
     def _get_categories(self, context, only_enabled=True):
         """Return categories to display in the vocabulary.
-           This needs to return a list of category objects."""
-        categories = utils.get_categories(context, the_objects=True, only_enabled=only_enabled)
+        This needs to return a list of category objects."""
+        categories = utils.get_categories(
+            context, the_objects=True, only_enabled=only_enabled
+        )
         return categories
 
     def _get_subcategories(self, context, category, only_enabled=True):
         """Return subcategories for given category.
-           This needs to return a list of subcategory brains."""
-        query = {'object_provides': 'collective.iconifiedcategory.content.subcategory.ISubcategory'}
+        This needs to return a list of subcategory brains."""
+        query = {
+            "object_provides": "collective.iconifiedcategory.content.subcategory.ISubcategory"
+        }
         if only_enabled:
-            query['enabled'] = True
-        subcategories = find(
-            context=category,
-            unrestricted=True,
-            **query
-        )
+            query["enabled"] = True
+        subcategories = find(context=category, unrestricted=True, **query)
         return subcategories
 
     def __call__(self, context, use_category_uid_as_token=False, only_enabled=True):
@@ -46,15 +46,19 @@ class CategoryVocabulary(object):
                 category_id = utils.calculate_category_id(category)
             category_title = html.escape(category.Title())
             if category.only_pdf:
-                category_title = category_title + ' [PDF!]'
+                category_title = category_title + " [PDF!]"
             if category.show_preview != 0:
-                category_title = category_title + ' [Preview!]'
-            terms.append(SimpleVocabulary.createTerm(
-                category_id,
-                category_id,
-                category_title,
-            ))
-            subcategories = self._get_subcategories(context, category, only_enabled=only_enabled)
+                category_title = category_title + " [Preview!]"
+            terms.append(
+                SimpleVocabulary.createTerm(
+                    category_id,
+                    category_id,
+                    category_title,
+                )
+            )
+            subcategories = self._get_subcategories(
+                context, category, only_enabled=only_enabled
+            )
             for subcategory in subcategories:
                 subcategory = subcategory.getObject()
                 if use_category_uid_as_token:
@@ -63,14 +67,16 @@ class CategoryVocabulary(object):
                     subcategory_id = utils.calculate_category_id(subcategory)
                 subcategory_title = html.escape(subcategory.Title())
                 if subcategory.only_pdf:
-                    subcategory_title = subcategory_title + ' [PDF!]'
+                    subcategory_title = subcategory_title + " [PDF!]"
                 if subcategory.show_preview != 0:
-                    subcategory_title = subcategory_title + ' [Preview!]'
-                terms.append(SimpleVocabulary.createTerm(
-                    subcategory_id,
-                    subcategory_id,
-                    subcategory_title,
-                ))
+                    subcategory_title = subcategory_title + " [Preview!]"
+                terms.append(
+                    SimpleVocabulary.createTerm(
+                        subcategory_id,
+                        subcategory_id,
+                        subcategory_title,
+                    )
+                )
         return SimpleVocabulary(terms)
 
 
@@ -80,7 +86,8 @@ class EveryCategoryVocabulary(CategoryVocabulary):
         return super(EveryCategoryVocabulary, self).__call__(
             context,
             use_category_uid_as_token=use_category_uid_as_token,
-            only_enabled=only_enabled)
+            only_enabled=only_enabled,
+        )
 
 
 class EveryCategoryUIDVocabulary(CategoryVocabulary):
@@ -89,7 +96,8 @@ class EveryCategoryUIDVocabulary(CategoryVocabulary):
         return super(EveryCategoryUIDVocabulary, self).__call__(
             context,
             use_category_uid_as_token=use_category_uid_as_token,
-            only_enabled=only_enabled)
+            only_enabled=only_enabled,
+        )
 
 
 class CategoryTitleVocabulary(CategoryVocabulary):
@@ -100,21 +108,27 @@ class CategoryTitleVocabulary(CategoryVocabulary):
         for category in categories:
             category_id = utils.calculate_category_id(category)
             if category.predefined_title:
-                terms.append(SimpleVocabulary.createTerm(
-                    category_id,
-                    category_id,
-                    category.predefined_title,
-                ))
-            subcategories = self._get_subcategories(context, category, only_enabled=only_enabled)
+                terms.append(
+                    SimpleVocabulary.createTerm(
+                        category_id,
+                        category_id,
+                        category.predefined_title,
+                    )
+                )
+            subcategories = self._get_subcategories(
+                context, category, only_enabled=only_enabled
+            )
             for subcategory in subcategories:
                 subcategory = subcategory.getObject()
                 subcategory_id = utils.calculate_category_id(subcategory)
                 if subcategory.predefined_title:
-                    terms.append(SimpleVocabulary.createTerm(
-                        subcategory_id,
-                        subcategory_id,
-                        subcategory.predefined_title,
-                    ))
+                    terms.append(
+                        SimpleVocabulary.createTerm(
+                            subcategory_id,
+                            subcategory_id,
+                            subcategory.predefined_title,
+                        )
+                    )
         return SimpleVocabulary(terms)
 
 
@@ -122,16 +136,17 @@ class EveryCategoryTitleVocabulary(CategoryTitleVocabulary):
 
     def __call__(self, context, only_enabled=False):
         return super(EveryCategoryTitleVocabulary, self).__call__(
-            context,
-            only_enabled=only_enabled)
+            context, only_enabled=only_enabled
+        )
 
 
 class ShowPreviewVocabulary(object):
 
     def __call__(self, context):
         voc_terms = [
-            SimpleVocabulary.createTerm(0, 0, _('No')),
-            SimpleVocabulary.createTerm(1, 1, _('Yes')),
-            SimpleVocabulary.createTerm(2, 2, _('Yes and hide download icon'))]
+            SimpleVocabulary.createTerm(0, 0, _("No")),
+            SimpleVocabulary.createTerm(1, 1, _("Yes")),
+            SimpleVocabulary.createTerm(2, 2, _("Yes and hide download icon")),
+        ]
 
         return SimpleVocabulary(voc_terms)

@@ -23,14 +23,18 @@ class UpdateCategorizedElementsBase(BrowserView):
     def __init__(self, context, request):
         super(UpdateCategorizedElementsBase, self).__init__(context, request)
         self._notified = []
-        self.sort = self.request.get(
-            'sort_updated_categorized_elements', False) is True or False
+        self.sort = (
+            self.request.get("sort_updated_categorized_elements", False) is True
+            or False
+        )
 
     def _notify(self, brain):
         if brain.UID in self._notified:
             return
         self._notified.append(brain.UID)
-        event = IconifiedCategoryChangedEvent(brain.getObject(), self.context, sort=self.sort)
+        event = IconifiedCategoryChangedEvent(
+            brain.getObject(), self.context, sort=self.sort
+        )
         notify(event)
 
     def notify_category_updated(self, obj):
@@ -42,9 +46,11 @@ class UpdateCategorizedElementsBase(BrowserView):
             self._notify(b)
 
     def _finished(self):
-        msg = translate('Elements updated!',
-                        domain='collective.iconifiedcategory',
-                        context=self.request)
+        msg = translate(
+            "Elements updated!",
+            domain="collective.iconifiedcategory",
+            context=self.request,
+        )
         notify(CategorizedElementsUpdatedEvent(self.context))
         api.portal.show_message(msg, request=self.request)
         self.request.RESPONSE.redirect(self.context.absolute_url())
@@ -56,7 +62,7 @@ class UpdateCategorizedElementsConfig(UpdateCategorizedElementsBase):
     def index(self):
         brains = api.content.find(
             context=self.context,
-            content_type='ContentCategory',
+            content_type="ContentCategory",
         )
         for b in brains:
             self.notify_category_updated(b.getObject())
