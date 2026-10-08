@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.77 (unreleased)
------------------
+1.0.0 (unreleased)
+------------------
 
 - Plone 6.2 migration (Plone 6.1 kept); Plone 4 dropped.
   [chris-adam]
