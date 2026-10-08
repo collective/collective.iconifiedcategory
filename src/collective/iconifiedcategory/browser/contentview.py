@@ -20,12 +20,12 @@ from zope.interface import classImplements
 
 class FormMixin(object):
     related_widgets = {
-        'confidential': 'confidentiality_activated',
-        'to_print': 'to_be_printed_activated',
-        'to_sign': 'signed_activated',
-        'signed': 'signed_activated',
-        'to_approve': 'approved_activated',
-        'approved': 'approved_activated',
+        "confidential": "confidentiality_activated",
+        "to_print": "to_be_printed_activated",
+        "to_sign": "signed_activated",
+        "signed": "signed_activated",
+        "to_approve": "approved_activated",
+        "approved": "approved_activated",
     }
 
     @property
@@ -36,7 +36,7 @@ class FormMixin(object):
 
     def updateWidgets(self):
         super(FormMixin, self).updateWidgets()
-        for name, widget in self.widgets.items():
+        for name, widget in list(self.widgets.items()):
             related_attribute = self.related_widgets.get(name)
             if not related_attribute:
                 continue
@@ -62,17 +62,17 @@ class BaseAddView(DefaultAddView):
 
 class BaseView(DefaultView):
     related_widgets = {
-        'confidential': 'confidentiality_activated',
-        'to_print': 'to_be_printed_activated',
-        'to_sign': 'signed_activated',
-        'signed': 'signed_activated',
-        'to_approve': 'approved_activated',
-        'approved': 'approved_activated',
+        "confidential": "confidentiality_activated",
+        "to_print": "to_be_printed_activated",
+        "to_sign": "signed_activated",
+        "signed": "signed_activated",
+        "to_approve": "approved_activated",
+        "approved": "approved_activated",
     }
 
     def updateWidgets(self):
         super(BaseView, self).updateWidgets()
-        for rel_widget, rel_attribute in self.related_widgets.items():
+        for rel_widget, rel_attribute in list(self.related_widgets.items()):
             parent_value = getattr(
                 self.context.get_category_group(),
                 rel_attribute,

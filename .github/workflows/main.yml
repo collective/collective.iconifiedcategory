@@ -1,6 +1,8 @@
-# This is a basic workflow to help you get started with Actions
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: CI
+name: Push tests
+# run-name: ${{ github.actor }} push tests
 
 on:
   push:
@@ -8,111 +10,78 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: 3.13.1
+            plone: "6.1"
+          - python: 3.13.1
+            plone: "6.2"
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-      - name: Setup Env
-        run: |
-          sudo apt-get update -qqy
-          sudo apt-get install -y libjpeg8-dev libbz2-dev
-          pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Set up pyenvi and Python
+        uses: actions/checkout@v4
+      - name: Set up pyenv and Python
         uses: "gabrielfalcao/pyenv-action@v18"
         with:
-          default: 2.7.18
-          command: pyenv -v
-      - name: Set up Env
+          default: "${{ matrix.python }}"
+      - name: Setup Env
         run: |
-          sudo apt update -qq -y
-          sudo apt install -qq -y gnupg2
-          gpg2 --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-          curl -sSL https://get.rvm.io | bash -s stable
-          source $HOME/.rvm/scripts/rvm
-
-          # Puis Ruby 2.7.6 :
-          rvm pkg install openssl
-          rvm install ruby-2.7.6 --with-openssl-dir=$HOME/.rvm/usr
-
-          # Pour voir la version de ruby installée :
-          which ruby
-
-          # Création d'un lien symbolique pour que docsplit puisse utiliser ruby (si pas de ruby système) :
-          sudo ln -s $HOME/.rvm/rubies/ruby-2.7.6/bin/ruby /usr/bin/ruby2.7
-          sudo rm /usr/bin/ruby
-          sudo ln -s ruby2.7 /usr/bin/ruby
-
-          # Enfin, on peut installer les autres dépendances de documentviewer :
-          gem install docsplit
-          echo "$HOME/.rvm/gems/ruby-2.7.6/gems/docsplit-0.7.6/bin" >> $GITHUB_PATH
-          sudo apt install -qq -y graphicsmagick wv poppler-utils libreoffice
-
-          pip install -r requirements.txt coverage==5.3.1
+          pip install --upgrade pip
+          pip install -r requirements-${{ matrix.plone }}.txt
       - name: Cache eggs
         uses: actions/cache@v4
         env:
           cache-name: cache-eggs
         with:
           path: ~/buildout-cache/eggs
-          key: ${{ runner.os }}-test-${{ env.cache-name }}
-          restore-keys: ${{ runner.os }}-test-${{ env.cache-name }}
+          key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ matrix.python }}-${{ matrix.plone }}
       - name: buildout
         run: |
-          buildout -c ci.cfg annotate
-          buildout -c ci.cfg
+          sed -ie "s#test.cfg#test-${{matrix.plone}}.cfg#" gha.cfg
+          buildout -c gha.cfg annotate
+          buildout -c gha.cfg
       - name: test
         run: |
           bin/test -t !robot
   coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: 3.13.1
+            plone: "6.2"
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-      - name: Setup Env
-        run: |
-          sudo apt-get update -qqy
-          sudo apt-get install -y libjpeg8-dev libbz2-dev
-          pip install --upgrade pip
-          pip install -r requirements.txt
+        uses: actions/checkout@v4
       - name: Set up pyenv and Python
         uses: "gabrielfalcao/pyenv-action@v18"
         with:
-          default: 2.7.18
-          versions: 3.6.15
-          command: pyenv -v
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.6'
+          default: "${{ matrix.python }}"
       - name: Setup Env
         run: |
-          sudo apt-get update
-          sudo apt-get install -qqy graphicsmagick poppler-utils libreoffice
-          gem install docsplit
-          pip install -r requirements.txt coverage==5.3.1
+          pip install --upgrade pip
+          pip install -r requirements-${{ matrix.plone }}.txt
+          pip install -U coveralls coverage
       - name: Cache eggs
         uses: actions/cache@v4
         env:
           cache-name: cache-eggs
         with:
           path: ~/buildout-cache/eggs
-          key: ${{ runner.os }}-coverage-${{ env.cache-name }}
-          restore-keys: ${{ runner.os }}-coverage-${{ env.cache-name }}
+          key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ matrix.python }}-${{ matrix.plone }}
       - name: buildout
         run: |
-          buildout -c ci.cfg
+          sed -ie "s#test.cfg#test-${{matrix.plone}}.cfg#" gha.cfg
+          buildout -c gha.cfg
       - name: code-analysis
         run: |
           bin/code-analysis
       - name: test coverage
         run: |
-          bin/coverage run bin/test -t !robot
-      - name: Install Coveralls
-        run: |
-          pyenv local 3.6
-          pip install -U pip setuptools --no-cache-dir
-          pip install -U "coveralls>=3.0.0" coverage==5.3.1 --no-cache-dir
+          coverage run bin/test -t !robot
       - name: Publish to Coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

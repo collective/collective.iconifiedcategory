@@ -52,12 +52,6 @@
     />
 
   <subscriber
-    for="Products.Archetypes.interfaces.base.IBaseObject
-         zope.lifecycleevent.interfaces.IObjectMovedEvent"
-    handler=".events.categorized_content_container_moved"
-    />
-
-  <subscriber
     for=".category.ICategory
          OFS.interfaces.IObjectWillBeRemovedEvent"
     handler=".events.category_before_remove"

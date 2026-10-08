@@ -5,9 +5,9 @@ from collective.iconifiedcategory import _
 from collective.iconifiedcategory import DEFAULT_FILESIZE_LIMIT
 from plone.namedfile.interfaces import IImageScaleTraversable
 from zope import schema
-from zope.component.interfaces import IObjectEvent
 from zope.interface import Attribute
 from zope.interface import Interface
+from zope.interface.interfaces import IObjectEvent
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.viewlet.interfaces import IViewletManager
 
@@ -75,7 +75,7 @@ class IICImageScaleTraversable(IImageScaleTraversable):
 class IIconifiedCategorySubtyper(Interface):
 
     have_categorized_elements = schema.Bool(
-        u'Is current object contains categorized elements',
+        "Is current object contains categorized elements",
         readonly=True,
     )
 
@@ -84,30 +84,36 @@ class IIconifiedCategorySettings(Interface):
 
     sort_categorized_tab = schema.Bool(
         title=_(
-            u'Sort categorized elements on categorized tab alphabetically '
-            u'automatically. Uncheck to sort elements manually'),
+            "Sort categorized elements on categorized tab alphabetically "
+            "automatically. Uncheck to sort elements manually"
+        ),
         default=True,
     )
 
     categorized_childs_infos_columns_threshold = schema.Int(
-        title=_(u'Maximum number of elements to display by columns when '
-                u'displaying categorized elements of same category in the '
-                u'tooltipster widget'),
+        title=_(
+            "Maximum number of elements to display by columns when "
+            "displaying categorized elements of same category in the "
+            "tooltipster widget"
+        ),
         default=25,
     )
 
     filesizelimit = schema.Int(
-        title=_(u'Filesize limit in bytes enabling a warning'),
-        description=_(u'If the categorized element is a file, the user will '
-                      u'get a warning whenever the filesize is bigger than '
-                      u'defined value. <span style="color: red">Take care that '
-                      u'if you change this value, you will have to update the '
-                      u'categoized elements stored informations.</span> '),
+        title=_("Filesize limit in bytes enabling a warning"),
+        description=_(
+            "If the categorized element is a file, the user will "
+            "get a warning whenever the filesize is bigger than "
+            'defined value. <span style="color: red">Take care that '
+            "if you change this value, you will have to update the "
+            "categoized elements stored informations.</span> "
+        ),
         default=DEFAULT_FILESIZE_LIMIT,
     )
 
 
 # Events
+
 
 class ICategorizedElementsUpdatedEvent(IObjectEvent):
     pass

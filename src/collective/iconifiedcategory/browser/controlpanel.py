@@ -14,7 +14,7 @@ from plone.app.registry.browser import controlpanel
 
 class IconifiedCategorySettingsEditForm(controlpanel.RegistryEditForm):
     schema = IIconifiedCategorySettings
-    label = _(u'Iconified Category Settings')
+    label = _("Iconified Category Settings")
 
 
 class IconifiedCategorySettingsView(controlpanel.ControlPanelFormWrapper):
