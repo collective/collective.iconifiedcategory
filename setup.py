@@ -41,7 +41,7 @@ setup(
     ],
     keywords='Python Plone',
     author='IMIO',
-    author_email='support@imio.be',
+    author_email='support-docs@imio.be',
     url='https://pypi.python.org/pypi/collective.iconifiedcategory',
     license='GPL version 2',
     packages=find_packages('src', exclude=['ez_setup']),
