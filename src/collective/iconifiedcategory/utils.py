@@ -29,8 +29,8 @@ from natsort import natsorted
 from plone import api
 from plone.app.contenttypes.interfaces import IFile
 from plone.app.contenttypes.interfaces import IImage
+from plone.base.utils import safe_text
 from plone.memoize import ram
-from Products.CMFPlone.utils import safe_unicode
 from time import time
 from zope.annotation import IAnnotations
 from zope.component import getAdapter
@@ -53,9 +53,9 @@ def query_config_root(context):
     adapter = queryAdapter(context, IIconifiedCategoryConfig)
     config_root = adapter and adapter.get_config() or None
     if not config_root and context is not None:
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool("portal_catalog")
         query = {
-            'portal_type': 'ContentCategoryConfiguration',
+            "portal_type": "ContentCategoryConfiguration",
         }
         result = catalog.unrestrictedSearchResults(**query)
         if not result:
@@ -73,7 +73,7 @@ def get_config_root(context):
     """Return the categories config root for the given context"""
     config_root = query_config_root(context)
     if not config_root:
-        raise ValueError('Categories config cannot be found')
+        raise ValueError("Categories config cannot be found")
     return get_group(config_root, context)
 
 
@@ -83,25 +83,24 @@ def get_group(config, context):
     return adapter.get_group()
 
 
-def get_categories(context,
-                   the_objects=False,
-                   only_enabled=True,
-                   sort_on='getObjPositionInParent'):
+def get_categories(
+    context, the_objects=False, only_enabled=True, sort_on="getObjPositionInParent"
+):
     """Return the categories brains for a specific context"""
     config_root = get_config_root(context)
     config_group = get_group(config_root, context)
-    catalog = api.portal.get_tool('portal_catalog')
+    catalog = api.portal.get_tool("portal_catalog")
     query = {
-        'object_provides': 'collective.iconifiedcategory.content.category.ICategory',
+        "object_provides": "collective.iconifiedcategory.content.category.ICategory",
     }
     # query on path is context is not the Plone Site
     # happens when computing categories to generate CSS
     if context.portal_type != "Plone Site":
-        query['path'] = '/'.join(config_group.getPhysicalPath())
+        query["path"] = "/".join(config_group.getPhysicalPath())
     if only_enabled:
-        query['enabled'] = True
+        query["enabled"] = True
     if sort_on:
-        query['sort_on'] = sort_on
+        query["sort_on"] = sort_on
 
     res = catalog.unrestrictedSearchResults(**query)
     if the_objects:
@@ -112,14 +111,14 @@ def get_categories(context,
 def calculate_category_id(category):
     """Return the caculated category id for a category object"""
     if ICategory.providedBy(category):
-        return '{0}-{1}_-_{2}_-_{3}'.format(
+        return "{0}-{1}_-_{2}_-_{3}".format(
             category.aq_parent.aq_parent.aq_parent.id,
             category.aq_parent.aq_parent.id,
             category.aq_parent.id,
             category.id,
         )
     if ISubcategory.providedBy(category):
-        return '{0}-{1}_-_{2}_-_{3}_-_{4}'.format(
+        return "{0}-{1}_-_{2}_-_{3}_-_{4}".format(
             category.aq_parent.aq_parent.aq_parent.aq_parent.id,
             category.aq_parent.aq_parent.aq_parent.id,
             category.aq_parent.aq_parent.id,
@@ -143,7 +142,7 @@ def get_category_object(context, category_id):
 
 
 def get_category_icon_url(category):
-    portal_url = api.portal.get_tool('portal_url')
+    portal_url = api.portal.get_tool("portal_url")
     if ICategory.providedBy(category):
         obj = category
     else:
@@ -152,22 +151,19 @@ def get_category_icon_url(category):
     # do not use restrictedTraverse or getMultiAdapter to get the "@@images" view
     # because when used with plone.app.async, as there is no REQUEST, it fails.
     from collective.iconifiedcategory.browser.views import ImageDataModifiedImageScaling
-    images = ImageDataModifiedImageScaling(obj, getattr(obj, 'REQUEST', None))
-    scale = images.scale(scale='listing')
 
-    return u'{0}/@@images/{1}'.format(
-        portal_url.getRelativeContentURL(obj),
-        scale.__name__)
+    images = ImageDataModifiedImageScaling(obj, getattr(obj, "REQUEST", None))
+    scale = images.scale(scale="listing")
+
+    return "{0}/@@images/{1}".format(
+        portal_url.getRelativeContentURL(obj), scale.__name__
+    )
 
 
-def update_categorized_elements(parent,
-                                obj,
-                                category,
-                                limited=False,
-                                sort=True,
-                                logging=False,
-                                trigger_event=True):
-    """ Update categorized elements
+def update_categorized_elements(
+    parent, obj, category, limited=False, sort=True, logging=False, trigger_event=True
+):
+    """Update categorized elements
     parameters:
         - parent : The object parent
         - obj : The categorized element
@@ -176,7 +172,7 @@ def update_categorized_elements(parent,
         - logging : Enables logging
         - trigger_event : Will trigger the CategorizedElementUpdatedEvent with old and new values
     """
-    if 'categorized_elements' not in parent.__dict__:
+    if "categorized_elements" not in parent.__dict__:
         parent.categorized_elements = OrderedDict()
     uid, new_infos = get_categorized_infos(obj, category, limited=limited)
     infos = parent.categorized_elements.get(uid, {})
@@ -187,11 +183,19 @@ def update_categorized_elements(parent,
     if sort:
         sort_categorized_elements(parent)
     if logging:
-        logger.info('Updated categorized elements of {0}'.format(
-            obj.absolute_url_path()))
+        logger.info(
+            "Updated categorized elements of {0}".format(obj.absolute_url_path())
+        )
     if trigger_event:
-        notify(CategorizedElementUpdatedEvent(
-            obj, parent, old_values=old_values, new_values=copy.deepcopy(infos), limited=limited))
+        notify(
+            CategorizedElementUpdatedEvent(
+                obj,
+                parent,
+                old_values=old_values,
+                new_values=copy.deepcopy(infos),
+                limited=limited,
+            )
+        )
 
 
 def update_all_categorized_elements(container, limited=False, sort=True):
@@ -200,7 +204,7 @@ def update_all_categorized_elements(container, limited=False, sort=True):
         container.categorized_elements = OrderedDict()
     adapter = None
     for obj in container.objectValues():
-        if hasattr(obj, 'content_category'):
+        if getattr(obj, "content_category", None):
             try:
                 category = get_category_object(obj, obj.content_category)
             except KeyError:
@@ -220,8 +224,12 @@ def update_all_categorized_elements(container, limited=False, sort=True):
 
 def get_ordered_categories_cachekey(method, context, only_enabled=True):
     """Makes cache depend on config root."""
-    return (repr(get_config_root(context)),
-            get_cachekey_volatile("collective.iconifiedcategory.utils.get_ordered_categories"))
+    return (
+        repr(get_config_root(context)),
+        get_cachekey_volatile(
+            "collective.iconifiedcategory.utils.get_ordered_categories"
+        ),
+    )
 
 
 @ram.cache(get_ordered_categories_cachekey)
@@ -232,9 +240,11 @@ def get_ordered_categories(context, only_enabled=True):
     adapter = getMultiAdapter((config_root, context), IIconifiedCategoryGroup)
     categories = adapter.get_every_categories(only_enabled=only_enabled)
     query = {}
-    query['object_provides'] = 'collective.iconifiedcategory.content.subcategory.ISubcategory'
+    query["object_provides"] = (
+        "collective.iconifiedcategory.content.subcategory.ISubcategory"
+    )
     if only_enabled:
-        query['enabled'] = True
+        query["enabled"] = True
     for idx, category in enumerate(categories):
         elements[category.UID()] = idx
         elements[calculate_category_id(category)] = idx
@@ -251,9 +261,11 @@ def sort_categorized_elements(context):
     # use realsorted on a lowered title so it mixes uppercase and lowercase titles
     try:
         elements = natsorted(
-            context.categorized_elements.items(),
-            key=lambda x: (ordered_categories[x[1]['category_uid']],
-                           safe_unicode(x[1]['title'].lower()),),
+            list(context.categorized_elements.items()),
+            key=lambda x: (
+                ordered_categories[x[1]["category_uid"]],
+                safe_text(x[1]["title"].lower()),
+            ),
         )
     except KeyError:
         return
@@ -262,7 +274,7 @@ def sort_categorized_elements(context):
 
 
 def remove_categorized_element(parent, obj):
-    if obj.UID() in getattr(parent, 'categorized_elements', OrderedDict()):
+    if obj.UID() in getattr(parent, "categorized_elements", OrderedDict()):
         del parent.categorized_elements[obj.UID()]
 
 
@@ -274,21 +286,22 @@ def get_categorized_infos(obj, category, limited=False):
 def _categorized_elements(context):
     """Return a deepcopy of the categorized elements of the given context"""
     return copy.deepcopy(
-        getattr(aq_base(context), 'categorized_elements', OrderedDict())
+        getattr(aq_base(context), "categorized_elements", OrderedDict())
     )
 
 
 def _check_filters(infos, filters):
     """ """
     keep = True
-    for k, v in filters.items():
+    for k, v in list(filters.items()):
         # manage case when stored value is a list or not
         stored_value = infos[k]
-        if not hasattr(stored_value, '__iter__'):
-            stored_value = (stored_value, )
+        # a str is iterable in Python 3
+        if isinstance(stored_value, str) or not hasattr(stored_value, "__iter__"):
+            stored_value = (stored_value,)
         # manage case when filtered value is a list or not
-        if not hasattr(v, '__iter__'):
-            v = (v, )
+        if isinstance(v, str) or not hasattr(v, "__iter__"):
+            v = (v,)
         if not set(v).intersection(stored_value):
             keep = False
             break
@@ -298,41 +311,44 @@ def _check_filters(infos, filters):
 def _get_adapter(context, obj, adapter):
     """ """
     if adapter is None:
-        adapter = getMultiAdapter(
-            (context, context.REQUEST, obj),
-            IIconifiedContent)
+        adapter = getMultiAdapter((context, context.REQUEST, obj), IIconifiedContent)
     else:
         adapter.categorized_obj = obj
     return adapter
 
 
-def get_categorized_elements(context,
-                             result_type='dict',
-                             portal_type=None,
-                             sort_on=None,
-                             uids=[],
-                             filters={},
-                             check_can_view=True,
-                             caching=True):
+def get_categorized_elements(
+    context,
+    result_type="dict",
+    portal_type=None,
+    sort_on=None,
+    uids=[],
+    filters={},
+    check_can_view=True,
+    caching=True,
+):
     """Return categorized elements.
-       p_result_type may be :
-       - 'dict': default, essential metadata are returned as a dict;
-       - 'objects': categorized objects are returned.
-       If some p_filters are given, the values will be filtered,
-       available filters are values stored in categorized_elements.
-       The values of the filters can be a single value or a list of values.
-       If p_check_can_view is True, then the IIconifiedContent.can_view
-       check will be called."""
+    p_result_type may be :
+    - 'dict': default, essential metadata are returned as a dict;
+    - 'objects': categorized objects are returned.
+    If some p_filters are given, the values will be filtered,
+    available filters are values stored in categorized_elements.
+    The values of the filters can be a single value or a list of values.
+    If p_check_can_view is True, then the IIconifiedContent.can_view
+    check will be called."""
     elements = None
     if caching:
         # in some cases like in tests, request can not be retrieved
-        key = "collective.iconifiedcategory.get_categorized_elements'" \
+        key = (
+            "collective.iconifiedcategory.get_categorized_elements'"
             "-{0}-{1}-{2}-{3}-{4}".format(
                 repr(context),
                 result_type,
                 portal_type,
-                '_'.join(uids),
-                ['{0}_{1}'.format(k, v) for k, v in filters.items()])
+                "_".join(uids),
+                ["{0}_{1}".format(k, v) for k, v in list(filters.items())],
+            )
+        )
         cache = IAnnotations(context.REQUEST)
         elements = cache.get(key, None)
 
@@ -342,50 +358,68 @@ def get_categorized_elements(context,
         if not categorized_elements:
             return elements
 
-        uids = uids or categorized_elements.keys()
-        catalog = api.portal.get_tool('portal_catalog')
-        current_user_allowedRolesAndUsers = catalog._listAllowedRolesAndUsers(api.user.get_current())
+        uids = uids or list(categorized_elements.keys())
+        catalog = api.portal.get_tool("portal_catalog")
+        current_user_allowedRolesAndUsers = catalog._listAllowedRolesAndUsers(
+            api.user.get_current()
+        )
         adapter = None
-        for uid, infos in categorized_elements.items():
-            if (uids and uid not in uids) or \
-               (portal_type and infos['portal_type'] != portal_type) or \
-               not _check_filters(infos, filters) or \
-               (infos['confidential'] and not set(infos['allowedRolesAndUsers'])
-                   .intersection(current_user_allowedRolesAndUsers)):
+        for uid, infos in list(categorized_elements.items()):
+            if (
+                (uids and uid not in uids)
+                or (portal_type and infos["portal_type"] != portal_type)
+                or not _check_filters(infos, filters)
+                or (
+                    infos["confidential"]
+                    and not set(infos["allowedRolesAndUsers"]).intersection(
+                        current_user_allowedRolesAndUsers
+                    )
+                )
+            ):
                 continue
 
-            obj = context.get(infos['id'])
+            obj = context.get(infos["id"])
             adapter = _get_adapter(context, obj, adapter)
             if not check_can_view or adapter.can_view():
-                if result_type == 'objects':
+                if result_type == "objects":
                     elements.append(obj)
                 else:
                     # add 'UID' to the available infos
                     tmp = categorized_elements[uid].copy()
-                    tmp['UID'] = uid
+                    tmp["UID"] = uid
                     elements.append(tmp)
 
         if elements and sort_on:
-            if result_type == 'dict':
+            if result_type == "dict":
                 if sort_on in elements[0]:
-                    elements = sorted(elements, key=lambda x, sort_on=sort_on: x[sort_on])
-                elif sort_on == 'getObjPositionInParent':
+                    elements = sorted(
+                        elements, key=lambda x, sort_on=sort_on: x[sort_on]
+                    )
+                elif sort_on == "getObjPositionInParent":
                     elements = sorted(
                         elements,
-                        key=lambda x, object_ids=context.objectIds(): object_ids.index(x['id']))
+                        key=lambda x, object_ids=context.objectIds(): object_ids.index(
+                            x["id"]
+                        ),
+                    )
             else:
                 if getattr(elements[0], sort_on, None):
-                    elements = sorted(elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on))
-                elif sort_on == 'getObjPositionInParent':
+                    elements = sorted(
+                        elements, key=lambda x, sort_on=sort_on: getattr(x, sort_on)
+                    )
+                elif sort_on == "getObjPositionInParent":
                     elements = sorted(
                         elements,
-                        key=lambda x, object_ids=context.objectIds(): object_ids.index(x.id))
+                        key=lambda x, object_ids=context.objectIds(): object_ids.index(
+                            x.id
+                        ),
+                    )
 
     return elements
 
 
 def get_back_references(obj):
-    catalog = api.portal.get_tool('portal_catalog')
+    catalog = api.portal.get_tool("portal_catalog")
     brains = catalog.unrestrictedSearchResults(content_category_uid=obj.UID())
     return brains
 
@@ -401,28 +435,30 @@ def has_relations(obj):
 
 
 def calculate_filesize(size):
-    unit = 'B'
+    unit = "B"
     factor = 1
     sizes = {
-        1024. * 1024 * 1024 * 1024: 'TB',
-        1024. * 1024 * 1024: 'GB',
-        1024. * 1024: 'MB',
-        1024.: 'KB',
+        1024.0 * 1024 * 1024 * 1024: "TB",
+        1024.0 * 1024 * 1024: "GB",
+        1024.0 * 1024: "MB",
+        1024.0: "KB",
     }
-    for s, u in sizes.items():
+    for s, u in list(sizes.items()):
         if size >= s:
             unit = u
             factor = s
             break
     size = round(size / factor, 1)
-    if unit in ('B', 'KB'):
+    if unit in ("B", "KB"):
         size = int(size)
-    return '{0} {1}'.format(size, unit)
+    return "{0} {1}".format(size, unit)
 
 
 def warn_filesize(size):
+    if size is None:
+        return False
     filesizelimit = api.portal.get_registry_record(
-        'filesizelimit',
+        "filesizelimit",
         interface=IIconifiedCategorySettings,
     )
     if size > filesizelimit:
@@ -433,29 +469,32 @@ def warn_filesize(size):
 def render_filesize(size):
     pretty_filesize = calculate_filesize(size)
     if warn_filesize(size):
-        pretty_filesize = \
-            u"<span class='warn_filesize' title='{0}'>{1}</span>".format(
-                translate('help_warn_filesize',
-                          domain='collective.iconifiedcategory',
-                          context=getRequest(),
-                          default='Annex size is huge, it could '
-                          'be difficult to be downloaded!'),
-                pretty_filesize)
-    elif not pretty_filesize.endswith((' B', ' KB')):
-        pretty_filesize = \
-            u"<span class='soft_warn_filesize'>{0}</span>".format(pretty_filesize)
+        pretty_filesize = "<span class='warn_filesize' title='{0}'>{1}</span>".format(
+            translate(
+                "help_warn_filesize",
+                domain="collective.iconifiedcategory",
+                context=getRequest(),
+                default="Annex size is huge, it could "
+                "be difficult to be downloaded!",
+            ),
+            pretty_filesize,
+        )
+    elif not pretty_filesize.endswith((" B", " KB")):
+        pretty_filesize = "<span class='soft_warn_filesize'>{0}</span>".format(
+            pretty_filesize
+        )
     return pretty_filesize
 
 
 def print_message(obj=None, to_print_value=None):
     """Return the print status message for the given object"""
     messages = {
-        True: u'Must be printed',
-        False: u'Should not be printed',
-        None: u'Not convertible to a printable format',
+        True: "Must be printed",
+        False: "Should not be printed",
+        None: "Not convertible to a printable format",
     }
     if obj:
-        return messages.get(obj.to_print, getattr(obj, 'to_print_message', ''))
+        return messages.get(obj.to_print, getattr(obj, "to_print_message", ""))
     else:
         return messages[to_print_value]
 
@@ -463,14 +502,14 @@ def print_message(obj=None, to_print_value=None):
 def signed_message(obj=None, to_sign_value=None, signed_value=None):
     """Return the signed message for the given object"""
     messages = {
-        False: u'Element must be signed but is still not',
-        True: u'Element is signed',
+        False: "Element must be signed but is still not",
+        True: "Element is signed",
     }
-    not_to_sign_msg = u'Element should not be signed'
+    not_to_sign_msg = "Element should not be signed"
     if obj:
-        if getattr(obj, 'to_sign', False) is False:
+        if getattr(obj, "to_sign", False) is False:
             return not_to_sign_msg
-        return messages.get(getattr(obj, 'signed', False), '')
+        return messages.get(getattr(obj, "signed", False), "")
     elif to_sign_value is False:
         return not_to_sign_msg
     else:
@@ -480,28 +519,28 @@ def signed_message(obj=None, to_sign_value=None, signed_value=None):
 def approved_message(obj=None, to_approve_value=None, approved_value=None):
     """Return the approved message for the given object"""
     messages = {
-        False: u'Element must be approved but is still not',
-        True: u'Element is approved',
+        False: "Element must be approved but is still not",
+        True: "Element is approved",
     }
-    not_to_approve_msg = u'Element should not be approved'
+    not_to_approve_msg = "Element should not be approved"
     if obj:
-        if getattr(obj, 'to_approve', False) is False:
+        if getattr(obj, "to_approve", False) is False:
             return not_to_approve_msg
-        return messages.get(getattr(obj, 'approved', False), '')
+        return messages.get(getattr(obj, "approved", False), "")
     elif to_approve_value is False:
         return not_to_approve_msg
     else:
         return messages[approved_value]
 
 
-def boolean_message(obj=None, attr_name='', value=None):
+def boolean_message(obj=None, attr_name="", value=None):
     """Return the default boolean status message for the given object"""
     messages = {
-        True: u'Element is {0}'.format(attr_name),
-        False: u'Element is not {0}'.format(attr_name),
+        True: "Element is {0}".format(attr_name),
+        False: "Element is not {0}".format(attr_name),
     }
     if obj:
-        return messages.get(getattr(obj, attr_name, None), '')
+        return messages.get(getattr(obj, attr_name, None), "")
     else:
         return messages[value]
 
@@ -509,10 +548,10 @@ def boolean_message(obj=None, attr_name='', value=None):
 @ram.cache(lambda f, p: (p, time() // (60 * 60)))
 def is_file_type(portal_type):
     """Verify if the given portal type provides IFile or IImage"""
-    portal_type = api.portal.get_tool('portal_types')[portal_type]
+    portal_type = api.portal.get_tool("portal_types")[portal_type]
     module_path, classname = (
-        u'.'.join(portal_type.klass.split('.')[:-1]),
-        portal_type.klass.split('.')[-1],
+        ".".join(portal_type.klass.split(".")[:-1]),
+        portal_type.klass.split(".")[-1],
     )
     module = __import__(module_path, {}, {}, [classname])
     cls = getattr(module, classname, None)
@@ -526,32 +565,44 @@ def is_file_type(portal_type):
 
 def validateFileIsPDF(data):
     """May be used as helper in a invariant validator"""
+
     def _get_content_type(data):
         """ """
-        contentType = getattr(data, 'contentType', None)
+        contentType = getattr(data, "contentType", None)
         if contentType is None:
-            file = request.form.get('form.widgets.file') or \
-                getattr(aq_base(context), 'file', None)
+            file = request.form.get("form.widgets.file") or getattr(
+                aq_base(context), "file", None
+            )
             # get contentType
             if file:
-                contentType = getattr(file, 'contentType', None) or file.headers.get('content-type')
+                contentType = getattr(file, "contentType", None) or file.headers.get(
+                    "content-type"
+                )
         return contentType
 
     # check if file contentType is PDF only if used content_category requires it
     request = getRequest()
-    context = data.__context__ or request.get('PUBLISHED').context
+    context = data.__context__ or request.get("PUBLISHED").context
     contentType = _get_content_type(data)
-    if contentType is not None and contentType != 'application/pdf':
+    if contentType is not None and contentType != "application/pdf":
         category = get_category_object(context, data.content_category)
         if category.only_pdf:
-            raise Invalid(_(u"You must select a PDF file!"))
+            raise Invalid(_("You must select a PDF file!"))
 
 
 def _modified(obj, asdatetime=True):
     """Returns max value between obj.modified() and obj._p_mtime,
-       in case an annotation is changed on obj, obj._p_mtime is changed,
-       not obj.modified()."""
-    modified = max(float(obj.modified()), obj._p_mtime)
+    in case an annotation is changed on obj, obj._p_mtime is changed,
+    not obj.modified()."""
+    values = []
+    dc_modified = obj.modified()
+    if dc_modified:
+        values.append(float(dc_modified))
+    if obj._p_mtime:
+        values.append(obj._p_mtime)
+    if not values:
+        return None
+    modified = max(values)
     if asdatetime:
         modified = datetime.fromtimestamp(modified)
     return modified

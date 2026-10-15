@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from collective.iconifiedcategory import DEFAULT_FILESIZE_LIMIT
-from collective.iconifiedcategory.config import get_categorized_childs_infos_columns_threshold
+from collective.iconifiedcategory.config import (
+    get_categorized_childs_infos_columns_threshold,
+)
 from collective.iconifiedcategory.config import get_filesizelimit
 from collective.iconifiedcategory.config import get_sort_categorized_tab
-from collective.iconifiedcategory.config import set_categorized_childs_infos_columns_threshold
+from collective.iconifiedcategory.config import (
+    set_categorized_childs_infos_columns_threshold,
+)
 from collective.iconifiedcategory.config import set_filesizelimit
 from collective.iconifiedcategory.config import set_sort_categorized_tab
 from collective.iconifiedcategory.tests.base import BaseTestCase

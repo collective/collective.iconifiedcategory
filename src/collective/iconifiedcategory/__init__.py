@@ -7,10 +7,18 @@ import imio.helpers.converters  # noqa
 import logging
 
 
-logger = logging.getLogger('collective.iconifiedcategory')
+logger = logging.getLogger("collective.iconifiedcategory")
 
-CAT_SEPARATOR = '_-_'
-CSS_SEPARATOR = '-'
+CAT_SEPARATOR = "_-_"
+CSS_SEPARATOR = "-"
 DEFAULT_FILESIZE_LIMIT = 5000000
 
-_ = MessageFactory('collective.iconifiedcategory')
+# optional on Plone 6: without it, nothing is convertible (no preview, File not printable)
+try:
+    import collective.documentviewer  # noqa: F401
+
+    HAS_DOCUMENTVIEWER = True
+except ImportError:
+    HAS_DOCUMENTVIEWER = False
+
+_ = MessageFactory("collective.iconifiedcategory")

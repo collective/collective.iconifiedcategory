@@ -2,7 +2,26 @@
 <registry xmlns:i18n="http://xml.zope.org/namespaces/i18n"
           i18n:domain="plone">
 
-    <record name="collective.iconifiedcategory.filesizelimit" remove="True">
-    </record>
-    <records interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySettings" purge="False" />
+  <record name="collective.iconifiedcategory.filesizelimit" remove="True">
+  </record>
+  <records interface="collective.iconifiedcategory.interfaces.IIconifiedCategorySettings" purge="False" />
+
+  <records prefix="plone.bundles/iconifiedcategory"
+           interface="plone.base.interfaces.IBundleRegistry">
+    <value key="enabled">True</value>
+    <value key="csscompilation">++resource++collective.iconifiedcategory/iconifiedcategory.css</value>
+    <value key="jscompilation">++resource++collective.iconifiedcategory/iconifiedcategory.js</value>
+    <value key="depends">plone</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
+  </records>
+
+  <!-- icon of each category (css class of the category), see browser/css.py -->
+  <records prefix="plone.bundles/iconifiedcategory-dynamic"
+           interface="plone.base.interfaces.IBundleRegistry">
+    <value key="enabled">True</value>
+    <value key="csscompilation">@@collective-iconifiedcategory.css</value>
+    <value key="depends">iconifiedcategory</value>
+  </records>
+
 </registry>

@@ -17,26 +17,28 @@ from plone.dexterity.schema import DexteritySchemaPolicy
 from plone.namedfile.field import NamedBlobImage
 from plone.rfc822.interfaces import IPrimaryField
 from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ICategory(IFolder, ICategorize, IICImageScaleTraversable):
 
-    form.order_before(icon='predefined_title')
+    form.order_before(icon="predefined_title")
     icon = NamedBlobImage(
-        title=_(u'Icon'),
-        description=_(u'Please use an image with size of 16x16, if different, '
-                      u'the image will be reduced when displayed but this '
-                      u'could be not optimal.'),
+        title=_("Icon"),
+        description=_(
+            "Please use an image with size of 16x16, if different, "
+            "the image will be reduced when displayed but this "
+            "could be not optimal."
+        ),
         required=True,
     )
 
 
-alsoProvides(ICategory['icon'], IPrimaryField)
+alsoProvides(ICategory["icon"], IPrimaryField)
 
 
+@implementer(ICategory)
 class Category(Container):
-    implements(ICategory)
 
     @property
     def category_uid(self):
@@ -59,4 +61,4 @@ class Category(Container):
 class CategorySchemaPolicy(DexteritySchemaPolicy):
 
     def bases(self, schema_name, tree):
-        return (ICategory, )
+        return (ICategory,)

@@ -2,11 +2,7 @@
 <metadata>
   <version>2107</version>
   <dependencies>
-    <dependency>profile-collective.documentviewer:default</dependency>
-    <dependency>profile-collective.fontawesome:default</dependency>
     <dependency>profile-collective.js.tooltipster:default</dependency>
-    <dependency>profile-collective.js.tooltipster:themes</dependency>
-    <dependency>profile-collective.z3cform.select2:default</dependency>
     <dependency>profile-plone.app.relationfield:default</dependency>
   </dependencies>
 </metadata>

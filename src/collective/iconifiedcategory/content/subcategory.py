@@ -11,15 +11,15 @@ from collective.iconifiedcategory.content.base import ICategorize
 from plone.app.contenttypes.interfaces import IFolder
 from plone.dexterity.content import Item
 from plone.dexterity.schema import DexteritySchemaPolicy
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ISubcategory(IFolder, ICategorize):
     pass
 
 
+@implementer(ISubcategory)
 class Subcategory(Item):
-    implements(ISubcategory)
 
     @property
     def category_uid(self):
@@ -45,4 +45,4 @@ class Subcategory(Item):
 class SubcategorySchemaPolicy(DexteritySchemaPolicy):
 
     def bases(self, schema_name, tree):
-        return (ISubcategory, )
+        return (ISubcategory,)

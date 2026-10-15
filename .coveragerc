@@ -1,3 +1,6 @@
+[run]
+source = src/collective/iconifiedcategory
+
 [report]
 include =
     src/collective/*

@@ -6,6 +6,7 @@
       <indexed_attr value="content_category_uid"/>
     </index>
 
+    <column value="enabled"/>
     <index name="enabled" meta_type="BooleanIndex">
       <indexed_attr value="enabled"/>
     </index>

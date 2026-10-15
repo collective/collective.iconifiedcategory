@@ -9,12 +9,13 @@ Created by mpeeters
 
 from plone.app.contenttypes.interfaces import IFolder
 from plone.dexterity.content import Container
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ICategoryConfiguration(IFolder):
     """Marker interface of ContentCategoryConfiguration"""
 
 
+@implementer(ICategoryConfiguration)
 class CategoryConfiguration(Container):
-    implements(ICategoryConfiguration)
+    """"""
