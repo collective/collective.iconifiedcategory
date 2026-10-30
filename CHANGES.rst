@@ -4,8 +4,9 @@ Changelog
 0.77 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Used `self.request` instead of `self.table.request` in iconified columns `alt`
+  so a column can be used without table (mainly in tests).
+  [sgeulette]
 
 0.76 (2026-07-31)
 -----------------

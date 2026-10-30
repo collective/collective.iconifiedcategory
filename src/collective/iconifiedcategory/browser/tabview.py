@@ -281,7 +281,7 @@ class PrintColumn(IconClickableColumn):
         return translate(
             utils.print_message(content),
             domain='collective.iconifiedcategory',
-            context=self.table.request,
+            context=self.request,
         )
 
 
@@ -296,7 +296,7 @@ class ConfidentialColumn(IconClickableColumn):
         return translate(
             utils.boolean_message(content, attr_name='confidential'),
             domain='collective.iconifiedcategory',
-            context=self.table.request,
+            context=self.request,
         )
 
 
@@ -311,7 +311,7 @@ class SignedColumn(IconClickableColumn):
         return translate(
             utils.signed_message(content),
             domain='collective.iconifiedcategory',
-            context=self.table.request,
+            context=self.request,
         )
 
     def _deactivated_is_useable(self):
@@ -333,7 +333,7 @@ class ApprovedColumn(IconClickableColumn):
         return translate(
             utils.approved_message(content),
             domain='collective.iconifiedcategory',
-            context=self.table.request,
+            context=self.request,
         )
 
     def _deactivated_is_useable(self):
@@ -355,7 +355,7 @@ class PublishableColumn(IconClickableColumn):
         return translate(
             utils.boolean_message(content, attr_name='publishable'),
             domain='collective.iconifiedcategory',
-            context=self.table.request,
+            context=self.request,
         )
 
 
