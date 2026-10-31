@@ -31,9 +31,12 @@ class CategorizedObjectInfoAdapter(object):
     def __init__(self, context):
         self.obj = aq_base(context)
         self.context = context
+        # may be set to a dict by the caller to cache category related infos
+        # when computing infos of several elements, see utils.update_all_categorized_elements
+        self.category_infos_cache = None
 
-    def _get_basic_infos(self, category):
-        """Return the basic informations for the object"""
+    def _get_category_infos(self, category):
+        """Return the informations that only depend on the category"""
         infos = {
             'category_uid': category.category_uid,
             'category_id': category.category_id,
@@ -41,21 +44,12 @@ class CategorizedObjectInfoAdapter(object):
             'subcategory_uid': None,
             'subcategory_id': None,
             'subcategory_title': None,
-            # this will be useable for caching for example
-            'last_updated': self._last_updated,
             'icon_url': utils.get_category_icon_url(category),
             'to_be_printed_activated': self._to_be_printed_activated(category),
             'confidentiality_activated': self._confidentiality_activated(category),
             'signed_activated': self._signed_activated(category),
             'approved_activated': self._approved_activated(category),
             'publishable_activated': self._publishable_activated(category),
-            'to_print': self._to_print,
-            'confidential': self._confidential,
-            'to_sign': self._to_sign,
-            'signed': self._signed,
-            'to_approve': self._to_approve,
-            'approved': self._approved,
-            'publishable': self._publishable,
             'show_preview': self._show_preview(category),
         }
         # update subcategory infos if any
@@ -63,6 +57,31 @@ class CategorizedObjectInfoAdapter(object):
             infos['subcategory_uid'] = category.UID()
             infos['subcategory_id'] = category.getId()
             infos['subcategory_title'] = category.Title()
+        return infos
+
+    def _get_cached_category_infos(self, category):
+        """Return category infos, cached in self.category_infos_cache if it is a dict"""
+        if self.category_infos_cache is None:
+            return self._get_category_infos(category)
+        key = category.getPhysicalPath()
+        if key not in self.category_infos_cache:
+            self.category_infos_cache[key] = self._get_category_infos(category)
+        return self.category_infos_cache[key]
+
+    def _get_basic_infos(self, category):
+        """Return the basic informations for the object"""
+        infos = dict(self._get_cached_category_infos(category))
+        infos.update({
+            # this will be useable for caching for example
+            'last_updated': self._last_updated,
+            'to_print': self._to_print,
+            'confidential': self._confidential,
+            'to_sign': self._to_sign,
+            'signed': self._signed,
+            'to_approve': self._to_approve,
+            'approved': self._approved,
+            'publishable': self._publishable,
+        })
         return infos
 
     def get_infos(self, category, limited=False):
