@@ -12,10 +12,12 @@ from collective.iconifiedcategory import DEFAULT_FILESIZE_LIMIT
 from collective.iconifiedcategory import utils
 from collective.iconifiedcategory.interfaces import IIconifiedCategorySettings
 from collective.iconifiedcategory.tests.base import BaseTestCase
+from copy import deepcopy
 from plone import api
 from plone.dexterity.utils import createContentInContainer
 from zExceptions import Redirect
 
+import time
 import transaction
 
 
@@ -562,6 +564,51 @@ class TestUtils(BaseTestCase):
         utils.update_all_categorized_elements(self.portal)
         self.assertEqual(len(self.portal.categorized_elements), 1)
         self.assertTrue(document2UID in self.portal.categorized_elements)
+
+    def test_update_all_categorized_elements_optimized(self):
+        """Compare result and performance of update_all_categorized_elements
+           when using optimized=True (category and category infos cached) or optimized=False,
+           for containers holding 5, 20 and 250 elements, each updated 10 times."""
+
+        def _run(folder, optimized, times=10):
+            start = time.time()
+            for i in range(times):
+                utils.update_all_categorized_elements(folder, optimized=optimized)
+            return time.time() - start
+
+        for nb_elements in (5, 20, 250):
+            folder = api.content.create(
+                id='folder{0}'.format(nb_elements),
+                type='Folder',
+                title='Folder {0}'.format(nb_elements),
+                container=self.portal)
+            for i in range(nb_elements):
+                api.content.create(
+                    id='file{0}'.format(i),
+                    type='File',
+                    file=self.file,
+                    container=folder,
+                    content_category='config_-_group-1_-_category-1-1',
+                    to_print=False,
+                    confidential=False,
+                )
+            self.assertEqual(len(folder.categorized_elements), nb_elements)
+
+            utils.update_all_categorized_elements(folder, optimized=False)
+            not_optimized_result = deepcopy(folder.categorized_elements)
+            utils.update_all_categorized_elements(folder, optimized=True)
+            optimized_result = deepcopy(folder.categorized_elements)
+            self.assertEqual(len(optimized_result), nb_elements)
+            self.assertEqual(optimized_result, not_optimized_result)
+
+            not_optimized_time = _run(folder, optimized=False)
+            optimized_time = _run(folder, optimized=True)
+            print('\nupdate_all_categorized_elements on {0} elements (10 runs): '
+                  'optimized={1:.4f}s, not optimized={2:.4f}s, gain={3:.1f}%'.format(
+                      nb_elements,
+                      optimized_time,
+                      not_optimized_time,
+                      (not_optimized_time - optimized_time) / not_optimized_time * 100))
 
     def test_get_category_icon_url(self):
         category = api.content.create(

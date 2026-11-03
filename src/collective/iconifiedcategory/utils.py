@@ -194,22 +194,31 @@ def update_categorized_elements(parent,
             obj, parent, old_values=old_values, new_values=copy.deepcopy(infos), limited=limited))
 
 
-def update_all_categorized_elements(container, limited=False, sort=True):
+def update_all_categorized_elements(container, limited=False, sort=True, optimized=True):
+    """If p_optimized=True:
+       - category objects are cached by content_category id;
+       - category related infos are cached by category.
+       This is faster but will not work if category
+       differs for elements of the same container."""
     # recompute everything if limited=False
     if not limited:
         container.categorized_elements = OrderedDict()
-    adapter = None
+    categories = {}
+    category_infos_cache = {}
     for obj in container.objectValues():
         if hasattr(obj, 'content_category'):
-            try:
-                category = get_category_object(obj, obj.content_category)
-            except KeyError:
+            if not optimized or obj.content_category not in categories:
+                try:
+                    category = get_category_object(obj, obj.content_category)
+                except KeyError:
+                    category = None
+                categories[obj.content_category] = category
+            category = categories[obj.content_category]
+            if category is None:
                 continue
-            if adapter is None:
-                adapter = getAdapter(obj, IIconifiedInfos)
-            else:
-                adapter.context = obj
-                adapter.obj = aq_base(obj)
+            adapter = getAdapter(obj, IIconifiedInfos)
+            if optimized:
+                adapter.category_infos_cache = category_infos_cache
             uid, new_infos = obj.UID(), adapter.get_infos(category, limited=limited)
             infos = container.categorized_elements.get(uid, {})
             infos.update(new_infos)

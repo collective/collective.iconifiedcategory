@@ -7,6 +7,16 @@ Changelog
 - Used `self.request` instead of `self.table.request` in iconified columns `alt`
   so a column can be used without table (mainly in tests).
   [sgeulette]
+- Optimized `utils.update_all_categorized_elements` (from 35% faster for
+  5 elements to 55% faster for 250 elements),
+  category objects and category related infos (`icon_url`, `*_activated`, ...)
+  are now computed once by category instead of for every element.
+  Added parameter `optimized=True`, when `False`, nothing is cached.
+  The `IIconifiedInfos` adapter is now looked up for every element instead
+  of changing the context of the first adapter.
+  `CategorizedObjectInfoAdapter._get_basic_infos` is split, category related
+  infos are computed by `_get_category_infos`.
+  [gbastien]
 
 0.76 (2026-07-31)
 -----------------
