@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.77 (unreleased)
+0.77 (2026-11-16)
 -----------------
 
 - Used `self.request` instead of `self.table.request` in iconified columns `alt`
