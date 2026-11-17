@@ -16,8 +16,6 @@ jobs:
       matrix:
         include:
           - python: 3.13.1
-            plone: "6.1"
-          - python: 3.13.1
             plone: "6.2"
     steps:
       - name: Checkout

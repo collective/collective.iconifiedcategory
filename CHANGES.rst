@@ -4,9 +4,11 @@ Changelog
 1.0.0 (unreleased)
 ------------------
 
-- Migrated to Plone 6.2 / Python 3 (Plone 6.1 kept, Plone 4 dropped), based on the work
+- Migrated to Plone 6.2 / Python 3 (Plone 4 dropped), based on the work
   started by @laulaz on `python3`.
   [laulaz, chris-adam]
+- Dropped support for Plone versions below 6.2.
+  [chris-adam]
 
 
 0.76 (2026-07-31)
