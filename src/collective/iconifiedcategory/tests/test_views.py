@@ -3,6 +3,7 @@
 from AccessControl import Unauthorized
 from collective import iconifiedcategory as collective_iconifiedcategory
 from collective.documentviewer.settings import GlobalSettings
+from collective.iconifiedcategory.browser.viewlets import CategorizedItemInfoViewlet
 from collective.iconifiedcategory.tests.base import BaseTestCase
 from collective.iconifiedcategory.utils import get_category_object
 from plone import api
@@ -269,3 +270,54 @@ class TestCanViewAwareDownload(BaseTestCase):
         self.assertTrue(img_obj.unrestrictedTraverse('view/++widget++form.widgets.image/@@download')())
         # cleanUp zmcl.load_config because it impacts other tests
         zcml.cleanUp()
+
+
+class TestCategorizedItemInfoViewlet(BaseTestCase):
+
+    def _viewlet(self, context, klass=CategorizedItemInfoViewlet):
+        return klass(context, self.portal.REQUEST, None, None)
+
+    def test_element_property(self):
+        obj = self.portal['file_txt']
+        viewlet = self._viewlet(obj)
+        self.assertEqual(viewlet.element,
+                         self.portal.categorized_elements[obj.UID()])
+
+    def test_render_empty_when_element_missing(self):
+        # an item not (yet) tracked in parent.categorized_elements
+        # renders empty string, the viewlet just renders nothing
+        obj = self.portal['file_txt']
+        del self.portal.categorized_elements[obj.UID()]
+        viewlet = self._viewlet(obj)
+        self.assertIsNone(viewlet.element)
+        self.assertEqual(viewlet.render(), '')
+
+    def test_icons_are_non_clickable_spans(self):
+        obj = self.portal['file_txt']
+        viewlet = self._viewlet(obj)
+        html = viewlet.element_icons_html(viewlet.element)
+        self.assertIn('iconified-', html)
+        # no anchor / no clickable "iconified-action" affordance
+        self.assertNotIn('<a ', html)
+        self.assertNotIn('iconified-action', html)
+
+    def test_dispatch_override_single_functionality(self):
+        # a subclass can override a single icon
+        class Custom(CategorizedItemInfoViewlet):
+            def _css_for_approved(self, element):
+                return 'iconified-approved custom'
+
+            def _title_for_approved(self, element):
+                return u'Custom approved message'
+
+        obj = self.portal['file_txt']
+        viewlet = self._viewlet(obj, klass=Custom)
+        element = viewlet.element
+        self.assertEqual(viewlet.get_css_classses_for('approved', element),
+                         'iconified-approved custom')
+        self.assertEqual(viewlet.get_tag_title_for('approved', element),
+                         u'Custom approved message')
+        # non-overridden functionalities keep the base behavior
+        self.assertTrue(
+            viewlet.get_css_classses_for('confidential', element).startswith(
+                'iconified-confidential'))
